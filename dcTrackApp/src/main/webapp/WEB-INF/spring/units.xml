@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+    					http://www.springframework.org/schema/util
+    					http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+	<bean id="unit" class="com.raritan.tdz.util.UnitImpl">
+			<property name="sensorUnitsMap">
+			<map>
+				<!--  item name validator -->
+				<entry key="40008_1" value="feet/sec"/>
+				<entry key="40008_2" value="meter/sec"/>
+				<entry key="40001_1" value="Degrees F"/>
+				<entry key="40001_2" value="Degrees C"/>
+				<entry key="40003_1" value="PSI"/>
+				<entry key="40003_2" value="Pascal"/>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="unitConverterHelper" class="com.raritan.tdz.util.UnitConverterHelperImpl"/> 
+ 
+ 	<bean id="poundToKgUnitConverter" class="com.raritan.tdz.util.UnitConverterImpl">
+		<constructor-arg name="conversionFactor" value="0.4536"/>
+		<property name="unitConverterHelper" ref="unitConverterHelper"/>
+	</bean>
+
+	<bean id="tonToKgUnitConverter" class="com.raritan.tdz.util.UnitConverterImpl">
+		<constructor-arg name="conversionFactor" value="907.18474"/>
+		<property name="unitConverterHelper" ref="unitConverterHelper"/>
+	</bean>
+		
+	<bean id="inchToMMUnitConverter" class="com.raritan.tdz.util.UnitConverterImpl">
+		<constructor-arg name="conversionFactor" value="25.4"/>
+		<property name="unitConverterHelper" ref="unitConverterHelper"/>
+	</bean>
+
+	<bean id="feetToMeterUnitConverter" class="com.raritan.tdz.util.UnitConverterImpl">
+		<constructor-arg name="conversionFactor" value="0.3048"/>
+		<property name="unitConverterHelper" ref="unitConverterHelper"/>
+	</bean>
+	
+	<bean id="meterToInchUnitConverter" class="com.raritan.tdz.util.UnitConverterImpl">
+		<constructor-arg name="conversionFactor" value="0.0254"/>
+		<property name="unitConverterHelper" ref="unitConverterHelper"/>
+	</bean>
+	
+	<bean id="mmToInchUnitConverter" class="com.raritan.tdz.util.UnitConverterImpl">
+		<constructor-arg name="conversionFactor" value="25.4"/>
+		<property name="unitConverterHelper" ref="unitConverterHelper"/>
+	</bean>
+	
+	<bean id="sqmeterToSqfeetUnitConverter" class="com.raritan.tdz.util.UnitConverterImpl">
+		<constructor-arg name="conversionFactor" value="0.0929"/>
+		<property name="unitConverterHelper" ref="unitConverterHelper"/>
+	</bean>
+ 
+ 	<bean id="tempSensorUnitConverter" class="com.raritan.tdz.util.TemperatureSensorUnitConverterImpl">
+		<property name="unitConverterHelper" ref="unitConverterHelper"/>
+ 	</bean>
+	
+	<bean id="psiToPaSensorUnitConverter" class="com.raritan.tdz.util.AirSensorUnitConverterImpl">
+		<!--  1 PSI equals 6894.7572798677575  Pascal  -->
+		<constructor-arg index="0" value="6894.7572798677575"/>
+		<property name="unitConverterHelper" ref="unitConverterHelper"/>
+	</bean>
+
+	<bean id="feetPerSecToMeterPerSecUnitConverter" class="com.raritan.tdz.util.AirSensorUnitConverterImpl">
+		<!-- 1 Feet per second equals 0.3048 Meter per second  -->
+		<constructor-arg index="0" value="0.3048"/>
+		<property name="unitConverterHelper" ref="unitConverterHelper"/>
+	</bean>
+
+	<bean id="piqTempSensorNormalizer" class="com.raritan.tdz.piq.home.PIQSensorValueNormalizerImpl">
+		<property name="sensorUnitStr" value="Degrees C"/>
+		<property name="converter" ref="tempSensorUnitConverter"/>
+	</bean>
+
+	<bean id="piqAirFlowSensorNormalizer" class="com.raritan.tdz.piq.home.PIQSensorValueNormalizerImpl">
+		<property name="sensorUnitStr" value="feet/sec"/>
+		<property name="converter" ref="feetPerSecToMeterPerSecUnitConverter"/>
+	</bean>
+	
+	<bean id="piqAirPressureSensorNormalizer" class="com.raritan.tdz.piq.home.PIQSensorValueNormalizerImpl">
+		<property name="sensorUnitStr" value="Pascal"/>
+		<property name="converter" ref="psiToPaSensorUnitConverter"/>
+	</bean>
+	
+	
+	<bean id="piqHumiditySensorNormalizer" class="com.raritan.tdz.piq.home.PIQHumiditySensorNormalizerImpl">
+		<property name="sensorUnitStr" value="Percent"/>
+	</bean>
+	
+	
+ </beans>
+

@@ -1,0 +1,16 @@
+model_id|model_name|sys_model_mfr_name|lkp_value_code|mounting|form_factor|ru_height
+1|Proliant DL320 G5p|HP|1200|Rackable|Fixed|1
+1304|Series 610|Liebert|2400|Free-Standing|Fixed|45
+1434|Electrical Outlet Box|Hubbel|2200|Non-Rackable|Fixed|3
+6400|47RU-Cabinet TeraFrame-NH1U|CPI|1100|Free-Standing|4-Post Enclosure|47
+46|WS-X6748-GE-TX|Cisco Systems|1300|Blade|Full|1
+54|2RU-48p RJ45, Flat|Ortronics|1500|Rackable|Fixed|2
+58|Precision Power 50-225 kVA, 4PB|Liebert|2300|Free-Standing|Fixed|39
+100|StorageWorks XP10000|HP|1200|Free-Standing|Fixed|44
+1020|Blade HS20|IBM|1200|Blade|Full|6
+1255|Deluxe System/3 - 20 Ton|Liebert|3000|Free-Standing|Fixed|42
+45|Catalyst C6509-E|Cisco Systems|1300|Rackable|Chassis|15
+1015|BladeCenter H|IBM|1200|Rackable|Chassis|9
+1974|AP7941|APC|2100|ZeroU|Fixed|40
+3593|NBRK0451|APC|1400|Rackable|Fixed|1
+5126|Router 15305-SA|Cisco Systems|1300|Rackable|Fixed|1

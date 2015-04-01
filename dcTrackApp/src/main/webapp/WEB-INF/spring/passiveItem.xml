@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+    					http://www.springframework.org/schema/util
+    					http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+	<bean id="passiveItemObject" class="com.raritan.tdz.item.home.PassiveItemObjectPassiveItem" scope="prototype">
+		<property name="itemValidator" ref="itemValidatorPassive"/>
+	</bean>
+	<bean id="passiveItemDomainAdaptor" class="com.raritan.tdz.item.home.PassiveItemDomainAdaptor" scope="prototype">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+  	<bean id="itemValidatorPassive" class="com.raritan.tdz.item.validators.ItemValidatorNew" scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemUPositionValidator"/>
+  				<ref bean="placeOnMovedCabinetValidator"/>
+  			</list>
+  		</property>
+  	</bean>	
+</beans>

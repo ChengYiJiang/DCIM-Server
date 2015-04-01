@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+<int:channel id="launchValidationJobChannel"/>
+<int:channel id="launchValidationJobReturnChannel"/>
+
+<int:channel id="launchImportJobChannel"/>
+<int:channel id="launchImportJobReturnChannel"/>
+
+<int:channel id="cancelJobChannel"/>
+<int:channel id="cancelJobReturnChannel"/>
+
+<int:channel id="importNormalizerRouterChannel">
+	<int:interceptors>
+		<int:ref bean="importLineLoggerInterceptor"/>
+	</int:interceptors>
+</int:channel>
+
+<int:channel id="importHeaderNormalizerChannel"/>
+<int:channel id="importOperationObjectNormalizerChannel"/>
+
+<int:channel id="importLineMapperChannel"/>
+
+<bean id="importLineLoggerInterceptor" class="com.raritan.tdz.dctimport.integration.interceptors.ImportLineLoggerInterceptor" />
+
+<int:gateway id="launchJobGateway" service-interface="com.raritan.tdz.dctimport.job.ImportJobLauncher" error-channel="importExceptionHandlerChannel">
+	<int:method name="launchValidatorJob" 
+		payload-expression="T(java.util.Arrays).asList(#args[0],#args[1])" 
+		request-channel="importFileTypeRouterChannel"
+		reply-channel="launchValidationJobReturnChannel"/>
+	<int:method name="launchImportJob" 
+		payload-expression="T(java.util.Arrays).asList(#args[0],#args[1])" 
+		request-channel="launchImportJobChannel"
+		reply-channel="launchImportJobReturnChannel"/>
+	<int:method name="cancel" 
+		payload-expression="T(java.util.Arrays).asList(#args[0])" 
+		request-channel="cancelJobChannel"
+		reply-channel="cancelJobReturnChannel"/>
+</int:gateway>
+
+
+<int:gateway id="importLineMapperGateway" service-interface="org.springframework.batch.item.file.LineMapper" error-channel="importExceptionHandlerChannel">
+	<int:method name="mapLine"
+		payload-expression="T(java.util.Arrays).asList(#args[0],#args[1])"
+		request-channel="importNormalizerRouterChannel"
+	/>
+</int:gateway>
+
+<bean id="importNormalizerResolver" class="com.raritan.tdz.dctimport.integration.routers.ImportNormalizerResolverImpl">
+	<constructor-arg name="patternToNormalizerMap">
+		<map>
+			<entry key="#{T(com.raritan.tdz.dctimport.integration.routers.ImportNormalizerResolver).HEADER_PATTERN}" value="#{T(com.raritan.tdz.dctimport.integration.routers.ImportNormalizerResolver).HEADER_NORMALIZER}"/>
+			<entry key="#{T(com.raritan.tdz.dctimport.integration.routers.ImportNormalizerResolver).OPERATION_OBJECT_PATTERN}" value="#{T(com.raritan.tdz.dctimport.integration.routers.ImportNormalizerResolver).OPERATION_OBJECT_TYPE_NORMALIZER}"/>
+		</map>
+	</constructor-arg>
+</bean>
+
+<int:router input-channel="importNormalizerRouterChannel" expression="@importNormalizerResolver.resolve(payload.get(0))">
+	<int:mapping value="#{T(com.raritan.tdz.dctimport.integration.routers.ImportNormalizerResolver).HEADER_NORMALIZER}" channel="importHeaderNormalizerChannel"/>
+	<int:mapping value="#{T(com.raritan.tdz.dctimport.integration.routers.ImportNormalizerResolver).OPERATION_OBJECT_TYPE_NORMALIZER}" channel="importOperationObjectNormalizerChannel"/>
+	<int:mapping value="#{T(com.raritan.tdz.dctimport.integration.routers.ImportNormalizerResolver).PASSTHROGUH_NORMALIZER}" channel="importLineMapperChannel"/>
+</int:router>
+
+<bean id="importLineHeaderNormalizer" class="com.raritan.tdz.dctimport.integration.transformers.HeaderNormalizer"/>
+<bean id="operationObjectTypeNormalizer" class="com.raritan.tdz.dctimport.integration.transformers.OperationObjectTypeNormalizer"/>
+
+<int:transformer id="importLineHeaderNormalizerTransformer" input-channel="importHeaderNormalizerChannel" output-channel="importLineMapperChannel" ref="importLineHeaderNormalizer" method="transform"/>
+<int:transformer id="importLineOperationObjectTypeNormalizerTransformer" input-channel="importOperationObjectNormalizerChannel" output-channel="importLineMapperChannel" ref="operationObjectTypeNormalizer" method="transform"/>
+
+<int:service-activator id="launchValidationJobActivator" input-channel="launchValidationJobChannel" output-channel="launchValidationJobReturnChannel" expression="@importJobLauncher.launchValidatorJob(payload.get(0),payload.get(1))"/>
+<int:service-activator id="launchImportJobActivator" input-channel="launchImportJobChannel" output-channel="launchImportJobReturnChannel" expression="@importJobLauncher.launchImportJob(payload.get(0),payload.get(1))"/>
+<int:service-activator id="cancelJobActivator" input-channel="cancelJobChannel" output-channel="cancelJobReturnChannel" expression="@importJobLauncher.cancel(payload.get(0))"/>
+<int:service-activator id="importLineMapperActivator" input-channel="importLineMapperChannel" expression="@importLineMapper.mapLine(payload.get(0),payload.get(1))"/>
+
+
+</beans>

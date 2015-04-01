@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:batch="http://www.springframework.org/schema/batch"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+
+	<import resource="../../src/main/webapp/WEB-INF/spring/fileImport/dct-import-field-set-mappers.xml"/>
+	<import resource="../../src/main/webapp/WEB-INF/spring/fileImport/dct-import-tokenizers.xml"/>
+	<import resource="../../src/main/webapp/WEB-INF/spring/fileImport/import-dto.xml"/>
+
+	<bean id="importJobListener" class="com.raritan.tdz.dctimport.job.ImportJobListener">
+		<constructor-arg name="importErrorHandler" ref="importExceptionHandler"></constructor-arg>
+	</bean>
+	
+	<bean id="importStepResolveListener" class="com.raritan.tdz.dctimport.job.ImportStepResolveListener"/>
+	
+	<bean id="importValidationStepListener" class="com.raritan.tdz.dctimport.job.ImportStepListener">
+		<constructor-arg name="importErrorHandler" ref="importExceptionHandler"/>
+		<property name="cleanLogger" value="true"/>
+	</bean>
+	
+	<bean id="importImportStepListener" class="com.raritan.tdz.dctimport.job.ImportStepListener">
+		<constructor-arg name="importErrorHandler" ref="importExceptionHandler"/>
+	</bean>
+	
+	<bean id="importFileNotFoundExceptionHandler" class="com.raritan.tdz.dctimport.integration.exceptions.ImportFileNotFoundExceptionHandler" scope="prototype"/>
+	<bean id="importJobAlreadyRunningExceptionHandler" class="com.raritan.tdz.dctimport.integration.exceptions.ImportJobAlreadyRunningExceptionHandler" scope="prototype"/>
+	<bean id="importJobExecutionNotRunningExceptionHandler" class="com.raritan.tdz.dctimport.integration.exceptions.ImportJobExecutionNotRunningExceptionHandler" scope="prototype"/>
+	<bean id="importIgnoreExceptionHandler" class="com.raritan.tdz.dctimport.integration.exceptions.ImportIgnoreExceptionHandler"/>
+	<bean id="importFileTypeInvalidExceptionHandler" class="com.raritan.tdz.dctimport.integration.exceptions.ImportFileTypeInvalidExceptionHandler"/>	
+	<bean id="importExceptionHandler" class="com.raritan.tdz.dctimport.integration.exceptions.ImportErrorHandlerImpl">
+		<constructor-arg name="exceptionHandlers">
+			<map>
+				<entry key="java.io.FileNotFoundException" value-ref="importFileNotFoundExceptionHandler"/>
+				<entry key="org.springframework.batch.core.repository.JobExecutionAlreadyRunningException" value-ref="importJobAlreadyRunningExceptionHandler"/>
+				<entry key="org.springframework.batch.core.launch.JobExecutionNotRunningException" value-ref="importJobExecutionNotRunningExceptionHandler"/>
+				<entry key="com.raritan.tdz.dctimport.integration.exceptions.ImportFileTypeInvalidException" value-ref="importFileTypeInvalidExceptionHandler"/>
+				<entry key="com.raritan.tdz.dctimport.integration.exceptions.IgnoreException" value-ref="importIgnoreExceptionHandler"/>
+			</map>
+		</constructor-arg>
+	</bean>
+	<bean id="dctCSVImportLogger" class="com.raritan.tdz.dctimport.logger.ImportCSVLogger">
+		<constructor-arg name="lineNumber" ref="importLineNumber"/>
+	</bean>
+	<bean id="importLineNumber" class="java.util.concurrent.atomic.AtomicInteger"/>
+		<bean id="importLineMapper" class="com.raritan.tdz.dctimport.job.ImportLineMapper">
+			<property name="tokenizers" ref="importTokenizers"/>
+			<property name="fieldSetMappers" ref="importFieldSetMappers"/>
+			<property name="importDTOs" ref="importDTOs"/>
+			<property name="importErrorHandler" ref="importExceptionHandler"/>
+	</bean>
+	
+	<bean id="importLineHeaderNormalizer" class="com.raritan.tdz.dctimport.integration.transformers.HeaderNormalizer"/>
+
+</beans>

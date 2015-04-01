@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+    					http://www.springframework.org/schema/util
+    					http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+    					
+	<util:map id="itemListColumnGroupMap" map-class="java.util.LinkedHashMap">
+
+		<entry key="A:Common (all classes):ALL">
+			<util:list>
+				<value>7</value>
+				<value>27</value>
+				<value>3</value>
+				<value>39</value>
+				<value>41</value>
+				<value>38</value>
+				<value>40</value>
+				<value>42</value>
+				<value>43</value>
+				<value>24</value>
+				<value>28</value>
+				<value>26</value>
+				<value>21</value>
+				<value>31</value>
+				<value>36</value>
+				<value>2</value>
+				<value>48</value>
+				<value>8</value>
+				<value>9</value>
+				<value>25</value>
+				<value>6</value>
+				<value>47</value>
+				<value>44</value>
+				<value>33</value>
+				<value>32</value>
+				<value>34</value>
+				<value>35</value>
+				<value>89</value>
+				<value>90</value>
+				<value>29</value>
+				<value>19</value>
+				<value>37</value>
+				<value>5</value>
+				<value>4</value>
+				<value>22</value>
+				<value>23</value>
+				<value>20</value>
+				<value>92</value>
+			</util:list>
+		</entry>
+		
+		<entry key="B:Cabinet:1100">
+			<util:list>
+				<value>60</value>
+				<value>59</value>
+				<value>61</value>
+				<value>62</value>
+				<value>58</value>
+				<value>57</value>
+				<value>51</value>
+				<value>52</value>
+				<value>53</value>
+				<value>50</value>
+				<value>56</value>
+				<value>55</value>
+				<value>54</value>
+				<value>49</value>
+			</util:list>
+		</entry>
+		
+		<entry key="C:CRAC:3000">
+			<util:list>
+				<value>77</value>
+				<value>45</value>
+				<value>51</value>
+				<value>82</value>
+				<value>88</value>
+				<value>85</value>
+			</util:list>
+		</entry>
+		
+		<entry key="D:Data Panel:1500">
+			<util:list>
+				<value>10</value>
+				<value>14</value>
+				<value>15</value>
+				<value>45</value>
+				<value>13</value>
+				<value>12</value>
+				<value>11</value>
+			</util:list>
+		</entry>
+		
+		<entry key="E:Device:1200">
+			<util:list>
+				<value>10</value>
+				<value>14</value>
+				<value>16</value>
+				<value>18</value>
+				<value>67</value>
+				<value>15</value>
+				<value>66</value>
+				<value>45</value>
+				<value>46</value>
+				<value>91</value>
+				<value>88</value>
+				<value>63</value>
+				<value>13</value>
+				<value>71</value>
+				<value>68</value>
+				<value>12</value>
+				<value>69</value>
+				<value>72</value>
+				<value>17</value>
+				<value>11</value>
+				<value>70</value>
+				<value>73</value>
+			</util:list>
+		</entry>
+		
+		<entry key="F:Floor PDU:2300">
+			<util:list>
+				<value>84</value>
+				<value>45</value>
+				<value>51</value>
+				<value>83</value>
+				<value>82</value>
+				<value>88</value>
+				<value>79</value>
+				<value>76</value>
+			</util:list>
+		</entry>
+		
+		<entry key="G:Network:1300">
+			<util:list>
+				<value>10</value>
+				<value>14</value>
+				<value>16</value>
+				<value>18</value>
+				<value>15</value>
+				<value>45</value>
+				<value>46</value>
+				<value>91</value>
+				<value>88</value>
+				<value>63</value>
+				<value>13</value>
+				<value>64</value>
+				<value>12</value>
+				<value>17</value>
+				<value>65</value>
+				<value>11</value>
+			</util:list>
+		</entry>
+		
+		<entry key="H:Power Outlet:2200">
+			<util:list>
+				<value>10</value>
+				<value>46</value>
+				<value>11</value>
+				<value>76</value>
+			</util:list>
+		</entry>
+
+		<entry key="I:Probe:1400">
+			<util:list>
+				<value>10</value>
+				<value>14</value>
+				<value>15</value>
+				<value>45</value>
+				<value>46</value>
+				<value>91</value>
+				<value>88</value>
+				<value>13</value>
+				<value>12</value>
+				<value>11</value>
+			</util:list>
+		</entry>
+		
+		<entry key="J:Rack PDU:2100">
+			<util:list>
+				<value>10</value>
+				<value>14</value>
+				<value>15</value>
+				<value>46</value>
+				<value>45</value>
+				<value>46</value>
+				<value>86</value>
+				<value>88</value>
+				<value>87</value>
+				<value>13</value>
+				<value>12</value>
+				<value>11</value>	
+			</util:list>
+		</entry>
+
+		<entry key="K:UPS:2400">
+			<util:list>
+				<value>45</value>
+				<value>46</value>
+				<value>88</value>
+				<value>79</value>
+				<value>80</value>
+				<value>78</value>
+				<value>76</value>
+			</util:list>
+		</entry>
+
+	</util:map>
+	
+	<bean id="itemColumnAttributes" class="java.lang.String">
+		<!-- definition of fields order
+			fieldId
+			fieldName
+			uiComponentId
+			fieldLabel
+			defaultColumn
+			fixedColumn
+			width
+			sortable
+			filterable
+			filterType
+			format
+			visible
+		-->
+		<constructor-arg>
+			<value>
+				1,itemId,id,itemId,TRUE,FALSE,100,TRUE,FALSE,0,,FALSE
+				2,code,cmbLocation,Location,TRUE,TRUE,100,TRUE,TRUE,2,,TRUE
+				3,classLkpValue,tiClass,Class,TRUE,TRUE,100,TRUE,TRUE,2,,TRUE
+				4,subclassLkpValue,tiSubclass,Subclass,TRUE,FALSE,100,TRUE,TRUE,2,,TRUE
+				5,statusLkpValue,cmbStatus,Status,TRUE,TRUE,100,TRUE,TRUE,2,,TRUE
+				6,itemName,tiName,Name,TRUE,TRUE,100,TRUE,TRUE,1,,TRUE
+				7,itemAlias,tiAlias,Alias,TRUE,FALSE,100,TRUE,TRUE,1,,FALSE
+				8,mfrName,cmbMake,Make,TRUE,FALSE,100,TRUE,TRUE,1,,TRUE
+				9,modelName,cmbModel,Model,TRUE,TRUE,100,TRUE,TRUE,1,,TRUE
+				10,parentItem,cmbCabinet,Cabinet,TRUE,FALSE,100,TRUE,TRUE,1,,TRUE
+				11,uPosition,cmbUPosition,U Position,TRUE,FALSE,100,TRUE,TRUE,3,,TRUE
+				12,mountedRailLkpValue,radioRailsUsed,Rails Used,TRUE,FALSE,100,TRUE,TRUE,2,,FALSE
+				13,facingLkpValue,cmbOrientation,Orientation,TRUE,FALSE,100,TRUE,TRUE,2,,FALSE
+				14,mountedRailLkpValue,radioCabinetSide,Cabinet Side,TRUE,FALSE,100,TRUE,TRUE,2,,FALSE
+				15,facingLkpValue,radioDepthPosition,Depth Position,TRUE,FALSE,100,TRUE,TRUE,2,,FALSE
+				16,bladeChassis,cmbChassis,Chassis,TRUE,FALSE,100,TRUE,TRUE,1,,FALSE
+				17,slotLabel,cmbSlotPosition,Slot Position,TRUE,FALSE,100,TRUE,TRUE,1,,TRUE
+				88,ipAddresses,ipAddresses,IP Address,TRUE,FALSE,100,TRUE,TRUE,1,,TRUE
+				18,facingLkpValue,radioChassisFace,Chassis Face,TRUE,FALSE,100,TRUE,TRUE,2,,FALSE
+				19,serialNumber,tiSerialNumber,Serial Number,TRUE,FALSE,100,TRUE,TRUE,1,,TRUE
+				20,purposeLkuValue,cmbType,Type,TRUE,FALSE,100,TRUE,TRUE,2,,TRUE
+				21,functionLkuValue,cmbFunction,Function,TRUE,FALSE,100,TRUE,TRUE,2,,TRUE
+				22,itemAdminUser,cmbSystemAdmin,Sys Admin,TRUE,FALSE,100,TRUE,TRUE,1,,TRUE
+				23,itemAdminTeamLkuValue,cmbSystemAdminTeam,Sys Admin Team,TRUE,FALSE,100,TRUE,TRUE,2,,TRUE
+				24,departmentLkuValue,cmbCustomer,Customer,TRUE,FALSE,100,TRUE,TRUE,2,,TRUE
+				25,mounting,tiMounting,Mounting ,TRUE,FALSE,100,TRUE,TRUE,1,,TRUE
+				26,formFactor,tiFormFactor,Form Factor,TRUE,FALSE,100,TRUE,TRUE,1,,TRUE
+				27,assetNumber,tiAssetTag,Asset Tag,TRUE,FALSE,100,TRUE,TRUE,1,,FALSE
+				28,raritanAssetTag,tieAssetTag,eAsset Tag,TRUE,FALSE,100,TRUE,TRUE,1,,FALSE
+				29,ruHeight,tiRUs,RUs ,TRUE,FALSE,100,TRUE,TRUE,3,,FALSE
+				30,weight,tiWeight,Weight,TRUE,FALSE,100,TRUE,TRUE,4,,FALSE
+				31,$HWD,tiDimension,H x W x D,TRUE,FALSE,100,FALSE,TRUE,0,,FALSE
+				32,projectNumber,cmbProjectNumber,Project Number,TRUE,FALSE,100,TRUE,TRUE,1,,FALSE
+				33,poNumber,tiPONumber,PO Number,TRUE,FALSE,100,TRUE,TRUE,1,,FALSE
+				34,purchasePrice,tiPurchasePrice,Purchase Price,TRUE,FALSE,100,TRUE,TRUE,3,,FALSE
+				35,purchaseDate,tiPurchaseDate,Purchase Date,TRUE,FALSE,100,TRUE,TRUE,5,MM/dd/yyyy,FALSE
+				36,installDate,dtInstallationDate,Installation Date,TRUE,FALSE,100,TRUE,TRUE,5,MM/dd/yyyy,FALSE
+				37,slaProfileLkuValue,cmbSLAProfile,SLA Profile,TRUE,FALSE,100,TRUE,TRUE,2,,FALSE
+				38,contractNumber,cmbContractNumber,Contract Number,TRUE,FALSE,100,TRUE,TRUE,1,,FALSE
+				39,contractAmount,tiContractAmount,Contract Amount,TRUE,FALSE,100,TRUE,TRUE,3,,FALSE
+				40,contractBeginDate,dtContractStartDate,Contract Start Date,TRUE,FALSE,100,TRUE,TRUE,5,MM/dd/yyyy,FALSE
+				41,contractExpireDate,dtcontractEndDate,Contract End Date,TRUE,FALSE,100,TRUE,TRUE,5,MM/dd/yyyy,FALSE
+				42,sysCreatedBy,XXXSysCreatedBy,Created By,TRUE,FALSE,100,TRUE,TRUE,1,,TRUE
+				89,itemRequestNumber,XXXRequestNumber,Request Number,TRUE,FALSE,100,TRUE,TRUE,1,,TRUE
+				90,stageIdLkpValue,XXXRequestStage,Request Stage,TRUE,FALSE,100,TRUE,TRUE,2,,TRUE
+				43,sysCreationDate,XXXSysCreationDate,Created On,TRUE,FALSE,100,TRUE,TRUE,5,MM/dd/yyyy h:mm a,TRUE
+				44,originLkpValue,origin,Origin,TRUE,FALSE,100,TRUE,TRUE,2,,TRUE
+				45,freeDataPortCount,XXXfreeDataPortCount,Free Data Ports,TRUE,FALSE,100,TRUE,TRUE,3,,FALSE
+				46,freePowerPortCount,XXXfreePowerPortCount,Free Power Ports,TRUE,FALSE,100,TRUE,TRUE,3,,FALSE
+				91,effectivePower,effectivePower,Effective Power,TRUE,FALSE,100,TRUE,TRUE,3,,FALSE
+				47,description,tiNotes,Notes,TRUE,FALSE,100,TRUE,TRUE,1,,TRUE
+				48,locationReference,tiLocationRef,Location Ref,TRUE,FALSE,100,TRUE,TRUE,1,,FALSE
+				49,rowLabel,cmbRowLabel,Row Label,TRUE,FALSE,100,TRUE,TRUE,1,,FALSE
+				50,positionInRow,cmbRowPosition,Position in Row,TRUE,FALSE,100,TRUE,TRUE,3,,FALSE
+				51,facingLkpValue,radioFrontFaces,Front Faces,TRUE,FALSE,100,TRUE,TRUE,2,,FALSE
+				52,cabinetGrpLkuValue,cmbCabinetGrouping,Grouping,TRUE,FALSE,100,TRUE,TRUE,2,,FALSE
+				53,loadingCapacity,tiLoadCapacity,Load Capacity,TRUE,FALSE,100,TRUE,TRUE,3,,FALSE
+				54,railWidth,tiRailWidth,Rails Width,TRUE,FALSE,100,TRUE,TRUE,3,,FALSE
+				55,frontRailOffset,tiFrontRailOffset,Rails Offset  Front,TRUE,FALSE,100,TRUE,TRUE,3,,FALSE
+				56,rearRailOffset,tiRearRailOffset,Rails Offset  Back,TRUE,FALSE,100,TRUE,TRUE,3,,FALSE
+				57,frontDoorPerforation,tiFrontDoorPerforation,Door Perforation % Front,TRUE,FALSE,100,TRUE,TRUE,4,,FALSE
+				58,rearDoorPerforation,tiRearDoorPerforation,Door Perforation % Back,TRUE,FALSE,100,TRUE,TRUE,4,,FALSE
+				59,clearenceFront,tiFrontClearance,Clearance Front,TRUE,FALSE,100,TRUE,TRUE,4,,FALSE
+				60,clearenceRear,tiRearClearance,Clearance Back,TRUE,FALSE,100,TRUE,TRUE,4,,FALSE
+				61,clearanceLeft,tiLeftClearance,Clearance Left,TRUE,FALSE,100,TRUE,TRUE,4,,FALSE
+				62,clearenceRight,tiRightClearance,Clearance Right,TRUE,FALSE,100,TRUE,TRUE,4,,FALSE
+				63,osLkuValue,cmbOperatingSystem,Operating System,TRUE,FALSE,100,TRUE,TRUE,2,,FALSE
+				64,osiLayerLkpValue,cmbOSILayer,OSI Layer,TRUE,FALSE,100,TRUE,TRUE,2,,FALSE
+				65,groupingName,groupingName,Stack Name,TRUE,FALSE,100,TRUE,TRUE,1,,FALSE
+				66,domainLkuValue,cmbDomain,Domain,TRUE,FALSE,100,TRUE,TRUE,2,,FALSE
+				67,cpuType,tiCpuType,CPU Type,TRUE,FALSE,100,TRUE,TRUE,1,,FALSE
+				68,cpuQuantity,tiCpuQuantity,Quantity,TRUE,FALSE,100,TRUE,TRUE,3,,FALSE
+				69,ramGB,tiRAM,RAM,TRUE,FALSE,100,TRUE,TRUE,3,,FALSE
+				70,totalUsers,tiUsers,Users,TRUE,FALSE,100,TRUE,TRUE,3,,FALSE
+				71,totalProcesses,tiProcesses,Processes,TRUE,FALSE,100,TRUE,TRUE,3,,FALSE
+				72,services,tiServices,Services,TRUE,FALSE,100,TRUE,TRUE,1,,FALSE
+				73,vmClusterLkuValue,cmbVMCluster,VM Cluster,TRUE,FALSE,100,TRUE,TRUE,2,,FALSE
+				76,upsBankItem,cmbUPSBank,UPS Bank,TRUE,FALSE,100,TRUE,TRUE,1,,FALSE
+				77,cracNwGrpItem,cmbCRACGroup,CRAC Group,TRUE,FALSE,100,TRUE,TRUE,1,,FALSE
+				78,ratingV,ratingV,Output Voltage,TRUE,FALSE,100,TRUE,TRUE,4,,FALSE
+				79,ratingKva,ratingKva,kVA Rating,TRUE,FALSE,100,TRUE,TRUE,4,,FALSE
+				80,ratingKW,ratingKW,kW Rating,TRUE,FALSE,100,TRUE,TRUE,4,,FALSE
+				82,lineVolts,lineVolts,Input Voltage,TRUE,FALSE,100,TRUE,TRUE,4,,FALSE
+				83,ratingAmps,ratingAmps,Input Breaker,TRUE,FALSE,100,TRUE,TRUE,4,,FALSE
+				84,numPorts,polesQty,# of Power Panel,TRUE,FALSE,100,TRUE,TRUE,3,,FALSE
+				85,ratingTons,ratingTons,Tons Rating,TRUE,FALSE,100,TRUE,TRUE,4,,FALSE
+				86,groupingName,tiGroup,Group,TRUE,FALSE,100,TRUE,TRUE,1,,FALSE
+				87,groupingNumber,cmbCabinetGrouping,No. in Group,TRUE,FALSE,100,TRUE,TRUE,3,,FALSE
+				92,piqId,_piqId,PIQ Mapping,TRUE,FALSE,100,TRUE,TRUE,1,,TRUE
+				93,piqExternalKey,tiPiqExternalKey,PowerIQ External Key,TRUE,FALSE,1,TRUE,TRUE,3,,FALSE
+			</value>
+		</constructor-arg>
+	</bean>
+	
+
+	<util:map id="circuitListColumnGroupMap" map-class="java.util.LinkedHashMap">
+
+		<entry key="A:Common (all classes):ALL">
+			<util:list>
+				<value>22</value>
+				<value>23</value>
+				<value>12</value>
+				<value>11</value>
+				<value>13</value>
+				<value>14</value>
+				<value>20</value>
+				<value>15</value>
+				<value>16</value>
+				<value>17</value>
+				<value>21</value>
+				<value>18</value>
+				<value>19</value>
+				<value>5</value>
+				<value>10</value>
+				<value>8</value>
+				<value>9</value>
+				<value>7</value>
+				<value>6</value>
+			</util:list>
+		</entry>
+			
+	</util:map>
+
+	<bean id="circuitColumnAttributes" class="java.lang.String">
+		<!-- definition of fields order
+			fieldId
+			fieldName
+			uiComponentId
+			fieldLabel
+			defaultColumn
+			fixedColumn
+			width
+			sortable
+			filterable
+			filterType
+			format
+			visible
+		-->
+		
+		<constructor-arg>
+			<value>
+				1,circuitId,circuitList1,circuitId,TRUE,FALSE,100,TRUE,TRUE,0,,FALSE
+				2,statusLksCode,circuitList2,statusLksCode,TRUE,FALSE,100,TRUE,TRUE,0,,FALSE
+				3,requestStageLksCode,circuitList3,requestStageLksCode,TRUE,FALSE,100,TRUE,TRUE,0,,FALSE
+				4,circuitType,circuitList4,circuitType,TRUE,FALSE,100,TRUE,TRUE,2,,FALSE
+				5,locationCode,circuitList5,Location,TRUE,FALSE,80,TRUE,TRUE,2,,TRUE
+				6,circuitTypeLkpValue,circuitList6,Type,TRUE,FALSE,50,TRUE,TRUE,2,,TRUE
+				7,status,circuitList7,Status,TRUE,FALSE,60,TRUE,TRUE,2,,TRUE
+				8,requestNumber,circuitList8,Request Number,TRUE,FALSE,100,TRUE,TRUE,1,,TRUE
+				9,requestStage,circuitList9,Request Stage,TRUE,FALSE,100,TRUE,TRUE,2,,TRUE
+				10,proposeCircuitId,circuitList10,Proposed,TRUE,FALSE,100,FALSE,FALSE,0,,TRUE
+				11,creationDate,circuitList11,Creation Date,TRUE,FALSE,100,TRUE,TRUE,5,MM/dd/yyyy h:mm a,TRUE
+				12,createdBy,circuitList12,Created By,TRUE,FALSE,100,TRUE,TRUE,2,,TRUE
+				13,teamDesc,circuitList13,Creator's Team,TRUE,FALSE,100,TRUE,TRUE,2,,TRUE
+				22,visualCircuitTrace,circuitList22,Circuit Trace,TRUE,FALSE,150,TRUE,TRUE,1,,TRUE
+				23,visualCordTrace,circuitList23,Cord IDs,TRUE,FALSE,100,TRUE,TRUE,1,,FALSE
+				14,cabinetName,circuitList14,First Node Cabinet,TRUE,FALSE,100,TRUE,TRUE,1,,TRUE
+				15,startItemName,circuitList15,First Node Item,TRUE,FALSE,100,TRUE,TRUE,1,,TRUE
+				16,startPortName,circuitList16,First Node Port,TRUE,FALSE,100,TRUE,TRUE,1,,TRUE
+				17,endCabinetName,circuitList17,Last Node Cabinet,TRUE,FALSE,100,TRUE,TRUE,1,,TRUE
+				18,endItemName,circuitList18,Last Node Item,TRUE,FALSE,100,TRUE,TRUE,1,,TRUE
+				19,endPortName,circuitList19,Last Node Port,TRUE,FALSE,100,TRUE,TRUE,1,,TRUE
+				20,connectorName,circuitList20,First Node Connector,TRUE,FALSE,100,TRUE,TRUE,1,,TRUE
+				21,endConnectorName,circuitList21,Last Node Connector,TRUE,FALSE,100,TRUE,TRUE,1,,TRUE
+			</value>
+		</constructor-arg>
+	</bean>
+		
+</beans>
+
+
+

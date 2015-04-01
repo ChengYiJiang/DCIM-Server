@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+	<!-- ==================================== -->
+	<!-- Item Poweron Request Issued -->
+	<!-- ==================================== -->
+	
+	<!-- Item Poweron Request Issued Validator -->
+	
+	<import resource="request_validators.xml"/>
+	<import resource="request_executors.xml"/>
+	
+	<!-- Channel for Poweron issued request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_ON }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.validateChannel"/> -->
+    <int:channel id="714.501.validateChannel"/>
+
+    <!-- Subscriber - service activator for Poweron request approved validator -->
+    <int:service-activator id="itemPoweronReqIssueValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_ON }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.validateChannel" 
+    		ref="itemPoweronReqIssuedValidator" method="validate"/>
+
+	<!-- item Poweron request issued validator bean -->
+    <bean id="itemPoweronReqIssuedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemPoweronWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item Poweron Request Issued Executor -->
+	
+	<!-- Channel for Poweron issue request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_ON }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.executeChannel"/> -->
+	<int:channel id="714.501.executeChannel"/>
+
+    <!-- Subscriber - service activator for Poweron request issued executor -->
+    <int:service-activator id="itemPoweronReqIssueExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_ON }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.executeChannel" 
+    		ref="itemPoweronRequestStageIssued" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item Poweron request issued executor bean -->
+	<bean id="itemPoweronRequestStageIssued" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }"/>
+		<property name="requestStageHelpers" ref="itemPoweronRequestIssuedExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Item Poweron Request Updated -->
+	<!-- ==================================== -->
+	
+	<!-- Item Poweron Request Updated Validator -->
+	
+	<!-- Channel for Poweron updated request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_ON }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.validateChannel"/> -->
+    <int:channel id="714.503.validateChannel"/>
+
+    <!-- Subscriber - service activator for Poweron request updated validator -->
+    <int:service-activator id="itemPoweronReqUpdateValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_ON }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.validateChannel" 
+    		ref="itemPoweronReqUpdatedValidator" method="validate"/>
+
+	<!-- item Poweron request updated validator bean -->
+    <bean id="itemPoweronReqUpdatedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemPoweronWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item Poweron Request Updated Executor -->
+	
+	<!-- Channel for Poweron update request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_ON }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.executeChannel"/> -->
+	<int:channel id="714.503.executeChannel"/>
+
+    <!-- Subscriber - service activator for Poweron request updated executor -->
+    <int:service-activator id="itemPoweronReqUpdateExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_ON }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.executeChannel" 
+    		ref="itemPoweronRequestStageUpdated" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item Poweron request updated executor bean -->
+	<bean id="itemPoweronRequestStageUpdated" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }"/>
+		<property name="requestStageHelpers" ref="itemPoweronRequestUpdatedExecutors"/>
+	</bean>
+
+
+	
+	<!-- ==================================== -->
+	<!-- Item Poweron Request Approved -->
+	<!-- ==================================== -->
+	
+	<!-- Item Poweron Request Approved Validator -->
+	
+	<!-- Channel for Poweron approve request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_ON }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.validateChannel"/> -->
+    <int:channel id="714.504.validateChannel"/>
+
+    <!-- Subscriber - service activator for Poweron request approved validator -->
+    <int:service-activator id="itemPoweronReqApproveValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_ON }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.validateChannel" 
+    		ref="itemPoweronReqApprovedValidator" method="validate"/>
+
+	<!-- item Poweron request approved validator bean -->
+    <bean id="itemPoweronReqApprovedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemPoweronWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item Poweron Request Approved Executor -->
+	
+	<!-- Channel for Poweron approve request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_ON }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.executeChannel"/> -->
+	<int:channel id="714.504.executeChannel"/>
+
+    <!-- Subscriber - service activator for Poweron request approved executor -->
+    <int:service-activator id="itemPoweronReqApproveExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_ON }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.executeChannel" 
+    		ref="itemPoweronReqApprovedExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item Poweron request approved executor bean -->
+    <bean id="itemPoweronReqApprovedExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }"/>
+		<property name="requestStageHelpers" ref="itemPoweronRequestApprovedExecutors"/>
+	</bean>
+    
+
+	<!-- ==================================== -->
+	<!-- Item Poweron Work Order Issue -->
+	<!-- ==================================== -->
+	
+	<!-- Item Poweron Work order issue Validator -->
+	
+	<!-- Channel for Poweron Work Order Issue validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_ON }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.validateChannel"/> -->
+	<int:channel id="714.505.validateChannel"/>
+
+    <!-- Subscriber - service activator for Poweron request approved validator -->
+    <int:service-activator id="itemPoweronWorkorderIssueValidateActivator" requires-reply="false" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_ON }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.validateChannel" 
+    		ref="itemPoweronWorkorderIssueValidator" method="validate"/>
+
+	<!-- item Poweron request approved validator bean -->
+    <bean id="itemPoweronWorkorderIssueValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemPoweronWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item Poweron Request Approved Executor -->
+	
+	<!-- Channel for Poweron approve request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_ON }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.executeChannel"/> -->
+    <int:channel id="714.505.executeChannel"/>
+
+    <!-- Subscriber - service activator for Poweron request approved executor -->
+    <int:service-activator id="itemPoweronWorkorderIssueExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_ON }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.executeChannel" 
+    		ref="itemPoweronWorkorderIssueExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item Poweron request approved executor bean -->
+    <bean id="itemPoweronWorkorderIssueExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }"/>
+		<property name="requestStageHelpers" ref="itemPoweronWorkOrderIssueExecutors"/>
+	</bean>
+    
+
+	<!-- ==================================== -->
+	<!-- Item Poweron Work Order Complete -->
+	<!-- ==================================== -->
+	
+	<!-- Item Poweron Work order complete Validator -->
+	
+	<!-- Channel for Poweron Work Order Complete validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_ON }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.validateChannel"/> -->
+    <int:channel id="714.506.validateChannel"/>
+
+    <!-- Subscriber - service activator for Poweron work order complete validator -->
+    <int:service-activator id="itemPoweronWorkorderCompleteValidateActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_ON }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.validateChannel" 
+    		ref="itemPoweronWorkorderCompleteValidator" method="validate"/>
+
+	<!-- item Poweron request complete validator bean -->
+    <bean id="itemPoweronWorkorderCompleteValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemPoweronWorkOrderCompleteValidators"/>
+    </bean>
+    
+	
+	<!-- Item Poweron Workorder complete Executor -->
+	
+	<!-- Channel for Poweron work order complete executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_ON }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.executeChannel"/> -->
+    <int:channel id="714.506.executeChannel"/>
+
+    <!-- Subscriber - service activator for Poweron request approved executor -->
+    <int:service-activator id="itemPoweronWorkorderCompleteExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_ON }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.executeChannel" 
+    		ref="itemPoweronWorkorderCompleteExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item Poweron request approved executor bean -->
+    <bean id="itemPoweronWorkorderCompleteExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }"/>
+		<property name="requestStageHelpers" ref="itemPoweronWorkOrderCompleteExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Item Poweron Request Complete -->
+	<!-- ==================================== -->
+	
+	<!-- Item Poweron Request complete Validator -->
+	
+	<!-- Channel for Poweron Request Complete validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_ON }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.validateChannel"/> -->
+    <int:channel id="714.507.validateChannel"/>
+
+    <!-- Subscriber - service activator for Poweron request complete validator -->
+    <int:service-activator id="itemPoweronRequestCompleteValidateActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_ON }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.validateChannel" 
+    		ref="itemPoweronRequestCompleteValidator" method="validate"/>
+
+	<!-- item Poweron request complete validator bean -->
+    <bean id="itemPoweronRequestCompleteValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemPoweronWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item Poweron Request complete Executor -->
+	
+	<!-- Channel for Poweron request complete executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_ON }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.executeChannel"/> -->
+    <int:channel id="714.507.executeChannel"/>
+
+    <!-- Subscriber - service activator for Poweron request approved executor -->
+    <!-- output-channel="nullChannel" -->
+    <int:service-activator id="itemPoweronRequestCompleteExecuteActivator" requires-reply="false" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_ON }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.executeChannel" 
+    		ref="itemPoweronRequestCompleteExecutor" method="process" output-channel="nullChannel"/>
+    		
+
+	<!-- item Poweron request approved executor bean -->
+    <bean id="itemPoweronRequestCompleteExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }"/>
+		<property name="requestStageHelpers" ref="itemPoweronRequestCompleteExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Item Poweron Routers               				-->
+	<!-- ==================================== -->
+
+	<!-- item Poweron validate router -->
+	<!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_ON }ValidateRouter"/> -->
+	<int:channel id="714.ValidateRouter"/>
+	<int:router input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_ON }.ValidateRouter" ref="requestStageRouter" method="validatorRouter"/>
+	
+	<!-- item Poweron execute router -->
+	<!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_ON }ExecuteRouter"/> -->
+	<int:channel id="714.ExecuteRouter"/>
+	<int:router input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_ON }.ExecuteRouter" ref="requestStageRouter" method="executorRouter"/>
+    
+
+
+
+
+</beans>

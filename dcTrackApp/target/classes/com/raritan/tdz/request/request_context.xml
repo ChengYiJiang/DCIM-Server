@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-3.0.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+	<task:scheduler id="taskScheduler"/>
+	<!-- <import resource="request_progress.xml"/> -->
+
+	<!-- ==================================================================================== -->
+	<!-- context -->
+	<!-- ==================================================================================== -->
+
+	<!-- Context Cleaner -->
+	<int:channel id="requestContextCleanChannel">
+		<int:queue/>
+	</int:channel>
+
+	<bean id="requestContextTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="5"/>
+		<property name="maxPoolSize" value="10"/>
+		<!-- <property name="queueCapacity" value="1"/> -->
+	</bean>
+	
+	<int:service-activator id="requestContextCleanActivator" input-channel="requestContextCleanChannel" ref="requestContextCleaner">
+		<int:poller fixed-delay="#{10 * 1000}" task-executor="requestContextTaskExecutor"/>
+	</int:service-activator>
+	
+	<int:gateway id="requestContextCleanGW" service-interface="com.raritan.tdz.request.home.SessionClean" default-request-channel="requestContextCleanChannel"/>
+	
+	<bean id="requestContextCleaner" class="com.raritan.tdz.request.home.RequestContextClean"/>
+	
+	<bean id="requestBypassCleanupHandler" class="com.raritan.tdz.request.home.RequestBypassCleanupHandler">
+		<property name="requestContextCleaner" ref="requestContextCleanGW"/>
+	</bean>
+	
+
+	<!-- Context Router -->
+	<bean id="requestContextRouter" class="com.raritan.tdz.request.home.RequestContextRouterImpl" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="channelName" value="requestHomeChannel"/>
+		<constructor-arg name="springContextPath" value="classpath:com/raritan/tdz/request/request_router_and_manager.xml"/>
+		<constructor-arg name="parentContextPrefix" value="${requestContextPathPrefix}"/>		
+	</bean>
+
+	<!-- =========================================================== -->					
+	<!-- The router picks up the data from 'piqBulkUpdateRouterChannel' --> 
+	<!-- input-channel and makes service call which is excecuted in  -->
+	<!-- in a separate application context.                          -->
+	<!-- =========================================================== -->					
+	
+	<int:channel id="requestRouterChannel"/>
+	
+	<int:router input-channel="requestRouterChannel" 
+		expression="@requestContextRouter.getContextChannel(payload[0])"/>
+
+	<!-- =========================================================== -->
+	<!-- Enrichers -->
+	<!-- =========================================================== -->
+
+	<int:channel id="processRequestDTOEnricherChannel"/>
+
+	<int:header-enricher input-channel="processRequestDTOEnricherChannel" output-channel="requestRouterChannel">
+		<int:header name="command" value="processRequestDTOCommand"/>
+	</int:header-enricher>
+
+	
+	<int:channel id="processRequestsEnricherChannel"/>
+	
+	<int:header-enricher input-channel="processRequestsEnricherChannel" output-channel="requestRouterChannel">
+		<int:header name="command" value="processRequestsCommand"/>
+	</int:header-enricher>
+	 
+	<int:channel id="processRequestUsingIdsEnricherChannel"/>
+	
+	<int:header-enricher input-channel="processRequestUsingIdsEnricherChannel" output-channel="requestRouterChannel">
+		<int:header name="command" value="processRequestUsingIdsCommand"/>
+	</int:header-enricher>
+
+	<!-- =========================================================== -->
+	<!-- Request Home Gateway -->
+	<!-- =========================================================== -->
+	<int:gateway id="requestHomeGateway" service-interface="com.raritan.tdz.request.home.RequestHome">
+		<int:method name="processRequestDTO" request-channel="processRequestDTOEnricherChannel" payload-expression="T(java.util.Arrays).asList(#args[0],#args[1],#args[2])"/>
+		<int:method name="processRequests" request-channel="processRequestsEnricherChannel" payload-expression="T(java.util.Arrays).asList(#args[0],#args[1],#args[2])"/>
+		<int:method name="processRequestUsingIds" request-channel="processRequestUsingIdsEnricherChannel" payload-expression="T(java.util.Arrays).asList(#args[0],#args[1])"/>
+	</int:gateway>
+
+	<!-- ==================================================================================== -->
+	<!-- other supporting beans to update the dto with the request processing -->
+	<!-- ==================================================================================== -->
+	
+	<!-- request progress data factory -->
+	
+	<bean id="requestProgressDtoFactory" class="com.raritan.tdz.request.progress.SessionToObjectFactoryImpl" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="type" value="com.raritan.tdz.request.progress.RequestProgressDTO"/>
+	</bean>
+	
+	<bean id="requestProgressLockFactory" class="com.raritan.tdz.request.progress.SessionToObjectFactoryImpl" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="type" value="java.util.concurrent.locks.ReentrantReadWriteLock"/>
+	</bean>
+	
+	<bean id="requestProgressSessionCountFactory" class="com.raritan.tdz.request.progress.SessionToObjectFactoryImpl" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="type" value="java.util.concurrent.atomic.AtomicLong"/>
+	</bean> 
+	
+	<!-- request progress updater -->	
+	
+	<bean id="requestProgressUpdateDTO" class="com.raritan.tdz.request.progress.RequestProgressUpdateDTO" scope="singleton">
+		<constructor-arg name="requestProgressDtoFactory" ref="requestProgressDtoFactory"/>
+		<constructor-arg name="requestProgressRWLockFactory" ref="requestProgressLockFactory"/>
+		<constructor-arg name="requestProgressCountFactory" ref="requestProgressSessionCountFactory"/>
+		<constructor-arg name="businessExceptionHelper" ref="businessExceptionHelper"/>
+	</bean>
+
+	<bean id="requestHelper" class="com.raritan.tdz.request.home.RequestHelperImpl"/>
+
+	<!-- ==================================================================================== -->
+	<!-- request list validator -->
+	<!-- ==================================================================================== -->
+	
+	<bean id="requestListValidator" class="com.raritan.tdz.request.validator.RequestListValidator" scope="singleton">
+		<constructor-arg name="validators" ref="requestListValidators"/>
+	</bean>
+	
+	<util:list id="requestListValidators">
+		<ref bean="validateRequestUnderProcess"/>
+	</util:list>
+	
+	<bean id="validateRequestUnderProcess" class="com.raritan.tdz.request.validator.ValidateRequestUnderProcess"/>
+	
+	<bean id="validatePermission" class="com.raritan.tdz.request.validator.ValidatePermission">
+		<property name="itemModifyRoleValidator" ref="itemModifyRoleValidator"/>
+	</bean>
+
+	<!-- ==================================================================================== -->
+	<!-- request executor helpers -->
+	<!-- ==================================================================================== -->
+	<bean id="updateChildrenRequestComments" class="com.raritan.tdz.request.home.UpdateChildrenRequestComments"/>
+	
+	<bean id="updateParentRequestComments" class="com.raritan.tdz.request.home.UpdateParentRequestComments"/>
+
+	<bean id="updateChildrenRequestReservationComments" class="com.raritan.tdz.request.home.UpdateChildrenRequestReservationComments"/>
+
+	<util:list id="requestIssueCommentUpdate" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="updateChildrenRequestComments"/>
+		<ref bean="updateParentRequestComments"/>
+		<ref bean="updateChildrenRequestReservationComments"/>
+	</util:list>
+
+
+</beans>

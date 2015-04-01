@@ -1,0 +1,706 @@
+﻿<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE hibernate-mapping
+   PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+   "http://hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+   
+<hibernate-mapping>
+
+  <query name="DataCenterLocationDetails.findById">
+  	<![CDATA[select l from DataCenterLocationDetails l where l.dataCenterLocationId = ?]]>
+  </query>
+  
+  <query name="DataCenterLocationDetails.findLocationCodeById">
+  	<![CDATA[select l.code from DataCenterLocationDetails l where l.dataCenterLocationId = ?]]>
+  </query>
+  
+  <query name="DataCenterLocationDetails.fetchById">
+  	<![CDATA[select l from DataCenterLocationDetails l 
+  		left join fetch l.parentLocation pl where l.dataCenterLocationId = ?]]>
+  </query>
+
+  <sql-query name="dcCaElevSP" callable="false">
+    <return-scalar column="rowdesc" type="string"/>
+    select dc_cabelev(:cabinetId) as rowdesc
+  </sql-query>
+       
+  <sql-query name="cabinetElevationInfoSP" callable="false">
+    <return-scalar column="item_id" type="long"/>
+    <return-scalar column="item_name" type="string"/>
+    <return-scalar column="model_id" type="long"/>
+    <return-scalar column="u_position" type="long"/>
+    <return-scalar column="ru_height" type="int"/>
+    <return-scalar column="class_lks_id" type="long"/>    
+	<return-scalar column="parent_item_id" type="long"/>    
+	<return-scalar column="status_lks_id" type="long"/>
+	<return-scalar column="mounting" type="string"/>
+	<return-scalar column="facing_lks_id" type="long"/>
+	<return-scalar column="className" type="string"/>
+	<return-scalar column="classValueCode" type="long"/>
+	<return-scalar column="statusValueCode" type="long"/>
+	<return-scalar column="modelName" type="string"/>
+	<return-scalar column="make" type="string"/>
+	<return-scalar column="facingValueCode" type="long"/>
+	<return-scalar column="mountedRailsPosValueCode" type="long"/>
+	<return-scalar column="front_image" type="boolean"/>
+	<return-scalar column="rear_image" type="boolean"/>
+	
+    select * from dc_getCabinetElevationInfo(:cabinetId)
+  </sql-query>
+  
+  <sql-query name="isUPositionFreeSP" callable="false">
+    <return-scalar column="mounting" type="string"/>
+    select distinct t.mounting from dc_getCabinetElevationInfo(:cabinetId) as t
+    where ((t.u_position between :startRu and :endRu)
+    OR (:startRu between t.u_position and (t.u_position + t.ru_height - 1)))
+    and t.u_position > 0
+    and t.item_id != :itemId            
+  </sql-query>  
+
+  <sql-query name="getPowerPortPanelInfoQuery" callable="false">
+    <return-scalar column="ups_bank_item_id" type="long"/>
+    <return-scalar column="pdu_id" type="long"/>
+    <return-scalar column="panel_id" type="long"/>
+    <return-scalar column="port_power_id" type="long"/>
+    <return-scalar column="pdu_rating_amps" type="long"/>
+    <return-scalar column="pb_rating_amps" type="long"/>
+	SELECT dct_items_me.ups_bank_item_id, dct_items.item_id AS pdu_id, dct_items_1.item_id AS panel_id, 
+	dct_ports_power.port_power_id, dct_items_me.rating_amps as pdu_rating_amps, dct_items_me_1.rating_amps as pb_rating_amps 
+	FROM dct_items AS dct_items_1 
+	INNER JOIN dct_ports_power ON dct_items_1.item_id = dct_ports_power.item_id
+	INNER JOIN dct_items ON dct_items_1.parent_item_id = dct_items.item_id
+	INNER JOIN dct_items_me ON dct_items.item_id = dct_items_me.item_id
+	INNER JOIN dct_items_me AS dct_items_me_1 ON dct_items_1.item_id = dct_items_me_1.item_id
+	INNER JOIN dct_connections_power ON dct_ports_power.port_power_id = dct_connections_power.source_port_id
+	WHERE dct_connections_power.connection_power_id = getendconnid('Power', :portId)
+  </sql-query> 
+  
+  
+   <sql-query name="getPowerBankInfoQuery" callable="false"> 
+    <return-scalar column="ups_bank_item_id" type="long"/>
+    <return-scalar column="bank" type="string"/>
+    <return-scalar column="units" type="long"/>
+    <return-scalar column="redundancy" type="string"/>
+    <return-scalar column="rating_kva" type="long"/>
+    <return-scalar column="rating_kw" type="long"/>
+    <return-scalar column="rating_v" type="long"/>
+    SELECT t.ups_bank_item_id, dct_items.item_name as bank, t.units, 
+    dct_items_me.redundancy, dct_items_me.rating_kva, dct_items_me.rating_kw, dct_items_me.rating_v
+	FROM dct_items 
+	INNER JOIN dct_items_me ON dct_items.item_id = dct_items_me.item_id
+	LEFT JOIN (SELECT dct_items_me.ups_bank_item_id, count(dct_items.item_name) AS Units 
+	FROM dct_items INNER JOIN dct_items_me ON dct_items.item_id = dct_items_me.item_id 
+	WHERE dct_items.class_lks_id=12 
+	GROUP BY dct_items_me.ups_bank_item_id) AS t ON dct_items.item_id = t.ups_bank_item_id 
+	WHERE dct_items.item_id = :itemId
+  </sql-query>
+    
+   <sql-query name="getConnectedPortQuery" callable="false"> 
+    <return-scalar column="circuit_id" type="long"/>
+    <return-scalar column="item_name" type="string"/>
+    <return-scalar column="port_name" type="string"/>
+    <return-scalar column="circuit_type" type="long"/>
+    <return-scalar column="location_code" type="string"/>
+	select cx.circuit_power_id as circuit_id, i.item_name, p.port_name, 20000 as circuit_type, dct_locations.code as location_code
+	from  dct_items i inner join dct_ports_power p on i.item_id = p.item_id
+	inner join dct_locations on i.location_id = dct_locations.location_id
+	inner join dct_connections_power conn on p.port_power_id = conn.source_port_id
+	inner join dct_circuit_conns_power cx on cx.connection_power_id = conn.connection_power_id
+	where p.is_used = true
+	union
+	select cx.circuit_data_id, i.item_name, p.port_name, 30000 as circuit_type, dct_locations.code as location_code
+	from  dct_items i inner join dct_ports_data p on i.item_id = p.item_id
+	inner join dct_locations on i.location_id = dct_locations.location_id
+	inner join dct_connections_data conn on p.port_data_id = conn.source_port_id
+	inner join dct_circuit_conns_data cx on cx.connection_data_id = conn.connection_data_id
+	where p.is_used = true
+	order by 2, 4, 3, 5
+  </sql-query>
+  
+   <sql-query name="getDataCircuitRequestInfoQuery" callable="false"> 
+    <return-scalar column="circuit_id" type="long"/>
+    <return-scalar column="requestno" type="string"/>
+    <return-scalar column="request_stage" type="string"/>
+    <return-scalar column="propose_circuit_id" type="long"/>
+    <return-scalar column="stage_value_code" type="long"/>
+    <return-scalar column="request_id" type="long"/>
+    <return-scalar column="request_type" type="string"/>
+    <![CDATA[
+	select circuit.circuit_data_id as circuit_id, request.requestNo, stageLks.lkp_value as request_stage, 
+	x.newCircuitId as propose_circuit_id, stageLks.lkp_value_code as stage_value_code, request.id as request_id,
+	request.requesttype as request_type 
+	from tblxconnectstomove x inner join dct_connections_data conn on x.tblxConnectId = conn.connection_data_id 
+	inner join tblrequestpointer pointer on x.id = pointer.recordId 
+	inner join tblrequest request on pointer.requestId = request.id 
+	inner join tblrequesthistory history on request.id = history.requestId 
+	inner join dct_lks_data stageLks on history.stageId = stageLks.lks_id 
+	inner join dct_circuit_conns_data on  x.tblxConnectId  = dct_circuit_conns_data.connection_data_id
+	inner join dct_circuits_data circuit on dct_circuit_conns_data.circuit_data_id = circuit.circuit_data_id  
+	where x.type = 'data' and pointer.table = 'tblXConnectsToMove' and history.current = true 
+	and stageLks.lkp_value_code in (501,502,503,504,505)
+	and pointer.sort_order = 1
+	and COALESCE(position (',' || dct_circuit_conns_data.connection_data_id || ',' in circuit.shared_circuit_trace), 0) < 1
+	union 
+	select circuit.circuit_data_id, request.requestNo, stageLks.lkp_value as request_stage, null,
+	stageLks.lkp_value_code as stage_value_code, request.id as request_id, request.requesttype as request_type 
+	from tblrequestpointer pointer inner join dct_connections_data conn on pointer.recordId = conn.source_port_id 
+	inner join tblrequest request on pointer.requestId = request.id 
+	inner join tblrequesthistory history on request.id = history.requestId 
+	inner join dct_lks_data stageLks on history.stageId = stageLks.lks_id 
+	inner join dct_circuit_conns_data on conn.connection_data_id = dct_circuit_conns_data.connection_data_id
+	inner join dct_circuits_data circuit on dct_circuit_conns_data.circuit_data_id = circuit.circuit_data_id  
+	where pointer.table = 'dct_ports_data' and history.current = true 
+	and stageLks.lkp_value_code in (501,502,503,504,505)
+	and pointer.sort_order = 1
+	and COALESCE(position (',' || dct_circuit_conns_data.connection_data_id || ',' in circuit.shared_circuit_trace), 0) < 1
+	union 
+	select circuit.circuit_data_id, request.requestNo, stageLks.lkp_value as request_stage, null, 
+	stageLks.lkp_value_code as stage_value_code, request.id as request_id, request.requesttype as request_type 
+	from tblrequestpointer pointer inner join dct_circuits_data circuit on pointer.recordId = circuit.circuit_data_id 
+	inner join tblrequest request on pointer.requestId = request.id 
+	inner join tblrequesthistory history on request.id = history.requestId 
+	inner join dct_lks_data stageLks on history.stageId = stageLks.lks_id 
+	where pointer.table = 'dct_circuits_data' and history.current = true 
+	and stageLks.lkp_value_code in (501,502,503,504,505)
+	and pointer.sort_order = 1
+	order by 1 asc, 4 desc	
+	]]>
+  </sql-query>
+  
+   <sql-query name="getProposedCircuitIdForDataCircuit" callable="false"> 
+    <return-scalar column="propose_circuit_id" type="long"/>
+	select distinct(x.newCircuitId) as propose_circuit_id
+	from tblxconnectstomove x 
+		inner join dct_connections_data conn on x.tblxConnectId = conn.connection_data_id 
+		inner join tblrequestpointer pointer on x.id = pointer.recordId 
+		inner join tblrequest request on pointer.requestId = request.id 
+		inner join tblrequesthistory history on request.id = history.requestId 
+		inner join dct_lks_data stageLks on history.stageId = stageLks.lks_id 
+		inner join dct_circuit_conns_data on  x.tblxConnectId  = dct_circuit_conns_data.connection_data_id
+		inner join dct_circuits_data circuit on dct_circuit_conns_data.circuit_data_id = circuit.circuit_data_id  
+	where circuit.circuit_data_id = :circuitId
+		and x.type = 'data'
+		and pointer.table = 'tblXConnectsToMove'
+		and history.current = true 
+		and stageLks.lkp_value_code in (501,502,503,504,505)
+  </sql-query>
+  
+  <sql-query name="getOriginalDataCircuitFromProposedId" callable="false"> 
+    <return-scalar column="circuit_id" type="long" />
+     <return-scalar column="shared_trace" type="string" />
+	select distinct(c.circuit_data_id) as circuit_id, c.shared_circuit_trace as shared_trace
+	from dct_circuits_data c 
+		inner join dct_circuit_conns_data conn on c.circuit_data_id = conn.circuit_data_id
+		inner join tblXConnectsToMove x on x.tblxConnectId = conn.connection_data_id
+		inner join tblrequestpointer pointer on x.id = pointer.recordId 
+		inner join tblrequest request on pointer.requestId = request.id 
+		inner join tblrequesthistory history on request.id = history.requestId 
+		inner join dct_lks_data stageLks on history.stageId = stageLks.lks_id 
+	where x.newCircuitId = :proposedCircuitId
+		and x.type = 'data'
+		and pointer.table = 'tblXConnectsToMove'
+		and history.current = true 
+		and stageLks.lkp_value_code in (501,502,503,504,505)
+		and x.newsortorder = 1
+  </sql-query>
+  
+  <sql-query name="getOriginalPowerCircuitFromProposedId" callable="false"> 
+    <return-scalar column="circuit_id" type="long" />
+    <return-scalar column="shared_trace" type="string" />
+	select distinct(c.circuit_power_id) as circuit_id, c.shared_circuit_trace as shared_trace 
+	from dct_circuits_power c
+		inner join dct_circuit_conns_power conn on c.circuit_power_id = conn.circuit_power_id
+		inner join tblXConnectsToMove x on x.tblxConnectId = conn.connection_power_id
+		inner join tblrequestpointer pointer on x.id = pointer.recordId 
+		inner join tblrequest request on pointer.requestId = request.id 
+		inner join tblrequesthistory history on request.id = history.requestId 
+		inner join dct_lks_data stageLks on history.stageId = stageLks.lks_id 
+	where x.newCircuitId = :proposedCircuitId
+		and x.type = 'power'
+		and pointer.table = 'tblXConnectsToMove'
+		and history.current = true 
+		and stageLks.lkp_value_code in (501,502,503,504,505)
+		and x.newsortorder = 1
+  </sql-query>
+  
+  <sql-query name="getPowerCircuitRequestInfoQuery" callable="false"> 
+    <return-scalar column="circuit_id" type="long"/>
+    <return-scalar column="requestno" type="string"/>
+    <return-scalar column="request_stage" type="string"/>
+    <return-scalar column="propose_circuit_id" type="long"/>
+    <return-scalar column="stage_value_code" type="long"/>
+    <return-scalar column="request_id" type="long"/>
+    <return-scalar column="request_type" type="string"/>
+    <![CDATA[
+	select circuit.circuit_power_id as circuit_id, request.requestNo, stageLks.lkp_value as request_stage,
+	x.newCircuitId as propose_circuit_id, stageLks.lkp_value_code as stage_value_code, request.id as request_id,
+	request.requesttype as request_type 
+	from tblxconnectstomove x inner join dct_connections_power conn on x.tblxConnectId = conn.connection_power_id 
+	inner join tblrequestpointer pointer on x.id = pointer.recordId 
+	inner join tblrequest request on pointer.requestId = request.id 
+	inner join tblrequesthistory history on request.id = history.requestId 
+	inner join dct_lks_data stageLks on history.stageId = stageLks.lks_id 
+	inner join dct_circuit_conns_power on  x.tblxConnectId  = dct_circuit_conns_power.connection_power_id
+	inner join dct_circuits_power circuit on dct_circuit_conns_power.circuit_power_id = circuit.circuit_power_id  
+	where x.type = 'power' and pointer.table = 'tblXConnectsToMove' and history.current = true 
+	and stageLks.lkp_value_code in (501,502,503,504,505)
+	and pointer.sort_order = 1
+	and COALESCE(position (',' || dct_circuit_conns_power.connection_power_id || ',' in circuit.shared_circuit_trace), 0) < 1
+	union 
+	select circuit.circuit_power_id, request.requestNo, stageLks.lkp_value as request_stage, null,  
+	stageLks.lkp_value_code as stage_value_code, request.id as request_id, request.requesttype as request_type 
+	from tblrequestpointer pointer inner join dct_connections_power conn on pointer.recordId = conn.source_port_id 
+	inner join tblrequest request on pointer.requestId = request.id 
+	inner join tblrequesthistory history on request.id = history.requestId 
+	inner join dct_lks_data stageLks on history.stageId = stageLks.lks_id 
+	inner join dct_circuit_conns_power on  conn.connection_power_id  = dct_circuit_conns_power.connection_power_id
+	inner join dct_circuits_power circuit on dct_circuit_conns_power.circuit_power_id = circuit.circuit_power_id  
+	where pointer.table = 'dct_ports_power' and history.current = true
+	and stageLks.lkp_value_code in (501,502,503,504,505) 
+	and pointer.sort_order = 1
+	and COALESCE(position (',' || dct_circuit_conns_power.connection_power_id || ',' in circuit.shared_circuit_trace), 0) < 1
+	union 
+	select circuit.circuit_power_id, request.requestNo, stageLks.lkp_value as request_stage, null,
+	stageLks.lkp_value_code as stage_value_code, request.id as request_id,
+	request.requesttype as request_type 	 
+	from tblrequestpointer pointer inner join dct_circuits_power circuit on pointer.recordId = circuit.circuit_power_id 
+	inner join tblrequest request on pointer.requestId = request.id 
+	inner join tblrequesthistory history on request.id = history.requestId 
+	inner join dct_lks_data stageLks on history.stageId = stageLks.lks_id 
+	where pointer.table = 'dct_circuits_power' and history.current = true
+	and stageLks.lkp_value_code in (501,502,503,504,505) 
+	and pointer.sort_order = 1	
+	order by 1 asc, 4 desc 
+	]]> 
+  </sql-query>
+  
+  <sql-query name="getProposedCircuitIdForPowerCircuit" callable="false"> 
+    <return-scalar column="propose_circuit_id" type="long"/>
+	select distinct(x.newCircuitId) as propose_circuit_id
+	from tblxconnectstomove x 
+		inner join dct_connections_power conn on x.tblxConnectId = conn.connection_power_id 
+		inner join tblrequestpointer pointer on x.id = pointer.recordId 
+		inner join tblrequest request on pointer.requestId = request.id 
+		inner join tblrequesthistory history on request.id = history.requestId 
+		inner join dct_lks_data stageLks on history.stageId = stageLks.lks_id 
+		inner join dct_circuit_conns_power on  x.tblxConnectId  = dct_circuit_conns_power.connection_power_id
+		inner join dct_circuits_power circuit on dct_circuit_conns_power.circuit_power_id = circuit.circuit_power_id  
+	where circuit.circuit_power_id = :circuitId 
+		and x.type = 'power'
+	 	and pointer.table = 'tblXConnectsToMove'
+	 	and history.current = true 
+	and stageLks.lkp_value_code in (501,502,503,504,505)
+  </sql-query>
+
+   <sql-query name="getDataConnIdWihCircuitTraceQuery" callable="false"> 
+    <return-scalar column="connection_data_id" type="long"/>
+    <return-scalar column="circuit_trace" type="string"/>
+	select start_conn_id as connection_data_id, circuit_trace
+	from dct_circuits_data 
+	order by start_conn_id
+  </sql-query>
+
+   <sql-query name="getPowerConnIdWihCircuitTraceQuery" callable="false"> 
+    <return-scalar column="connection_power_id" type="long"/>
+    <return-scalar column="circuit_trace" type="string"/>
+	select start_conn_id as connection_power_id, circuit_trace
+	from dct_circuits_power 
+	order by start_conn_id
+  </sql-query>
+  
+  <query name="UPSBankLinkedUPSCount">
+  	select count(*) from MeItem m
+  	inner join m.upsBankItem as ups
+  	inner join m.classLookup as cls
+  	where ups.itemId = :itemId
+  	and cls.lkpValueCode = :upsCode
+  </query>
+    
+  <sql-query name="getAllDataConnectionRequests" callable="false"> 
+    <return-scalar column="requestId" type="long" />
+	select distinct(request.id) as requestId 
+	from tblxconnectstomove x
+		inner join dct_connections_data conn on x.tblxConnectId = conn.connection_data_id 
+		inner join tblrequestpointer pointer on x.id = pointer.recordId 
+		inner join tblrequest request on pointer.requestId = request.id 
+		inner join tblrequesthistory history on request.id = history.requestId 
+		inner join dct_lks_data stageLks on history.stageId = stageLks.lks_id 
+		inner join dct_circuit_conns_data on x.tblxConnectId  = dct_circuit_conns_data.connection_data_id
+		inner join dct_circuits_data circuit on dct_circuit_conns_data.circuit_data_id = circuit.circuit_data_id  
+	where x.tblxConnectId = :connectionId
+		and x.type = 'data'
+		and pointer.table = 'tblXConnectsToMove'
+		and history.current = true 
+		and stageLks.lkp_value_code in (501,502,503,504,505)
+	union 
+	select distinct(request.id) as requestId 
+	from tblrequestpointer pointer 
+		inner join dct_connections_data conn on pointer.recordId = conn.source_port_id 
+		inner join tblrequest request on pointer.requestId = request.id 
+		inner join tblrequesthistory history on request.id = history.requestId 
+		inner join dct_lks_data stageLks on history.stageId = stageLks.lks_id 
+		inner join dct_circuit_conns_data on conn.connection_data_id = dct_circuit_conns_data.connection_data_id
+		inner join dct_circuits_data circuit on dct_circuit_conns_data.circuit_data_id = circuit.circuit_data_id  
+	where conn.connection_data_id = :connectionId 
+		and pointer.table = 'dct_ports_data' 
+		and history.current = true 
+		and stageLks.lkp_value_code in (501,502,503,504,505)
+   </sql-query>
+   
+   <sql-query name="getAllPowerConnectionRequests" callable="false">
+    <return-scalar column="requestId" type="long"/>
+	select distinct(request.id) as requestId
+	from tblxconnectstomove x 
+		inner join dct_connections_power conn on x.tblxConnectId = conn.connection_power_id 
+		inner join tblrequestpointer pointer on x.id = pointer.recordId 
+		inner join tblrequest request on pointer.requestId = request.id 
+		inner join tblrequesthistory history on request.id = history.requestId 
+		inner join dct_lks_data stageLks on history.stageId = stageLks.lks_id 
+		inner join dct_circuit_conns_power on  x.tblxConnectId  = dct_circuit_conns_power.connection_power_id
+		inner join dct_circuits_power circuit on dct_circuit_conns_power.circuit_power_id = circuit.circuit_power_id  
+	where x.tblxConnectId = :connectionId
+		and x.type = 'power' 
+		and pointer.table = 'tblXConnectsToMove' 
+		and history.current = true 
+		and stageLks.lkp_value_code in (501,502,503,504,505)
+	union 
+	select distinct(request.id) as requestId
+	from tblrequestpointer pointer  
+		inner join dct_connections_power conn on pointer.recordId = conn.source_port_id 
+		inner join tblrequest request on pointer.requestId = request.id 
+		inner join tblrequesthistory history on request.id = history.requestId 
+		inner join dct_lks_data stageLks on history.stageId = stageLks.lks_id 
+		inner join dct_circuit_conns_power on conn.connection_power_id  = dct_circuit_conns_power.connection_power_id
+		inner join dct_circuits_power circuit on dct_circuit_conns_power.circuit_power_id = circuit.circuit_power_id  
+	where conn.connection_power_id = :connectionId
+		and pointer.table = 'dct_ports_power'
+		and history.current = true
+		and stageLks.lkp_value_code in (501,502,503,504,505)
+   </sql-query>
+  
+  <sql-query name="getRPDUFuseUsedWatts" callable="false"> 
+    <return-scalar column="used_watts" type="long"/>         
+	select sum(supply.watts_budget) as used_watts
+	from dct_circuit_conns_power inner join dct_connections_power on dct_circuit_conns_power.connection_power_id = dct_connections_power.connection_power_id
+	inner join dct_ports_power port on dct_connections_power.source_port_id = port.port_power_id
+	inner join dct_circuits_power on dct_circuits_power.circuit_power_id = dct_circuit_conns_power.circuit_power_id
+	inner join dct_connections_power conn on dct_circuits_power.start_conn_id = conn.connection_power_id
+	inner join dct_ports_power supply on conn.source_port_id = supply.port_power_id
+	inner join dct_lks_data on supply.subclass_lks_id = dct_lks_data.lks_id
+	where dct_lks_data.lkp_value_code = 20001 and port.input_cord_port_id = :inputCordId and port.fuse_lku_id = :fuseLkuId	
+  </sql-query>    
+
+  <sql-query name="getRPDUInputCordUsedWatts" callable="false"> 
+    <return-scalar column="used_watts" type="long"/>         
+	select sum(watts_budget) as used_watts
+	from dct_power_usage where (incord1 = :inputCordId or incord2 = :inputCordId)
+  </sql-query>   
+
+  <sql-query name="getRPDUInputCordFreeWatts" callable="false"> 
+    <return-scalar column="free_watts" type="long"/> 
+	select distinct ppd.free_watts
+	from dct_hst_ports_power pp 
+	inner join dct_hst_ports_power_details ppd on pp.hst_port_power_id =  ppd.hst_port_power_id
+	where pp.latest = true
+	and ppd.input_cord_port_id = :inputCordId	
+  </sql-query>   
+ 
+  <sql-query name="getOutletUsedWatts" callable="false"> 
+    <return-scalar column="used_watts" type="long"/> 
+	select sum(watts_budget) as used_watts from dct_power_usage where outrecp = :outletPortId
+  </sql-query>   
+
+  <sql-query name="getOutletFreeWatts" callable="false">
+    <return-scalar column="free_watts" type="long"/> 
+	select distinct ppd.free_watts
+	from dct_hst_ports_power pp 
+	inner join dct_hst_ports_power_details ppd on pp.hst_port_power_id =  ppd.hst_port_power_id
+	inner join dct_ports_power port on ppd.item_id = port.item_id
+	where pp.latest = true
+	and port.port_power_id = :outletPortId	
+  </sql-query>   
+
+  <sql-query name="getRPDURecpUsedWatts" callable="false"> 
+    <return-scalar column="used_watts" type="long"/>         
+	select sum(watts_budget) as used_watts
+	from dct_power_usage where (recp1 = :portId or recp2 = :portId)
+  </sql-query>   
+     
+  <sql-query name="getBreakerUsedWatts" callable="false"> 
+    <return-scalar column="used_watts" type="long"/> 
+	SELECT SUM(watts_budget) as used_watts FROM dct_power_usage	WHERE breakerid = :breakerPortId	
+  </sql-query>   
+
+  <sql-query name="getPanelBoardUsedWatts" callable="false"> 
+    <return-scalar column="used_watts" type="long"/> 
+	SELECT SUM(watts_budget) as used_watts FROM dct_power_usage	WHERE pbid = :panelItemId
+  </sql-query>   
+
+  <sql-query name="getFloorPDUUsedWatts" callable="false"> 
+    <return-scalar column="used_watts" type="long"/> 
+	SELECT SUM(watts_budget) as used_watts FROM dct_power_usage	WHERE pduid = :pduItemId	
+  </sql-query>   
+
+  <sql-query name="getUpsBankUsedWatts" callable="false"> 
+    <return-scalar column="used_watts" type="long"/> 
+	SELECT SUM(watts_budget) as used_watts FROM dct_power_usage	WHERE sourceid = :upsBankItemId
+  </sql-query> 
+    
+  <sql-query name="getPowePortUsedWatts" callable="false"> 
+    <return-scalar column="used_watts" type="long"/>         
+	select sum(supply.watts_budget) as used_watts
+	from dct_circuit_conns_power inner join dct_connections_power on dct_circuit_conns_power.connection_power_id = dct_connections_power.connection_power_id
+	inner join dct_ports_power port on dct_connections_power.source_port_id = port.port_power_id
+	inner join dct_circuits_power on dct_circuits_power.circuit_power_id = dct_circuit_conns_power.circuit_power_id
+	inner join dct_connections_power conn on dct_circuits_power.start_conn_id = conn.connection_power_id
+	inner join dct_ports_power supply on conn.source_port_id = supply.port_power_id
+	inner join dct_lks_data on supply.subclass_lks_id = dct_lks_data.lks_id
+	where dct_lks_data.lkp_value_code = 20001 and port.port_power_id = :powerPortId
+  </sql-query>   
+
+  <sql-query name="getProposeCircuitPortsNetWatts" callable="false"> 
+    <return-scalar column="port_power_id" type="long"/> 
+    <return-scalar column="net_watts" type="long"/>
+	select newPort.port_power_id, sum(newPort.watts_budget - oldPort.watts_budget) as net_watts
+	from tblxconnectstomove x 
+	inner join dct_connections_power conn on x.tblxConnectId = conn.connection_power_id 
+	inner join dct_ports_power newPort on x.portmovingid = newPort.port_power_id
+	inner join dct_ports_power oldPort on conn.source_port_id = oldPort.port_power_id
+	where x.newsortorder = 1 and x.type = 'power'
+	group by newPort.port_power_id
+  </sql-query>   
+  
+  <sql-query name="deleteOrphanedProbePDULinks" callable="false"> 
+  	delete from dct_probe_rpdus
+  	where probe_id NOT in 
+  		(select item_id from dct_items)
+  	and dummy_rpdu_id NOT in
+  		(select item_id from dct_items)
+  </sql-query>
+  
+  <sql-query name="getStackableItems" callable="false">
+    <return-scalar column="sibling_item_id" type="long"/>
+    SELECT sibling_item_id FROM dct_items
+    JOIN dct_lks_data ON dct_items.subclass_lks_id = dct_lks_data.lks_id
+    JOIN dct_models ON dct_items.model_id = dct_models.model_id
+    WHERE dct_lks_data.lkp_value_code = :subclassLkpValueCode 
+    AND dct_models.mounting = :modelMounting 
+    AND dct_models.form_factor = :modelFormFactor 
+    GROUP BY sibling_item_id HAVING COUNT(sibling_item_id) = 1;
+  </sql-query>
+  
+   <sql-query name="getAssociatedCircuitsForItem" callable="false">
+    <return-scalar column="circuit_id" type="long"/>  
+    <return-scalar column="trace_len" type="long"/>
+    <return-scalar column="circuit_type" type="long"/>
+	select circuit.circuit_data_id as circuit_id, 
+	char_length(dct_circuits_data.circuit_trace) as trace_len, 30000 as circuit_type	
+	from dct_circuit_conns_data circuit 
+	inner join dct_connections_data conn on circuit.connection_data_id = conn.connection_data_id
+	inner join dct_circuits_data on circuit.circuit_data_id = dct_circuits_data.circuit_data_id 
+	inner join dct_ports_data port on conn.source_port_id = port.port_data_id
+	inner join dct_items item on port.item_id = item.item_id
+	where item.item_id = :itemId
+	UNION
+	select circuit.circuit_power_id, 
+	char_length(dct_circuits_power.circuit_trace) as trace_len, 20000 as circuit_type	
+	from dct_circuit_conns_power circuit 
+	inner join dct_connections_power conn on circuit.connection_power_id = conn.connection_power_id
+	inner join dct_circuits_power on circuit.circuit_power_id = dct_circuits_power.circuit_power_id 
+	inner join dct_ports_power port on conn.source_port_id = port.port_power_id
+	inner join dct_items item on port.item_id = item.item_id
+	where item.item_id = :itemId
+	order by 3, 2 desc, 1 asc;		
+   </sql-query>
+      
+  <sql-query name="dcLoadPortsSP" callable="false">
+    <return-scalar column="retcode" type="long"/>
+    select dc_loadports(:cabinetId, :userName, :portType ) as retcode
+  </sql-query>
+  
+  <sql-query name="dcCloneItemSP" callable="false">
+    <return-scalar column="firstItemId" type="long"/>
+    select dc_cloneitem(:locationId, :itemId, :quantity, :userName, 
+    :includeChildren, :cloneCustomFieldData, :includeDataPorts, :includePowerPorts, :includeSensorPorts,
+    :keep_parent, :creationDate, :statusValueCode, :parentItemId, :includeFarEndPanel
+     ) as firstItemId;
+  </sql-query>
+
+          
+   <sql-query name="getRequestItemsForItem" callable="false">
+    <return-scalar column="item_id" type="long"/>  		
+		select i.item_id from dct_items as i where i.item_id in (:itemList)
+		UNION
+		select i.item_id from dct_items as i
+		inner join dct_lks_data as classLks on i.class_lks_id = classLks.lks_id 
+		inner join dct_lks_data as statusLks on i.status_lks_id = statusLks.lks_id 
+		where i.parent_item_id in (:itemList)
+		and classLks.lkp_value_code not in (4100)
+		and statusLks.lkp_value_code not in (5081, 5085, 5091)
+		UNION 
+		select i.item_id from dct_items as i 
+		inner join dct_lks_data as classLks on i.class_lks_id = classLks.lks_id 
+		inner join dct_lks_data as statusLks on i.status_lks_id = statusLks.lks_id 
+		inner join dct_items_it as it on i.item_id = it.item_id
+		where it.chassis_id in (:itemList)
+		and classLks.lkp_value_code not in (4100)
+		and statusLks.lkp_value_code not in (5081, 5085, 5091)
+		UNION 
+		select i.item_id from dct_items as i 
+		inner join dct_lks_data as classLks on i.class_lks_id = classLks.lks_id 
+		inner join dct_lks_data as statusLks on i.status_lks_id = statusLks.lks_id 
+		inner join dct_items_it as it on i.item_id = it.item_id
+		inner join dct_items as chassis on it.chassis_id = chassis.item_id 
+		where chassis.parent_item_id in (:itemList)
+		and classLks.lkp_value_code not in (4100)
+		and statusLks.lkp_value_code not in (5081, 5085, 5091)
+		order by 1;		
+   </sql-query>
+       
+   <sql-query name="getDestinationItemsForItemData" callable="false">
+    <return-scalar column="port_id" type="long"/>
+    <return-scalar column="dest_item_name" type="string"/>
+    <return-scalar column="dest_port_name" type="string"/>
+    <return-scalar column="dest_item_id" type="long"/>
+    <return-scalar column="dest_port_id" type="long"/>
+    <return-scalar column="circuit_data_id" type="long"/>
+    <return-scalar column="next_node_class_value_code" type="long"/>
+		select ports.port_data_id as port_id, i.item_name as dest_item_name, portd.port_name as dest_port_name, i.item_id as dest_item_id, 
+		conne.source_port_id as dest_port_id, cir.circuit_data_id, lksClass.lkp_value_code as next_node_class_value_code
+		from dct_circuits_data cir inner join dct_connections_data conns on cir.start_conn_id = conns.connection_data_id
+		inner join dct_connections_data conne on cir.end_conn_id = conne.connection_data_id
+		inner join dct_ports_data ports on conns.source_port_id = ports.port_data_id
+		inner join dct_ports_data portd on conne.source_port_id = portd.port_data_id
+		inner join dct_items i on portd.item_id = i.item_id
+		inner join dct_ports_data nextNodePort on conns.dest_port_id = nextNodePort.port_data_id
+		inner join dct_items nextNodeItem on nextNodePort.item_id = nextNodeItem.item_id
+		inner join dct_lks_data lksClass on nextNodeItem.class_lks_id = lksClass.lks_id
+		where ports.item_id = :itemId 
+		UNION
+		select ports.port_data_id as port_id, i.item_name as dest_item_name, portd.port_name as dest_port_name, i.item_id as dest_item_id, 
+		conne.source_port_id as dest_port_id, cir.circuit_data_id, lksClass.lkp_value_code 
+		from dct_circuits_data cir inner join dct_connections_data conns on cir.end_conn_id = conns.connection_data_id
+		inner join dct_connections_data conne on cir.start_conn_id = conne.connection_data_id
+		inner join dct_ports_data ports on conns.source_port_id = ports.port_data_id
+		inner join dct_ports_data portd on conne.source_port_id = portd.port_data_id
+		inner join dct_items i on portd.item_id = i.item_id
+		inner join dct_connections_data priorConn on ports.port_data_id = priorConn.dest_port_id
+		inner join dct_ports_data priorNodePort on priorConn.source_port_id = priorNodePort.port_data_id
+		inner join dct_items priorNodeItem on priorNodePort.item_id = priorNodeItem.item_id
+		inner join dct_lks_data lksClass on priorNodeItem.class_lks_id = lksClass.lks_id
+		where ports.item_id = :itemId  
+		order by 6;
+   </sql-query>
+               
+   <sql-query name="getDestinationItemsForItemPower" callable="false">
+    <return-scalar column="port_id" type="long"/>
+    <return-scalar column="dest_item_name" type="string"/>
+    <return-scalar column="dest_port_name" type="string"/>
+    <return-scalar column="dest_item_id" type="long"/>
+    <return-scalar column="dest_port_id" type="long"/>
+    <return-scalar column="circuit_power_id" type="long"/>
+    <![CDATA[
+		select ports.port_power_id as port_id, i.item_name as dest_item_name, portd.port_name as dest_port_name, i.item_id as dest_item_id, conn.dest_port_id, 
+		cir.circuit_power_id
+		from dct_circuits_power cir inner join dct_connections_power conn on cir.start_conn_id = conn.connection_power_id
+		inner join dct_ports_power ports on conn.source_port_id = ports.port_power_id
+		inner join dct_ports_power portd on conn.dest_port_id = portd.port_power_id
+		inner join dct_items i on portd.item_id = i.item_id
+		where ports.item_id = :itemId
+		union
+		select portd.port_power_id as port_id, i.item_name as dest_item_name, ports.port_name as dest_port_name, i.item_id as dest_item_id, conn.source_port_id, 
+		ccp.circuit_power_id  
+		from dct_circuit_conns_power ccp inner join dct_connections_power conn on ccp.connection_power_id = conn.connection_power_id
+		inner join dct_ports_power ports on conn.source_port_id = ports.port_power_id
+		inner join dct_ports_power portd on conn.dest_port_id = portd.port_power_id
+		inner join dct_items i on ports.item_id = i.item_id
+		where portd.item_id = :itemId and portd.subclass_lks_id <> 412
+		order by 2,3;	
+		]]>	
+   </sql-query>
+ 
+              
+   <sql-query name="getNextNodeAmpsForItem" callable="false">
+    <return-scalar column="port_id" type="long"/>
+    <return-scalar column="next_node_amps_actual" type="double"/>
+    <![CDATA[
+		select ports.port_power_id as port_id, 
+		case when portd.subclass_lks_id in (418, 419) then nextPort.amps_actual else portd.amps_actual end as  next_node_amps_actual
+		from dct_circuit_conns_power ccp inner join dct_connections_power conn on ccp.connection_power_id = conn.connection_power_id
+		inner join dct_ports_power ports on conn.source_port_id = ports.port_power_id
+		inner join dct_ports_power portd on conn.dest_port_id = portd.port_power_id
+		inner join dct_items i on ports.item_id = i.item_id
+		inner join dct_connections_power nextConn on portd.port_power_id = nextConn.source_port_id
+		inner join dct_ports_power nextPort on nextConn.dest_port_id = nextPort.port_power_id
+		where i.item_id = :itemId
+		order by 1;	
+		]]>	
+   </sql-query>
+   
+  <query name="PowerConnection.findById">
+  	<![CDATA[select x from PowerConnection x where x.powerConnectionId = ?]]>
+  </query>
+  
+  <query name="PowerConnection.findSourcePort">
+  	 <![CDATA[select x.sourcePowerPort from PowerConnection x where x.sourcePowerPort.portId = ?]]>
+  </query>
+ 
+  <query name="PowerConnection.findDestinationPort">
+  	 <![CDATA[select x.destPowerPort from PowerConnection x where x.sourcePowerPort.portId = ?]]>
+  </query>
+ 
+   <sql-query name="getPowerWattUsedSummary" callable="false">
+    <return-scalar column="legs" type="string"/>
+    <return-scalar column="current_rated" type="double"/>
+    <return-scalar column="current_max" type="double"/>
+    <return-scalar column="va_rated" type="double"/>
+    <return-scalar column="va_max" type="double"/>
+    <return-scalar column="watt_max" type="double"/>
+    <return-scalar column="watt_rated" type="double"/>
+    <return-scalar column="pb_volts" type="double"/>
+    <![CDATA[           
+		SELECT t.legs, Sum(t.amps_budget) AS current_rated, Sum(t.amps_nameplate) AS current_max, 
+		Sum(Round(t.watts_budget/t.power_factor,2)) AS va_rated, Sum(Round(t.watts_nameplate/t.power_factor,2)) AS va_max, 
+		Sum(t.watts_nameplate) AS watt_max, Sum(t.watts_budget) AS watt_rated, t.pb_volts 
+		FROM (
+			SELECT supply.amps_nameplate, supply.amps_budget, supply.watts_nameplate, supply.watts_budget, 
+		         supply.power_factor, dc_getPhaseLegForPort(supply.port_power_id) as legs, dc_getPBVoltsForPort(supply.port_power_id) as pb_volts
+			from dct_circuit_conns_power inner join dct_connections_power on dct_circuit_conns_power.connection_power_id = dct_connections_power.connection_power_id
+			inner join dct_ports_power port on dct_connections_power.source_port_id = port.port_power_id
+			inner join dct_circuits_power on dct_circuits_power.circuit_power_id = dct_circuit_conns_power.circuit_power_id
+			inner join dct_connections_power conn on dct_circuits_power.start_conn_id = conn.connection_power_id
+			inner join dct_ports_power supply on conn.source_port_id = supply.port_power_id
+			inner join dct_lks_data on supply.subclass_lks_id = dct_lks_data.lks_id
+			inner join dct_items on port.item_id = dct_items.item_id
+			where dct_lks_data.lkp_value_code = 20001 and  port.port_power_id = :portPowerId
+			) t
+		GROUP BY t.Legs, t.pb_volts;
+		]]>	
+   </sql-query>
+ 
+   <sql-query name="getAssociatedRequestIdsForRequest" callable="false">
+    <return-scalar column="request_id" type="long"/>
+    <![CDATA[
+	    select r.id as request_id from tblRequest r where r.requestno like :requestNo
+	    UNION select r2.id
+	    from ((tblRequest r inner join dct_ports_move_power pv1 on r.id = pv1.request_id) 
+	    inner join dct_ports_move_power pv2 on pv1.orig_item_id = pv2.orig_item_id) 
+	    inner join tblRequest r2 on pv2.move_port_request_id = r2.id 
+	    where r.id = :requestId
+	    UNION select r2.id
+	    from ((tblRequest r inner join dct_ports_move_power pv1 on r.id = pv1.request_id) 
+	    inner join dct_ports_move_power pv2 on pv1.orig_item_id = pv2.orig_item_id) 
+	    inner join tblRequest r2 on pv2.request_id = r2.id 
+	    where r.id = :requestId
+	    UNION select r2.id
+	    from ((tblRequest r inner join dct_ports_move_data pv1 on r.id = pv1.request_id) 
+	    inner join dct_ports_move_data pv2 on pv1.orig_item_id = pv2.orig_item_id) 
+	    inner join tblRequest r2 on pv2.move_port_request_id = r2.id 
+	    where r.id = :requestId
+	    UNION select r2.id 
+	    from ((tblRequest r inner join dct_ports_move_data pv1 on r.id = pv1.request_id) 
+	    inner join dct_ports_move_data pv2 on pv1.orig_item_id = pv2.orig_item_id) 
+	    inner join tblRequest r2 on pv2.request_id = r2.id 
+	    where r.id = :requestId               
+		]]>	
+   </sql-query>                                     
+</hibernate-mapping>

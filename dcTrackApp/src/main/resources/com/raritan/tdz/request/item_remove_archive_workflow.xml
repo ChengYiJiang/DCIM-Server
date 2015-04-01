@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+
+	<!-- ==================================== -->
+	<!-- Item Archive Request Issued 				-->
+	<!-- ==================================== -->
+	
+	<!-- Item Archive Request Issued Validator -->
+	
+	<import resource="request_validators.xml"/>
+	<import resource="request_executors.xml"/>
+	
+	<!-- Channel for Archive issued request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_ARCHIVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.validateChannel"/> -->
+    <int:channel id="704.501.validateChannel"/>
+
+    <!-- Subscriber - service activator for Archive request approved validator -->
+    <int:service-activator id="itemArchiveReqIssueValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_ARCHIVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.validateChannel" 
+    		ref="itemArchiveReqIssuedValidator" method="validate"/>
+
+	<!-- item Archive request issued validator bean -->
+    <bean id="itemArchiveReqIssuedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemArchiveWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item Archive Request Issued Executor -->
+	
+	<!-- Channel for Archive issue request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_ARCHIVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.executeChannel"/> -->
+	<int:channel id="704.501.executeChannel"/>
+
+    <!-- Subscriber - service activator for Archive request issued executor -->
+    <int:service-activator id="itemArchiveReqIssueExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_ARCHIVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.executeChannel" 
+    		ref="itemArchiveRequestStageIssued" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item Archive request issued executor bean -->
+	<bean id="itemArchiveRequestStageIssued" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }"/>
+		<property name="requestStageHelpers" ref="itemArchiveRequestIssuedExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Item Archive Request Updated -->
+	<!-- ==================================== -->
+	
+	<!-- Item Archive Request Updated Validator -->
+	
+	<!-- Channel for Archive updated request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_ARCHIVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.validateChannel"/> -->
+    <int:channel id="704.503.validateChannel"/>
+
+    <!-- Subscriber - service activator for Archive request updated validator -->
+    <int:service-activator id="itemArchiveReqUpdateValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_ARCHIVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.validateChannel" 
+    		ref="itemArchiveReqUpdatedValidator" method="validate"/>
+
+	<!-- item Archive request updated validator bean -->
+    <bean id="itemArchiveReqUpdatedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemArchiveWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item Archive Request Updated Executor -->
+	
+	<!-- Channel for Archive update request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_ARCHIVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.executeChannel"/> -->
+	<int:channel id="704.503.executeChannel"/>
+
+    <!-- Subscriber - service activator for Archive request updated executor -->
+    <int:service-activator id="itemArchiveReqUpdateExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_ARCHIVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.executeChannel" 
+    		ref="itemArchiveRequestStageUpdated" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item Archive request updated executor bean -->
+	<bean id="itemArchiveRequestStageUpdated" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }"/>
+		<property name="requestStageHelpers" ref="itemArchiveRequestUpdatedExecutors"/>
+	</bean>
+
+
+	
+	<!-- ==================================== -->
+	<!-- Item Archive Request Approved -->
+	<!-- ==================================== -->
+	
+	<!-- Item Archive Request Approved Validator -->
+	
+	<!-- Channel for Archive approve request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_ARCHIVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.validateChannel"/> -->
+    <int:channel id="704.504.validateChannel"/>
+
+    <!-- Subscriber - service activator for Archive request approved validator -->
+    <int:service-activator id="itemArchiveReqApproveValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_ARCHIVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.validateChannel" 
+    		ref="itemArchiveReqApprovedValidator" method="validate"/>
+
+	<!-- item Archive request approved validator bean -->
+    <bean id="itemArchiveReqApprovedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemArchiveWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item Archive Request Approved Executor -->
+	
+	<!-- Channel for Archive approve request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_ARCHIVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.executeChannel"/> -->
+	<int:channel id="704.504.executeChannel"/>
+
+    <!-- Subscriber - service activator for Archive request approved executor -->
+    <int:service-activator id="itemArchiveReqApproveExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_ARCHIVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.executeChannel" 
+    		ref="itemArchiveReqApprovedExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item Archive request approved executor bean -->
+    <bean id="itemArchiveReqApprovedExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }"/>
+		<property name="requestStageHelpers" ref="itemArchiveRequestApprovedExecutors"/>
+	</bean>
+    
+
+	<!-- ==================================== -->
+	<!-- Item Archive Work Order Issue -->
+	<!-- ==================================== -->
+	
+	<!-- Item Archive Work order issue Validator -->
+	
+	<!-- Channel for Archive Work Order Issue validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_ARCHIVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.validateChannel"/> -->
+	<int:channel id="704.505.validateChannel"/>
+
+    <!-- Subscriber - service activator for Archive request approved validator -->
+    <int:service-activator id="itemArchiveWorkorderIssueValidateActivator" requires-reply="false" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_ARCHIVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.validateChannel" 
+    		ref="itemArchiveWorkorderIssueValidator" method="validate"/>
+
+	<!-- item Archive request approved validator bean -->
+    <bean id="itemArchiveWorkorderIssueValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemArchiveWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item Archive Request Approved Executor -->
+	
+	<!-- Channel for Archive approve request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_ARCHIVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.executeChannel"/> -->
+    <int:channel id="704.505.executeChannel"/>
+
+    <!-- Subscriber - service activator for Archive request approved executor -->
+    <int:service-activator id="itemArchiveWorkorderIssueExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_ARCHIVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.executeChannel" 
+    		ref="itemArchiveWorkorderIssueExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item Archive request approved executor bean -->
+    <bean id="itemArchiveWorkorderIssueExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }"/>
+		<property name="requestStageHelpers" ref="itemArchiveWorkOrderIssueExecutors"/>
+	</bean>
+    
+
+	<!-- ==================================== -->
+	<!-- Item Archive Work Order Complete -->
+	<!-- ==================================== -->
+	
+	<!-- Item Archive Work order complete Validator -->
+	
+	<!-- Channel for Archive Work Order Complete validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_ARCHIVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.validateChannel"/> -->
+    <int:channel id="704.506.validateChannel"/>
+
+    <!-- Subscriber - service activator for Archive work order complete validator -->
+    <int:service-activator id="itemArchiveWorkorderCompleteValidateActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_ARCHIVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.validateChannel" 
+    		ref="itemArchiveWorkorderCompleteValidator" method="validate"/>
+
+	<!-- item Archive request complete validator bean -->
+    <bean id="itemArchiveWorkorderCompleteValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemArchiveWorkOrderCompleteValidators"/>
+    </bean>
+    
+	
+	<!-- Item Archive Workorder complete Executor -->
+	
+	<!-- Channel for Archive work order complete executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_ARCHIVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.executeChannel"/> -->
+    <int:channel id="704.506.executeChannel"/>
+
+    <!-- Subscriber - service activator for Archive request approved executor -->
+    <int:service-activator id="itemArchiveWorkorderCompleteExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_ARCHIVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.executeChannel" 
+    		ref="itemArchiveWorkorderCompleteExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item Archive request approved executor bean -->
+    <bean id="itemArchiveWorkorderCompleteExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }"/>
+		<property name="requestStageHelpers" ref="itemArchiveWorkOrderCompleteExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Item Archive Request Complete -->
+	<!-- ==================================== -->
+	
+	<!-- Item Archive Request complete Validator -->
+	
+	<!-- Channel for Archive Request Complete validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_ARCHIVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.validateChannel"/> -->
+    <int:channel id="704.507.validateChannel"/>
+
+    <!-- Subscriber - service activator for Archive request complete validator -->
+    <int:service-activator id="itemArchiveRequestCompleteValidateActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_ARCHIVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.validateChannel" 
+    		ref="itemArchiveRequestCompleteValidator" method="validate"/>
+
+	<!-- item Archive request complete validator bean -->
+    <bean id="itemArchiveRequestCompleteValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemArchiveWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item Archive Request complete Executor -->
+	
+	<!-- Channel for Archive request complete executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_ARCHIVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.executeChannel"/> -->
+    <int:channel id="704.507.executeChannel"/>
+
+    <!-- Subscriber - service activator for Archive request approved executor -->
+    <!-- output-channel="nullChannel" -->
+    <int:service-activator id="itemArchiveRequestCompleteExecuteActivator" requires-reply="false" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_ARCHIVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.executeChannel" 
+    		ref="itemArchiveRequestCompleteExecutor" method="process" output-channel="nullChannel"/>
+    		
+
+	<!-- item Archive request approved executor bean -->
+    <bean id="itemArchiveRequestCompleteExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }"/>
+		<property name="requestStageHelpers" ref="itemArchiveRequestCompleteExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Item Archive Routers               				-->
+	<!-- ==================================== -->
+
+	<!-- item Archive validate router -->
+	<!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_ARCHIVE }ValidateRouter"/> -->
+	<int:channel id="704.ValidateRouter"/>
+	<int:router input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_ARCHIVE }.ValidateRouter" ref="requestStageRouter" method="validatorRouter"/>
+	
+	<!-- item Archive execute router -->
+	<!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_ARCHIVE }ExecuteRouter"/> -->
+	<int:channel id="704.ExecuteRouter"/>
+	<int:router input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_ARCHIVE }.ExecuteRouter" ref="requestStageRouter" method="executorRouter"/>
+    
+
+
+
+</beans>

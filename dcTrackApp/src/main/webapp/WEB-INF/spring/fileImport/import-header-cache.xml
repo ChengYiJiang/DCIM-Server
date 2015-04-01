@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<bean id="itemImportHeaderMapCache" class="com.raritan.tdz.dctimport.dto.ImportHeaderMapCache" init-method="setupHeaderMap">
+		<constructor-arg name="dctImportClass" value="com.raritan.tdz.dctimport.dto.ItemImport"/>
+	</bean>
+
+	<bean id="dataPortImportHeaderMapCache" class="com.raritan.tdz.dctimport.dto.ImportHeaderMapCache" init-method="setupHeaderMap">
+		<constructor-arg name="dctImportClass" value="com.raritan.tdz.dctimport.dto.DataPortImport"/>
+	</bean>
+	
+	<bean id="powerPortImportHeaderMapCache" class="com.raritan.tdz.dctimport.dto.ImportHeaderMapCache" init-method="setupHeaderMap">
+		<constructor-arg name="dctImportClass" value="com.raritan.tdz.dctimport.dto.PowerPortImport"/>
+	</bean>
+	
+	<bean id="dataConnImportHeaderMapCache" class="com.raritan.tdz.dctimport.dto.ImportHeaderMapCache" init-method="setupHeaderMap">
+		<constructor-arg name="dctImportClass" value="com.raritan.tdz.dctimport.dto.DataConnImport"/>
+	</bean>
+	
+	<bean id="locationImportHeaderMapCache" class="com.raritan.tdz.dctimport.dto.ImportHeaderMapCache" init-method="setupHeaderMap">
+		<constructor-arg name="dctImportClass" value="com.raritan.tdz.dctimport.dto.LocationImport"/>
+	</bean>
+	
+	<bean id="powerConnImportHeaderMapCache" class="com.raritan.tdz.dctimport.dto.ImportHeaderMapCache" init-method="setupHeaderMap">
+		<constructor-arg name="dctImportClass" value="com.raritan.tdz.dctimport.dto.PowerConnImport"/>
+	</bean>
+
+	<bean id="structuredCablingConnImportHeaderMapCache" class="com.raritan.tdz.dctimport.dto.ImportHeaderMapCache" init-method="setupHeaderMap">
+		<constructor-arg name="dctImportClass" value="com.raritan.tdz.dctimport.dto.StructuredCablingConnImport"/>
+	</bean>
+	
+	<util:map id="importHeaderMapCache" key-type="java.lang.String">
+		<entry key="add,location" value-ref="locationImportHeaderMapCache"/>
+		<entry key="edit,location" value-ref="locationImportHeaderMapCache"/>
+		<entry key="delete,location" value-ref="locationImportHeaderMapCache"/>
+		<entry key="unmap,location" value-ref="locationImportHeaderMapCache"/>
+
+		<entry key="add,cabinet" value-ref="itemImportHeaderMapCache"/>
+		<entry key="add,device-freestanding" value-ref="itemImportHeaderMapCache"/>
+		<entry key="add,network-freestanding" value-ref="itemImportHeaderMapCache"/>
+		
+		<entry key="add,data-port" value-ref="dataPortImportHeaderMapCache"/>
+		<entry key="edit,data-port" value-ref="dataPortImportHeaderMapCache"/>
+		<entry key="delete,data-port" value-ref="dataPortImportHeaderMapCache"/>
+		
+		<entry key="add,ups" value-ref="itemImportHeaderMapCache"/>
+		<entry key="add,crac" value-ref="itemImportHeaderMapCache"/>
+		<entry key="add,floorpdu" value-ref="itemImportHeaderMapCache"/>
+		<entry key="add,powerpanel" value-ref="itemImportHeaderMapCache"/>
+		<entry key="add,device-rackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="add,device-bladechassis-rackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="add,network-chassis-rackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="add,network-rackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="add,datapanel-rackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="add,rackpdu-rackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="add,probe-rackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="add,device-nonrackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="add,network-nonrackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="add,datapanel-nonrackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="add,rackpdu-nonrackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="add,probe-nonrackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="add,device-zerou" value-ref="itemImportHeaderMapCache"/>
+		<entry key="add,rackpdu-zerou" value-ref="itemImportHeaderMapCache"/>
+		<entry key="add,probe-zerou" value-ref="itemImportHeaderMapCache"/>
+		<entry key="add,datapanel-zerou" value-ref="itemImportHeaderMapCache"/>
+		<entry key="add,device-blade" value-ref="itemImportHeaderMapCache"/>
+		<entry key="add,network-blade" value-ref="itemImportHeaderMapCache"/>
+		<entry key="add,poweroutlet" value-ref="itemImportHeaderMapCache"/>
+		<entry key="add,passive" value-ref="itemImportHeaderMapCache"/>
+
+		<entry key="edit,cabinet" value-ref="itemImportHeaderMapCache"/>
+		<entry key="edit,device-freestanding" value-ref="itemImportHeaderMapCache"/>
+		<entry key="edit,network-freestanding" value-ref="itemImportHeaderMapCache"/>
+		<entry key="edit,ups" value-ref="itemImportHeaderMapCache"/>
+		<entry key="edit,crac" value-ref="itemImportHeaderMapCache"/>
+		<entry key="edit,floorpdu" value-ref="itemImportHeaderMapCache"/>
+		<entry key="edit,powerpanel" value-ref="itemImportHeaderMapCache"/>
+		<entry key="edit,device-rackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="edit,device-bladechassis-rackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="edit,network-chassis-rackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="edit,network-rackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="edit,datapanel-rackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="edit,rackpdu-rackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="edit,probe-rackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="edit,device-nonrackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="edit,network-nonrackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="edit,datapanel-nonrackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="edit,rackpdu-nonrackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="edit,probe-nonrackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="edit,device-zerou" value-ref="itemImportHeaderMapCache"/>
+		<entry key="edit,rackpdu-zerou" value-ref="itemImportHeaderMapCache"/>
+		<entry key="edit,probe-zerou" value-ref="itemImportHeaderMapCache"/>
+		<entry key="edit,datapanel-zerou" value-ref="itemImportHeaderMapCache"/>
+		<entry key="edit,device-blade" value-ref="itemImportHeaderMapCache"/>
+		<entry key="edit,network-blade" value-ref="itemImportHeaderMapCache"/>
+		<entry key="edit,poweroutlet" value-ref="itemImportHeaderMapCache"/>
+		<entry key="edit,passive" value-ref="itemImportHeaderMapCache"/>
+
+		<entry key="delete,cabinet" value-ref="itemImportHeaderMapCache"/>
+		<entry key="delete,device-freestanding" value-ref="itemImportHeaderMapCache"/>
+		<entry key="delete,network-freestanding" value-ref="itemImportHeaderMapCache"/>
+		<entry key="delete,ups" value-ref="itemImportHeaderMapCache"/>
+		<entry key="delete,crac" value-ref="itemImportHeaderMapCache"/>
+		<entry key="delete,floorpdu" value-ref="itemImportHeaderMapCache"/>
+		<entry key="delete,powerpanel" value-ref="itemImportHeaderMapCache"/>
+		<entry key="delete,device-rackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="delete,device-bladechassis-rackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="delete,network-chassis-rackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="delete,network-rackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="delete,datapanel-rackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="delete,rackpdu-rackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="delete,probe-rackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="delete,device-nonrackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="delete,network-nonrackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="delete,datapanel-nonrackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="delete,rackpdu-nonrackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="delete,probe-nonrackable" value-ref="itemImportHeaderMapCache"/>
+		<entry key="delete,device-zerou" value-ref="itemImportHeaderMapCache"/>
+		<entry key="delete,rackpdu-zerou" value-ref="itemImportHeaderMapCache"/>
+		<entry key="delete,probe-zerou" value-ref="itemImportHeaderMapCache"/>
+		<entry key="delete,datapanel-zerou" value-ref="itemImportHeaderMapCache"/>
+		<entry key="delete,device-blade" value-ref="itemImportHeaderMapCache"/>
+		<entry key="delete,network-blade" value-ref="itemImportHeaderMapCache"/>
+		<entry key="delete,poweroutlet" value-ref="itemImportHeaderMapCache"/>
+		<entry key="delete,passive" value-ref="itemImportHeaderMapCache"/>
+		
+		<entry key="unmap,item" value-ref="itemImportHeaderMapCache"/>
+
+		<entry key="add,power-port" value-ref="powerPortImportHeaderMapCache"/>
+		<entry key="edit,power-port" value-ref="powerPortImportHeaderMapCache"/>
+		<entry key="delete,power-port" value-ref="powerPortImportHeaderMapCache"/>
+		
+		<entry key="add,data-connection" value-ref="dataConnImportHeaderMapCache"/>
+		<entry key="edit,data-connection" value-ref="dataConnImportHeaderMapCache"/>
+		<entry key="delete,data-connection" value-ref="dataConnImportHeaderMapCache"/>
+		
+		<entry key="add,power-connection" value-ref="powerConnImportHeaderMapCache"/>
+		<entry key="edit,power-connection" value-ref="powerConnImportHeaderMapCache"/>
+		<entry key="delete,power-connection" value-ref="powerConnImportHeaderMapCache"/>
+		
+		<entry key="delete,structured-cabling" value-ref="structuredCablingConnImportHeaderMapCache"/>
+	</util:map>
+
+	
+</beans>

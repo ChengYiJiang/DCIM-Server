@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+<int:channel id="doValidateCmdChannel"/>
+<int:channel id="doImportCmdChannel"/>
+<int:channel id="getImportCmdStatusChannel"/>
+<int:channel id="cancelImportCmdChannel"/>
+<int:channel id="importErrorChannel"/>
+
+<int:gateway id="importHomeGateway" service-interface="com.raritan.tdz.dctimport.home.ImportHome">
+	<int:method name="doImport" 
+		payload-expression="T(java.util.Arrays).asList(#args[0])" 
+		request-channel="doImportCmdChannel"
+		/>
+	<int:method name="doValidate" 
+		payload-expression="T(java.util.Arrays).asList(#args[0],#args[1])" 
+		request-channel="doValidateCmdChannel"
+		/>
+	<int:method name="getImportStatus" 
+		payload-expression="T(java.util.Arrays).asList(#args[0])"
+		request-channel="getImportCmdStatusChannel"
+		/>
+	<int:method name="cancelImport" 
+		payload-expression="T(java.util.Arrays).asList(#args[0])"
+		request-channel="cancelImportCmdChannel"
+		/>
+</int:gateway>
+
+<int:header-enricher input-channel="doImportCmdChannel" output-channel="importUserContextRouterChannel">
+	<int:header name="command" value="doImport"/>
+</int:header-enricher>
+
+<int:header-enricher input-channel="doValidateCmdChannel" output-channel="importUserContextRouterChannel">
+	<int:header name="command" value="doValidate"/>
+</int:header-enricher>
+
+<int:header-enricher input-channel="getImportCmdStatusChannel" output-channel="importUserContextRouterChannel">
+	<int:header name="command" value="importStatus"/>
+</int:header-enricher>
+
+<int:header-enricher input-channel="cancelImportCmdChannel" output-channel="importUserContextRouterChannel">
+	<int:header name="command" value="cancelImport"/>
+</int:header-enricher>
+
+</beans>

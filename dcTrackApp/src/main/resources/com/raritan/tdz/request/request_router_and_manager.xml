@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-3.0.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+
+	<context:annotation-config />
+	<context:property-placeholder ignore-unresolvable="true"/>
+	
+	<!-- <import resource="${parentContextPathPrefix}/daos.xml"/> -->
+	<import resource="${parentContextPathPrefix}/messageSources.xml"/>
+
+	<task:scheduler id="taskScheduler"/>
+
+	<import resource="request_progress.xml"/>
+	<import resource="request_errors.xml"/>
+	
+	<import resource="request_stage_helper.xml"/>
+
+	<!-- Work Flows -->
+	<import resource="item_move_workflow.xml"/>
+	
+	<import resource="item_install_workflow.xml"/>
+	
+	<import resource="item_offsite_workflow.xml"/>
+	
+	<import resource="item_onsite_workflow.xml"/>
+	
+	<import resource="item_to_vm_workflow.xml"/>
+	
+	<import resource="item_power_off_workflow.xml"/>
+	
+	<import resource="item_power_on_workflow.xml"/>
+	
+	<import resource="item_remove_storage_workflow.xml"/>
+	
+	<import resource="item_remove_archive_workflow.xml"/>
+	
+	<import resource="circuit_connect_workflow.xml"/>
+	
+	<import resource="circuit_disconnect_workflow.xml"/>
+	
+	<import resource="circuit_reconnect_workflow.xml"/>
+	
+	<import resource="circuit_disconnect_n_move_workflow.xml"/>
+	
+
+	<!-- ==================================== -->
+	<!-- Routers                                 			-->
+	<!-- ==================================== -->
+	
+	<util:map id="requestByPassStages" key-type="java.lang.Long" value-type="java.lang.Long">
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }"/>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }"/>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_REJECTED }" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }"/>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }"/>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }"/>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }"/>
+	</util:map>
+
+	
+	<bean id="requestStageRouter" class="com.raritan.tdz.request.home.RequestStageRouter">
+		<property name="requestByPassNextStage" ref="requestByPassStages"/>
+	</bean>
+	
+	<bean id="requestRouter" class="com.raritan.tdz.request.home.RequestRouter"/>
+
+	<!-- ==================================== -->
+	<!-- Validate Router                                 -->
+	<!-- ==================================== -->
+	
+	<!-- TODO:: Build service adaptor interface for the validateRouter -->
+	<int:channel id="validateRouter" />  
+	  
+	<int:router input-channel="validateRouter" ref="requestRouter" method="validatorRouter"/>
+	
+	<!-- Gateway for validator and executor -->
+	<!-- Simple facade method which accepts validate messages into validate channel -->
+    <int:gateway id="validateManager" service-interface="com.raritan.tdz.request.validator.RequestValidateManager" default-request-channel="validateRouter"/>
+	
+	<!-- ==================================== -->
+	<!-- Execute Router                                 -->
+	<!-- ==================================== -->
+	
+	<!-- TODO:: Build service adaptor interface for the validateRouter -->
+	
+	<int:channel id="executeRouter"/>
+	
+	<int:router input-channel="executeRouter" ref="requestRouter" method="executorRouter"/>
+	
+	<!-- Simple facade method which accepts execute messages into execute channel -->
+    <int:gateway id="executeManager" service-interface="com.raritan.tdz.request.home.RequestExecuteManager" default-request-channel="executeRouter" error-channel="nullChannel"/>
+	
+	<!-- ==================================== -->
+	<!-- Error Manager                                  -->
+	<!-- ==================================== -->
+	
+	<int:channel id="requestErrorChannel">
+		<int:interceptors>
+			<ref bean="requestErrorChannelIntercepter"/>
+		</int:interceptors>
+	</int:channel>
+	
+	<int:gateway id="errorManager" service-interface="com.raritan.tdz.request.error.RequestErrorManager" default-request-channel="requestErrorChannel" error-channel="nullChannel"/>
+	
+	<!-- ==================================== -->
+	<!-- Request Manager               					-->
+	<!-- ==================================== -->
+
+	<bean id="requestManager" class="com.raritan.tdz.request.home.RequestManagerImpl">
+		<constructor-arg name="executeManager" ref="executeManager"/>
+		<constructor-arg name="validateManager" ref="validateManager"/>
+		<constructor-arg name="errorManager" ref="errorManager"/>
+		<constructor-arg name="requestProgressUpdate" ref="requestProgressUpdateDTO"/>
+		<property name="businessExceptionHelper" ref="businessExceptionHelper"/>
+		<property name="requestListValidator" ref="requestListValidator"/>
+	</bean>
+	
+	<int:channel id="requestManagerReplyChannel">
+		<int:interceptors>
+			<ref bean="requestExecutionCompleteChannelIntercepter"/>
+		</int:interceptors>
+	</int:channel>
+	
+	<int:service-activator id="requestManagerReply" input-channel="requestManagerReplyChannel" ref="requestManager" method="processMessage" requires-reply="false"/>	
+
+	<!-- ==================================== -->
+	<!-- Request Home               					-->
+	<!-- ==================================== -->
+	
+	<!-- <bean id="requestHelper" class="com.raritan.tdz.request.home.RequestHelperImpl"/> -->
+
+	<bean id="requestHome" class="com.raritan.tdz.request.home.RequestHomeImpl" autowire-candidate="true" autowire="byName">
+		<property name="businessExceptionHelper" ref="businessExceptionHelper"/>
+		<property name="requestManager" ref="requestManager"/>
+	</bean>
+
+	<!-- FIXME: could be the bottle neck -->
+	<int:channel id="requestHomeChannel">
+		<int:queue/>
+	</int:channel>
+
+	<bean id="requestManagerTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="5"/>
+		<property name="maxPoolSize" value="10"/>
+		<!-- <property name="queueCapacity" value="1"/> -->
+	</bean>
+
+	<!-- <int:service-activator id="requestHomeActivator" input-channel="requestHomeChannel" ref="requestHome" requires-reply="false"/> -->
+	
+	<int:channel id="processRequestDTOCmdChannel"/>
+	
+	<int:service-activator input-channel="processRequestDTOCmdChannel" expression="@requestHome.processRequestDTO(payload[0], payload[1], payload[2])"/>
+	
+	<int:channel id="processRequestsCmdChannel"/>
+	
+	<int:service-activator input-channel="processRequestsCmdChannel" expression="@requestHome.processRequests(payload[0], payload[1], payload[2])"/>
+	
+	<int:channel id="processRequestUsingIdsCmdChannel"/>
+	
+	<int:service-activator input-channel="processRequestUsingIdsCmdChannel" expression="@requestHome.processRequestUsingIds(payload[0], payload[1])"/>
+
+	<int:header-value-router id="requestHomeHeaderRouter" input-channel="requestHomeChannel" header-name="command" auto-startup="true">
+		<int:poller fixed-delay="#{10 * 1000}" task-executor="requestManagerTaskExecutor"/>
+		<int:mapping value="processRequestDTOCommand" channel="processRequestDTOCmdChannel"/>
+		<int:mapping value="processRequestsCommand" channel="processRequestsCmdChannel"/>
+		<int:mapping value="processRequestUsingIdsCommand" channel="processRequestUsingIdsCmdChannel"/>
+	</int:header-value-router>	
+
+	<!-- ==================================== -->
+	<!-- Request Home               					-->
+	<!-- ==================================== -->
+	
+	<bean id="requestClean" class="com.raritan.tdz.request.home.RequestClean">
+		<constructor-arg name="requestDTOLockFactory" ref="requestProgressLockFactory"/>
+		<constructor-arg name="requestProgressDTOFactory" ref="requestProgressDtoFactory"/>
+		<constructor-arg name="requestProgressCountFactory" ref="requestProgressSessionCountFactory"/>
+		<constructor-arg name="userSessionId" value="${userSessionId}"/>
+	</bean>
+
+</beans>

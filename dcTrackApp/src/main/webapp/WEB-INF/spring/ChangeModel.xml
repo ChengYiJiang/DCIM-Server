@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+    					http://www.springframework.org/schema/util
+    					http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+	
+	
+	<bean id="changeModelFactory" class="com.raritan.tdz.item.home.modelchange.ChangeModelFactoryImpl" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="changeModelMap">
+			<map>
+				<!--  For the codes used in the key please refer to: -->
+				<!--  http://cfrrwiki.raritan.com/index.php?title=Product_Sites/dcTrack/dcTrack_3.0/2_Committed_Features/Asset_Management/Model_Library/Mounting%2F%2FForm_Factor_To_Class%2F%2FSubClass_Mapping -->
+				<!--  Physical To XYZ -->
+				<entry key="101:103" value="standardToStandardFS"/> <!-- Physical To PhysicalFS (Rackable) -->
+				<entry key="101:104" value="standardToBladeChassis"/> <!-- Physical To BladeChassis (Rackable) -->
+				<entry key="101:105" value="standardToBladeServer"/> <!-- Physical To BladeServer (Rackable) -->
+				<entry key="101:100" value="standardToVM"/> <!-- Physical To VM (Rackable) -->
+				<entry key="101:102" value="standardToStandardNR"/> <!-- Physical To Standard (Non Rackable) -->
+				
+				<!--  Physical Non-Rackable To XYZ -->
+				<entry key="102:103" value="standardNRToStandardFS"/> <!-- Physical (Non-Rackable) To PhysicalFS (Rackable) -->
+				<entry key="102:104" value="standardNRToBladeChassis"/> <!-- Physical (Non-Rackable) To BladeChassis (Rackable) -->
+				<entry key="102:105" value="standardNRToBladeServer"/> <!-- Physical (Non-Rackable) To BladeServer (Rackable) -->
+				<entry key="102:100" value="standardNRToVM"/> <!-- Physical (Non-Rackable) To VM (Rackable) -->
+				<entry key="102:101" value="standardNRToStandard"/> <!-- Physical  (Non Rackable) To Standard (Rackable) -->
+				
+				<!-- PhysicalFS To XYZ -->
+				<entry key="103:101" value="standardFSToStandard"/> <!-- PhyisicalFS To Physical (Rackable) -->
+				<entry key="103:102" value="standardFSToStandard"/> <!-- PhyisicalFS To Physical (Non Rackable) -->
+				<entry key="103:104" value="standardFSToBladeChassis"/> <!-- PhyisicalFS To BladeChassis (Rackable) -->
+				<entry key="103:105" value="standardFSToBladeServer"/> <!-- PhyisicalFS To BladeServer -->
+				<entry key="103:100" value="standardFSToVM"/> <!-- PhyisicalFS To VM -->
+				
+				<!-- Chassis To XYZ -->
+				<entry key="104:101" value="bladeChassisToStandard"/> <!-- BladeChassis To Physical (Rackable) -->
+				<entry key="104:102" value="bladeChassisToStandard"/> <!-- BladeChassis To Physical (Non Rackable) -->
+				<entry key="104:103" value="bladeChassisToStandardFS"/> <!-- BladeChassis To PhysicalFS -->
+				<entry key="104:105" value="bladeChassisToBladeServer"/> <!-- BladeChassis To BladeServer -->
+				<entry key="104:100" value="bladeChassisToVM"/> <!-- BladeChassis To VM -->
+				
+				<!-- Blade To XYZ -->
+				<entry key="105:101" value="bladeServerToStandard"/> <!-- BladeServer To Physical (Rackable) -->
+				<entry key="105:102" value="bladeServerToStandard"/> <!-- BladeServer To Physical (Non Rackable) -->
+				<entry key="105:103" value="bladeServerToStandardFS"/> <!-- BladeServer To PhysicalFS -->
+				<entry key="105:104" value="bladeServerToBladeChassis"/> <!-- BladeServer To BladeChassis -->
+				<entry key="105:100" value="bladeServerToVM"/> <!-- BladeServer To VM -->
+				
+				
+				<!-- VM To XYZ -->
+				<entry key="100:101" value="vmToStandard"/> <!-- VM To Physical (Rackable) -->
+				<entry key="100:102" value="vmToStandard"/> <!-- VM To Physical (Non Rackable) -->
+				<entry key="100:103" value="vmToStandardFS"/> <!-- VM To PhysicalFS -->
+				<entry key="100:104" value="vmToBladeChassis"/> <!-- VM To BladeChassis -->
+				<entry key="100:105" value="vmToBladeServer"/> <!-- VM To BladeServer -->
+				
+				
+				<!-- NetworkChassis To XYZ -->
+				<entry key="204:205" value="networkChassisToNetworkBlade"/> <!--  Network Chassis to Network Blade -->
+				<entry key="204:201" value="networkChassisToStackable"/> <!--  Network Chassis to Network Stackable (Rackable) -->
+				<entry key="204:202" value="networkChassisToStackable"/> <!--  Network Chassis to Network Stackable (Non Rackable) -->  
+				<entry key="204:203" value="networkChassisToNetworkFS"/> <!--  Network Chassis to Network Chassis FS -->
+				<entry key="204:206" value="networkChassisToStackable"/> <!--  Network Chassis to Network Stackable (Zero-U) -->
+				
+				<!-- Network Free Standing To XYZ -->
+				<entry key="203:204" value="networkFSToNetworkChassis"/> <!--  Network FS to Network Chassis -->
+				<entry key="203:201" value="networkFSToStackable"/>      <!--  Network FS to Network Stackable (Rackable) -->
+				<entry key="203:202" value="networkFSToStackable"/>      <!--  Network FS to Network Stackable (Non Rackable) -->
+				<entry key="203:206" value="networkFSToStackable"/>      <!--  Network FS to Network Stackable (Zero-U) -->
+				<entry key="203:205" value="networkFSToNetworkBlade"/>   <!--  Network FS to Network to Network Blade -->
+				
+				<!-- NetworkBlade To XYZ -->
+				<entry key="205:204" value="networkBladeToNetworkChassis"/> <!--  Network Blade to Network Chassis -->
+				<entry key="205:203" value="networkBladeToNetworkFS"/> <!--  Network Blade to Network Chassis FreeStanding -->
+				<entry key="205:201" value="networkBladeToStackable"/> <!--  Network Blade to Network Stackable (Rackable) -->
+				<entry key="205:202" value="networkBladeToStackable"/> <!--  Network Blade to Network Stackable (Non Rackable) -->
+	
+				<!-- NetworkStackable To XYZ -->
+				<entry key="201:202" value="stackableToStackableNR"/> <!--  Network Stackable (Rackable) to Network Stackable (Non Rackable) -->
+				<entry key="201:204" value="stackableToNetworkChassis"/> <!--  Network Stackable (Rackable) to Network Chassis -->
+				<entry key="201:205" value="stackableToNetworkBlade"/> <!--  Network Stackable (Rackable) to Network Blade -->
+				<entry key="201:203" value="stackableToNetworkFS"/>    <!--  Network Stackable (Rackable) to Network FS -->
+				<entry key="202:201" value="stackableNRToStackable"/> <!--  Network Stackable (Non Rackable) to Network Stackable (Rackable) -->
+				<entry key="202:204" value="stackableToNetworkChassis"/> <!--  Network Stackable (Non Rackable) to Network Chassis -->
+				<entry key="202:205" value="stackableToNetworkBlade"/> <!--  Network Stackable (Non Rackable) to Network Blade -->
+				<entry key="202:203" value="stackableToNetworkFS"/>    <!--  Network Stackable (Non Rackable) to Network FS -->
+				<entry key="206:203" value="stackableToNetworkFS"/>    <!--  Network Stackable (Zero-U) to Network FS -->
+			</map>
+		</constructor-arg>
+	</bean>
+	
+	
+	
+	<bean id="changeModelDAO" class="com.raritan.tdz.item.home.modelchange.ChangeModelDAOImpl" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="itemObjectFactory" ref="itemObjectFactory" />
+		<constructor-arg name="itemDeleteHelper" ref="itemDeleteHelper" />
+		<constructor-arg name="itemHome" ref="itemHome" />	
+		<property name="messageSource" ref="messageSource"/>	
+		<property name="modelHome" ref="modelHome"/>		
+		<property name="itemObjectTemplateFactory" ref="itemObjectTemplateFactory"/>
+	</bean>
+
+	<bean id="stackableToStackableNR" class="com.raritan.tdz.item.home.modelchange.StackableToStackableNR" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+
+	<bean id="stackableNRToStackable" class="com.raritan.tdz.item.home.modelchange.StackableNRToStackable" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+
+	<bean id="networkBladeToNetworkChassis" class="com.raritan.tdz.item.home.modelchange.NetworkBladeToNetworkChassis" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+	
+	<bean id="networkBladeToStackable" class="com.raritan.tdz.item.home.modelchange.NetworkBladeToStackable" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+	
+	<bean id="networkChassisToNetworkBlade" class="com.raritan.tdz.item.home.modelchange.NetworkChassisToNetworkBlade" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+	
+	<bean id="networkChassisToStackable" class="com.raritan.tdz.item.home.modelchange.NetworkChassisToStackable" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+	
+	<bean id="stackableToNetworkBlade" class="com.raritan.tdz.item.home.modelchange.StackableToNetworkBlade" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+	
+	<bean id="stackableToNetworkChassis" class="com.raritan.tdz.item.home.modelchange.StackableToNetworkChassis" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+
+	<bean id="standardFSToBladeChassis" class="com.raritan.tdz.item.home.modelchange.StandardFSToBladeChassis" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+	
+	<bean id="standardFSToBladeServer" class="com.raritan.tdz.item.home.modelchange.StandardFSToBladeServer" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+	
+	<bean id="standardFSToStandard" class="com.raritan.tdz.item.home.modelchange.StandardFSToStandard" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+	
+	<bean id="standardFSToVM" class="com.raritan.tdz.item.home.modelchange.StandardFSToVM" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+	
+	<bean id="standardToBladeChassis" class="com.raritan.tdz.item.home.modelchange.StandardToBladeChassis" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+
+	<bean id="standardToStandardNR" class="com.raritan.tdz.item.home.modelchange.StandardToStandardNR" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+
+	<bean id="standardNRToBladeChassis" class="com.raritan.tdz.item.home.modelchange.StandardNRToBladeChassis" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+
+	<bean id="standardNRToStandard" class="com.raritan.tdz.item.home.modelchange.StandardNRToStandard" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+
+	<bean id="standardToBladeServer" class="com.raritan.tdz.item.home.modelchange.StandardToBladeServer" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+
+	<bean id="standardNRToBladeServer" class="com.raritan.tdz.item.home.modelchange.StandardNRToBladeServer" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+	
+	<bean id="standardToStandardFS" class="com.raritan.tdz.item.home.modelchange.StandardToStandardFS" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+
+	<bean id="standardNRToStandardFS" class="com.raritan.tdz.item.home.modelchange.StandardNRToStandardFS" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+	
+	<bean id="standardToVM" class="com.raritan.tdz.item.home.modelchange.StandardToVM" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+	
+	<bean id="standardNRToVM" class="com.raritan.tdz.item.home.modelchange.StandardNRToVM" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+	
+	<bean id="bladeChassisToStandard" class="com.raritan.tdz.item.home.modelchange.BladeChassisToStandard" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+	
+	<bean id="bladeChassisToStandardFS" class="com.raritan.tdz.item.home.modelchange.BladeChassisToStandardFS" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+	
+	<bean id="bladeChassisToBladeServer" class="com.raritan.tdz.item.home.modelchange.BladeChassisToBlade" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+	
+	<bean id="bladeChassisToVM" class="com.raritan.tdz.item.home.modelchange.BladeChassisToVM" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+	
+	<bean id="bladeServerToStandard" class="com.raritan.tdz.item.home.modelchange.BladeServerToStandard" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+
+	<bean id="bladeServerToStandardFS" class="com.raritan.tdz.item.home.modelchange.BladeServerToStandardFS" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+	
+	<bean id="bladeServerToBladeChassis" class="com.raritan.tdz.item.home.modelchange.BladeServerToBladeChassis" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+
+	<bean id="bladeServerToVM" class="com.raritan.tdz.item.home.modelchange.BladeServerToVM" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+	
+	<bean id="vmToStandard" class="com.raritan.tdz.item.home.modelchange.VMToStandard" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+	
+	<bean id="vmToStandardFS" class="com.raritan.tdz.item.home.modelchange.VMToStandardFS" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+
+	<bean id="vmToBladeChassis" class="com.raritan.tdz.item.home.modelchange.VMToBladeChassis" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+	
+	<bean id="vmToBladeServer" class="com.raritan.tdz.item.home.modelchange.VMToBladeServer" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+		
+	
+	<bean id="networkBladeToNetworkFS" class="com.raritan.tdz.item.home.modelchange.NetworkBladeToNetworkFS" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+	
+	<bean id="networkFSToNetworkBlade" class="com.raritan.tdz.item.home.modelchange.NetworkFSToNetworkBlade" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+	
+	<bean id="networkFSToNetworkChassis" class="com.raritan.tdz.item.home.modelchange.NetworkFSToNetworkChassis" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+	
+	<bean id="networkFSToStackable" class="com.raritan.tdz.item.home.modelchange.NetworkFSToStackable" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+	
+	<bean id="networkChassisToNetworkFS" class="com.raritan.tdz.item.home.modelchange.NetworkChassisToNetworkFS" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+	
+	<bean id="stackableToNetworkFS" class="com.raritan.tdz.item.home.modelchange.StackableToNetworkFS" scope="prototype">
+		<constructor-arg name="changeModelDAO" ref="changeModelDAO"/>
+	</bean>
+	
+	<bean id="modelChangeValidationAspect" class="com.raritan.tdz.item.home.modelchange.ModelChangeValidationAspect" factory-method="aspectOf" autowire="byName"/>
+	
+</beans>

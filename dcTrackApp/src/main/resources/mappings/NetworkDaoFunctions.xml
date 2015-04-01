@@ -1,0 +1,171 @@
+﻿<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE hibernate-mapping
+   PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+   
+<hibernate-mapping>
+
+  <query name="NetMask.getNetMaskById">
+  	<![CDATA[select n from NetMask n where n.id = :id]]>
+  </query>
+                  
+  <query name="NetMask.getNetMaskByMask">
+  	<![CDATA[select n from NetMask n where n.mask = :mask]]>
+  </query>
+                  
+  <query name="NetMask.getNetMaskByCidr">
+  	<![CDATA[select n from NetMask n where n.cidr = :cidr]]>
+  </query>
+                  
+  <query name="NetMask.getAllNetMasks">
+  	<![CDATA[select n from NetMask n]]>
+  </query>
+
+  <query name="IPAddress.findIPAddressByName">
+    <![CDATA[select ip from IPAddressDetails ip
+	inner join ip.ipTeaming as team 
+	inner join team.dataPort as dataPort
+        inner join dataPort.item as item
+	inner join item.dataCenterLocation as location
+	where ipaddress = :ipaddress and location.dataCenterLocationId= :locationId]]>
+  </query>
+
+  <query name="IPAddress.findAllIPsForGateway">
+    <![CDATA[select ip from IPAddressDetails ip
+	where gateway = :gateway ]]>
+  </query>
+
+  <query name="IPAddress.findAllIPsForDataPort">
+    <![CDATA[select ip from IPAddressDetails ip
+	inner join ip.ipTeaming as team 
+	inner join team.dataPort as dataPort
+	where dataPort.portId = :portId ]]>
+  </query>
+
+  <query name="IPAddress.findAllIPsForItem">
+    <![CDATA[select ip from IPAddressDetails ip
+	inner join ip.ipTeaming as team 
+	inner join team.dataPort as dataPort
+	inner join dataPort.item as item
+	where item.itemId = :itemId ]]>
+  </query>
+
+  <query name="IPAddress.findAllTeamsForItem">
+    <![CDATA[select t from IPTeaming t
+	inner join t.dataPort as dataPort
+	inner join dataPort.item as item
+	where item.itemId = :itemId ]]>
+  </query>
+
+  <query name="IPAddress.findAllTeamsForIp">
+    <![CDATA[select team from IPTeaming team
+        inner join team.dataPort as dataPort
+        inner join team.ipAddress as ipAddress
+        where ipAddress.id = :ipId ]]>
+  </query>
+
+  <query name="IPAddress.findAllTeamsForIpAddress">
+    <![CDATA[select team from IPTeaming team
+        inner join team.dataPort as dataPort
+        inner join team.ipAddress as ipAddress
+        inner join dataPort.item as item
+	inner join item.dataCenterLocation as location
+        where ipAddress.ipAddress = :ipAddress and location.dataCenterLocationId = :locationId]]>
+  </query>
+
+  <query name="IPAddress.findAllIpTeamsForItem">
+    <![CDATA[select team from IPTeaming team
+        inner join team.dataPort as dataPort
+        inner join team.ipAddress as ipAddress
+        inner join dataPort.item as item
+        where ipAddress.id = :ipId and item.itemId = :itemId ]]>
+  </query>
+  <query name="IPAddress.findTeamForIpAndDataPort">
+    <![CDATA[select team from IPTeaming team
+        inner join team.dataPort as dataPort
+        inner join team.ipAddress as ipAddress
+        where ipAddress.id = :ipId and dataPort.portId = :dataPortId ]]>
+  </query>
+  <query name="IPAddress.findTeamForDataPort">
+    <![CDATA[select team from IPTeaming team
+        inner join team.dataPort as dataPort
+        where dataPort.portId = :dataPortId ]]>
+  </query>
+
+  <query name="IPAddress.findTeamForItem">
+    <![CDATA[select team from IPTeaming team
+        inner join team.dataPort as dataPort
+        inner join dataPort.item as item
+        where item.itemId = :itemId ]]>
+  </query>
+
+  <sql-query name="IPAddress.findAllUsedIpAddressesInSubnet" callable="false">
+    <return-scalar column="ipaddress" type="string"/>
+	select distinct p.ipaddress from tblipaddresses p
+	where p.ipaddress is not null and p.networkid=:subnetId order by ipaddress asc
+  </sql-query>
+
+  <sql-query name="IPAddress.findAllTeamedIpAddressesInLocation" callable="false">
+    <return-scalar column="ipaddress" type="string"/>
+	select p.ipaddress from dct_items it
+	    left join dct_ports_data d on it.item_id = d.item_id
+	    left join tblipteaming t on d.port_data_id = t.portid
+	    left join tblipaddresses p on t.ipaddressid = p.id
+	where p.id is not null and it.location_id=:locationId
+	group by p.ipaddress having count(*) > 1
+  </sql-query>
+                  
+  <sql-query name="IPAddress.findAllGatewaysInSubnet" callable="false">
+    <return-scalar column="gateway" type="string"/>
+	select distinct p.gateway from dct_items it
+	    left join dct_ports_data d on it.item_id = d.item_id
+	    left join tblipteaming t on d.port_data_id = t.portid
+	    left join tblipaddresses p on t.ipaddressid = p.id
+	    left join tblnetworks n on p.networkid = n.id
+	    left join dct_lku_data l on p.domainid=l.lku_id
+	    left join tlksnetmasks m on p.maskid = m.id
+	where p.id is not null and it.location_id=:locationId and 
+		p.gateway is not null and n.subnet=:subnet
+  </sql-query>
+
+  <query name="Networks.getAllNetworksForLocation">
+	<![CDATA[select n from Networks n
+	    inner join n.dataCenterLocation l
+	    where l.dataCenterLocationId = :locationId
+	]]>
+  </query>
+             
+  <query name="Networks.getNetworkByIpAndLocation">
+	<![CDATA[select n from Networks n
+	    where id=(dc_getnetworkidforipaddress(:ipAddress,:locationId))
+	]]>
+  </query>
+             
+  <query name="IPAddress.findNonManagedIpAddress">
+    <![CDATA[select ip from IPAddressDetails ip
+    where ip.ipAddress = :ipAddress and ip.networkId = null ]]>
+  </query>
+
+  <query name="IPAddress.findNonManagedGateway">
+    <![CDATA[select ip from IPAddressDetails ip
+    where ip.gateway = :gateway and ip.networkId = null ]]>
+  </query>
+
+  <sql-query name="IPAddress.findAllProxyIDsForIpAndLocation" callable="false">
+    <return-scalar column="grouping_number" type="string"/>
+        select it.grouping_number from dct_items it
+            left join dct_ports_data d on it.item_id = d.item_id
+            left join tblipteaming t on d.port_data_id = t.portid
+            left join tblipaddresses p on t.ipaddressid = p.id
+        where p.ipaddress=:ipAddress and it.location_id=:locationId
+  </sql-query>
+
+  <sql-query name="IPAddress.findAllIpAddressesInLocation" callable="false">
+    <return-scalar column="ipaddress" type="string"/>
+	select distinct p.ipaddress from dct_items it
+            left join dct_ports_data d on it.item_id = d.item_id
+            left join tblipteaming t on d.port_data_id = t.portid
+            left join tblipaddresses p on t.ipaddressid = p.id
+        where it.location_id=:locationId and d.port_data_id!=:excludeDataPortId
+  </sql-query>
+</hibernate-mapping>

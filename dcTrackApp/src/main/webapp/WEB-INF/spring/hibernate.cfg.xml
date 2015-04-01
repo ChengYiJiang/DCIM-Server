@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+           http://www.springframework.org/schema/jee 
+           http://www.springframework.org/schema/jee/spring-jee-3.1.xsd
+           http://www.springframework.org/schema/tx 
+           http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+
+		<property name="configLocation" value="/WEB-INF/spring/hibernate-properties.xml"></property>
+
+		<property name="mappingResources" > 
+			<list>
+				<value>mappings/functions.xml</value> 
+				<value>mappings/FieldsDaoFunctions.xml</value>
+				<value>mappings/ItemDaoFunctions.xml</value>
+				<value>mappings/LocationDaoFunctions.xml</value>
+				<value>mappings/SystemLkpDaoFunctions.xml</value>
+				<value>mappings/UserLkpDaoFunctions.xml</value>
+				<value>mappings/PowerPortDaoFunctions.xml</value>
+				<value>mappings/DataPortDaoFunctions.xml</value>
+				<value>mappings/SensorPortDaoFunctions.xml</value>
+				<value>mappings/PowerCircuitDaoFunctions.xml</value>
+				<value>mappings/ConnectorLkuDaoFunctions.xml</value>
+				<value>mappings/ExternalTicketDaoFunctions.xml</value>
+				<value>mappings/NetworkDaoFunctions.xml</value>
+				<value>mappings/CabinetMetricDaoFunctions.xml</value>
+				<value>mappings/ReportsDAOFunctions.xml</value>
+				<value>mappings/CustomFieldsFinderDaoFunctions.xml</value>
+			</list> 
+		</property>
+		
+		<property name="annotatedClasses">
+			<list>
+				<value>com.raritan.tdz.domain.DataCenterLocationDetails</value>
+				<value>com.raritan.tdz.domain.DataCenterLocaleDetails</value>
+				<value>com.raritan.tdz.domain.LkuData</value>
+				<value>com.raritan.tdz.domain.LksData</value>
+				<value>com.raritan.tdz.domain.ConnectorLkuData</value>
+				<value>com.raritan.tdz.domain.ModelMfrDetails</value>
+				<value>com.raritan.tdz.domain.ModelDetails</value>
+				<value>com.raritan.tdz.domain.CabinetItem</value>
+				<value>com.raritan.tdz.domain.ItItem</value>
+				<value>com.raritan.tdz.domain.MeItem</value>
+				<value>com.raritan.tdz.domain.Item</value>
+				<value>com.raritan.tdz.domain.ItemCollaboration</value>
+				<value>com.raritan.tdz.domain.ItemServiceDetails</value>
+				<value>com.raritan.tdz.domain.UserDetails</value>
+				<value>com.raritan.tdz.domain.UserGroupDetails</value>
+				<value>com.raritan.tdz.domain.UserSession</value>
+				<value>com.raritan.tdz.domain.ItemGroupCategory</value>
+				<value>com.raritan.tdz.domain.ItemGroup</value>
+				<value>com.raritan.tdz.domain.ItemGroupMapping</value>				
+				<value>com.raritan.tdz.domain.CustomItemDetails</value>
+				<value>com.raritan.tdz.domain.PowerPort</value>
+				<value>com.raritan.tdz.domain.SensorPort</value>
+				<value>com.raritan.tdz.domain.ConnectionCord</value>
+				<value>com.raritan.tdz.domain.PowerConnection</value>
+				<value>com.raritan.tdz.domain.PowerCircuit</value>
+				<value>com.raritan.tdz.domain.DataPort</value>
+				<value>com.raritan.tdz.domain.DataConnection</value>
+				<value>com.raritan.tdz.domain.DataCircuit</value>				
+				<value>com.raritan.tdz.domain.Request</value>
+				<value>com.raritan.tdz.domain.RequestHistory</value>
+				<value>com.raritan.tdz.domain.RequestPointer</value>
+				<value>com.raritan.tdz.domain.WorkOrder</value>
+				<value>com.raritan.tdz.domain.WorkOrdersCompleted</value>		
+				<value>com.raritan.tdz.domain.WorkOrderListData</value>	
+				<value>com.raritan.tdz.domain.HstCabinetUsage</value>
+				<value>com.raritan.tdz.domain.HstPortsData</value>
+				<value>com.raritan.tdz.domain.HstPortsDataDetails</value>
+				<value>com.raritan.tdz.domain.HstPortsPower</value>
+				<value>com.raritan.tdz.domain.HstPortsPowerDetails</value>
+				<value>com.raritan.tdz.domain.Reservations</value>
+				<value>com.raritan.tdz.domain.ReservationDetails</value>
+				<value>com.raritan.tdz.domain.Tickets</value>
+				<value>com.raritan.tdz.domain.TicketFields</value>
+				<value>com.raritan.tdz.domain.TicketPortsData</value>
+				<value>com.raritan.tdz.domain.TicketPortsPower</value>
+				<value>com.raritan.tdz.domain.UserInfo</value>
+				<value>com.raritan.tdz.domain.ModelPorts</value>
+				<value>com.raritan.tdz.domain.ConnectorCompat</value>
+				<value>com.raritan.tdz.domain.ISearchData</value>
+				<!-- TODO : VBA handles 
+				<value>com.raritan.tdz.lks.MibOidToField</value> 
+				<value>com.raritan.tdz.lks.Mibs</value> 
+				<value>com.raritan.tdz.lks.MibToModel</value> -->
+				<value>com.raritan.tdz.domain.DctrackUserUUIDMappings</value>
+				<value>com.raritan.tdz.domain.cmn.Users</value>
+				<value>com.raritan.tdz.domain.cmn.UserGroups</value>
+				<value>com.raritan.tdz.domain.CircuitViewData</value>
+				<value>com.raritan.tdz.events.domain.Event</value>
+				<value>com.raritan.tdz.events.domain.EventParam</value>
+				<value>com.raritan.tdz.domain.ApplicationSetting</value>
+				<value>com.raritan.tdz.domain.ConnectionToMove</value>
+				<value>com.raritan.tdz.domain.ItemViewData</value>		
+				<value>com.raritan.tdz.vbjavabridge.domain.LNEvent</value>
+				<value>com.raritan.tdz.domain.CircuitItemViewData</value>
+				<value>com.raritan.tdz.domain.ItemSNMP</value>
+
+				<!-- Port ip address and net mask -->
+				<value>com.raritan.tdz.domain.IPAddress</value>
+				<value>com.raritan.tdz.ip.domain.IPAddressDetails</value>
+				<value>com.raritan.tdz.ip.domain.Networks</value>
+				<value>com.raritan.tdz.ip.domain.IPTeaming</value>
+				<value>com.raritan.tdz.ip.domain.NetMask</value>				
+				<value>com.raritan.tdz.piq.domain.ProbePDULink</value>
+				
+				<value>com.raritan.tdz.domain.ModelChassis</value>
+				<value>com.raritan.tdz.domain.ModelChassisSlot</value>
+				
+				<value>com.raritan.tdz.field.domain.Fields</value>
+				<value>com.raritan.tdz.field.domain.FieldDetails</value>
+
+				<value>com.raritan.tdz.domain.LicenseDetails</value>	
+				<value>com.raritan.tdz.audit.domain.AuditTrail</value>
+				<value>com.raritan.tdz.page.domain.PglistSettings</value>	
+				<!-- Model Port mapping -->
+				<value>com.raritan.tdz.domain.ModelDataPorts</value>
+				<value>com.raritan.tdz.domain.ModelPowerPorts</value>
+				
+				<value>com.raritan.tdz.floormaps.domain.ReportThresholds</value>
+				
+				<!-- Port Diagnostics --> 
+				<value>com.raritan.tdz.diagnostics.domain.PortDiagnostics</value>
+				<value>com.raritan.tdz.diagnostics.domain.CircuitDiagnostics</value>
+				
+				<!-- Port Move -->
+				<value>com.raritan.tdz.domain.PowerPortMove</value>
+				<value>com.raritan.tdz.domain.DataPortMove</value>
+
+				<value>com.raritan.tdz.reports.domain.Report</value>
+				<value>com.raritan.tdz.reports.domain.ReportConfig</value>
+				<value>com.raritan.tdz.reports.domain.ReportParameter</value>
+				<value>com.raritan.tdz.reports.domain.ReportConfigDetails</value>				
+			</list>
+		</property>
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+		<!--<property name="entityInterceptor">
+			<ref bean="hibernateInterceptor" />
+		</property>-->
+	</bean>
+
+	<!--<bean id="hibernateInterceptor" class="com.raritan.tdz.interceptors.HibernateInterceptor">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+	</bean>-->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+
+
+</beans>

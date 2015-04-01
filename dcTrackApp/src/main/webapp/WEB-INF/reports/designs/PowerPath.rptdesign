@@ -1,0 +1,2056 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 4.2.2.v201301221637 Build &lt;4.2.2.v20130206-1509></property>
+    <simple-property-list name="includeResource">
+        <value>../locale/report_en_US</value>
+    </simple-property-list>
+    <property name="units">in</property>
+    <property name="theme">three_dot_0.defaultTheme</property>
+    <text-property name="displayName">3dot0 Look and Feel</text-property>
+    <property name="eventHandlerClass">com.raritan.tdz.reports.eventhandler.ReportEH</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <list-property name="libraries">
+        <structure>
+            <property name="fileName">three_dot_0.rptlibrary</property>
+            <property name="namespace">three_dot_0</property>
+        </structure>
+    </list-property>
+    <parameters>
+        <scalar-parameter name="SiteCode" id="216" extends="three_dot_0.SiteCode"/>
+        <scalar-parameter name="Orientation" id="217" extends="three_dot_0.Orientation"/>
+        <scalar-parameter name="cabinetIdList" id="269" extends="three_dot_0.cabinetIdList"/>
+    </parameters>
+    <data-sets>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="PowerPath" id="1121"
+ extends="three_dot_0.PowerPath"/>
+    </data-sets>
+    <page-setup>
+        <simple-master-page name="dcTrackMaster" id="215" extends="three_dot_0.dcTrackMaster">
+            <overridden-values>
+                <ref-entry baseId="136" name="NewGrid" id="136"/>
+                <ref-entry baseId="137" id="137"/>
+                <ref-entry baseId="138" id="138"/>
+                <ref-entry baseId="139" id="139"/>
+                <ref-entry baseId="140" id="140"/>
+                <ref-entry baseId="141" id="141"/>
+                <ref-entry baseId="148" name="NewLabel" id="148">
+                    <property name="textID">PowerPath</property>
+                </ref-entry>
+                <ref-entry baseId="142" id="142"/>
+                <ref-entry baseId="146" name="NewImage" id="146"/>
+                <ref-entry baseId="143" id="143"/>
+                <ref-entry baseId="147" name="NewImage1" id="147"/>
+                <ref-entry baseId="149" name="NewGrid1" id="149"/>
+                <ref-entry baseId="150" id="150"/>
+                <ref-entry baseId="151" id="151"/>
+                <ref-entry baseId="152" id="152"/>
+                <ref-entry baseId="153" id="153"/>
+                <ref-entry baseId="154" id="154"/>
+                <ref-entry baseId="175" name="NewGrid3" id="175"/>
+                <ref-entry baseId="176" id="176"/>
+                <ref-entry baseId="177" id="177"/>
+                <ref-entry baseId="178" id="178"/>
+                <ref-entry baseId="181" name="NewText2" id="181"/>
+                <ref-entry baseId="179" id="179"/>
+                <ref-entry baseId="180" id="180"/>
+                <ref-entry baseId="183" name="NewText21" id="183"/>
+                <ref-entry baseId="155" id="155"/>
+                <ref-entry baseId="157" name="NewGrid2" id="157"/>
+                <ref-entry baseId="158" id="158"/>
+                <ref-entry baseId="159" id="159"/>
+                <ref-entry baseId="160" id="160"/>
+                <ref-entry baseId="161" id="161"/>
+                <ref-entry baseId="162" id="162"/>
+                <ref-entry baseId="163" name="NewAutoText" id="163"/>
+                <ref-entry baseId="164" id="164"/>
+                <ref-entry baseId="165" name="NewText" id="165"/>
+                <ref-entry baseId="166" id="166"/>
+                <ref-entry baseId="167" name="NewAutoText1" id="167"/>
+                <ref-entry baseId="156" id="156"/>
+                <ref-entry baseId="168" name="NewText1" id="168"/>
+            </overridden-values>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <table id="270">
+            <property name="dataSet">PowerPath</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">item_id</property>
+                    <expression name="expression">dataSetRow["item_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">item_name</property>
+                    <expression name="expression">dataSetRow["item_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">parent_item_name</property>
+                    <expression name="expression">dataSetRow["parent_item_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">item_port_name</property>
+                    <expression name="expression">dataSetRow["item_port_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">amps_actual</property>
+                    <expression name="expression">dataSetRow["amps_actual"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">amps_budget</property>
+                    <expression name="expression">dataSetRow["amps_budget"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">amps_actual_a</property>
+                    <expression name="expression">dataSetRow["amps_actual_a"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">amps_actual_b</property>
+                    <expression name="expression">dataSetRow["amps_actual_b"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">amps_actual_c</property>
+                    <expression name="expression">dataSetRow["amps_actual_c"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">watts_budget</property>
+                    <expression name="expression">dataSetRow["watts_budget"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">power_factor</property>
+                    <expression name="expression">dataSetRow["power_factor"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">watts_actual</property>
+                    <expression name="expression">dataSetRow["watts_actual"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">breaker_poles</property>
+                    <expression name="expression">dataSetRow["breaker_poles"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">breaker_poles_name</property>
+                    <expression name="expression">dataSetRow["breaker_poles_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">aggregation</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Breaker</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["watts_actual"]/1000</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">aggregation_1</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>BP</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["watts_budget"] ? row["watts_budget"]/1000 : 0</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">aggregation_2</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>PDU</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["watts_budget"] ? row["watts_budget"]/1000 : 0</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">aggregation_3</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>UPS</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["watts_budget"] ? row["watts_budget"]/1000 : 0</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">aggregation_4</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Breaker</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["watts_budget"] ? row["watts_budget"]/1000/row["power_factor"]:0</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">aggregation_5</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>BP</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["watts_budget"] ? row["watts_budget"]/1000/row["power_factor"]:0</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">aggregation_6</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>PDU</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["watts_budget"] ? row["watts_budget"]/1000/row["power_factor"]:0</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">aggregation_7</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>UPS</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["watts_budget"] ? row["watts_budget"]/1000/row["power_factor"]:0</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">a</property>
+                    <expression name="expression">dataSetRow["a"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">b</property>
+                    <expression name="expression">dataSetRow["b"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">c</property>
+                    <expression name="expression">dataSetRow["c"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">ab</property>
+                    <expression name="expression">dataSetRow["ab"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">bc</property>
+                    <expression name="expression">dataSetRow["bc"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">ca</property>
+                    <expression name="expression">dataSetRow["ca"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">sumA</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Breaker</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["a"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">sumB</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Breaker</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["b"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">sumC</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Breaker</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["c"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">sumAB</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Breaker</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["ab"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">sumBC</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Breaker</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["bc"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">sumCA</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Breaker</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["ca"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">pbSumA</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>BP</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["a"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">pbSumB</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>BP</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["b"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">pbSumC</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>BP</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["c"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">pbSumAB</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>BP</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["ab"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">pbSumBC</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>BP</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["bc"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">pbSumCA</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>BP</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["ca"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">pduSumA</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>PDU</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["a"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">pduSumB</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>PDU</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["b"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">pduSumC</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>PDU</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["c"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">pduSumAB</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>PDU</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["ab"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">pduSumBC</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>PDU</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["bc"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">pduSumCA</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>PDU</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["ca"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">uSumA</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>UPS</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["a"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">uSumB</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>UPS</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["b"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">uSumC</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>UPS</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["c"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">uSumAB</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>UPS</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["ab"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">uSumBC</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>UPS</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["bc"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">uSumCA</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>UPS</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["ca"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">rSumA</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Room</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["a"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">rSumB</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Room</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["b"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">rSumC</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Room</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["c"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">rSumAB</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Room</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["ab"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">rSumBC</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Room</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["bc"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">rSumCA</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Room</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["ca"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">aggregation_8</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Breaker</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["watts_budget"] ? row["watts_budget"]/1000 : 0</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">site</property>
+                    <expression name="expression">dataSetRow["site"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">site_id</property>
+                    <expression name="expression">dataSetRow["site_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">room</property>
+                    <expression name="expression">dataSetRow["room"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">room_id</property>
+                    <expression name="expression">dataSetRow["room_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">Aggregation</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Room</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["watts_actual"]/1000</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">Aggregation_1</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Room</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["watts_actual"]/1000/row["power_factor"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">breaker_volts</property>
+                    <expression name="expression">dataSetRow["breaker_volts"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">breaker_panel_item_id</property>
+                    <expression name="expression">dataSetRow["breaker_panel_item_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">breaker_panel_item_name</property>
+                    <expression name="expression">dataSetRow["breaker_panel_item_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">breaker_panel_volts</property>
+                    <expression name="expression">dataSetRow["breaker_panel_volts"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">breaker_id</property>
+                    <expression name="expression">dataSetRow["breaker_id"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">breaker_name</property>
+                    <expression name="expression">dataSetRow["breaker_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">parent_item_id</property>
+                    <expression name="expression">dataSetRow["parent_item_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">floorpdu_item_id</property>
+                    <expression name="expression">dataSetRow["floorpdu_item_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">floorpdu_item_name</property>
+                    <expression name="expression">dataSetRow["floorpdu_item_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">floorpdu_volts</property>
+                    <expression name="expression">dataSetRow["floorpdu_volts"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">item_class</property>
+                    <expression name="expression">dataSetRow["item_class"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">model_name</property>
+                    <expression name="expression">dataSetRow["model_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">supply_item_id</property>
+                    <expression name="expression">dataSetRow["supply_item_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">supply_class</property>
+                    <expression name="expression">dataSetRow["supply_class"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">supply_class_code</property>
+                    <expression name="expression">dataSetRow["supply_class_code"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">supply_item_name</property>
+                    <expression name="expression">dataSetRow["supply_item_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">supply_port_name</property>
+                    <expression name="expression">dataSetRow["supply_port_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">supply_port_amps_actual</property>
+                    <expression name="expression">dataSetRow["supply_port_amps_actual"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">supply_connector</property>
+                    <expression name="expression">dataSetRow["supply_connector"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu1_item_id</property>
+                    <expression name="expression">dataSetRow["rpdu1_item_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu1_item_name</property>
+                    <expression name="expression">dataSetRow["rpdu1_item_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu1_input_port_id</property>
+                    <expression name="expression">dataSetRow["rpdu1_input_port_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu1_input_port_name</property>
+                    <expression name="expression">dataSetRow["rpdu1_input_port_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu1_input_port_amps_actual</property>
+                    <expression name="expression">dataSetRow["rpdu1_input_port_amps_actual"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu1_input_port_amps_actual_a</property>
+                    <expression name="expression">dataSetRow["rpdu1_input_port_amps_actual_a"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu1_input_port_amps_actual_b</property>
+                    <expression name="expression">dataSetRow["rpdu1_input_port_amps_actual_b"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu1_input_port_amps_actual_c</property>
+                    <expression name="expression">dataSetRow["rpdu1_input_port_amps_actual_c"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu1_input_port_power_factor</property>
+                    <expression name="expression">dataSetRow["rpdu1_input_port_power_factor"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu1_input_port_volts</property>
+                    <expression name="expression">dataSetRow["rpdu1_input_port_volts"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu2_item_id</property>
+                    <expression name="expression">dataSetRow["rpdu2_item_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu2_item_name</property>
+                    <expression name="expression">dataSetRow["rpdu2_item_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu2_input_port_id</property>
+                    <expression name="expression">dataSetRow["rpdu2_input_port_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu2_input_port_name</property>
+                    <expression name="expression">dataSetRow["rpdu2_input_port_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu2_input_port_amps_actual</property>
+                    <expression name="expression">dataSetRow["rpdu2_input_port_amps_actual"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu2_input_port_amps_actual_a</property>
+                    <expression name="expression">dataSetRow["rpdu2_input_port_amps_actual_a"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu2_input_port_amps_actual_b</property>
+                    <expression name="expression">dataSetRow["rpdu2_input_port_amps_actual_b"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu2_input_port_amps_actual_c</property>
+                    <expression name="expression">dataSetRow["rpdu2_input_port_amps_actual_c"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu2_input_port_power_factor</property>
+                    <expression name="expression">dataSetRow["rpdu2_input_port_power_factor"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu2_input_port_volts</property>
+                    <expression name="expression">dataSetRow["rpdu2_input_port_volts"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">legs_num</property>
+                    <expression name="expression">dataSetRow["legs_num"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">legs_alpha</property>
+                    <expression name="expression">dataSetRow["legs_alpha"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">floorpdu_class</property>
+                    <expression name="expression">dataSetRow["floorpdu_class"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">ups_name</property>
+                    <text-property name="displayName">ups_name</text-property>
+                    <expression name="expression">dataSetRow["ups_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ups_id</property>
+                    <expression name="expression">dataSetRow["ups_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">act_a</property>
+                    <expression name="expression">dataSetRow["act_a"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">act_b</property>
+                    <expression name="expression">dataSetRow["act_b"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">act_c</property>
+                    <expression name="expression">dataSetRow["act_c"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">act_ab</property>
+                    <expression name="expression">dataSetRow["act_ab"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">act_bc</property>
+                    <expression name="expression">dataSetRow["act_bc"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">act_ca</property>
+                    <expression name="expression">dataSetRow["act_ca"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">amps_nameplate</property>
+                    <expression name="expression">dataSetRow["amps_nameplate"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">watts_nameplate</property>
+                    <expression name="expression">dataSetRow["watts_nameplate"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">ups_volts</property>
+                    <expression name="expression">dataSetRow["ups_volts"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">supply_port_amps_nameplate</property>
+                    <expression name="expression">dataSetRow["supply_port_amps_nameplate"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu1_input_port_amps_nameplate</property>
+                    <expression name="expression">dataSetRow["rpdu1_input_port_amps_nameplate"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu2_input_port_amps_nameplate</property>
+                    <expression name="expression">dataSetRow["rpdu2_input_port_amps_nameplate"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">breaker_order</property>
+                    <expression name="expression">dataSetRow["breaker_order"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+            </list-property>
+            <property name="pageBreakInterval">0</property>
+            <list-property name="sort">
+                <structure>
+                    <expression name="key" type="javascript">row["parent_item_name"]</expression>
+                    <property name="direction">asc</property>
+                </structure>
+                <structure>
+                    <expression name="key" type="javascript">row["item_name"]</expression>
+                    <property name="direction">asc</property>
+                </structure>
+            </list-property>
+            <column id="1137">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">true</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="489">
+                <property name="width">10px</property>
+            </column>
+            <column id="534">
+                <property name="width">10px</property>
+            </column>
+            <column id="519">
+                <property name="width">10px</property>
+            </column>
+            <column id="1023">
+                <property name="width">10px</property>
+            </column>
+            <column id="504">
+                <property name="width">10px</property>
+            </column>
+            <column id="474">
+                <property name="width">10px</property>
+            </column>
+            <column id="295"/>
+            <column id="667"/>
+            <column id="296"/>
+            <column id="653"/>
+            <column id="1113"/>
+            <column id="742"/>
+            <column id="297"/>
+            <column id="639"/>
+            <column id="298"/>
+            <column id="299"/>
+            <column id="597"/>
+            <column id="300"/>
+            <column id="611"/>
+            <column id="301"/>
+            <column id="625"/>
+            <group id="333">
+                <property name="groupName">Site</property>
+                <property name="interval">none</property>
+                <property name="sortDirection">asc</property>
+                <expression name="keyExpr" type="javascript">row["site_id"]</expression>
+                <structure name="toc">
+                    <expression name="expressionValue" type="javascript">row["site"]</expression>
+                </structure>
+                <property name="repeatHeader">true</property>
+                <property name="hideDetail">false</property>
+                <property name="pageBreakAfter">auto</property>
+                <property name="pageBreakBefore">auto</property>
+                <property name="pageBreakInside">auto</property>
+                <list-property name="sort">
+                    <structure>
+                        <expression name="key" type="javascript">row["site"]</expression>
+                        <property name="direction">asc</property>
+                    </structure>
+                </list-property>
+                <header>
+                    <row id="668">
+                        <cell id="1127">
+                            <label id="754">
+                                <text-property name="text">dummy/hidden</text-property>
+                            </label>
+                        </cell>
+                        <cell id="669"/>
+                        <cell id="670"/>
+                        <cell id="671"/>
+                        <cell id="1013"/>
+                        <cell id="672"/>
+                        <cell id="673"/>
+                        <cell id="674"/>
+                        <cell id="675"/>
+                        <cell id="676"/>
+                        <cell id="677"/>
+                        <cell id="1103"/>
+                        <cell id="734">
+                            <property name="textAlign">center</property>
+                        </cell>
+                        <cell id="678">
+                            <property name="colSpan">3</property>
+                            <property name="rowSpan">1</property>
+                            <property name="textAlign">center</property>
+                            <label id="688">
+                                <property name="fontWeight">bold</property>
+                                <property name="textAlign">center</property>
+                                <text-property name="text" key="PhasesAmps"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="682"/>
+                        <cell id="683"/>
+                        <cell id="684"/>
+                        <cell id="685"/>
+                        <cell id="686"/>
+                        <cell id="687"/>
+                    </row>
+                    <row id="334">
+                        <cell id="1128"/>
+                        <cell id="476">
+                            <property name="colSpan">8</property>
+                            <property name="rowSpan">1</property>
+                            <label id="552">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="SiteCode"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="551">
+                            <property name="colSpan">4</property>
+                            <property name="rowSpan">1</property>
+                            <data id="541">
+                                <property name="resultSetColumn">site</property>
+                            </data>
+                        </cell>
+                        <cell id="691">
+                            <property name="style">phaseACell</property>
+                            <property name="textAlign">center</property>
+                            <label id="702">
+                                <text-property name="text">A</text-property>
+                            </label>
+                        </cell>
+                        <cell id="626">
+                            <property name="style">phaseBCell</property>
+                            <property name="textAlign">center</property>
+                            <label id="703">
+                                <text-property name="text">B</text-property>
+                            </label>
+                        </cell>
+                        <cell id="338">
+                            <property name="style">phaseCCell</property>
+                            <property name="textAlign">center</property>
+                            <label id="704">
+                                <text-property name="text">C</text-property>
+                            </label>
+                        </cell>
+                        <cell id="339"/>
+                        <cell id="584"/>
+                        <cell id="340"/>
+                        <cell id="598"/>
+                        <cell id="341"/>
+                        <cell id="612"/>
+                    </row>
+                </header>
+            </group>
+            <group id="353">
+                <property name="groupName">UPS</property>
+                <property name="interval">none</property>
+                <property name="sortDirection">asc</property>
+                <expression name="keyExpr" type="javascript">row["ups_id"]</expression>
+                <structure name="toc">
+                    <expression name="expressionValue" type="javascript">row["ups_name"]</expression>
+                </structure>
+                <property name="repeatHeader">true</property>
+                <property name="hideDetail">false</property>
+                <property name="pageBreakAfter">auto</property>
+                <property name="pageBreakBefore">auto</property>
+                <property name="pageBreakInside">auto</property>
+                <list-property name="sort">
+                    <structure>
+                        <expression name="key" type="javascript">row["ups_name"]</expression>
+                        <property name="direction">asc</property>
+                    </structure>
+                </list-property>
+                <header>
+                    <row id="354">
+                        <cell id="1129">
+                            <grid id="826">
+                                <column id="827"/>
+                                <row id="828">
+                                    <cell id="829">
+                                        <data id="830">
+                                            <property name="resultSetColumn">uSumA</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="831">
+                                    <cell id="832">
+                                        <data id="833">
+                                            <property name="resultSetColumn">uSumB</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="834">
+                                    <cell id="835">
+                                        <data id="836">
+                                            <property name="resultSetColumn">uSumC</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="837">
+                                    <cell id="838">
+                                        <data id="839">
+                                            <property name="resultSetColumn">uSumAB</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="840">
+                                    <cell id="841">
+                                        <data id="842">
+                                            <property name="resultSetColumn">uSumBC</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="843">
+                                    <cell id="844">
+                                        <data id="845">
+                                            <property name="resultSetColumn">uSumCA</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                            </grid>
+                        </cell>
+                        <cell id="477"/>
+                        <cell id="522">
+                            <property name="colSpan">7</property>
+                            <property name="rowSpan">1</property>
+                            <label id="558">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="UPS Bank"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="557">
+                            <property name="colSpan">4</property>
+                            <property name="rowSpan">1</property>
+                            <data id="1122">
+                                <property name="resultSetColumn">ups_name</property>
+                            </data>
+                        </cell>
+                        <cell id="695">
+                            <property name="textAlign">center</property>
+                            <text-data id="846">
+                                <expression name="valueExpr">calcAmpsA(row["uSumA"] , row["uSumAB"] , row["uSumCA"], row["breaker_panel_volts"]/row["ups_volts"])</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                        <cell id="627">
+                            <property name="textAlign">center</property>
+                            <text-data id="847">
+                                <expression name="valueExpr">calcAmpsB(row["uSumB"] , row["uSumBC"] , row["uSumAB"], row["breaker_panel_volts"]/row["ups_volts"])</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                        <cell id="358">
+                            <property name="textAlign">center</property>
+                            <text-data id="848">
+                                <expression name="valueExpr">calcAmpsC(row["uSumC"] , row["uSumCA"] , row["uSumBC"], row["breaker_panel_volts"]/row["ups_volts"])</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                        <cell id="359">
+                            <property name="textAlign">right</property>
+                            <label id="706">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="kW"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="585">
+                            <data id="724">
+                                <structure name="numberFormat">
+                                    <property name="category">Fixed</property>
+                                    <property name="pattern">#,##0.000</property>
+                                </structure>
+                                <property name="resultSetColumn">aggregation_3</property>
+                            </data>
+                        </cell>
+                        <cell id="360">
+                            <property name="textAlign">right</property>
+                            <label id="710">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="kVA"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="599">
+                            <data id="733">
+                                <structure name="numberFormat">
+                                    <property name="category">Fixed</property>
+                                    <property name="pattern">#,##0.000</property>
+                                </structure>
+                                <property name="resultSetColumn">aggregation_7</property>
+                            </data>
+                        </cell>
+                        <cell id="361">
+                            <property name="textAlign">right</property>
+                            <label id="714">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="Volts"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="613">
+                            <data id="1126">
+                                <property name="resultSetColumn">ups_volts</property>
+                            </data>
+                        </cell>
+                    </row>
+                </header>
+            </group>
+            <group id="968">
+                <property name="groupName">Room</property>
+                <property name="interval">none</property>
+                <property name="sortDirection">asc</property>
+                <expression name="keyExpr" type="javascript">row["room_id"]</expression>
+                <structure name="toc">
+                    <expression name="expressionValue" type="javascript">row["room"]</expression>
+                </structure>
+                <property name="repeatHeader">true</property>
+                <property name="hideDetail">false</property>
+                <property name="pageBreakAfter">auto</property>
+                <property name="pageBreakBefore">auto</property>
+                <property name="pageBreakInside">auto</property>
+                <list-property name="sort">
+                    <structure>
+                        <expression name="key" type="javascript">row["room"]</expression>
+                        <property name="direction">asc</property>
+                    </structure>
+                </list-property>
+                <header>
+                    <row id="969">
+                        <cell id="1130">
+                            <data id="1140">
+                                <property name="resultSetColumn">room_id</property>
+                            </data>
+                        </cell>
+                        <cell id="970"/>
+                        <cell id="971"/>
+                        <cell id="972">
+                            <property name="colSpan">6</property>
+                            <property name="rowSpan">1</property>
+                            <label id="1024">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="Room"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="977">
+                            <property name="colSpan">4</property>
+                            <property name="rowSpan">1</property>
+                            <data id="1025">
+                                <property name="resultSetColumn">room</property>
+                            </data>
+                        </cell>
+                        <cell id="981">
+                            <property name="textAlign">center</property>
+                        </cell>
+                        <cell id="982">
+                            <property name="textAlign">center</property>
+                        </cell>
+                        <cell id="983">
+                            <property name="textAlign">center</property>
+                        </cell>
+                        <cell id="984"/>
+                        <cell id="985"/>
+                        <cell id="986"/>
+                        <cell id="987"/>
+                        <cell id="988"/>
+                        <cell id="989"/>
+                    </row>
+                </header>
+                <footer>
+                    <row id="990">
+                        <cell id="1136"/>
+                        <cell id="991"/>
+                        <cell id="992"/>
+                        <cell id="993"/>
+                        <cell id="1022"/>
+                        <cell id="994"/>
+                        <cell id="995"/>
+                        <cell id="996"/>
+                        <cell id="997"/>
+                        <cell id="998"/>
+                        <cell id="999"/>
+                        <cell id="1112"/>
+                        <cell id="1000"/>
+                        <cell id="1002"/>
+                        <cell id="1003"/>
+                        <cell id="1004"/>
+                        <cell id="1005"/>
+                        <cell id="1006"/>
+                        <cell id="1007"/>
+                        <cell id="1008"/>
+                        <cell id="1009"/>
+                        <cell id="1010"/>
+                    </row>
+                </footer>
+            </group>
+            <group id="373">
+                <property name="groupName">PDU</property>
+                <property name="interval">none</property>
+                <property name="sortDirection">asc</property>
+                <expression name="keyExpr" type="javascript">row["floorpdu_item_id"]</expression>
+                <structure name="toc">
+                    <expression name="expressionValue" type="javascript">row["floorpdu_item_name"]</expression>
+                </structure>
+                <property name="repeatHeader">true</property>
+                <property name="hideDetail">false</property>
+                <property name="pageBreakAfter">auto</property>
+                <property name="pageBreakBefore">auto</property>
+                <property name="pageBreakInside">auto</property>
+                <list-property name="sort">
+                    <structure>
+                        <expression name="key" type="javascript">row["floorpdu_item_name"]</expression>
+                        <property name="direction">asc</property>
+                    </structure>
+                </list-property>
+                <header>
+                    <row id="374">
+                        <cell id="1131">
+                            <grid id="803">
+                                <column id="804"/>
+                                <row id="805">
+                                    <cell id="806">
+                                        <data id="817">
+                                            <property name="resultSetColumn">pduSumA</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="807">
+                                    <cell id="808">
+                                        <data id="818">
+                                            <property name="resultSetColumn">pduSumB</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="809">
+                                    <cell id="810">
+                                        <data id="819">
+                                            <property name="resultSetColumn">pduSumC</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="811">
+                                    <cell id="812">
+                                        <data id="820">
+                                            <property name="resultSetColumn">pduSumAB</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="813">
+                                    <cell id="814">
+                                        <data id="821">
+                                            <property name="resultSetColumn">pduSumBC</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="815">
+                                    <cell id="816">
+                                        <data id="822">
+                                            <property name="resultSetColumn">pduSumCA</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                            </grid>
+                        </cell>
+                        <cell id="478"/>
+                        <cell id="523"/>
+                        <cell id="508">
+                            <property name="colSpan">1</property>
+                            <property name="rowSpan">1</property>
+                        </cell>
+                        <cell id="1026">
+                            <property name="colSpan">5</property>
+                            <property name="rowSpan">1</property>
+                            <label id="563">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="Floor PDU"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="562">
+                            <property name="colSpan">4</property>
+                            <property name="rowSpan">1</property>
+                            <data id="543">
+                                <property name="resultSetColumn">floorpdu_item_name</property>
+                            </data>
+                        </cell>
+                        <cell id="693">
+                            <property name="textAlign">center</property>
+                            <text-data id="823">
+                                <expression name="valueExpr">calcAmpsA(row["pduSumA"] , row["pduSumAB"] , row["pduSumCA"], row["breaker_panel_volts"]/row["floorpdu_volts"])</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                        <cell id="628">
+                            <property name="textAlign">center</property>
+                            <text-data id="824">
+                                <expression name="valueExpr">calcAmpsB(row["pduSumB"] , row["pduSumBC"] , row["pduSumAB"], row["breaker_panel_volts"]/row["floorpdu_volts"])</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                        <cell id="378">
+                            <property name="textAlign">center</property>
+                            <text-data id="825">
+                                <expression name="valueExpr">calcAmpsC(row["pduSumC"] , row["pduSumCA"] , row["pduSumBC"], row["breaker_panel_volts"]/row["floorpdu_volts"])</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                        <cell id="379">
+                            <property name="textAlign">right</property>
+                            <label id="707">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="kW"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="586">
+                            <data id="723">
+                                <structure name="numberFormat">
+                                    <property name="category">Fixed</property>
+                                    <property name="pattern">#,##0.000</property>
+                                </structure>
+                                <property name="resultSetColumn">aggregation_2</property>
+                            </data>
+                        </cell>
+                        <cell id="380">
+                            <property name="textAlign">right</property>
+                            <label id="711">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="kVA"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="600">
+                            <data id="732">
+                                <structure name="numberFormat">
+                                    <property name="category">Fixed</property>
+                                    <property name="pattern">#,##0.000</property>
+                                </structure>
+                                <property name="resultSetColumn">aggregation_6</property>
+                            </data>
+                        </cell>
+                        <cell id="381">
+                            <property name="textAlign">right</property>
+                            <label id="715">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="Volts"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="614">
+                            <data id="1120">
+                                <property name="resultSetColumn">floorpdu_volts</property>
+                            </data>
+                        </cell>
+                    </row>
+                </header>
+            </group>
+            <group id="391">
+                <property name="groupName">BP</property>
+                <property name="interval">none</property>
+                <property name="sortDirection">asc</property>
+                <expression name="keyExpr" type="javascript">row["breaker_panel_item_id"]</expression>
+                <structure name="toc">
+                    <expression name="expressionValue" type="javascript">row["breaker_panel_item_name"]</expression>
+                </structure>
+                <property name="repeatHeader">true</property>
+                <property name="hideDetail">false</property>
+                <property name="pageBreakAfter">auto</property>
+                <property name="pageBreakBefore">auto</property>
+                <property name="pageBreakInside">auto</property>
+                <list-property name="sort">
+                    <structure>
+                        <expression name="key" type="javascript">row["breaker_panel_item_name"]</expression>
+                        <property name="direction">asc</property>
+                    </structure>
+                </list-property>
+                <header>
+                    <row id="392">
+                        <cell id="1132">
+                            <grid id="779">
+                                <column id="780"/>
+                                <row id="781">
+                                    <cell id="782">
+                                        <data id="794">
+                                            <property name="resultSetColumn">pbSumA</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="783">
+                                    <cell id="784">
+                                        <data id="795">
+                                            <property name="resultSetColumn">pbSumB</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="785">
+                                    <cell id="786">
+                                        <data id="796">
+                                            <property name="resultSetColumn">pbSumC</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="787">
+                                    <cell id="788">
+                                        <data id="797">
+                                            <property name="resultSetColumn">pbSumAB</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="789">
+                                    <cell id="790">
+                                        <data id="798">
+                                            <property name="resultSetColumn">pbSumBC</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="791">
+                                    <cell id="792">
+                                        <data id="799">
+                                            <property name="resultSetColumn">pbSumCA</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                            </grid>
+                        </cell>
+                        <cell id="479"/>
+                        <cell id="524"/>
+                        <cell id="509"/>
+                        <cell id="1018"/>
+                        <cell id="494">
+                            <property name="colSpan">4</property>
+                            <property name="rowSpan">1</property>
+                            <label id="567">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="BreakerPanel"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="566">
+                            <property name="colSpan">4</property>
+                            <property name="rowSpan">1</property>
+                            <data id="1116">
+                                <property name="resultSetColumn">breaker_panel_item_name</property>
+                            </data>
+                        </cell>
+                        <cell id="697">
+                            <property name="textAlign">center</property>
+                            <text-data id="800">
+                                <expression name="valueExpr">calcAmpsA(row["pbSumA"] , row["pbSumAB"] , row["pbSumCA"])</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                        <cell id="629">
+                            <property name="textAlign">center</property>
+                            <text-data id="801">
+                                <expression name="valueExpr">calcAmpsB(row["pbSumB"] , row["pbSumBC"] , row["pbSumAB"])</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                        <cell id="396">
+                            <property name="textAlign">center</property>
+                            <text-data id="802">
+                                <expression name="valueExpr">calcAmpsC(row["pbSumC"] , row["pbSumCA"] , row["pbSumBC"])</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                        <cell id="397">
+                            <property name="textAlign">right</property>
+                            <label id="708">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="kW"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="587">
+                            <data id="722">
+                                <structure name="numberFormat">
+                                    <property name="category">Fixed</property>
+                                    <property name="pattern">#,##0.000</property>
+                                </structure>
+                                <property name="resultSetColumn">aggregation_1</property>
+                            </data>
+                        </cell>
+                        <cell id="398">
+                            <property name="textAlign">right</property>
+                            <label id="712">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="kVA"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="601">
+                            <data id="731">
+                                <structure name="numberFormat">
+                                    <property name="category">Fixed</property>
+                                    <property name="pattern">#,##0.000</property>
+                                </structure>
+                                <property name="resultSetColumn">aggregation_5</property>
+                            </data>
+                        </cell>
+                        <cell id="399">
+                            <property name="textAlign">right</property>
+                            <label id="716">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="Volts"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="615">
+                            <data id="1119">
+                                <property name="resultSetColumn">breaker_panel_volts</property>
+                            </data>
+                        </cell>
+                    </row>
+                </header>
+            </group>
+            <group id="419">
+                <property name="groupName">Breaker</property>
+                <property name="interval">none</property>
+                <property name="sortDirection">asc</property>
+                <expression name="keyExpr" type="javascript">row["breaker_id"]</expression>
+                <structure name="toc">
+                    <expression name="expressionValue" type="javascript">row["breaker_name"]</expression>
+                </structure>
+                <property name="repeatHeader">true</property>
+                <property name="hideDetail">false</property>
+                <property name="pageBreakAfter">auto</property>
+                <property name="pageBreakBefore">auto</property>
+                <property name="pageBreakInside">auto</property>
+                <list-property name="sort">
+                    <structure>
+                        <expression name="key" type="javascript">row["breaker_order"]</expression>
+                        <property name="direction">asc</property>
+                    </structure>
+                </list-property>
+                <header>
+                    <row id="420">
+                        <cell id="1133">
+                            <grid id="755">
+                                <column id="756"/>
+                                <row id="757">
+                                    <cell id="758">
+                                        <data id="770">
+                                            <property name="resultSetColumn">sumA</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="759">
+                                    <cell id="760">
+                                        <data id="771">
+                                            <property name="resultSetColumn">sumB</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="761">
+                                    <cell id="762">
+                                        <data id="772">
+                                            <property name="resultSetColumn">sumC</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="763">
+                                    <cell id="764">
+                                        <data id="773">
+                                            <property name="resultSetColumn">sumAB</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="765">
+                                    <cell id="766">
+                                        <data id="774">
+                                            <property name="resultSetColumn">sumBC</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="767">
+                                    <cell id="768">
+                                        <data id="775">
+                                            <property name="resultSetColumn">sumCA</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                            </grid>
+                        </cell>
+                        <cell id="480"/>
+                        <cell id="525"/>
+                        <cell id="510"/>
+                        <cell id="1019"/>
+                        <cell id="495"/>
+                        <cell id="465">
+                            <property name="colSpan">3</property>
+                            <property name="rowSpan">1</property>
+                            <text id="444">
+                                <property name="fontWeight">bold</property>
+                                <property name="contentType">html</property>
+                                <text-property name="content"><![CDATA[<VALUE-OF>reportContext.getMessage(row["breaker_poles_name"], reportContext.getLocale())</VALUE-OF>]]></text-property>
+                            </text>
+                        </cell>
+                        <cell id="569">
+                            <property name="colSpan">4</property>
+                            <property name="rowSpan">1</property>
+                            <data id="1115">
+                                <property name="resultSetColumn">breaker_name</property>
+                            </data>
+                        </cell>
+                        <cell id="699">
+                            <property name="style">phaseACell</property>
+                            <property name="textAlign">center</property>
+                            <text-data id="776">
+                                <expression name="valueExpr">calcAmpsA(row["sumA"] , row["sumAB"] , row["sumCA"])</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                        <cell id="630">
+                            <property name="style">phaseBCell</property>
+                            <property name="textAlign">center</property>
+                            <text-data id="777">
+                                <expression name="valueExpr">calcAmpsB(row["sumB"] , row["sumBC"] , row["sumAB"])</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                        <cell id="424">
+                            <property name="style">phaseCCell</property>
+                            <property name="textAlign">center</property>
+                            <text-data id="778">
+                                <expression name="valueExpr">calcAmpsC(row["sumC"] , row["sumCA"] , row["sumBC"])</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                        <cell id="425">
+                            <property name="textAlign">right</property>
+                            <label id="709">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="kW"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="588">
+                            <data id="861">
+                                <structure name="numberFormat">
+                                    <property name="category">Fixed</property>
+                                    <property name="pattern">#,##0.000</property>
+                                </structure>
+                                <property name="resultSetColumn">aggregation_8</property>
+                            </data>
+                        </cell>
+                        <cell id="426">
+                            <property name="textAlign">right</property>
+                            <label id="713">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="kVA"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="602">
+                            <data id="730">
+                                <structure name="numberFormat">
+                                    <property name="category">Fixed</property>
+                                    <property name="pattern">#,##0.000</property>
+                                </structure>
+                                <property name="resultSetColumn">aggregation_4</property>
+                            </data>
+                        </cell>
+                        <cell id="427">
+                            <property name="textAlign">right</property>
+                            <label id="717">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="Volts"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="616">
+                            <data id="1114">
+                                <property name="resultSetColumn">breaker_volts</property>
+                            </data>
+                        </cell>
+                    </row>
+                    <row id="445">
+                        <property name="style">subTableHeader</property>
+                        <cell id="1134"/>
+                        <cell id="481"/>
+                        <cell id="526"/>
+                        <cell id="511"/>
+                        <cell id="1020"/>
+                        <cell id="496"/>
+                        <cell id="466"/>
+                        <cell id="446">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <label id="453">
+                                <text-property name="text" key="Cabinet"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="447">
+                            <property name="colSpan">3</property>
+                            <property name="rowSpan">1</property>
+                            <label id="454">
+                                <text-property name="text" key="Item"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="1102">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <label id="455">
+                                <text-property name="text" key="Port"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="744">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <label id="456">
+                                <property name="textAlign">center</property>
+                                <text-property name="text" key="BudgetAmps"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="450">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <label id="457">
+                                <property name="textAlign">center</property>
+                                <text-property name="text" key="BudgetWatts"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="451">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <label id="458">
+                                <property name="textAlign">center</property>
+                                <text-property name="text" key="PowerFactor"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="452">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <label id="459">
+                                <property name="textAlign">center</property>
+                                <text-property name="text" key="PhaseLegs"></text-property>
+                            </label>
+                        </cell>
+                    </row>
+                </header>
+            </group>
+            <detail>
+                <row id="279">
+                    <cell id="1135"/>
+                    <cell id="482"/>
+                    <cell id="527"/>
+                    <cell id="512"/>
+                    <cell id="1021"/>
+                    <cell id="497"/>
+                    <cell id="467"/>
+                    <cell id="280">
+                        <property name="colSpan">2</property>
+                        <property name="rowSpan">1</property>
+                        <data id="303">
+                            <property name="resultSetColumn">parent_item_name</property>
+                        </data>
+                    </cell>
+                    <cell id="281">
+                        <property name="colSpan">3</property>
+                        <property name="rowSpan">1</property>
+                        <data id="1142">
+                            <property name="resultSetColumn">item_name</property>
+                        </data>
+                    </cell>
+                    <cell id="1100">
+                        <property name="colSpan">2</property>
+                        <property name="rowSpan">1</property>
+                        <data id="307">
+                            <property name="resultSetColumn">item_port_name</property>
+                        </data>
+                    </cell>
+                    <cell id="743">
+                        <property name="colSpan">2</property>
+                        <property name="rowSpan">1</property>
+                        <data id="309">
+                            <property name="textAlign">center</property>
+                            <property name="resultSetColumn">amps_budget</property>
+                        </data>
+                    </cell>
+                    <cell id="284">
+                        <property name="colSpan">2</property>
+                        <property name="rowSpan">1</property>
+                        <data id="311">
+                            <property name="textAlign">center</property>
+                            <property name="resultSetColumn">watts_budget</property>
+                        </data>
+                    </cell>
+                    <cell id="285">
+                        <property name="colSpan">2</property>
+                        <property name="rowSpan">1</property>
+                        <data id="313">
+                            <property name="textAlign">center</property>
+                            <property name="resultSetColumn">power_factor</property>
+                        </data>
+                    </cell>
+                    <cell id="286">
+                        <property name="colSpan">2</property>
+                        <property name="rowSpan">1</property>
+                        <text-data id="315">
+                            <property name="textAlign">center</property>
+                            <expression name="valueExpr">row["legs_alpha"]</expression>
+                            <property name="contentType">html</property>
+                        </text-data>
+                    </cell>
+                </row>
+            </detail>
+        </table>
+    </body>
+</report>

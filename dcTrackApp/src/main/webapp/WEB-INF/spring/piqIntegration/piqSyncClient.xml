@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd">
+
+	<import resource="../rest.xml" />
+	
+	<import resource="piqEventsAndAssetStrip.xml"/>
+
+	<!--  TODO: There should be a better way to handle the reconfiguration of all the PIQ Sync clients with new IP/Creds/etc -->
+	<!--  FOR NOW DO NOT FORGET TO ADD YOUR SYNC CLIENT INTO THE LIST -->
+	<bean id="piqReconfiguration" class="com.raritan.tdz.piq.home.PIQReconfigurationImpl">
+		<constructor-arg name="piqRestClients">
+			<list>
+				<ref bean="piqSyncDeviceClient"/>
+				<ref bean="piqSyncPDUClient"/>
+				<ref bean="piqSyncOutletClient"/>
+				<ref bean="piqSyncInletClient"/>
+				<ref bean="piqSyncInletPoleClient"/>
+				<ref bean="piqSyncSensorClient"/>
+				<ref bean="piqSyncDCClient"/>
+				<ref bean="piqSyncFloorClient"/>
+				<ref bean="piqSyncRoomClient"/>
+				<ref bean="piqSyncLocationClient"/>
+				<ref bean="piqSyncRackClient"/>
+				<ref bean="piqJobsPoller"/>
+				<ref bean="piqSyncPiqVersion"/>
+				<ref bean="piqEventClient"/>
+				<ref bean="piqAssetStripClient"/>
+			</list>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="piqItemNotInSync" class="com.raritan.tdz.piq.home.PIQItemNotInSync" />
+	
+	<bean id="piqAsyncTaskThreadPool" class="com.raritan.tdz.piq.home.PIQAsyncTaskService">
+		<constructor-arg name="coreThreads" value="2" />
+		<constructor-arg name="keepAliveSecs" value="30" />
+	</bean>
+	
+	<bean id="contextAppSettings" class="com.raritan.tdz.settings.home.ApplicationSettingsImpl">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+	</bean>
+	
+	<bean id="piqJobsPoller" class="com.raritan.tdz.piq.jobs.PIQJobPollerImpl">
+		<constructor-arg index="0">
+			<ref bean="contextAppSettings" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="eventHome" />
+		</constructor-arg>
+		<property name="service" value="v2/jobs" />
+		<property name="delaySeconds" value="2" />
+		<property name="periodSeconds" value="7" />
+		<property name="maxTries" value="100" />
+		<property name="restTemplate" ref="restTemplate" />
+		<property name="eventHome" ref="eventHome" />
+		<property name="messageSource" ref="messageSource" />
+	</bean>
+	
+
+	<bean id="piqSysEventLogger" class="com.raritan.tdz.piq.home.PIQSystemEventLoggerImpl"
+		scope="thread">
+		<constructor-arg index="0">
+			<ref bean="eventHome" />
+		</constructor-arg>
+		<property name="piqHost" value="${powerIQHost}"/>
+	</bean>
+	
+
+	<bean id="piqSyncDeviceClient" class="com.raritan.tdz.piq.home.PIQSyncDeviceClientImpl">
+		<constructor-arg index="0">
+			<ref bean="contextAppSettings" />
+		</constructor-arg>
+		<constructor-arg index="1" ref="piqSyncRackClient" />
+		<constructor-arg index="2" ref="piqItemNotInSync" />
+		<constructor-arg index="3" ref="piqProbeMapper" />
+		<constructor-arg index="4" ref="sessionFactory" />
+		<constructor-arg index="5" ref="piqAsyncTaskThreadPool" />
+		<property name="service" value="v2/devices" />
+		<property name="restTemplate" ref="restTemplate" />
+		<property name="eventHome" ref="eventHome" />
+		<property name="messageSource" ref="messageSource" />
+		<property name="piqSysEventLogger" ref="piqSysEventLogger" />
+	</bean>
+
+	<bean id="piqSyncPDUClient" class="com.raritan.tdz.piq.home.PIQSyncPDUClientImpl">
+		<constructor-arg index="0">
+			<ref bean="contextAppSettings" />
+		</constructor-arg>
+		<constructor-arg index="1" ref="piqSyncRackClient" />
+		<constructor-arg index="2" ref="piqItemNotInSync" />
+		<property name="service" value="v2/pdus" />
+		<property name="restTemplate" ref="restTemplate" />
+		<property name="eventHome" ref="eventHome" />
+		<property name="messageSource" ref="messageSource" />
+		<property name="jobsPoller" ref="piqJobsPoller" />
+		<property name="jobHandler">
+			<bean class="com.raritan.tdz.piq.jobs.PDUJobHandler">
+				<constructor-arg index="0">
+					<ref bean="eventHome" />
+				</constructor-arg>
+				<constructor-arg index="1">
+					<ref bean="piqSyncPDUClient" />
+				</constructor-arg>
+			</bean>
+		</property>
+		<property name="piqSyncOutletClient" ref="piqSyncOutletClient" />
+		<property name="itemHome" ref="itemHome" />
+		<property name="piqSysEventLogger" ref="piqSysEventLogger" />
+		<property name="assetStripAutoAssociation" ref="aaAssetStripHome" />
+		<property name="portHome" ref="portHome" />
+		<property name="taskService" ref="piqAsyncTaskThreadPool" />
+		<property name="syncPorts">
+			<list>
+				<ref bean="piqSyncOutletClient"/>
+ 				<ref bean="piqSyncInletClient"/>
+ 				<ref bean="piqSyncInletPoleClient"/>
+				<ref bean="piqSyncSensorClient"/>
+ 				<ref bean="piqAssetStripClient"/>
+			</list>
+		</property>
+		<property name="syncPortsMap">
+			<map>
+				<entry key="OUTLET" value-ref="piqSyncOutletClient"/>
+				<entry key="INLET" value-ref="piqSyncInletClient"/>
+				<entry key="INLET_POLE" value-ref="piqSyncInletPoleClient"/>
+				<entry key="SENSOR" value-ref="piqSyncSensorClient"/>
+				<entry key="ASSET_STRIP" value-ref="piqAssetStripClient"/>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="piqSyncOutletClient" class="com.raritan.tdz.piq.home.PIQSyncOutletClientImpl">
+		<constructor-arg index="0">
+			<ref bean="contextAppSettings" />
+		</constructor-arg>
+		<property name="service" value="v2/outlets" />
+		<property name="restTemplate" ref="restTemplate" />
+		<property name="eventHome" ref="eventHome" />
+		<property name="messageSource" ref="messageSource" />
+		<property name="piqSysEventLogger" ref="piqSysEventLogger" />
+		<property name="portHome" ref="portHome"/>
+	</bean>
+
+	<bean id="piqSyncInletClient" class="com.raritan.tdz.piq.home.PIQSyncInletClientImpl">
+		<constructor-arg index="0">
+			<ref bean="contextAppSettings" />
+		</constructor-arg>
+		<property name="service" value="v2/inlets" />
+		<property name="restTemplate" ref="restTemplate" />
+		<property name="eventHome" ref="eventHome" />
+		<property name="messageSource" ref="messageSource" />
+		<property name="piqSysEventLogger" ref="piqSysEventLogger" />
+	</bean>
+
+	<bean id="piqSyncInletPoleClient" class="com.raritan.tdz.piq.home.PIQSyncInletPoleClientImpl">
+		<constructor-arg index="0">
+			<ref bean="contextAppSettings" />
+		</constructor-arg>
+		<property name="service" value="v2/inlet_poles" />
+		<property name="restTemplate" ref="restTemplate" />
+		<property name="eventHome" ref="eventHome" />
+		<property name="messageSource" ref="messageSource" />
+		<property name="piqSysEventLogger" ref="piqSysEventLogger" />
+	</bean>
+
+	<bean id="piqSyncSensorClient" class="com.raritan.tdz.piq.home.PIQSyncSensorClientImpl">
+		<constructor-arg index="0">
+			<ref bean="contextAppSettings" />
+		</constructor-arg>
+		<property name="service" value="v2/sensors" />
+		<property name="restTemplate" ref="restTemplate" />
+		<property name="eventHome" ref="eventHome" />
+		<property name="messageSource" ref="messageSource" />
+		<property name="piqSysEventLogger" ref="piqSysEventLogger" />
+		<property name="sensorProcessors">
+			<map>
+				<entry key="TEMPERATURE" value-ref="numericSensorProcessor"/>
+				<entry key="HUMIDITY" value-ref="numericSensorProcessor"/>
+				<entry key="AIR_FLOW" value-ref="numericSensorProcessor"/>
+				<entry key="AIR_PRESSURE" value-ref="numericSensorProcessor"/>
+				<entry key="CONTACT_CLOSURE" value-ref="discreetSensorProcessor"/>
+				<entry key="WATER" value-ref="discreetSensorProcessor"/>
+				<entry key="VIBRATION" value-ref="discreetSensorProcessor"/>
+				<entry key="SMOKE" value-ref="discreetSensorProcessor"/>
+<!-- 				<entry key="ASSET_STRIP" value-ref="assetStripProcessor"/> -->
+			</map>
+		</property>
+	</bean>
+
+	<bean id="piqSyncDCClient" class="com.raritan.tdz.piq.home.PIQSyncDCClientImpl">
+		<constructor-arg index="0">
+			<ref bean="contextAppSettings" />
+		</constructor-arg>
+		<property name="service" value="v2/data_centers" />
+		<property name="restTemplate" ref="restTemplate" />
+		<property name="eventHome" ref="eventHome" />
+		<property name="messageSource" ref="messageSource" />
+		<property name="piqSysEventLogger" ref="piqSysEventLogger" />
+	</bean>
+
+	<bean id="piqSyncFloorClient" class="com.raritan.tdz.piq.home.PIQSyncFloorClientImpl">
+		<constructor-arg index="0">
+			<ref bean="contextAppSettings" />
+		</constructor-arg>
+		<property name="service" value="v2/floors" />
+		<property name="restTemplate" ref="restTemplate" />
+		<property name="eventHome" ref="eventHome" />
+		<property name="messageSource" ref="messageSource" />
+		<property name="piqSysEventLogger" ref="piqSysEventLogger" />
+	</bean>
+
+	<bean id="piqSyncRoomClient" class="com.raritan.tdz.piq.home.PIQSyncRoomClientImpl">
+		<constructor-arg index="0">
+			<ref bean="contextAppSettings" />
+		</constructor-arg>
+		<property name="service" value="v2/rooms" />
+		<property name="restTemplate" ref="restTemplate" />
+		<property name="eventHome" ref="eventHome" />
+		<property name="messageSource" ref="messageSource" />
+		<property name="piqSysEventLogger" ref="piqSysEventLogger" />
+	</bean>
+
+	<bean id="piqSyncLocationClient" class="com.raritan.tdz.piq.home.PIQSyncLocationClientImpl">
+		<constructor-arg index="0">
+			<ref bean="contextAppSettings" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<map>
+				<entry key="DataCenter" value-ref="piqSyncDCClient" />
+				<entry key="Floor" value-ref="piqSyncFloorClient" />
+				<entry key="Room" value-ref="piqSyncRoomClient" />
+			</map>
+		</constructor-arg>
+		<property name="restTemplate" ref="restTemplate" />
+		<property name="eventHome" ref="eventHome" />
+		<property name="messageSource" ref="messageSource" />
+		<property name="piqSysEventLogger" ref="piqSysEventLogger" />
+	</bean>
+
+
+	<bean id="piqSyncRackClient" class="com.raritan.tdz.piq.home.PIQSyncRackClientImpl">
+		<constructor-arg index="0">
+			<ref bean="contextAppSettings" />
+		</constructor-arg>
+		<constructor-arg index="1" ref="piqSyncLocationClient" />
+		<constructor-arg index="2" ref="piqItemNotInSync" />
+		<property name="service" value="v2/racks" />
+		<property name="restTemplate" ref="restTemplate" />
+		<property name="eventHome" ref="eventHome" />
+		<property name="messageSource" ref="messageSource" />
+		<property name="piqSysEventLogger" ref="piqSysEventLogger" />
+	</bean>
+	
+
+	
+	<bean id="piqProbeMapper" class="com.raritan.tdz.piq.home.PIQProbeMapperImpl">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="itemHome" />
+		</constructor-arg>
+		<constructor-arg index="2">
+			<ref bean="portHome" />
+		</constructor-arg>
+		<constructor-arg index="3">
+			<ref bean="piqSyncPDUClient" />
+		</constructor-arg>
+		<constructor-arg index="4">
+			<ref bean="piqProbeLookup" />
+		</constructor-arg>
+		<constructor-arg index="5">
+			<ref bean="messageSource" />
+		</constructor-arg>
+		<property name="maxRequestQueueSize" value="10" />
+	</bean>
+
+	<bean id="piqSyncPDUOutletReading" class="com.raritan.tdz.piq.home.PIQSyncPDUOutletReadingImpl"/>
+
+	<bean id="piqSyncReadingScheduler" class="com.raritan.tdz.piq.jobs.PIQSyncReadingScheduler" >
+		<property name="syncReadingList">
+			<list>
+				<ref bean="piqSyncPDUOutletReading"/>
+			</list>
+		</property>		
+	</bean>
+    
+    <bean id="numericSensorHandler" class="com.raritan.tdz.piq.home.PIQNumericSensorHandler">
+    	<property name="sensorValueConverter">
+	    	<map>
+				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).TEMPERATURE }" value-ref="piqTempSensorNormalizer"/>
+				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).AIR_FLOW }" value-ref="piqAirFlowSensorNormalizer"/>
+				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).PRESSUERE }" value-ref="piqAirPressureSensorNormalizer"/>
+				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).HUMIDITY }" value-ref="piqHumiditySensorNormalizer"/>
+			</map>
+        </property>
+    </bean>
+    
+    <bean id="numericSensorProcessor" class="com.raritan.tdz.piq.home.PIQSensorProcessorImpl" >
+    	<property name="sensorHandler" ref="numericSensorHandler"/>
+    </bean>
+
+	<bean id="discreetSensorHandler" class="com.raritan.tdz.piq.home.PIQDiscreetSensorHandler" />
+	
+  	<bean id="discreetSensorProcessor" class="com.raritan.tdz.piq.home.PIQSensorProcessorImpl" >
+    	<property name="sensorHandler" ref="discreetSensorHandler"/>
+    </bean>
+    
+    <bean id="piqSensorCommon" class="com.raritan.tdz.piq.home.PIQSensorCommonImpl" />
+    
+    <bean id="piqSyncPiqVersion" class="com.raritan.tdz.piq.home.PIQSyncPIQVersionImpl">
+		<constructor-arg index="0">
+			<ref bean="contextAppSettings" />
+		</constructor-arg>
+		<property name="messageSource" ref="messageSource" />
+		<property name="restTemplate" ref="restTemplate" />
+		<property name="eventHome" ref="eventHome" />
+	</bean>
+	
+	<bean id="sensorEventsHelper" class="com.raritan.tdz.piq.home.SensorEventsHelperImpl" autowire-candidate="true" autowire="byName"/>
+	<bean id="piqSensorUtil" class="com.raritan.tdz.piq.home.PIQSensorUtilImpl" autowire-candidate="true" autowire="byName"/>
+	
+	<bean id="piqSyncLocationUtil" class="com.raritan.tdz.piq.home.PIQSyncLocationUtil" autowire-candidate="true" autowire="byName" />
+	
+
+</beans>

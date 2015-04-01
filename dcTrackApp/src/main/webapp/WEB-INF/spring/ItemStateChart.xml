@@ -1,0 +1,805 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+							http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+	<bean id="roleValidatorBase" class="com.raritan.tdz.item.itemState.RoleValidatorBase"/>
+	<bean id="installStateRoleValidator" class="com.raritan.tdz.item.itemState.InstallStateRoleValidator"/>
+	<bean id="newStateRoleValidator" class="com.raritan.tdz.item.itemState.NewStateRoleValidator"/>
+	<bean id="storageStateRoleValidator" class="com.raritan.tdz.item.itemState.StorageStateRoleValidator"/>
+	<bean id="archivedStateRoleValidator" class="com.raritan.tdz.item.itemState.ArchivedStateRoleValidator"/>
+	<bean id="poweredOffStateRoleValidator" class="com.raritan.tdz.item.itemState.CommonStateRoleValidator">
+		<property name="thisState" value="#{ T(com.raritan.tdz.lookup.SystemLookup$ItemStatus).POWERED_OFF }"/>
+	</bean>
+	<bean id="offSiteStateRoleValidator" class="com.raritan.tdz.item.itemState.CommonStateRoleValidator">
+		<property name="thisState" value="#{ T(com.raritan.tdz.lookup.SystemLookup$ItemStatus).OFF_SITE }"/>
+	</bean>
+	
+	
+	
+	<!--========================  NEW STATE, NEW = PLANNED ======================== -->
+	<bean id="itemStateCabinetNewBase" class="com.raritan.tdz.item.itemState.ItemStateBase">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="rulesProcessor" ref="itemRulesProcessor"/>
+		<constructor-arg name="remoteRef" ref="remoteRefItemScreen"/>
+		<constructor-arg name="fieldHome" ref="fieldHome"/>
+		<constructor-arg name="nodeEditability" ref="itemStatusEditabilityNew"/>
+		<constructor-arg name="allowableTransitionStates">
+			<map>
+				<entry key="5081" value-ref="newStateRoleValidator"/> <!-- PLANNED -->
+				<entry key="5082" value-ref="installStateRoleValidator"/> <!-- INSTALLED -->
+				<entry key="5085" value-ref="archivedStateRoleValidator"/> <!-- ARCHIVED -->
+				<entry key="5088" value-ref="storageStateRoleValidator"/> <!-- STORAGE -->
+			</map>
+		</constructor-arg>
+		<property name="domainClass" value="com.raritan.tdz.domain.CabinetItem"/>
+	</bean>
+	
+	<bean id="itemStateCabinetNew" class="com.raritan.tdz.item.itemState.ItemStateCabinet">
+		<property name="itemStateCommon" ref="itemStateCabinetNewBase"/>
+        <property name="itemState" value="#{ T(com.raritan.tdz.lookup.SystemLookup$ItemStatus).PLANNED }"/>	
+	</bean>
+	
+	<bean id="itemStateItItemNew" class="com.raritan.tdz.item.itemState.ItemStateBase">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="rulesProcessor" ref="itemRulesProcessor"/>
+		<constructor-arg name="remoteRef" ref="remoteRefItemScreen"/>
+		<constructor-arg name="fieldHome" ref="fieldHome"/>
+		<constructor-arg name="nodeEditability" ref="itemStatusEditabilityNew"/>
+		<constructor-arg name="allowableTransitionStates">
+			<map>
+				<entry key="5081" value-ref="newStateRoleValidator"/> <!-- PLANNED -->
+				<entry key="5082" value-ref="installStateRoleValidator"/> <!-- INSTALLED -->
+				<entry key="5085" value-ref="archivedStateRoleValidator"/> <!-- ARCHIVED -->
+				<entry key="5088" value-ref="storageStateRoleValidator"/> <!-- STORAGE -->
+			</map>
+		</constructor-arg>
+		<property name="domainClass" value="com.raritan.tdz.domain.ItItem"/>
+	</bean>
+	
+	<bean id="deviceItemStateNew" class="com.raritan.tdz.item.itemState.ItemStateITDevice">
+		<property name="itemStateCommon" ref="itemStateItItemNew"/>
+	</bean>
+	
+	<bean id="networkItemStateNew" class="com.raritan.tdz.item.itemState.ItemStateNetwork">
+		<property name="itemStateCommon" ref="itemStateItItemNew"/>
+	</bean>
+	
+	<bean id="itemStateDataPanelNew" class="com.raritan.tdz.item.itemState.ItemStateBase">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="rulesProcessor" ref="itemRulesProcessor"/>
+		<constructor-arg name="remoteRef" ref="remoteRefItemScreen"/>
+		<constructor-arg name="fieldHome" ref="fieldHome"/>
+		<constructor-arg name="nodeEditability" ref="itemStatusEditabilityNew"/>
+		<constructor-arg name="allowableTransitionStates">
+			<map>
+				<entry key="5081" value-ref="newStateRoleValidator"/> <!-- PLANNED -->
+				<entry key="5082" value-ref="installStateRoleValidator"/> <!-- INSTALLED -->
+				<entry key="5085" value-ref="archivedStateRoleValidator"/> <!-- ARCHIVED -->
+			</map>
+		</constructor-arg>
+		<property name="domainClass" value="com.raritan.tdz.domain.ItItem"/>
+	</bean>
+	
+	<bean id="itemStatePowerOutletNew" class="com.raritan.tdz.item.itemState.ItemStateBase">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="rulesProcessor" ref="itemRulesProcessor"/>
+		<constructor-arg name="remoteRef" ref="remoteRefItemScreen"/>
+		<constructor-arg name="fieldHome" ref="fieldHome"/>
+		<constructor-arg name="nodeEditability" ref="itemStatusEditabilityNew"/>
+		<constructor-arg name="allowableTransitionStates">
+			<map>
+				<entry key="5081" value-ref="newStateRoleValidator"/> <!-- PLANNED -->
+				<entry key="5082" value-ref="installStateRoleValidator"/> <!-- INSTALLED -->
+				<entry key="5085" value-ref="archivedStateRoleValidator"/> <!-- ARCHIVED -->
+			</map>
+		</constructor-arg>
+		<property name="domainClass" value="com.raritan.tdz.domain.MeItem"/>
+	</bean>
+	
+	<bean id="itemStateMeItemNew" class="com.raritan.tdz.item.itemState.ItemStateBase">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="rulesProcessor" ref="itemRulesProcessor"/>
+		<constructor-arg name="remoteRef" ref="remoteRefItemScreen"/>
+		<constructor-arg name="fieldHome" ref="fieldHome"/>
+		<constructor-arg name="nodeEditability" ref="itemStatusEditabilityNew"/>
+		<constructor-arg name="allowableTransitionStates">
+			<map>
+				<entry key="5081" value-ref="newStateRoleValidator"/> <!-- PLANNED -->
+				<entry key="5082" value-ref="installStateRoleValidator"/> <!-- INSTALLED -->
+				<entry key="5085" value-ref="archivedStateRoleValidator"/> <!-- ARCHIVED -->
+			</map>
+		</constructor-arg>
+		
+		<property name="domainClass" value="com.raritan.tdz.domain.MeItem"/>
+	</bean>
+	
+	<!-- ======================== INSTALLED STATE ==================================== -->
+	<bean id="itemStateInstalledCabinetItemBase" class="com.raritan.tdz.item.itemState.ItemStateBase">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="rulesProcessor" ref="itemRulesProcessor"/>
+		<constructor-arg name="remoteRef" ref="remoteRefItemScreen"/>
+		<constructor-arg name="fieldHome" ref="fieldHome"/>
+		<constructor-arg name="nodeEditability" ref="itemStatusEditabilityNew"/>
+		<constructor-arg name="allowableTransitionStates">
+			<map>
+				<entry key="5082" value-ref="installStateRoleValidator"/> <!-- INSTALLED -->
+				<!-- <entry key="5088" value-ref="storageStateRoleValidator"/> --><!-- STORAGE -->
+				<!-- <entry key="5085" value-ref="archivedStateRoleValidator"/> --> <!-- ARCHIVED -->
+			</map>
+		</constructor-arg>
+		<property name="mandatoryFieldValidator" ref="mandatoryFieldValidatorCabInstalled"/>
+		<property name="domainClass" value="com.raritan.tdz.domain.MeItem"/>
+		<property name="pcValidator" ref="pcPlannedToInstallValidator"/>
+	</bean>
+	
+	<bean id="itemStateInstalledCabinetItem" class="com.raritan.tdz.item.itemState.ItemStateCabinet">
+		<property name="itemStateCommon" ref="itemStateInstalledCabinetItemBase"/>
+        <property name="itemState" value="#{ T(com.raritan.tdz.lookup.SystemLookup$ItemStatus).INSTALLED }"/>
+	</bean>
+	
+	<bean id="mandatoryFieldValidatorCabInstalled" class="com.raritan.tdz.item.itemState.MFValidatorCommon">
+		<constructor-arg name="rulesProcessor" ref="itemRulesProcessor"/>
+		<constructor-arg name="remoteRef" ref="remoteRefItemScreen"/>
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<property name="mandatoryFields">
+			<map>
+				<entry key="cmbRowLabel" value-ref="cmbRowLabelRangeCheck"/>
+				<entry key="cmbRowPosition" value-ref="cmbRowPositionRangeCheck"/>
+			</map>
+		</property>
+	</bean>
+	
+	<!--  == RANGE CHECK BEAN BEGIN -->
+	<bean id ="cmbRowLabelRangeCheck" class="com.raritan.tdz.item.itemState.MFValidatorStringRangeCheck" scope="prototype">
+		<constructor-arg name="defaultValue" value="Row Label"/>
+	</bean>
+	
+	<bean id ="cmbRowPositionRangeCheck" class="com.raritan.tdz.item.itemState.MFValidatorIntegerRangeCheck" scope="prototype">
+		<constructor-arg name="lowerLimit" value="0"/>
+		<constructor-arg name="defaultValue" value="Position In Row"/>
+	</bean>
+	<!--  RANGE CHECK BEAN END == -->
+	
+	<bean id="itemStateInstalledITItem" class="com.raritan.tdz.item.itemState.ItemStateBase">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="rulesProcessor" ref="itemRulesProcessor"/>
+		<constructor-arg name="remoteRef" ref="remoteRefItemScreen"/>
+		<constructor-arg name="fieldHome" ref="fieldHome"/>
+		<constructor-arg name="nodeEditability" ref="itemStatusEditabilityNew"/>
+		<constructor-arg name="allowableTransitionStates">
+			<map>
+				<entry key="5082" value-ref="installStateRoleValidator"/> <!-- INSTALLED -->
+				<!-- <entry key="5083" value-ref="roleValidatorBase"/> --><!-- Powered-Off -->
+				<!-- <entry key="5088" value-ref="storageStateRoleValidator"/> --><!-- STORAGE -->
+				<!-- <entry key="5084" value-ref="roleValidatorBase"/> --><!--  Off-Site -->
+				<!-- <entry key="5085" value-ref="archivedStateRoleValidator"/> --> <!-- ARCHIVED -->
+			</map>
+		</constructor-arg>
+		<property name="mandatoryFieldValidator" ref="mandatoryFieldValidatorRackableBladeInstalled"/>
+		<property name="domainClass" value="com.raritan.tdz.domain.MeItem"/>
+		<property name="pcValidator" ref="pcPlannedToInstallValidator"/>
+	</bean>
+	
+	<bean id="deviceItemStateInstalled" class="com.raritan.tdz.item.itemState.ItemStateITDevice">
+		<property name="itemStateCommon" ref="itemStateInstalledITItem"/>
+	</bean>
+	
+	<bean id="networkItemStateInstalled" class="com.raritan.tdz.item.itemState.ItemStateNetwork">
+		<property name="itemStateCommon" ref="itemStateInstalledITItem"/>
+	</bean>
+	
+	<bean id="mandatoryFieldValidatorITItemInstalled" class="com.raritan.tdz.item.itemState.MFValidatorCommon">
+		<constructor-arg name="rulesProcessor" ref="itemRulesProcessor"/>
+		<constructor-arg name="remoteRef" ref="remoteRefItemScreen"/>
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<property name="mandatoryFields">
+			<map>
+				<entry key="cmbCabinet" value-ref="mfCmbCabinentRangeCheck"/>
+				<entry key="radioRailsUsed" value-ref="mfRadioRailsUsedRangeCheck"/>
+				<entry key="cmbOrientation" value-ref="mfCmbOrientationRangeCheck"/>
+				<entry key="cmbUPosition" value-ref="mfCmbUPositionRangeCheck"/>
+			</map>
+		</property>
+	</bean>
+	
+
+	<!--  == RANGE CHECK BEAN BEGIN -->
+	<bean id="mfCmbCabinentRangeCheck" class="com.raritan.tdz.item.itemState.MFValidatorStringRangeCheck" scope="prototype">
+		<constructor-arg name="defaultValue" value="Cabinet"/>
+	</bean>
+	
+	<bean id="mfRadioRailsUsedRangeCheck" class="com.raritan.tdz.item.itemState.MFValidatorStringRangeCheck" scope="prototype">
+		<constructor-arg name="defaultValue" value="Rails Used"/>
+	</bean>
+	
+	<bean id="mfCmbOrientationRangeCheck" class="com.raritan.tdz.item.itemState.MFValidatorStringRangeCheck" scope="prototype">
+		<constructor-arg name="defaultValue" value="Rails Used"/>
+	</bean>
+	
+	<bean id="mfCmbUPositionRangeCheck" class="com.raritan.tdz.item.itemState.MFValidatorLongRangeCheck" scope="prototype">
+		<constructor-arg name="defaultValue" value="U Position"/>
+		<constructor-arg name="lowerLimit" value="-9"/>
+	</bean>
+	<!--   RANGE CHECK BEAN END == -->
+
+	<bean id="mandatoryFieldValidatorRackableBladeInstalled" class="com.raritan.tdz.item.itemState.MFValidatorRackableBladeFS">
+		<property name="rackableValidator" ref="mandatoryFieldValidatorITItemInstalled"/>
+		<property name="bladeValidator" ref="mandatoryFieldValidatorBladeInstalled"/>
+		<property name="freeStandingValidator" ref="mandatoryFieldValidatorCabInstalled"/>
+	</bean>
+	
+	<bean id="mandatoryFieldValidatorBladeInstalled" class="com.raritan.tdz.item.itemState.MFValidatorCommon">
+		<constructor-arg name="rulesProcessor" ref="itemRulesProcessor"/>
+		<constructor-arg name="remoteRef" ref="remoteRefItemScreen"/>
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		
+		<property name="mandatoryFields">
+			<map>
+				<entry key="cmbCabinet" value-ref="mfCmbCabinentRangeCheck"/>
+				<entry key="cmbChassis" value-ref="mfCmbChassisRangeCheck"/>
+				<entry key="cmbSlotPosition" value-ref="mfCmbSlotPositionRangeCheck"/>
+				<entry key="radioChassisFace" value-ref="mfRadioChassisFaceRangeCheck"/>
+			</map>
+		</property>
+	</bean>
+	
+	<!--  == RANGE CHECK BEAN BEGIN -->
+	<bean id="mfCmbChassisRangeCheck" class="com.raritan.tdz.item.itemState.MFValidatorStringRangeCheck" scope="prototype">
+		<constructor-arg name="defaultValue" value="Chassis"/>
+	</bean>
+	
+	<bean id="mfCmbSlotPositionRangeCheck" class="com.raritan.tdz.item.itemState.MFValidatorLongRangeCheck" scope="prototype">
+		<constructor-arg name="defaultValue" value="Slot Position"/>
+		<constructor-arg name="lowerLimit" value="0"/>
+	</bean>
+	
+	<bean id="mfRadioChassisFaceRangeCheck" class="com.raritan.tdz.item.itemState.MFValidatorStringRangeCheck" scope="prototype">
+		<constructor-arg name="defaultValue" value="Chassis Face"/>
+	</bean>
+	<!--  RANGE CHECK BEAN END == -->
+	
+	<bean id="mandatoryFieldValidatorPowerPanelInstalled" class="com.raritan.tdz.item.itemState.MFInstallValidatorPowerPanel"/>
+	
+	<!--  This will be for RPDU, DP and Probe -->
+	<bean id="itemStateInstalledDPItem" class="com.raritan.tdz.item.itemState.ItemStateBase">
+			<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="rulesProcessor" ref="itemRulesProcessor"/>
+		<constructor-arg name="remoteRef" ref="remoteRefItemScreen"/>
+		<constructor-arg name="fieldHome" ref="fieldHome"/>
+		<constructor-arg name="nodeEditability" ref="itemStatusEditabilityNew"/>
+		<constructor-arg name="allowableTransitionStates">
+			<map>
+				<entry key="5082" value-ref="installStateRoleValidator"/> <!-- INSTALLED -->
+				<!-- <entry key="5085" value-ref="archivedStateRoleValidator"/>  --><!-- ARCHIVED -->
+			</map>
+		</constructor-arg>
+		<property name="mandatoryFieldValidator" ref="mandatoryFieldValidatorRackableZeroUInstalled"/>
+		<property name="domainClass" value="com.raritan.tdz.domain.ItItem"/>
+		<property name="pcValidator" ref="pcPlannedToInstallValidator"/>
+	</bean>
+	
+	<bean id="itemStateInstalledRZItem" class="com.raritan.tdz.item.itemState.ItemStateBase">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="rulesProcessor" ref="itemRulesProcessor"/>
+		<constructor-arg name="remoteRef" ref="remoteRefItemScreen"/>
+		<constructor-arg name="fieldHome" ref="fieldHome"/>
+		<constructor-arg name="nodeEditability" ref="itemStatusEditabilityNew"/>
+		<constructor-arg name="allowableTransitionStates">
+			<map>
+				<entry key="5082" value-ref="installStateRoleValidator"/> <!-- INSTALLED -->
+				<!--  <entry key="5088" value-ref="storageStateRoleValidator"/> --><!-- STORAGE -->
+				<!-- <entry key="5085" value-ref="archivedStateRoleValidator"/> --> <!-- ARCHIVED -->
+			</map>
+		</constructor-arg>
+		<property name="mandatoryFieldValidator" ref="mandatoryFieldValidatorRackableZeroUInstalled"/>
+		<property name="domainClass" value="com.raritan.tdz.domain.MeItem"/>
+		<property name="pcValidator" ref="pcPlannedToInstallValidator"/>
+	</bean>
+	
+	<bean id="mandatoryFieldValidatorRackableZeroUInstalled" class="com.raritan.tdz.item.itemState.MFValidatorRackableZeroU">
+		<property name="rackableValidator" ref="mandatoryFieldValidatorITItemInstalled"/>
+		<property name="zeroUValidator" ref="mandatoryFieldValidatorZeroUInstalled"/>
+	</bean>
+	
+	<bean id="mandatoryFieldValidatorZeroUInstalled" class="com.raritan.tdz.item.itemState.MFValidatorCommon">
+		<constructor-arg name="rulesProcessor" ref="itemRulesProcessor"/>
+		<constructor-arg name="remoteRef" ref="remoteRefItemScreen"/>
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<property name="mandatoryFields">
+			<map>
+				<entry key="cmbCabinet" value-ref="mfCmbCabinentRangeCheck"/>
+				<entry key="cmbUPosition" value-ref="mfCmbUPositionRangeCheck"/>
+				<entry key="radioDepthPosition" value-ref="mfRadioDepthPositionRangeCheck"/>
+				<entry key="radioCabinetSide" value-ref="mfRadioCabinetSideRangeCheck"/>
+			</map>
+		</property>
+	</bean>
+	
+	<!--  == RANGE CHECK BEAN BEGIN -->
+	<bean id="mfRadioDepthPositionRangeCheck" class="com.raritan.tdz.item.itemState.MFValidatorStringRangeCheck" scope="prototype">
+		<constructor-arg name="defaultValue" value="Depth position"/>
+	</bean>
+	
+	<bean id="mfRadioCabinetSideRangeCheck" class="com.raritan.tdz.item.itemState.MFValidatorStringRangeCheck" scope="prototype">
+		<constructor-arg name="defaultValue" value="Cabinet side"/>
+	</bean>
+	<!--  RANGE CHECK BEAN END == -->
+	
+	<bean id="itemStateInstalledPowerOutletItem" class="com.raritan.tdz.item.itemState.ItemStateBase">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="rulesProcessor" ref="itemRulesProcessor"/>
+		<constructor-arg name="remoteRef" ref="remoteRefItemScreen"/>
+		<constructor-arg name="fieldHome" ref="fieldHome"/>
+		<constructor-arg name="nodeEditability" ref="itemStatusEditabilityNew"/>
+		<constructor-arg name="allowableTransitionStates">
+			<map>
+				<entry key="5082" value-ref="installStateRoleValidator"/> <!-- INSTALLED -->
+				<!-- <entry key="5085" value-ref="archivedStateRoleValidator"/>   --> <!-- ARCHIVED -->
+			</map>
+		</constructor-arg>
+		<property name="mandatoryFieldValidator" ref="mandatoryFieldValidatorPowerOutletInstalled"/>
+		<property name="domainClass" value="com.raritan.tdz.domain.MeItem"/>
+		<property name="pcValidator" ref="pcPlannedToInstallValidator"/>
+	</bean>
+	
+	<bean id="mandatoryFieldValidatorPowerOutletInstalled" class="com.raritan.tdz.item.itemState.MFInstallValidatorPowerOutlet">
+	
+	</bean>
+	
+	<bean id="itemStateInstalledDeviceFloorPDUItem" class="com.raritan.tdz.item.itemState.ItemStateBase">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="rulesProcessor" ref="itemRulesProcessor"/>
+		<constructor-arg name="remoteRef" ref="remoteRefItemScreen"/>
+		<constructor-arg name="fieldHome" ref="fieldHome"/>
+		<constructor-arg name="nodeEditability" ref="itemStatusEditabilityNew"/>
+		<constructor-arg name="allowableTransitionStates">
+			<map>
+				<entry key="5082" value-ref="installStateRoleValidator"/> <!-- INSTALLED -->
+				<!-- <entry key="5085" value-ref="archivedStateRoleValidator"/> --> <!-- ARCHIVED -->
+			</map>
+		</constructor-arg>
+		<property name="domainClass" value="com.raritan.tdz.domain.MeItem"/>
+		<property name="pcValidator" ref="pcPlannedToInstallValidator"/>
+	</bean>
+	
+	<bean id="itemStateInstalledUPSItem" class="com.raritan.tdz.item.itemState.ItemStateBase">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="rulesProcessor" ref="itemRulesProcessor"/>
+		<constructor-arg name="remoteRef" ref="remoteRefItemScreen"/>
+		<constructor-arg name="fieldHome" ref="fieldHome"/>
+		<constructor-arg name="nodeEditability" ref="itemStatusEditabilityNew"/>
+		<constructor-arg name="allowableTransitionStates">
+			<map>
+				<entry key="5082" value-ref="installStateRoleValidator"/> <!-- INSTALLED -->
+				<!--  <entry key="5085" value-ref="archivedStateRoleValidator"/>  --> <!-- ARCHIVED -->
+			</map>
+		</constructor-arg>
+		<property name="mandatoryFieldValidator" ref="mandatoryFieldValidatorUPS"/>
+		<property name="domainClass" value="com.raritan.tdz.domain.MeItem"/>
+	</bean>
+	
+	<bean id="mandatoryFieldValidatorUPS" class="com.raritan.tdz.item.itemState.MFValidatorCommon">
+		<constructor-arg name="rulesProcessor" ref="itemRulesProcessor"/>
+		<constructor-arg name="remoteRef" ref="remoteRefItemScreen"/>
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<property name="mandatoryFields">
+			<map>
+				<entry key="CONSTANT_UPS_BANK_OF_ITEM" value-ref="mfUPSBankOfItem"/>
+			</map>
+		</property>
+	</bean>
+	
+	<!-- == RANGE CHECK BEAN BEGIN -->
+	<bean id="mfUPSBankOfItem" class="com.raritan.tdz.item.itemState.MFValidatorStringRangeCheck" scope="prototype">
+		<constructor-arg name="defaultValue" value="UPS Bank"/>
+		<property name="errorCode" value="ItemValidator.mandatoryForState.UPS"/>
+	</bean>
+	<!-- RANGE CHECK BEAN END == -->
+	
+	<bean id="itemStateInstalledCRACItem" class="com.raritan.tdz.item.itemState.ItemStateBase">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="rulesProcessor" ref="itemRulesProcessor"/>
+		<constructor-arg name="remoteRef" ref="remoteRefItemScreen"/>
+		<constructor-arg name="fieldHome" ref="fieldHome"/>
+		<constructor-arg name="nodeEditability" ref="itemStatusEditabilityNew"/>
+		<constructor-arg name="allowableTransitionStates">
+			<map>
+				<entry key="5082" value-ref="installStateRoleValidator"/> <!-- INSTALLED -->
+				<!--  <entry key="5085" value-ref="archivedStateRoleValidator"/>  --> <!-- ARCHIVED -->
+			</map>
+		</constructor-arg>
+		<property name="mandatoryFieldValidator" ref="mandatoryFieldValidatorCRAC"/>
+		<property name="domainClass" value="com.raritan.tdz.domain.MeItem"/>
+	</bean>
+	
+	<bean id="mandatoryFieldValidatorCRAC" class="com.raritan.tdz.item.itemState.MFValidatorCommon">
+		<constructor-arg name="rulesProcessor" ref="itemRulesProcessor"/>
+		<constructor-arg name="remoteRef" ref="remoteRefItemScreen"/>
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<property name="mandatoryFields">
+			<map>
+				<entry key="CONSTANT_CRAC_NW_GROUP_OF_ITEM" value-ref="mfCRACGroupOffItem"/>
+			</map>
+		</property>
+	</bean>
+	
+		<!-- == RANGE CHECK BEAN BEGIN -->
+	<bean id="mfCRACGroupOffItem" class="com.raritan.tdz.item.itemState.MFValidatorStringRangeCheck" scope="prototype">
+		<constructor-arg name="defaultValue" value="CRAC Group"/>
+		<property name="errorCode" value="ItemValidator.mandatoryForState.CRAC"/>
+	</bean>
+	<!-- RANGE CHECK BEAN END == -->
+	
+	<bean id="pcPlannedToInstallValidator" class="com.raritan.tdz.item.itemState.PCPlannedToInstallValidator"/>
+	<!-- ======================== Power-Off STATE ======================== -->
+	
+	<!-- Mandatory Field Check Validator Map -->
+	<util:map id="mandatoryMountingMapPowerOff" key-type="java.lang.String" value-type="com.raritan.tdz.item.itemState.MandatoryFieldStateValidator">
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).FREE_STANDING }" value-ref="mandatoryFieldValidatorCabInstalled"/>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).RACKABLE }" value-ref="mandatoryFieldValidatorITItemInstalled"/>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).ZERO_U }" value-ref="mandatoryFieldValidatorZeroUInstalled"/>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).VSTACK }"><null/></entry>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).NON_RACKABLE }" value-ref="mandatoryFieldValidatorITItemInstalled"/>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).BLADE }" value-ref="mandatoryFieldValidatorBladeInstalled"/>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).BUSWAY }" value-ref="mandatoryFieldValidatorPowerOutletInstalled"/>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).NON_RACKABLE}:#{ T(com.raritan.tdz.lookup.SystemLookup$Class).FLOOR_OUTLET}" value-ref="mandatoryFieldValidatorPowerOutletInstalled"/>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).FREE_STANDING}:#{ T(com.raritan.tdz.lookup.SystemLookup$Class).UPS}" value-ref="mandatoryFieldValidatorUPS"/>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).FREE_STANDING}:#{ T(com.raritan.tdz.lookup.SystemLookup$Class).CRAC}" value-ref="mandatoryFieldValidatorCRAC"/>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).FREE_STANDING}:#{ T(com.raritan.tdz.lookup.SystemLookup$Class).FLOOR_PDU}" value-ref="mandatoryFieldValidatorPowerPanelInstalled"/> <!-- Power Panel -->
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).FREE_STANDING}:#{ T(com.raritan.tdz.lookup.SystemLookup$Class).DEVICE}" value-ref="mandatoryFieldValidatorRackableBladeInstalled"/> <!-- Free-standing device -->
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).FREE_STANDING}:#{ T(com.raritan.tdz.lookup.SystemLookup$Class).NETWORK}" value-ref="mandatoryFieldValidatorRackableBladeInstalled"/> <!-- Free-standing network -->
+	</util:map>
+	
+	<bean id="mandatoryFieldPowerOffValidator" class="com.raritan.tdz.item.itemState.MandatoryFieldPowerOffValidator">
+		<constructor-arg name="mountingToMandatoryFieldValidator" ref="mandatoryMountingMapPowerOff"/>
+	</bean>
+	
+	<bean id="itemStatePowerOff" class="com.raritan.tdz.item.itemState.ItemStateBase">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="rulesProcessor" ref="itemRulesProcessor"/>
+		<constructor-arg name="remoteRef" ref="remoteRefItemScreen"/>
+		<constructor-arg name="fieldHome" ref="fieldHome"/>
+		<constructor-arg name="nodeEditability" ref="itemStatusEditabilityNew"/>
+		<constructor-arg name="allowableTransitionStates">
+			<map>  
+				<entry key="5083" value-ref="poweredOffStateRoleValidator"/> <!-- POWERED-OFF -->
+				<!-- <entry key="5082" value-ref="installStateRoleValidator"/> -->  <!-- INSTALLED -->
+			</map>
+		</constructor-arg>
+		
+		<property name="mandatoryFieldValidator" ref="mandatoryFieldPowerOffValidator"></property>
+		
+		<property name="domainClass" value="com.raritan.tdz.domain.ItItem"/>
+	</bean>
+	
+	<!-- ======================== Off-Site STATE ======================== -->
+	
+	<bean id="itemStateOffSite" class="com.raritan.tdz.item.itemState.ItemStateBase">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="rulesProcessor" ref="itemRulesProcessor"/>
+		<constructor-arg name="remoteRef" ref="remoteRefItemScreen"/>
+		<constructor-arg name="fieldHome" ref="fieldHome"/>
+		<constructor-arg name="nodeEditability" ref="itemStatusEditabilityNew"/>
+		<constructor-arg name="allowableTransitionStates">
+			<map>  
+				<entry key="5084" value-ref="offSiteStateRoleValidator"/> <!-- OFF-SITE -->
+				<!-- <entry key="5082" value-ref="installStateRoleValidator"/> -->  <!-- INSTALLED -->
+			</map>
+		</constructor-arg>
+		
+		<property name="domainClass" value="com.raritan.tdz.domain.ItItem"/>
+	</bean>
+	
+	<!-- ======================== Storage STATE ======================== -->
+	
+	<bean id="itemStateCabinetStorageBase" class="com.raritan.tdz.item.itemState.ItemStateStorage">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="rulesProcessor" ref="itemRulesProcessor"/>
+		<constructor-arg name="remoteRef" ref="remoteRefItemScreen"/>
+		<constructor-arg name="fieldHome" ref="fieldHome"/>
+		<constructor-arg name="nodeEditability" ref="itemStatusEditabilityNew"/>
+		<constructor-arg name="allowableTransitionStates">
+			<map>
+				<!--<entry key="5082" value-ref="installStateRoleValidator"/>  -->  <!-- INSTALLED -->
+				<!-- <entry key="5085" value-ref="archivedStateRoleValidator"/>  --> <!-- ARCHIVED -->
+				<entry key="5088" value-ref="storageStateRoleValidator"/> <!-- STORAGE -->
+			</map>
+		</constructor-arg>
+		<property name="domainClass" value="com.raritan.tdz.domain.CabinetItem"/>
+		<property name="itemHome" ref="itemHome"/>
+		<property name="pcValidator" ref="pcToStorageValidator"></property>
+	</bean>
+	<bean id="itemStateItItemStorage" class="com.raritan.tdz.item.itemState.ItemStateStorage">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="rulesProcessor" ref="itemRulesProcessor"/>
+		<constructor-arg name="remoteRef" ref="remoteRefItemScreen"/>
+		<constructor-arg name="fieldHome" ref="fieldHome"/>
+		<constructor-arg name="nodeEditability" ref="itemStatusEditabilityNew"/>
+		<constructor-arg name="allowableTransitionStates">
+			<map>
+				<!-- <entry key="5082" value-ref="installStateRoleValidator"/> --><!-- INSTALLED -->
+				<!-- <entry key="5085" value-ref="archivedStateRoleValidator"/> --> <!-- ARCHIVED -->
+				<entry key="5088" value-ref="storageStateRoleValidator"/> <!-- STORAGE -->
+			</map>
+		</constructor-arg>
+		<property name="domainClass" value="com.raritan.tdz.domain.ItItem"/>
+		<property name="itemHome" ref="itemHome"/>
+		<property name="pcValidator" ref="pcToStorageValidator"></property>
+	</bean>
+	
+	<bean id="deviceItemStateStorage" class="com.raritan.tdz.item.itemState.ItemStateITDevice">
+		<property name="itemStateCommon" ref="itemStateItItemStorage"/>
+	</bean>
+	
+	<bean id="networkItemStateStorage" class="com.raritan.tdz.item.itemState.ItemStateNetwork">
+		<property name="itemStateCommon" ref="itemStateItItemStorage"/>
+	</bean>
+	
+	<bean id="itemStateDataPanelStorage" class="com.raritan.tdz.item.itemState.ItemStateBase">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="rulesProcessor" ref="itemRulesProcessor"/>
+		<constructor-arg name="remoteRef" ref="remoteRefItemScreen"/>
+		<constructor-arg name="fieldHome" ref="fieldHome"/>
+		<constructor-arg name="nodeEditability" ref="itemStatusEditabilityNew"/>
+		<constructor-arg name="allowableTransitionStates">
+			<map> 
+				<entry key="5088" value-ref="storageStateRoleValidator"/> <!-- STORAGE -->
+			</map>
+		</constructor-arg>
+		
+		<property name="domainClass" value="com.raritan.tdz.domain.ItItem"/>
+		<property name="pcValidator" ref="pcToStorageValidator"></property>
+	</bean>
+	
+<!-- 	
+	<bean id="itemStatePowerOutletStorage" class="com.raritan.tdz.item.itemState.ItemStateBase">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="rulesProcessor" ref="itemRulesProcessor"/>
+		<constructor-arg name="remoteRef" ref="remoteRefItemScreen"/>
+		<constructor-arg name="fieldHome" ref="fieldHome"/>
+		<constructor-arg name="nodeEditability" ref="itemStatusEditabilityNew"/>
+		<constructor-arg name="allowableTransitionStates">
+			<map>  
+				<entry key="5088" value-ref="storageStateRoleValidator"/>
+			</map>
+		</constructor-arg>
+		
+		<property name="domainClass" value="com.raritan.tdz.domain.MeItem"/>
+		<property name="pcValidator" ref="pcToStorageValidator"></property>ff 
+	</bean>
+-->	
+
+	<bean id="itemStateMeItemStorage" class="com.raritan.tdz.item.itemState.ItemStateBase">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="rulesProcessor" ref="itemRulesProcessor"/>
+		<constructor-arg name="remoteRef" ref="remoteRefItemScreen"/>
+		<constructor-arg name="fieldHome" ref="fieldHome"/>
+		<constructor-arg name="nodeEditability" ref="itemStatusEditabilityNew"/>
+		<constructor-arg name="allowableTransitionStates">
+			<map>
+				<entry key="5088" value-ref="storageStateRoleValidator"/> <!-- STORAGE -->
+			</map>
+		</constructor-arg>
+		
+		<property name="domainClass" value="com.raritan.tdz.domain.MeItem"/>
+		<property name="pcValidator" ref="pcToStorageValidator"></property>
+	</bean>
+	
+	<bean id="itemStateFloorPDUStorage" class="com.raritan.tdz.item.itemState.ItemStateFloorPDU">
+		<property name="itemStateCommon" ref="itemStateMeItemStorage"/>
+        <property name="itemStatePowerPanel" ref="itemStatePowerPanelStorage"/>
+        <property name="itemState" value="#{ T(com.raritan.tdz.lookup.SystemLookup$ItemStatus).STORAGE }"/>
+	</bean>
+
+	<bean id="itemStatePowerPanelStorage" class="com.raritan.tdz.item.itemState.ItemStatePowerPanel">
+		<property name="itemStateCommon" ref="itemStateMeItemStorage"/>
+        <property name="itemState" value="#{ T(com.raritan.tdz.lookup.SystemLookup$ItemStatus).STORAGE }"/>
+	</bean>
+
+	<bean id="itemStatePowerOutletStorage" class="com.raritan.tdz.item.itemState.ItemStatePowerOutlet">
+			<constructor-arg name="baseState" ref="itemStateMeItemStorage"/>
+	</bean>
+	
+	<bean id="itemStateCabinetStorage" class="com.raritan.tdz.item.itemState.ItemStateCabinet">
+		<property name="itemStateCommon" ref="itemStateCabinetStorageBase"/>
+        <property name="itemState" value="#{ T(com.raritan.tdz.lookup.SystemLookup$ItemStatus).STORAGE }"/>
+	</bean>
+	
+	<bean id="pcToStorageValidator" class="com.raritan.tdz.item.itemState.PCToStorageValidator">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<!-- ======================== Archived STATE ======================== -->	
+	<bean id="itemStateArchived" class="com.raritan.tdz.item.itemState.ItemStateArchived">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="rulesProcessor" ref="itemRulesProcessor"/>
+		<constructor-arg name="remoteRef" ref="remoteRefItemScreen"/>
+		<constructor-arg name="fieldHome" ref="fieldHome"/>
+		<constructor-arg name="nodeEditability" ref="itemStatusEditabilityNew"/>
+		<constructor-arg name="allowableTransitionStates">
+			<map>
+				<entry key="5081" value-ref="newStateRoleValidator"/>      <!-- PLANNED -->
+                <entry key="5085" value-ref="archivedStateRoleValidator"/> <!-- ARCHIVED -->
+			</map>
+		</constructor-arg>
+		
+		<property name="domainClass" value="com.raritan.tdz.domain.MeItem"/>
+        <property name="pcValidator" ref="pcToArchivedValidator"/>
+	</bean>
+	
+	<bean id="networkItemStateArchived" class="com.raritan.tdz.item.itemState.ItemStateNetwork">
+		<property name="itemStateCommon" ref="itemStateArchived"/>
+	</bean>
+	
+	<bean id="itemStateFloorPDUArchived" class="com.raritan.tdz.item.itemState.ItemStateFloorPDU">
+        <property name="itemStateCommon" ref="itemStateArchived"/>
+        <property name="itemStatePowerPanel" ref="itemStatePowerPanelArchived"/>
+        <property name="itemState" value="#{ T(com.raritan.tdz.lookup.SystemLookup$ItemStatus).ARCHIVED }"/>
+	</bean>
+
+	<bean id="itemStatePowerPanelArchived" class="com.raritan.tdz.item.itemState.ItemStatePowerPanel">
+        <property name="itemStateCommon" ref="itemStateArchived"/>
+        <property name="itemState" value="#{ T(com.raritan.tdz.lookup.SystemLookup$ItemStatus).ARCHIVED }"/>
+	</bean>
+
+	<bean id="itemStatePowerOutletArchived" class="com.raritan.tdz.item.itemState.ItemStatePowerOutlet">
+		<constructor-arg name="baseState" ref="itemStateArchived"/>
+	</bean>
+	
+	<bean id="itemStateCabinetArchived" class="com.raritan.tdz.item.itemState.ItemStateCabinet">
+		<property name="itemStateCommon" ref="itemStateArchived"/>
+        <property name="itemState" value="#{ T(com.raritan.tdz.lookup.SystemLookup$ItemStatus).ARCHIVED }"/>
+	</bean>
+
+	
+	<!-- ======================== Validator(s) ======================== -->
+	
+	<bean id="pcToArchivedValidator" class="com.raritan.tdz.item.itemState.PCToArchivedValidator">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	
+	<bean id="itemStateContext" class="com.raritan.tdz.item.itemState.ItemStateContextImpl" 
+		autowire-candidate="true" autowire="byName">
+        <property name="statusLookupMap" ref="newItemAllowableStates" />
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="itemStateMap">
+			<map>
+				<!-- PLANNED -->
+				<entry key="1100:5081" value-ref="itemStateCabinetNew"/>
+				<entry key="1200:5081" value-ref="deviceItemStateNew"/>
+				<entry key="1300:5081" value-ref="networkItemStateNew"/>
+				<entry key="1400:5081" value-ref="itemStateItItemNew"/>
+				<entry key="1500:5081" value-ref="itemStateDataPanelNew"/>
+				<entry key="2100:5081" value-ref="itemStateItItemNew"/> <!--  Rack PDU -->
+				<entry key="2200:5081" value-ref="itemStatePowerOutletNew"/> <!--  Floor outlet -->
+				<entry key="2300:5081" value-ref="itemStateMeItemNew"/> <!--  Floor PDU -->
+				<entry key="2400:5081" value-ref="itemStateMeItemNew"/> <!--
+				  UPS -->
+				<entry key="3000:5081" value-ref="itemStateMeItemNew"/> <!--  CRAC -->
+				
+				<!-- Installed -->
+				<entry key="1100:5082" value-ref="itemStateInstalledCabinetItem"/><!-- Cabinet -->
+				<entry key="1200:5082" value-ref="deviceItemStateInstalled"/> <!-- Device -->
+				<entry key="1300:5082" value-ref="networkItemStateInstalled"/><!-- Network -->
+				<entry key="1400:5082" value-ref="itemStateInstalledRZItem"/><!--  Probe -->
+				<entry key="1500:5082" value-ref="itemStateInstalledDPItem"/><!-- Data Panel -->
+				<entry key="2100:5082" value-ref="itemStateInstalledRZItem"/> <!--  Rack PDU -->
+				<entry key="2200:5082" value-ref="itemStateInstalledPowerOutletItem"/> <!--  Floor outlet -->
+				<entry key="2300:5082" value-ref="itemStateInstalledDeviceFloorPDUItem"/> <!--  Floor PDU -->
+				<entry key="2400:5082" value-ref="itemStateInstalledUPSItem"/> <!--  UPS -->
+				<entry key="3000:5082" value-ref="itemStateInstalledCRACItem"/> <!--  CRAC -->
+				
+				<!-- Archived -->
+				<entry key="1100:5085" value-ref="itemStateCabinetArchived"/>
+				<entry key="1200:5085" value-ref="itemStateArchived"/>
+				<entry key="1300:5085" value-ref="networkItemStateArchived"/>
+				<entry key="1400:5085" value-ref="itemStateArchived"/>
+				<entry key="1500:5085" value-ref="itemStateArchived"/>
+				
+				<entry key="2100:5085" value-ref="itemStateArchived"/> <!--  Rack PDU -->
+				<entry key="2200:5085" value-ref="itemStatePowerOutletArchived"/> <!--  Floor outlet -->
+				<entry key="2300:5085" value-ref="itemStateFloorPDUArchived"/> <!--  Floor PDU -->
+				<entry key="2400:5085" value-ref="itemStateArchived"/> <!--  UPS -->
+				<entry key="3000:5085" value-ref="itemStateArchived"/> <!--  CRAC -->
+				
+				<!--  Storage -->
+				<entry key="1100:5088" value-ref="itemStateCabinetStorage"/>
+				<entry key="1200:5088" value-ref="deviceItemStateStorage"/> <!-- Comment, VM cannot be moved to Storage -->
+				<entry key="1300:5088" value-ref="networkItemStateStorage"/>
+				<entry key="1400:5088" value-ref="itemStateItItemStorage"/>
+				<!-- <entry key="1500:5088" value-ref="itemStateDataPanelStorage"/> -->
+				<entry key="2100:5088" value-ref="itemStateItItemStorage"/> <!--  Rack PDU -->
+				<!-- <entry key="2200:5088" value-ref="itemStatePowerOutletStorage"/> --> <!--  Floor outlet -->
+				<!-- <entry key="2300:5088" value-ref="itemStateFloorPDUStorage"/> --> <!--  Floor PDU -->
+				<!-- <entry key="2400:5088" value-ref="itemStateMeItemStorage"/> --> <!--  UPS -->
+				<!-- <entry key="3000:5088" value-ref="itemStateMeItemStorage"/> --> <!--  CRAC -->	
+				
+				<!-- Powered-Off -->
+				<entry key="1200:5083" value-ref="itemStatePowerOff"/>
+				<entry key="1300:5083" value-ref="itemStatePowerOff"/>
+				<entry key="1400:5083" value-ref="itemStatePowerOff"/>
+				
+				<!-- Off-Site -->
+				<entry key="1200:5084" value-ref="itemStateOffSite"/>
+				<entry key="1300:5084" value-ref="itemStateOffSite"/>
+				<entry key="1400:5084" value-ref="itemStateOffSite"/>
+			</map>
+		</constructor-arg>
+		<property name="invalidSubclassStates">
+			<list>
+				<!-- <value>1300:5083:1302</value> --> <!--  Network Blade in Powered-Off state -->
+				<value>1200:5088:1204</value> <!--  VM in Storage state -->
+				<value>1200:5084:1204</value> <!--  VM in Off-Site state -->
+				<value>2300:5088:2301</value> <!--  Floor PDU in storage state: local -->
+				<value>2300:5088:2303</value> <!--  Floor PDU in storage state: busway -->
+				<value>2200:5808:2201</value> <!--  Power outlet in storage state: whip outlet -->
+				<value>2200:5808:2202</value> <!--  Power outlet in storage state: busway outlet -->
+			</list>
+		</property>
+	</bean>
+	
+	<util:map id="newItemAllowableStates" key-type="java.lang.Long">
+	
+		<entry key="100" value-ref="plannedList"/>
+		
+		<entry key="105" value-ref="plannedNStorageList"/>
+		<entry key="104" value-ref="plannedNStorageList"/>
+		<entry key="101" value-ref="plannedNStorageList"/>
+		<entry key="103" value-ref="plannedNStorageList"/>
+		<entry key="102" value-ref="plannedNStorageList"/>
+		<entry key="106" value-ref="plannedNStorageList"/>
+		
+		<entry key="205" value-ref="plannedNStorageList"/>
+		<entry key="204" value-ref="plannedNStorageList"/>
+		<entry key="203" value-ref="plannedNStorageList"/>
+		<entry key="201" value-ref="plannedNStorageList"/>
+		<entry key="202" value-ref="plannedNStorageList"/>
+		<entry key="206" value-ref="plannedNStorageList"/>
+		
+		<entry key="301" value-ref="plannedList"/>
+		<entry key="302" value-ref="plannedList"/>
+		<entry key="306" value-ref="plannedList"/>
+		
+		<entry key="412" value-ref="plannedList"/>
+		<entry key="411" value-ref="plannedList"/>
+		
+		<entry key="506" value-ref="plannedNStorageList"/>
+		<entry key="501" value-ref="plannedNStorageList"/>
+		<entry key="502" value-ref="plannedNStorageList"/>
+		
+		<entry key="603" value-ref="plannedNStorageList"/>
+		<entry key="613" value-ref="plannedNStorageList"/>
+		
+		<entry key="701" value-ref="plannedNStorageList"/>
+		<entry key="706" value-ref="plannedNStorageList"/>
+		<entry key="702" value-ref="plannedNStorageList"/>
+		
+		<entry key="1103" value-ref="plannedList"/>
+		<entry key="1114" value-ref="plannedList"/>
+		<entry key="1115" value-ref="plannedList"/>
+		<entry key="1116" value-ref="plannedList"/>
+		
+		<entry key="1203" value-ref="plannedList"/>
+		
+		<entry key="1303" value-ref="plannedList"/>
+		
+		<entry key="3001" value-ref="plannedList"/>
+		<entry key="3007" value-ref="plannedList"/>
+		<entry key="3008" value-ref="plannedList"/>
+		
+	</util:map>
+
+	<util:list id="plannedList" value-type="java.lang.Long">
+		<value>#{ T(com.raritan.tdz.lookup.SystemLookup$ItemStatus).PLANNED }</value>
+	</util:list>
+	
+	<util:list id="plannedNStorageList" value-type="java.lang.Long">
+		<value>#{ T(com.raritan.tdz.lookup.SystemLookup$ItemStatus).PLANNED }</value>
+		<value>#{ T(com.raritan.tdz.lookup.SystemLookup$ItemStatus).STORAGE }</value>
+	</util:list>
+	
+</beans>
+

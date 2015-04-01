@@ -1,0 +1,15 @@
+﻿<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE hibernate-mapping
+   PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+   
+<hibernate-mapping>
+
+  <query name="PowerCircuit.fetchPowerCircuitForStartPort">
+  	<![CDATA[select pc from PowerCircuit pc 
+  			  left outer join pc.startConnection startConn 
+  			  left outer join pc.endConnection endConn 
+  			  left outer join startConn.sourcePowerPort startPort 
+  			  where startPort.portId = ?]]>
+  </query>
+</hibernate-mapping>

@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+	<!-- ==================================== -->
+	<!-- Item Storage Request Issued -->
+	<!-- ==================================== -->
+	
+	<!-- Item Storage Request Issued Validator -->
+	
+	<import resource="request_validators.xml"/>
+	<import resource="request_executors.xml"/>
+	
+	<!-- Channel for Storage issued request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_STORAGE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.validateChannel"/> -->
+    <int:channel id="703.501.validateChannel"/>
+
+    <!-- Subscriber - service activator for Storage request approved validator -->
+    <int:service-activator id="itemStorageReqIssueValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_STORAGE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.validateChannel" 
+    		ref="itemStorageReqIssuedValidator" method="validate"/>
+
+	<!-- item Storage request issued validator bean -->
+    <bean id="itemStorageReqIssuedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemStorageWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item Storage Request Issued Executor -->
+	
+	<!-- Channel for Storage issue request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_STORAGE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.executeChannel"/> -->
+	<int:channel id="703.501.executeChannel"/>
+
+    <!-- Subscriber - service activator for Storage request issued executor -->
+    <int:service-activator id="itemStorageReqIssueExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_STORAGE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.executeChannel" 
+    		ref="itemStorageRequestStageIssued" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item Storage request issued executor bean -->
+	<bean id="itemStorageRequestStageIssued" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }"/>
+		<property name="requestStageHelpers" ref="itemStorageRequestIssuedExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Item Storage Request Updated -->
+	<!-- ==================================== -->
+	
+	<!-- Item Storage Request Updated Validator -->
+	
+	<!-- Channel for Storage updated request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_STORAGE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.validateChannel"/> -->
+    <int:channel id="703.503.validateChannel"/>
+
+    <!-- Subscriber - service activator for Storage request updated validator -->
+    <int:service-activator id="itemStorageReqUpdateValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_STORAGE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.validateChannel" 
+    		ref="itemStorageReqUpdatedValidator" method="validate"/>
+
+	<!-- item Storage request updated validator bean -->
+    <bean id="itemStorageReqUpdatedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemStorageWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item Storage Request Updated Executor -->
+	
+	<!-- Channel for Storage update request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_STORAGE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.executeChannel"/> -->
+	<int:channel id="703.503.executeChannel"/>
+
+    <!-- Subscriber - service activator for Storage request updated executor -->
+    <int:service-activator id="itemStorageReqUpdateExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_STORAGE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.executeChannel" 
+    		ref="itemStorageRequestStageUpdated" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item Storage request updated executor bean -->
+	<bean id="itemStorageRequestStageUpdated" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }"/>
+		<property name="requestStageHelpers" ref="itemStorageRequestUpdatedExecutors"/>
+	</bean>
+
+
+	
+	<!-- ==================================== -->
+	<!-- Item Storage Request Approved -->
+	<!-- ==================================== -->
+	
+	<!-- Item Storage Request Approved Validator -->
+	
+	<!-- Channel for Storage approve request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_STORAGE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.validateChannel"/> -->
+    <int:channel id="703.504.validateChannel"/>
+
+    <!-- Subscriber - service activator for Storage request approved validator -->
+    <int:service-activator id="itemStorageReqApproveValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_STORAGE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.validateChannel" 
+    		ref="itemStorageReqApprovedValidator" method="validate"/>
+
+	<!-- item Storage request approved validator bean -->
+    <bean id="itemStorageReqApprovedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemStorageWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item Storage Request Approved Executor -->
+	
+	<!-- Channel for Storage approve request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_STORAGE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.executeChannel"/> -->
+	<int:channel id="703.504.executeChannel"/>
+
+    <!-- Subscriber - service activator for Storage request approved executor -->
+    <int:service-activator id="itemStorageReqApproveExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_STORAGE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.executeChannel" 
+    		ref="itemStorageReqApprovedExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item Storage request approved executor bean -->
+    <bean id="itemStorageReqApprovedExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }"/>
+		<property name="requestStageHelpers" ref="itemStorageRequestApprovedExecutors"/>
+	</bean>
+    
+
+	<!-- ==================================== -->
+	<!-- Item Storage Work Order Issue -->
+	<!-- ==================================== -->
+	
+	<!-- Item Storage Work order issue Validator -->
+	
+	<!-- Channel for Storage Work Order Issue validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_STORAGE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.validateChannel"/> -->
+	<int:channel id="703.505.validateChannel"/>
+
+    <!-- Subscriber - service activator for Storage request approved validator -->
+    <int:service-activator id="itemStorageWorkorderIssueValidateActivator" requires-reply="false" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_STORAGE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.validateChannel" 
+    		ref="itemStorageWorkorderIssueValidator" method="validate"/>
+
+	<!-- item Storage request approved validator bean -->
+    <bean id="itemStorageWorkorderIssueValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemStorageWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item Storage Request Approved Executor -->
+	
+	<!-- Channel for Storage approve request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_STORAGE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.executeChannel"/> -->
+    <int:channel id="703.505.executeChannel"/>
+
+    <!-- Subscriber - service activator for Storage request approved executor -->
+    <int:service-activator id="itemStorageWorkorderIssueExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_STORAGE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.executeChannel" 
+    		ref="itemStorageWorkorderIssueExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item Storage request approved executor bean -->
+    <bean id="itemStorageWorkorderIssueExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }"/>
+		<property name="requestStageHelpers" ref="itemStorageWorkOrderIssueExecutors"/>
+	</bean>
+    
+
+	<!-- ==================================== -->
+	<!-- Item Storage Work Order Complete -->
+	<!-- ==================================== -->
+	
+	<!-- Item Storage Work order complete Validator -->
+	
+	<!-- Channel for Storage Work Order Complete validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_STORAGE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.validateChannel"/> -->
+    <int:channel id="703.506.validateChannel"/>
+
+    <!-- Subscriber - service activator for Storage work order complete validator -->
+    <int:service-activator id="itemStorageWorkorderCompleteValidateActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_STORAGE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.validateChannel" 
+    		ref="itemStorageWorkorderCompleteValidator" method="validate"/>
+
+	<!-- item Storage request complete validator bean -->
+    <bean id="itemStorageWorkorderCompleteValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemStorageWorkOrderCompleteValidators"/>
+    </bean>
+    
+	
+	<!-- Item Storage Workorder complete Executor -->
+	
+	<!-- Channel for Storage work order complete executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_STORAGE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.executeChannel"/> -->
+    <int:channel id="703.506.executeChannel"/>
+
+    <!-- Subscriber - service activator for Storage request approved executor -->
+    <int:service-activator id="itemStorageWorkorderCompleteExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_STORAGE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.executeChannel" 
+    		ref="itemStorageWorkorderCompleteExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item Storage request approved executor bean -->
+    <bean id="itemStorageWorkorderCompleteExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }"/>
+		<property name="requestStageHelpers" ref="itemStorageWorkOrderCompleteExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Item Storage Request Complete -->
+	<!-- ==================================== -->
+	
+	<!-- Item Storage Request complete Validator -->
+	
+	<!-- Channel for Storage Request Complete validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_STORAGE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.validateChannel"/> -->
+    <int:channel id="703.507.validateChannel"/>
+
+    <!-- Subscriber - service activator for Storage request complete validator -->
+    <int:service-activator id="itemStorageRequestCompleteValidateActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_STORAGE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.validateChannel" 
+    		ref="itemStorageRequestCompleteValidator" method="validate"/>
+
+	<!-- item Storage request complete validator bean -->
+    <bean id="itemStorageRequestCompleteValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemStorageWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item Storage Request complete Executor -->
+	
+	<!-- Channel for Storage request complete executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_STORAGE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.executeChannel"/> -->
+    <int:channel id="703.507.executeChannel"/>
+
+    <!-- Subscriber - service activator for Storage request approved executor -->
+    <!-- output-channel="nullChannel" -->
+    <int:service-activator id="itemStorageRequestCompleteExecuteActivator" requires-reply="false" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_STORAGE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.executeChannel" 
+    		ref="itemStorageRequestCompleteExecutor" method="process" output-channel="nullChannel"/>
+    		
+
+	<!-- item Storage request approved executor bean -->
+    <bean id="itemStorageRequestCompleteExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }"/>
+		<property name="requestStageHelpers" ref="itemStorageRequestCompleteExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Item Storage Routers               				-->
+	<!-- ==================================== -->
+
+	<!-- item Storage validate router -->
+	<!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_STORAGE }ValidateRouter"/> -->
+	<int:channel id="703.ValidateRouter"/>
+	<int:router input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_STORAGE }.ValidateRouter" ref="requestStageRouter" method="validatorRouter"/>
+	
+	<!-- item Storage execute router -->
+	<!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_STORAGE }ExecuteRouter"/> -->
+	<int:channel id="703.ExecuteRouter"/>
+	<int:router input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_REMOVE_TO_STORAGE }.ExecuteRouter" ref="requestStageRouter" method="executorRouter"/>
+    
+
+
+
+</beans>

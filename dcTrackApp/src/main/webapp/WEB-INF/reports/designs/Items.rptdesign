@@ -1,0 +1,2556 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 4.2.2.v201301221637 Build &lt;4.2.2.v20130206-1509></property>
+    <simple-property-list name="includeResource">
+        <value>../locale/report_en_US</value>
+    </simple-property-list>
+    <property name="units">in</property>
+    <property name="theme">three_dot_0.defaultTheme</property>
+    <text-property name="displayName">3dot0 Look and Feel</text-property>
+    <property name="eventHandlerClass">com.raritan.tdz.reports.eventhandler.ItemsReportEH</property>
+    <property name="layoutPreference">fixed layout</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <list-property name="libraries">
+        <structure>
+            <property name="fileName">three_dot_0.rptlibrary</property>
+            <property name="namespace">three_dot_0</property>
+        </structure>
+    </list-property>
+    <parameters>
+        <scalar-parameter name="itemIdList" id="327" extends="three_dot_0.itemIdList"/>
+        <scalar-parameter name="SiteCode" id="328" extends="three_dot_0.SiteCode"/>
+        <parameter-group name="HideOptions" id="433" extends="three_dot_0.HideOptions">
+            <overridden-values>
+                <ref-entry baseId="229" name="HideStatus" id="229"/>
+                <ref-entry baseId="230" name="HidePosition" id="230"/>
+                <ref-entry baseId="234" name="HideWeight" id="2602"/>
+                <ref-entry baseId="235" name="HideAssetTag" id="2603"/>
+                <ref-entry baseId="236" name="HideSerialNo" id="2604"/>
+                <ref-entry baseId="237" name="HideModel" id="2605"/>
+                <ref-entry baseId="238" name="HideMake" id="2606"/>
+                <ref-entry baseId="239" name="HideDepartment" id="2607"/>
+                <ref-entry baseId="240" name="HideSysAdmin" id="2608"/>
+                <ref-entry baseId="241" name="HideOS" id="2609"/>
+                <ref-entry baseId="242" name="HideFunction" id="242"/>
+                <ref-entry baseId="243" name="HideType" id="243"/>
+                <ref-entry baseId="244" name="HideCName" id="244"/>
+                <ref-entry baseId="253" name="HideRackUnits" id="2610"/>
+                <ref-entry baseId="254" name="HideAdminTeam" id="2611"/>
+                <ref-entry baseId="255" name="HidePurchaseDate" id="2612"/>
+                <ref-entry baseId="256" name="HidePurchasePrice" id="2613"/>
+                <ref-entry baseId="257" name="HideComments" id="2614"/>
+                <ref-entry baseId="258" name="HideExpirationDate" id="2615"/>
+            </overridden-values>
+        </parameter-group>
+        <scalar-parameter name="CustomDetails" id="1105" extends="three_dot_0.CustomDetails"/>
+        <scalar-parameter name="Orientation" id="1398" extends="three_dot_0.Orientation"/>
+        <scalar-parameter name="ArrangeDataInRows" id="1994" extends="three_dot_0.ArrangeDataInRows"/>
+        <scalar-parameter name="ShowPorts" id="2318" extends="three_dot_0.ShowPorts"/>
+    </parameters>
+    <data-sets>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="ItemList" id="263"
+ extends="three_dot_0.ItemList"/>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="PowerPortsByItem" id="2347"
+ extends="three_dot_0.PowerPortsByItem"/>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="DataPortsByItem" id="2348"
+ extends="three_dot_0.DataPortsByItem"/>
+    </data-sets>
+    <page-setup>
+        <simple-master-page name="dcTrackMaster" id="215" extends="three_dot_0.dcTrackMaster">
+            <property name="orientation">landscape</property>
+            <overridden-values>
+                <ref-entry baseId="136" name="NewGrid" id="136"/>
+                <ref-entry baseId="137" id="137"/>
+                <ref-entry baseId="138" id="138"/>
+                <ref-entry baseId="139" id="139"/>
+                <ref-entry baseId="140" id="140"/>
+                <ref-entry baseId="141" id="141"/>
+                <ref-entry baseId="148" name="NewLabel" id="148">
+                    <property name="textID">ItemListing</property>
+                </ref-entry>
+                <ref-entry baseId="142" id="142"/>
+                <ref-entry baseId="146" name="NewImage" id="146"/>
+                <ref-entry baseId="143" id="143"/>
+                <ref-entry baseId="147" name="NewImage1" id="147"/>
+                <ref-entry baseId="149" name="NewGrid1" id="149"/>
+                <ref-entry baseId="150" id="150"/>
+                <ref-entry baseId="151" id="151"/>
+                <ref-entry baseId="152" id="152"/>
+                <ref-entry baseId="153" id="153"/>
+                <ref-entry baseId="154" id="154"/>
+                <ref-entry baseId="175" name="NewGrid3" id="175"/>
+                <ref-entry baseId="176" id="176"/>
+                <ref-entry baseId="177" id="177"/>
+                <ref-entry baseId="178" id="178"/>
+                <ref-entry baseId="181" name="NewText2" id="181"/>
+                <ref-entry baseId="179" id="179"/>
+                <ref-entry baseId="180" id="180"/>
+                <ref-entry baseId="183" name="NewText21" id="183"/>
+                <ref-entry baseId="155" id="155"/>
+                <ref-entry baseId="157" name="NewGrid2" id="157"/>
+                <ref-entry baseId="158" id="158"/>
+                <ref-entry baseId="159" id="159"/>
+                <ref-entry baseId="160" id="160"/>
+                <ref-entry baseId="161" id="161"/>
+                <ref-entry baseId="162" id="162"/>
+                <ref-entry baseId="163" name="NewAutoText" id="163"/>
+                <ref-entry baseId="164" id="164"/>
+                <ref-entry baseId="165" name="NewText" id="165"/>
+                <ref-entry baseId="166" id="166"/>
+                <ref-entry baseId="167" name="NewAutoText1" id="167"/>
+                <ref-entry baseId="156" id="156"/>
+                <ref-entry baseId="168" name="NewText1" id="168"/>
+            </overridden-values>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <table name="maintable" id="219">
+            <property name="dataSet">ItemList</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">item_id</property>
+                    <expression name="expression">dataSetRow["item_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">item_name</property>
+                    <expression name="expression">dataSetRow["item_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">item_alias</property>
+                    <expression name="expression">dataSetRow["item_alias"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">u_position</property>
+                    <expression name="expression">dataSetRow["u_position"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">model_name</property>
+                    <expression name="expression">dataSetRow["model_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ru_height</property>
+                    <expression name="expression">dataSetRow["ru_height"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">weight</property>
+                    <expression name="expression">dataSetRow["weight"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">mfr_name</property>
+                    <expression name="expression">dataSetRow["mfr_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">purpose</property>
+                    <expression name="expression">dataSetRow["purpose"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">serial_number</property>
+                    <expression name="expression">dataSetRow["serial_number"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">asset_number</property>
+                    <expression name="expression">dataSetRow["asset_number"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">os</property>
+                    <expression name="expression">dataSetRow["os"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">status</property>
+                    <expression name="expression">dataSetRow["status"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">parent_item_name</property>
+                    <expression name="expression">dataSetRow["parent_item_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">parent_item_id</property>
+                    <expression name="expression">dataSetRow["parent_item_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">function</property>
+                    <text-property name="displayName">function</text-property>
+                    <expression name="expression">dataSetRow["function"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">aggregation</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Cabinet</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["weight"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">model_id</property>
+                    <expression name="expression">dataSetRow["model_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">parent_class</property>
+                    <expression name="expression">dataSetRow["parent_class"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">parent_class_name</property>
+                    <expression name="expression">dataSetRow["parent_class_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cf1</property>
+                    <text-property name="displayName">cf1</text-property>
+                    <expression name="expression">dataSetRow["cf1"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cd1</property>
+                    <text-property name="displayName">cd1</text-property>
+                    <expression name="expression">dataSetRow["cd1"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cf2</property>
+                    <text-property name="displayName">cf2</text-property>
+                    <expression name="expression">dataSetRow["cf2"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cf3</property>
+                    <text-property name="displayName">cf3</text-property>
+                    <expression name="expression">dataSetRow["cf3"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cf4</property>
+                    <text-property name="displayName">cf4</text-property>
+                    <expression name="expression">dataSetRow["cf4"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cf5</property>
+                    <text-property name="displayName">cf5</text-property>
+                    <expression name="expression">dataSetRow["cf5"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cf6</property>
+                    <text-property name="displayName">cf6</text-property>
+                    <expression name="expression">dataSetRow["cf6"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cf7</property>
+                    <text-property name="displayName">cf7</text-property>
+                    <expression name="expression">dataSetRow["cf7"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cf8</property>
+                    <text-property name="displayName">cf8</text-property>
+                    <expression name="expression">dataSetRow["cf8"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cf9</property>
+                    <text-property name="displayName">cf9</text-property>
+                    <expression name="expression">dataSetRow["cf9"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cf10</property>
+                    <text-property name="displayName">cf10</text-property>
+                    <expression name="expression">dataSetRow["cf10"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cf11</property>
+                    <text-property name="displayName">cf11</text-property>
+                    <expression name="expression">dataSetRow["cf11"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cf12</property>
+                    <text-property name="displayName">cf12</text-property>
+                    <expression name="expression">dataSetRow["cf12"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cf13</property>
+                    <text-property name="displayName">cf13</text-property>
+                    <expression name="expression">dataSetRow["cf13"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cf14</property>
+                    <text-property name="displayName">cf14</text-property>
+                    <expression name="expression">dataSetRow["cf14"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cf15</property>
+                    <text-property name="displayName">cf15</text-property>
+                    <expression name="expression">dataSetRow["cf15"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cf16</property>
+                    <text-property name="displayName">cf16</text-property>
+                    <expression name="expression">dataSetRow["cf16"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cd2</property>
+                    <text-property name="displayName">cd2</text-property>
+                    <expression name="expression">dataSetRow["cd2"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cd3</property>
+                    <text-property name="displayName">cd3</text-property>
+                    <expression name="expression">dataSetRow["cd3"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cd4</property>
+                    <text-property name="displayName">cd4</text-property>
+                    <expression name="expression">dataSetRow["cd4"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cd5</property>
+                    <text-property name="displayName">cd5</text-property>
+                    <expression name="expression">dataSetRow["cd5"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cd6</property>
+                    <text-property name="displayName">cd6</text-property>
+                    <expression name="expression">dataSetRow["cd6"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cd7</property>
+                    <text-property name="displayName">cd7</text-property>
+                    <expression name="expression">dataSetRow["cd7"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cd8</property>
+                    <text-property name="displayName">cd8</text-property>
+                    <expression name="expression">dataSetRow["cd8"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cd9</property>
+                    <text-property name="displayName">cd9</text-property>
+                    <expression name="expression">dataSetRow["cd9"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cd10</property>
+                    <text-property name="displayName">cd10</text-property>
+                    <expression name="expression">dataSetRow["cd10"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cd11</property>
+                    <text-property name="displayName">cd11</text-property>
+                    <expression name="expression">dataSetRow["cd11"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cd12</property>
+                    <text-property name="displayName">cd12</text-property>
+                    <expression name="expression">dataSetRow["cd12"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cd13</property>
+                    <text-property name="displayName">cd13</text-property>
+                    <expression name="expression">dataSetRow["cd13"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cd14</property>
+                    <text-property name="displayName">cd14</text-property>
+                    <expression name="expression">dataSetRow["cd14"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cd16</property>
+                    <text-property name="displayName">cd16</text-property>
+                    <expression name="expression">dataSetRow["cd16"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cd15</property>
+                    <text-property name="displayName">cd15</text-property>
+                    <expression name="expression">dataSetRow["cd15"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">purchase_date</property>
+                    <text-property name="displayName">purchase_date</text-property>
+                    <expression name="expression">dataSetRow["purchase_date"]</expression>
+                    <property name="dataType">date-time</property>
+                </structure>
+                <structure>
+                    <property name="name">purchase_price</property>
+                    <text-property name="displayName">purchase_price</text-property>
+                    <expression name="expression">dataSetRow["purchase_price"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">admin</property>
+                    <text-property name="displayName">admin</text-property>
+                    <expression name="expression">dataSetRow["admin"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">admin_group</property>
+                    <text-property name="displayName">admin_group</text-property>
+                    <expression name="expression">dataSetRow["admin_group"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">department</property>
+                    <text-property name="displayName">department</text-property>
+                    <expression name="expression">dataSetRow["department"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">description</property>
+                    <expression name="expression">dataSetRow["description"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">contract_expire_date</property>
+                    <expression name="expression" type="javascript">dataSetRow["contract_expire_date"]</expression>
+                    <property name="dataType">date-time</property>
+                </structure>
+            </list-property>
+            <property name="pageBreakInterval">0</property>
+            <column id="253"/>
+            <column id="254">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">params["HideCName"].value</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="255">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">params["HideType"].value</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="256">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">params["HideFunction"].value</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="257">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">params["HideOS"].value</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="258">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">params["HideSysAdmin"].value</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="259">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">params["HideAdminTeam"].value</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="2153">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">params["HideDepartment"].value</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="260">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">params["HideMake"].value</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="261">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">params["HideModel"].value</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="2111">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">params["HideRackUnits"].value</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="262">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">params["HideSerialNo"].value</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="306">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">params["HideAssetTag"].value</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="310">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">params["HideWeight"].value</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="314">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">params["HidePosition"].value</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="318">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">params["HideStatus"].value</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="2170">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">params["HidePurchasePrice"].value</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="2162">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">params["HidePurchaseDate"].value</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="2270">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">params["HideExpirationDate"].value</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="1245">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">!isColumnPresent("cf1")</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="1367">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">!isColumnPresent("cf2")</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="1359">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">!isColumnPresent("cf3")</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="1351">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">!isColumnPresent("cf4")</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="1343">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">!isColumnPresent("cf5")</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="1335">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">!isColumnPresent("cf6")</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="1327">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">!isColumnPresent("cf7")</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="1319">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">!isColumnPresent("cf8")</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="1311">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">!isColumnPresent("cf9")</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="1303">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">!isColumnPresent("cf10")</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="1295">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">!isColumnPresent("cf11")</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="1287">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">!isColumnPresent("cf12")</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="1279">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">!isColumnPresent("cf13")</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="1271">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">!isColumnPresent("cf14")</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="1263">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">!isColumnPresent("cf15")</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="1255">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">!isColumnPresent("cf16")</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <column id="2180">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">params["HideComments"].value</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <group id="329">
+                <property name="groupName">Cabinet</property>
+                <property name="interval">none</property>
+                <property name="sortDirection">asc</property>
+                <expression name="keyExpr" type="javascript">row["parent_item_id"]</expression>
+                <structure name="toc">
+                    <expression name="expressionValue" type="javascript">if (row["parent_item_name"]) {&#13;
+	String(reportContext.getMessage(row["parent_class_name"], reportContext.getLocale())) + String(" ") + String(row["parent_item_name"]);&#13;
+} else {&#13;
+	String(reportContext.getMessage("NotAssigned", reportContext.getLocale()));&#13;
+}</expression>
+                </structure>
+                <property name="repeatHeader">true</property>
+                <property name="hideDetail">false</property>
+                <property name="pageBreakAfter">auto</property>
+                <property name="pageBreakBefore">auto</property>
+                <property name="pageBreakInside">auto</property>
+                <list-property name="sort">
+                    <structure>
+                        <expression name="key" type="javascript">row["parent_item_name"]</expression>
+                        <property name="direction">asc</property>
+                    </structure>
+                </list-property>
+                <header>
+                    <row id="330">
+                        <property name="style">mainGroupHeaderBG</property>
+                        <cell id="331">
+                            <property name="colSpan">36</property>
+                            <property name="rowSpan">1</property>
+                            <text id="378">
+                                <property name="style">groupFont1</property>
+                                <property name="fontWeight">bold</property>
+                                <property name="contentType">html</property>
+                                <text-property name="content"><![CDATA[<VALUE-OF>reportContext.getMessage(row["parent_class_name"], reportContext.getLocale())</VALUE-OF>
+<span style="color: #009dff;"> <VALUE-OF>
+row["parent_item_name"] ? row["parent_item_name"] : reportContext.getMessage("NotAssigned", reportContext.getLocale())
+</VALUE-OF></span>]]></text-property>
+                            </text>
+                        </cell>
+                    </row>
+                    <row id="361">
+                        <property name="style">subTableHeader</property>
+                        <cell id="362">
+                            <label id="287">
+                                <text-property name="text" key="ItemName"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="363">
+                            <label id="289">
+                                <text-property name="text" key="ComNameAlias"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="364">
+                            <label id="291">
+                                <text-property name="text" key="Type"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="365">
+                            <label id="295">
+                                <text-property name="text" key="Function"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="366">
+                            <label id="293">
+                                <text-property name="text" key="OS"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="367">
+                            <label id="376">
+                                <text-property name="text" key="SysAdmin"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="368">
+                            <label id="2154">
+                                <text-property name="text" key="AdminTeam"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="2147">
+                            <label id="377">
+                                <text-property name="text" key="Dept"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="369">
+                            <label id="297">
+                                <text-property name="text" key="Make"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="370">
+                            <label id="299">
+                                <text-property name="text" key="Model"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="2105">
+                            <label id="2113">
+                                <text-property name="text" key="RackUnits"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="371">
+                            <label id="301">
+                                <text-property name="text" key="SerialNo"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="372">
+                            <label id="319">
+                                <text-property name="text" key="AssetTag"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="373">
+                            <label id="321">
+                                <text-property name="text" key="Weight+Unit"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="374">
+                            <label id="323">
+                                <text-property name="text" key="Position"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="375">
+                            <label id="325">
+                                <text-property name="text" key="Status"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="2164">
+                            <label id="2171">
+                                <text-property name="text" key="PurchasePrice"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="2156">
+                            <label id="2172">
+                                <text-property name="text" key="PurchaseDate"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="2264">
+                            <label id="2272">
+                                <text-property name="text" key="ExpirationDate"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="1239">
+                            <data id="1246">
+                                <property name="resultSetColumn">cf1</property>
+                            </data>
+                        </cell>
+                        <cell id="1361">
+                            <data id="1368">
+                                <property name="resultSetColumn">cf2</property>
+                            </data>
+                        </cell>
+                        <cell id="1353">
+                            <data id="1369">
+                                <property name="resultSetColumn">cf3</property>
+                            </data>
+                        </cell>
+                        <cell id="1345">
+                            <data id="1370">
+                                <property name="resultSetColumn">cf4</property>
+                            </data>
+                        </cell>
+                        <cell id="1337">
+                            <data id="1371">
+                                <property name="resultSetColumn">cf5</property>
+                            </data>
+                        </cell>
+                        <cell id="1329">
+                            <data id="1372">
+                                <property name="resultSetColumn">cf6</property>
+                            </data>
+                        </cell>
+                        <cell id="1321">
+                            <data id="1373">
+                                <property name="resultSetColumn">cf7</property>
+                            </data>
+                        </cell>
+                        <cell id="1313">
+                            <data id="1374">
+                                <property name="resultSetColumn">cf8</property>
+                            </data>
+                        </cell>
+                        <cell id="1305">
+                            <data id="1375">
+                                <property name="resultSetColumn">cf9</property>
+                            </data>
+                        </cell>
+                        <cell id="1297">
+                            <data id="1376">
+                                <property name="resultSetColumn">cf10</property>
+                            </data>
+                        </cell>
+                        <cell id="1289">
+                            <data id="1377">
+                                <property name="resultSetColumn">cf11</property>
+                            </data>
+                        </cell>
+                        <cell id="1281">
+                            <data id="1378">
+                                <property name="resultSetColumn">cf12</property>
+                            </data>
+                        </cell>
+                        <cell id="1273">
+                            <data id="1379">
+                                <property name="resultSetColumn">cf13</property>
+                            </data>
+                        </cell>
+                        <cell id="1265">
+                            <data id="1380">
+                                <property name="resultSetColumn">cf14</property>
+                            </data>
+                        </cell>
+                        <cell id="1257">
+                            <data id="1381">
+                                <property name="resultSetColumn">cf15</property>
+                            </data>
+                        </cell>
+                        <cell id="1249">
+                            <data id="1382">
+                                <property name="resultSetColumn">cf16</property>
+                            </data>
+                        </cell>
+                        <cell id="2174">
+                            <label id="2181">
+                                <text-property name="text" key="Comments"></text-property>
+                            </label>
+                        </cell>
+                    </row>
+                </header>
+                <footer>
+                    <row id="345">
+                        <property name="style">summaryFont</property>
+                        <cell id="346">
+                            <property name="colSpan">13</property>
+                            <property name="rowSpan">1</property>
+                            <text id="380">
+                                <property name="contentType">html</property>
+                                <text-property name="content"><![CDATA[<span><VALUE-OF>reportContext.getMessage("TotalItems", reportContext.getLocale()) + ": "</VALUE-OF></span>
+<VALUE-OF>
+Total.count(row["item_id"], 1)
+</VALUE-OF>]]></text-property>
+                            </text>
+                        </cell>
+                        <cell id="357">
+                            <data id="379">
+                                <property name="resultSetColumn">aggregation</property>
+                            </data>
+                        </cell>
+                        <cell id="358"/>
+                        <cell id="359"/>
+                        <cell id="2169"/>
+                        <cell id="2161"/>
+                        <cell id="2269"/>
+                        <cell id="1243"/>
+                        <cell id="1365"/>
+                        <cell id="1357"/>
+                        <cell id="1349"/>
+                        <cell id="1341"/>
+                        <cell id="1333"/>
+                        <cell id="1325"/>
+                        <cell id="1317"/>
+                        <cell id="1309"/>
+                        <cell id="1301"/>
+                        <cell id="1293"/>
+                        <cell id="1285"/>
+                        <cell id="1277"/>
+                        <cell id="1269"/>
+                        <cell id="1261"/>
+                        <cell id="1253"/>
+                        <cell id="2179"/>
+                    </row>
+                </footer>
+            </group>
+            <detail>
+                <row id="231">
+                    <method name="onCreate"><![CDATA[if (params["ShowPorts"].value) {
+	this.getStyle().borderBottomStyle = "Solid";
+}]]></method>
+                    <property name="borderBottomColor">#000000</property>
+                    <list-property name="highlightRules">
+                        <structure>
+                            <property name="operator">is-false</property>
+                            <expression name="testExpr" type="javascript">params["ShowPorts"].value  ?  false : row[0]%2</expression>
+                            <property name="style">alternatingRow</property>
+                        </structure>
+                    </list-property>
+                    <cell id="232">
+                        <data id="2229">
+                            <property name="resultSetColumn">item_name</property>
+                        </data>
+                    </cell>
+                    <cell id="233">
+                        <data id="290">
+                            <property name="resultSetColumn">item_alias</property>
+                        </data>
+                    </cell>
+                    <cell id="234">
+                        <data id="292">
+                            <property name="resultSetColumn">purpose</property>
+                        </data>
+                    </cell>
+                    <cell id="235">
+                        <data id="296">
+                            <property name="resultSetColumn">function</property>
+                        </data>
+                    </cell>
+                    <cell id="236">
+                        <data id="294">
+                            <property name="resultSetColumn">os</property>
+                        </data>
+                    </cell>
+                    <cell id="237">
+                        <data id="2227">
+                            <property name="resultSetColumn">admin</property>
+                        </data>
+                    </cell>
+                    <cell id="238">
+                        <data id="2228">
+                            <property name="resultSetColumn">admin_group</property>
+                        </data>
+                    </cell>
+                    <cell id="2148">
+                        <data id="2244">
+                            <property name="resultSetColumn">department</property>
+                        </data>
+                    </cell>
+                    <cell id="239">
+                        <data id="298">
+                            <property name="resultSetColumn">mfr_name</property>
+                        </data>
+                    </cell>
+                    <cell id="240">
+                        <data id="300">
+                            <property name="resultSetColumn">model_name</property>
+                        </data>
+                    </cell>
+                    <cell id="2106">
+                        <data id="2112">
+                            <property name="resultSetColumn">ru_height</property>
+                        </data>
+                    </cell>
+                    <cell id="241">
+                        <data id="302">
+                            <property name="resultSetColumn">serial_number</property>
+                        </data>
+                    </cell>
+                    <cell id="304">
+                        <data id="320">
+                            <property name="resultSetColumn">asset_number</property>
+                        </data>
+                    </cell>
+                    <cell id="308">
+                        <data id="322">
+                            <list-property name="visibility">
+                                <structure>
+                                    <property name="format">all</property>
+                                    <expression name="valueExpr" type="javascript">row["weight"]&lt;= 0</expression>
+                                </structure>
+                            </list-property>
+                            <property name="resultSetColumn">weight</property>
+                        </data>
+                    </cell>
+                    <cell id="312">
+                        <data id="324">
+                            <list-property name="mapRules">
+                                <structure>
+                                    <expression name="testExpr" type="javascript">row["u_position"]</expression>
+                                    <property name="operator">eq</property>
+                                    <simple-property-list name="value1">
+                                        <value>-9</value>
+                                    </simple-property-list>
+                                </structure>
+                                <structure>
+                                    <expression name="testExpr" type="javascript">row["u_position"]</expression>
+                                    <property name="operator">eq</property>
+                                    <simple-property-list name="value1">
+                                        <value>-1</value>
+                                    </simple-property-list>
+                                    <text-property name="display" key="below"></text-property>
+                                </structure>
+                                <structure>
+                                    <expression name="testExpr" type="javascript">row["u_position"]</expression>
+                                    <property name="operator">eq</property>
+                                    <simple-property-list name="value1">
+                                        <value>-2</value>
+                                    </simple-property-list>
+                                    <text-property name="display" key="above"></text-property>
+                                </structure>
+                            </list-property>
+                            <property name="resultSetColumn">u_position</property>
+                        </data>
+                    </cell>
+                    <cell id="316">
+                        <data id="326">
+                            <property name="resultSetColumn">status</property>
+                        </data>
+                    </cell>
+                    <cell id="2165">
+                        <data id="2210">
+                            <list-property name="visibility">
+                                <structure>
+                                    <property name="format">all</property>
+                                    <expression name="valueExpr" type="javascript">row["purchase_price"] &lt;= 0</expression>
+                                </structure>
+                            </list-property>
+                            <property name="resultSetColumn">purchase_price</property>
+                        </data>
+                    </cell>
+                    <cell id="2157">
+                        <data id="2211">
+                            <structure name="dateTimeFormat">
+                                <property name="category">Short Date</property>
+                                <property name="pattern">Short Date</property>
+                            </structure>
+                            <property name="resultSetColumn">purchase_date</property>
+                        </data>
+                    </cell>
+                    <cell id="2265">
+                        <data id="2392">
+                            <structure name="dateTimeFormat">
+                                <property name="category">Short Date</property>
+                                <property name="pattern">Short Date</property>
+                            </structure>
+                            <property name="resultSetColumn">contract_expire_date</property>
+                        </data>
+                    </cell>
+                    <cell id="1240">
+                        <data id="1247">
+                            <property name="resultSetColumn">cd1</property>
+                        </data>
+                    </cell>
+                    <cell id="1362">
+                        <data id="1383">
+                            <property name="resultSetColumn">cd2</property>
+                        </data>
+                    </cell>
+                    <cell id="1354">
+                        <data id="1384">
+                            <property name="resultSetColumn">cd3</property>
+                        </data>
+                    </cell>
+                    <cell id="1346">
+                        <data id="1385">
+                            <property name="resultSetColumn">cd4</property>
+                        </data>
+                    </cell>
+                    <cell id="1338">
+                        <data id="1386">
+                            <property name="resultSetColumn">cd5</property>
+                        </data>
+                    </cell>
+                    <cell id="1330">
+                        <data id="1387">
+                            <property name="resultSetColumn">cd6</property>
+                        </data>
+                    </cell>
+                    <cell id="1322">
+                        <data id="1388">
+                            <property name="resultSetColumn">cd7</property>
+                        </data>
+                    </cell>
+                    <cell id="1314">
+                        <data id="1389">
+                            <property name="resultSetColumn">cd8</property>
+                        </data>
+                    </cell>
+                    <cell id="1306">
+                        <data id="1390">
+                            <property name="resultSetColumn">cd9</property>
+                        </data>
+                    </cell>
+                    <cell id="1298">
+                        <data id="1391">
+                            <property name="resultSetColumn">cd10</property>
+                        </data>
+                    </cell>
+                    <cell id="1290">
+                        <data id="1392">
+                            <property name="resultSetColumn">cd11</property>
+                        </data>
+                    </cell>
+                    <cell id="1282">
+                        <data id="1393">
+                            <property name="resultSetColumn">cd12</property>
+                        </data>
+                    </cell>
+                    <cell id="1274">
+                        <data id="1394">
+                            <property name="resultSetColumn">cd13</property>
+                        </data>
+                    </cell>
+                    <cell id="1266">
+                        <data id="1395">
+                            <property name="resultSetColumn">cd14</property>
+                        </data>
+                    </cell>
+                    <cell id="1258">
+                        <data id="1637">
+                            <property name="resultSetColumn">cd15</property>
+                        </data>
+                    </cell>
+                    <cell id="1250">
+                        <data id="1397">
+                            <property name="resultSetColumn">cd16</property>
+                        </data>
+                    </cell>
+                    <cell id="2175">
+                        <data id="2302">
+                            <property name="resultSetColumn">description</property>
+                        </data>
+                    </cell>
+                </row>
+                <row id="2061">
+                    <method name="onCreate"><![CDATA[if (params["ShowPorts"].value) {
+	this.getStyle().borderBottomStyle = "Solid";
+}]]></method>
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="pageBreakInside">auto</property>
+                    <cell id="2062">
+                        <property name="colSpan">36</property>
+                        <property name="rowSpan">1</property>
+                        <table id="2092">
+                            <property name="pageBreakAfter">auto</property>
+                            <property name="pageBreakBefore">auto</property>
+                            <property name="pageBreakInside">auto</property>
+                            <property name="pageBreakInterval">0</property>
+                            <column id="2102"/>
+                            <column id="2103"/>
+                            <header>
+                                <row id="2093">
+                                    <cell id="2094">
+                                        <property name="colSpan">2</property>
+                                        <property name="rowSpan">1</property>
+                                        <data id="288">
+                                            <property name="style">groupFont2</property>
+                                            <property name="textAlign">left</property>
+                                            <structure name="toc">
+                                                <expression name="expressionValue" type="javascript">row["item_name"]</expression>
+                                            </structure>
+                                            <property name="resultSetColumn">item_name</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                            </header>
+                            <detail>
+                                <row id="2096">
+                                    <cell id="2097">
+                                        <table id="1658">
+                                            <property name="pageBreakInside">auto</property>
+                                            <property name="pageBreakInterval">0</property>
+                                            <column id="1818">
+                                                <property name="width">30%</property>
+                                                <property name="fontWeight">bold</property>
+                                            </column>
+                                            <column id="1819">
+                                                <property name="width">70%</property>
+                                            </column>
+                                            <detail>
+                                                <row id="1659">
+                                                    <list-property name="visibility">
+                                                        <structure>
+                                                            <property name="format">all</property>
+                                                            <expression name="valueExpr" type="javascript">params["HideStatus"].value</expression>
+                                                        </structure>
+                                                    </list-property>
+                                                    <cell id="1660">
+                                                        <label id="1661">
+                                                            <text-property name="text" key="Status">STATUS</text-property>
+                                                        </label>
+                                                    </cell>
+                                                    <cell id="1662">
+                                                        <data id="1663">
+                                                            <property name="resultSetColumn">status</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                                <row id="1677">
+                                                    <list-property name="visibility">
+                                                        <structure>
+                                                            <property name="format">all</property>
+                                                            <expression name="valueExpr" type="javascript">params["HideCName"].value</expression>
+                                                        </structure>
+                                                    </list-property>
+                                                    <cell id="1678">
+                                                        <label id="1679">
+                                                            <text-property name="text" key="ComNameAlias">ITEM_ALIAS</text-property>
+                                                        </label>
+                                                    </cell>
+                                                    <cell id="1680">
+                                                        <data id="1681">
+                                                            <property name="resultSetColumn">item_alias</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                                <row id="1686">
+                                                    <list-property name="visibility">
+                                                        <structure>
+                                                            <property name="format">all</property>
+                                                            <expression name="valueExpr" type="javascript">params["HideType"].value</expression>
+                                                        </structure>
+                                                    </list-property>
+                                                    <cell id="1687">
+                                                        <label id="1688">
+                                                            <text-property name="text" key="Type">PURPOSE</text-property>
+                                                        </label>
+                                                    </cell>
+                                                    <cell id="1689">
+                                                        <data id="1690">
+                                                            <property name="resultSetColumn">purpose</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                                <row id="1695">
+                                                    <list-property name="visibility">
+                                                        <structure>
+                                                            <property name="format">all</property>
+                                                            <expression name="valueExpr" type="javascript">params["HideFunction"].value</expression>
+                                                        </structure>
+                                                    </list-property>
+                                                    <cell id="1696">
+                                                        <label id="1697">
+                                                            <text-property name="text" key="Function">FUNCTION</text-property>
+                                                        </label>
+                                                    </cell>
+                                                    <cell id="1698">
+                                                        <data id="1699">
+                                                            <property name="resultSetColumn">function</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                                <row id="1704">
+                                                    <list-property name="visibility">
+                                                        <structure>
+                                                            <property name="format">all</property>
+                                                            <expression name="valueExpr" type="javascript">params["HideOS"].value</expression>
+                                                        </structure>
+                                                    </list-property>
+                                                    <cell id="1705">
+                                                        <label id="1706">
+                                                            <text-property name="text" key="OS">OS</text-property>
+                                                        </label>
+                                                    </cell>
+                                                    <cell id="1707">
+                                                        <data id="1708">
+                                                            <property name="resultSetColumn">os</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                                <row id="1713">
+                                                    <list-property name="visibility">
+                                                        <structure>
+                                                            <property name="format">all</property>
+                                                            <expression name="valueExpr" type="javascript">params["HideSysAdmin"].value</expression>
+                                                        </structure>
+                                                    </list-property>
+                                                    <cell id="1714">
+                                                        <label id="1715">
+                                                            <text-property name="text" key="SysAdmin"></text-property>
+                                                        </label>
+                                                    </cell>
+                                                    <cell id="1716">
+                                                        <data id="2225">
+                                                            <property name="resultSetColumn">admin</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                                <row id="1721">
+                                                    <list-property name="visibility">
+                                                        <structure>
+                                                            <property name="format">all</property>
+                                                            <expression name="valueExpr" type="javascript">params["HideAdminTeam"].value</expression>
+                                                        </structure>
+                                                    </list-property>
+                                                    <cell id="1722">
+                                                        <label id="1723">
+                                                            <text-property name="text" key="AdminTeam"></text-property>
+                                                        </label>
+                                                    </cell>
+                                                    <cell id="1724">
+                                                        <data id="2226">
+                                                            <property name="resultSetColumn">admin_group</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                                <row id="1729">
+                                                    <list-property name="visibility">
+                                                        <structure>
+                                                            <property name="format">all</property>
+                                                            <expression name="valueExpr" type="javascript">params["HideDepartment"].value</expression>
+                                                        </structure>
+                                                    </list-property>
+                                                    <cell id="1730">
+                                                        <label id="1731">
+                                                            <text-property name="text" key="Dept"></text-property>
+                                                        </label>
+                                                    </cell>
+                                                    <cell id="1732">
+                                                        <data id="2243">
+                                                            <property name="resultSetColumn">department</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                                <row id="1737">
+                                                    <list-property name="visibility">
+                                                        <structure>
+                                                            <property name="format">all</property>
+                                                            <expression name="valueExpr" type="javascript">params["HideMake"].value</expression>
+                                                        </structure>
+                                                    </list-property>
+                                                    <cell id="1738">
+                                                        <label id="1739">
+                                                            <text-property name="text" key="Make">MFR_NAME</text-property>
+                                                        </label>
+                                                    </cell>
+                                                    <cell id="1740">
+                                                        <data id="1741">
+                                                            <property name="resultSetColumn">mfr_name</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                                <row id="1746">
+                                                    <list-property name="visibility">
+                                                        <structure>
+                                                            <property name="format">all</property>
+                                                            <expression name="valueExpr" type="javascript">params["HideModel"].value</expression>
+                                                        </structure>
+                                                    </list-property>
+                                                    <cell id="1747">
+                                                        <label id="1748">
+                                                            <text-property name="text" key="Model">MODEL_NAME</text-property>
+                                                        </label>
+                                                    </cell>
+                                                    <cell id="1749">
+                                                        <data id="1750">
+                                                            <property name="resultSetColumn">model_name</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                                <row id="1755">
+                                                    <list-property name="visibility">
+                                                        <structure>
+                                                            <property name="format">all</property>
+                                                            <expression name="valueExpr" type="javascript">params["HideRackUnits"].value</expression>
+                                                        </structure>
+                                                    </list-property>
+                                                    <cell id="1756">
+                                                        <label id="1757">
+                                                            <text-property name="text" key="RackUnits"></text-property>
+                                                        </label>
+                                                    </cell>
+                                                    <cell id="1758">
+                                                        <data id="1759">
+                                                            <property name="resultSetColumn">ru_height</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                                <row id="1764">
+                                                    <list-property name="visibility">
+                                                        <structure>
+                                                            <property name="format">all</property>
+                                                            <expression name="valueExpr" type="javascript">params["HideWeight"].value</expression>
+                                                        </structure>
+                                                    </list-property>
+                                                    <cell id="1765">
+                                                        <label id="1766">
+                                                            <text-property name="text" key="Weight+Unit">WEIGHT</text-property>
+                                                        </label>
+                                                    </cell>
+                                                    <cell id="1767">
+                                                        <data id="1768">
+                                                            <list-property name="visibility">
+                                                                <structure>
+                                                                    <property name="format">all</property>
+                                                                    <expression name="valueExpr" type="javascript">row["weight"]&lt;= 0</expression>
+                                                                </structure>
+                                                            </list-property>
+                                                            <property name="resultSetColumn">weight</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                                <row id="1773">
+                                                    <list-property name="visibility">
+                                                        <structure>
+                                                            <property name="format">all</property>
+                                                            <expression name="valueExpr" type="javascript">params["HidePosition"].value</expression>
+                                                        </structure>
+                                                    </list-property>
+                                                    <cell id="1774">
+                                                        <label id="1775">
+                                                            <text-property name="text" key="Position">U_POSITION</text-property>
+                                                        </label>
+                                                    </cell>
+                                                    <cell id="1776">
+                                                        <data id="1777">
+                                                            <list-property name="mapRules">
+                                                                <structure>
+                                                                    <expression name="testExpr" type="javascript">row["u_position"]</expression>
+                                                                    <property name="operator">eq</property>
+                                                                    <simple-property-list name="value1">
+                                                                        <value>-9</value>
+                                                                    </simple-property-list>
+                                                                </structure>
+                                                                <structure>
+                                                                    <expression name="testExpr" type="javascript">row["u_position"]</expression>
+                                                                    <property name="operator">eq</property>
+                                                                    <simple-property-list name="value1">
+                                                                        <value>-1</value>
+                                                                    </simple-property-list>
+                                                                    <text-property name="display" key="below"></text-property>
+                                                                </structure>
+                                                                <structure>
+                                                                    <expression name="testExpr" type="javascript">row["u_position"]</expression>
+                                                                    <property name="operator">eq</property>
+                                                                    <simple-property-list name="value1">
+                                                                        <value>-2</value>
+                                                                    </simple-property-list>
+                                                                    <text-property name="display" key="above"></text-property>
+                                                                </structure>
+                                                            </list-property>
+                                                            <property name="resultSetColumn">u_position</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                                <row id="1782">
+                                                    <list-property name="visibility">
+                                                        <structure>
+                                                            <property name="format">all</property>
+                                                            <expression name="valueExpr" type="javascript">params["HideSerialNo"].value</expression>
+                                                        </structure>
+                                                    </list-property>
+                                                    <cell id="1783">
+                                                        <label id="1784">
+                                                            <text-property name="text" key="SerialNo">SERIAL_NUMBER</text-property>
+                                                        </label>
+                                                    </cell>
+                                                    <cell id="1785">
+                                                        <data id="1786">
+                                                            <property name="resultSetColumn">serial_number</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                                <row id="1791">
+                                                    <list-property name="visibility">
+                                                        <structure>
+                                                            <property name="format">all</property>
+                                                            <expression name="valueExpr" type="javascript">params["HideAssetTag"].value</expression>
+                                                        </structure>
+                                                    </list-property>
+                                                    <cell id="1792">
+                                                        <label id="1793">
+                                                            <text-property name="text" key="AssetTag">ASSET_NUMBER</text-property>
+                                                        </label>
+                                                    </cell>
+                                                    <cell id="1794">
+                                                        <data id="1795">
+                                                            <property name="resultSetColumn">asset_number</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                                <row id="1800">
+                                                    <list-property name="visibility">
+                                                        <structure>
+                                                            <property name="format">all</property>
+                                                            <expression name="valueExpr" type="javascript">params["HidePurchasePrice"].value</expression>
+                                                        </structure>
+                                                    </list-property>
+                                                    <cell id="1801">
+                                                        <label id="1802">
+                                                            <text-property name="text" key="PurchasePrice"></text-property>
+                                                        </label>
+                                                    </cell>
+                                                    <cell id="1803">
+                                                        <data id="2209">
+                                                            <list-property name="visibility">
+                                                                <structure>
+                                                                    <property name="format">all</property>
+                                                                    <expression name="valueExpr" type="javascript">row["purchase_price"] &lt;= 0</expression>
+                                                                </structure>
+                                                            </list-property>
+                                                            <property name="resultSetColumn">purchase_price</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                                <row id="1806">
+                                                    <list-property name="visibility">
+                                                        <structure>
+                                                            <property name="format">all</property>
+                                                            <expression name="valueExpr" type="javascript">params["HidePurchaseDate"].value</expression>
+                                                        </structure>
+                                                    </list-property>
+                                                    <cell id="1807">
+                                                        <label id="1808">
+                                                            <text-property name="text" key="PurchaseDate"></text-property>
+                                                        </label>
+                                                    </cell>
+                                                    <cell id="1809">
+                                                        <data id="2208">
+                                                            <structure name="dateTimeFormat">
+                                                                <property name="category">Short Date</property>
+                                                                <property name="pattern">Short Date</property>
+                                                            </structure>
+                                                            <property name="resultSetColumn">purchase_date</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                                <row id="1812">
+                                                    <list-property name="visibility">
+                                                        <structure>
+                                                            <property name="format">all</property>
+                                                            <expression name="valueExpr" type="javascript">params["HideExpirationDate"].value</expression>
+                                                        </structure>
+                                                    </list-property>
+                                                    <cell id="1813">
+                                                        <label id="2262">
+                                                            <text-property name="text" key="ExpirationDate"></text-property>
+                                                        </label>
+                                                    </cell>
+                                                    <cell id="1815">
+                                                        <data id="2391">
+                                                            <structure name="dateTimeFormat">
+                                                                <property name="category">Short Date</property>
+                                                                <property name="pattern">Short Date</property>
+                                                            </structure>
+                                                            <property name="resultSetColumn">contract_expire_date</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                            </detail>
+                                        </table>
+                                    </cell>
+                                    <cell id="2098">
+                                        <table id="1822">
+                                            <property name="pageBreakInterval">0</property>
+                                            <column id="1984">
+                                                <property name="width">30%</property>
+                                                <property name="fontWeight">bold</property>
+                                            </column>
+                                            <column id="1985">
+                                                <property name="width">70%</property>
+                                            </column>
+                                            <detail>
+                                                <row id="1823">
+                                                    <list-property name="visibility">
+                                                        <structure>
+                                                            <property name="format">all</property>
+                                                            <expression name="valueExpr" type="javascript">!isColumnPresent("cf1")</expression>
+                                                        </structure>
+                                                    </list-property>
+                                                    <cell id="1828">
+                                                        <data id="1829">
+                                                            <property name="resultSetColumn">cf1</property>
+                                                        </data>
+                                                    </cell>
+                                                    <cell id="1830">
+                                                        <data id="1831">
+                                                            <property name="resultSetColumn">cd1</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                                <row id="1832">
+                                                    <list-property name="visibility">
+                                                        <structure>
+                                                            <property name="format">all</property>
+                                                            <expression name="valueExpr" type="javascript">!isColumnPresent("cf2")</expression>
+                                                        </structure>
+                                                    </list-property>
+                                                    <cell id="1837">
+                                                        <data id="1838">
+                                                            <property name="resultSetColumn">cf2</property>
+                                                        </data>
+                                                    </cell>
+                                                    <cell id="1839">
+                                                        <data id="1840">
+                                                            <property name="resultSetColumn">cd2</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                                <row id="1841">
+                                                    <list-property name="visibility">
+                                                        <structure>
+                                                            <property name="format">all</property>
+                                                            <expression name="valueExpr" type="javascript">!isColumnPresent("cf3")</expression>
+                                                        </structure>
+                                                    </list-property>
+                                                    <cell id="1846">
+                                                        <data id="1847">
+                                                            <property name="resultSetColumn">cf3</property>
+                                                        </data>
+                                                    </cell>
+                                                    <cell id="1848">
+                                                        <data id="1849">
+                                                            <property name="resultSetColumn">cd3</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                                <row id="1850">
+                                                    <list-property name="visibility">
+                                                        <structure>
+                                                            <property name="format">all</property>
+                                                            <expression name="valueExpr" type="javascript">!isColumnPresent("cf4")</expression>
+                                                        </structure>
+                                                    </list-property>
+                                                    <cell id="1855">
+                                                        <data id="1856">
+                                                            <property name="resultSetColumn">cf4</property>
+                                                        </data>
+                                                    </cell>
+                                                    <cell id="1857">
+                                                        <data id="1858">
+                                                            <property name="resultSetColumn">cd3</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                                <row id="1859">
+                                                    <list-property name="visibility">
+                                                        <structure>
+                                                            <property name="format">all</property>
+                                                            <expression name="valueExpr" type="javascript">!isColumnPresent("cf5")</expression>
+                                                        </structure>
+                                                    </list-property>
+                                                    <cell id="1864">
+                                                        <data id="1865">
+                                                            <property name="resultSetColumn">cf5</property>
+                                                        </data>
+                                                    </cell>
+                                                    <cell id="1866">
+                                                        <data id="1867">
+                                                            <property name="resultSetColumn">cd5</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                                <row id="1868">
+                                                    <list-property name="visibility">
+                                                        <structure>
+                                                            <property name="format">all</property>
+                                                            <expression name="valueExpr" type="javascript">!isColumnPresent("cf6")</expression>
+                                                        </structure>
+                                                    </list-property>
+                                                    <cell id="1873">
+                                                        <data id="1874">
+                                                            <property name="resultSetColumn">cf6</property>
+                                                        </data>
+                                                    </cell>
+                                                    <cell id="1875">
+                                                        <data id="1876">
+                                                            <property name="resultSetColumn">cd6</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                                <row id="1877">
+                                                    <list-property name="visibility">
+                                                        <structure>
+                                                            <property name="format">all</property>
+                                                            <expression name="valueExpr" type="javascript">!isColumnPresent("cf7")</expression>
+                                                        </structure>
+                                                    </list-property>
+                                                    <cell id="1881">
+                                                        <data id="1882">
+                                                            <property name="resultSetColumn">cf7</property>
+                                                        </data>
+                                                    </cell>
+                                                    <cell id="1883">
+                                                        <data id="1884">
+                                                            <property name="resultSetColumn">cd7</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                                <row id="1885">
+                                                    <list-property name="visibility">
+                                                        <structure>
+                                                            <property name="format">all</property>
+                                                            <expression name="valueExpr" type="javascript">!isColumnPresent("cf8")</expression>
+                                                        </structure>
+                                                    </list-property>
+                                                    <cell id="1889">
+                                                        <data id="1890">
+                                                            <property name="resultSetColumn">cf8</property>
+                                                        </data>
+                                                    </cell>
+                                                    <cell id="1891">
+                                                        <data id="1892">
+                                                            <property name="resultSetColumn">cd8</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                                <row id="1893">
+                                                    <list-property name="visibility">
+                                                        <structure>
+                                                            <property name="format">all</property>
+                                                            <expression name="valueExpr" type="javascript">!isColumnPresent("cf9")</expression>
+                                                        </structure>
+                                                    </list-property>
+                                                    <cell id="1897">
+                                                        <data id="1898">
+                                                            <property name="resultSetColumn">cf9</property>
+                                                        </data>
+                                                    </cell>
+                                                    <cell id="1899">
+                                                        <data id="1900">
+                                                            <property name="resultSetColumn">cd9</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                                <row id="1901">
+                                                    <list-property name="visibility">
+                                                        <structure>
+                                                            <property name="format">all</property>
+                                                            <expression name="valueExpr" type="javascript">!isColumnPresent("cf10")</expression>
+                                                        </structure>
+                                                    </list-property>
+                                                    <cell id="1906">
+                                                        <data id="1907">
+                                                            <property name="resultSetColumn">cf10</property>
+                                                        </data>
+                                                    </cell>
+                                                    <cell id="1908">
+                                                        <data id="1909">
+                                                            <property name="resultSetColumn">cd10</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                                <row id="1910">
+                                                    <list-property name="visibility">
+                                                        <structure>
+                                                            <property name="format">all</property>
+                                                            <expression name="valueExpr" type="javascript">!isColumnPresent("cf11")</expression>
+                                                        </structure>
+                                                    </list-property>
+                                                    <cell id="1915">
+                                                        <data id="1916">
+                                                            <property name="resultSetColumn">cf11</property>
+                                                        </data>
+                                                    </cell>
+                                                    <cell id="1917">
+                                                        <data id="1918">
+                                                            <property name="resultSetColumn">cd11</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                                <row id="1919">
+                                                    <list-property name="visibility">
+                                                        <structure>
+                                                            <property name="format">all</property>
+                                                            <expression name="valueExpr" type="javascript">!isColumnPresent("cf12")</expression>
+                                                        </structure>
+                                                    </list-property>
+                                                    <cell id="1924">
+                                                        <data id="1925">
+                                                            <property name="resultSetColumn">cf12</property>
+                                                        </data>
+                                                    </cell>
+                                                    <cell id="1926">
+                                                        <data id="1927">
+                                                            <property name="resultSetColumn">cd12</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                                <row id="1928">
+                                                    <list-property name="visibility">
+                                                        <structure>
+                                                            <property name="format">all</property>
+                                                            <expression name="valueExpr" type="javascript">!isColumnPresent("cf13")</expression>
+                                                        </structure>
+                                                    </list-property>
+                                                    <cell id="1933">
+                                                        <data id="1934">
+                                                            <property name="resultSetColumn">cf13</property>
+                                                        </data>
+                                                    </cell>
+                                                    <cell id="1935">
+                                                        <data id="1936">
+                                                            <property name="resultSetColumn">cd13</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                                <row id="1937">
+                                                    <list-property name="visibility">
+                                                        <structure>
+                                                            <property name="format">all</property>
+                                                            <expression name="valueExpr" type="javascript">!isColumnPresent("cf14")</expression>
+                                                        </structure>
+                                                    </list-property>
+                                                    <cell id="1942">
+                                                        <data id="1943">
+                                                            <property name="resultSetColumn">cf14</property>
+                                                        </data>
+                                                    </cell>
+                                                    <cell id="1944">
+                                                        <data id="1945">
+                                                            <property name="resultSetColumn">cd14</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                                <row id="1946">
+                                                    <list-property name="visibility">
+                                                        <structure>
+                                                            <property name="format">all</property>
+                                                            <expression name="valueExpr" type="javascript">!isColumnPresent("cf15")</expression>
+                                                        </structure>
+                                                    </list-property>
+                                                    <cell id="1951">
+                                                        <data id="1952">
+                                                            <property name="resultSetColumn">cf15</property>
+                                                        </data>
+                                                    </cell>
+                                                    <cell id="1953">
+                                                        <data id="1954">
+                                                            <property name="resultSetColumn">cd15</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                                <row id="1955">
+                                                    <list-property name="visibility">
+                                                        <structure>
+                                                            <property name="format">all</property>
+                                                            <expression name="valueExpr" type="javascript">!isColumnPresent("cf16")</expression>
+                                                        </structure>
+                                                    </list-property>
+                                                    <cell id="1960">
+                                                        <data id="1961">
+                                                            <property name="resultSetColumn">cf16</property>
+                                                        </data>
+                                                    </cell>
+                                                    <cell id="1962">
+                                                        <data id="1963">
+                                                            <property name="resultSetColumn">cd16</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                                <row id="2245">
+                                                    <list-property name="visibility">
+                                                        <structure>
+                                                            <property name="format">all</property>
+                                                            <expression name="valueExpr" type="javascript">params["HideComments"].value</expression>
+                                                        </structure>
+                                                    </list-property>
+                                                    <cell id="2246">
+                                                        <label id="1814">
+                                                            <text-property name="text" key="Comments"></text-property>
+                                                        </label>
+                                                    </cell>
+                                                    <cell id="2247">
+                                                        <data id="2301">
+                                                            <property name="resultSetColumn">description</property>
+                                                        </data>
+                                                    </cell>
+                                                </row>
+                                            </detail>
+                                        </table>
+                                    </cell>
+                                </row>
+                            </detail>
+                        </table>
+                    </cell>
+                </row>
+                <row id="918">
+                    <property name="borderLeftColor">black</property>
+                    <property name="borderLeftWidth">1px</property>
+                    <property name="paddingTop">0pt</property>
+                    <property name="paddingLeft">0pt</property>
+                    <property name="paddingBottom">0pt</property>
+                    <property name="paddingRight">0pt</property>
+                    <cell id="919">
+                        <property name="colSpan">36</property>
+                        <property name="rowSpan">1</property>
+                        <property name="paddingTop">0pt</property>
+                        <property name="paddingLeft">0pt</property>
+                        <property name="paddingBottom">0pt</property>
+                        <property name="paddingRight">0pt</property>
+                        <table id="588">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                            <property name="textAlign">left</property>
+                            <property name="dataSet">DataPortsByItem</property>
+                            <list-property name="visibility">
+                                <structure>
+                                    <property name="format">all</property>
+                                    <expression name="valueExpr" type="javascript">!isColumnPresent("port_name")</expression>
+                                </structure>
+                            </list-property>
+                            <list-property name="paramBindings">
+                                <structure>
+                                    <property name="paramName">item</property>
+                                    <simple-property-list name="expression">
+                                        <value type="javascript">row["item_id"]</value>
+                                    </simple-property-list>
+                                </structure>
+                            </list-property>
+                            <list-property name="boundDataColumns">
+                                <structure>
+                                    <property name="name">port_name</property>
+                                    <expression name="expression">dataSetRow["port_name"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">is_used</property>
+                                    <expression name="expression">dataSetRow["is_used"]</expression>
+                                    <property name="dataType">integer</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">connector_name</property>
+                                    <expression name="expression">dataSetRow["connector_name"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">protocol</property>
+                                    <expression name="expression">dataSetRow["protocol"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">speed</property>
+                                    <expression name="expression">dataSetRow["speed"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">vlan</property>
+                                    <expression name="expression">dataSetRow["vlan"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">color</property>
+                                    <expression name="expression">dataSetRow["color"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">sort_order</property>
+                                    <expression name="expression">dataSetRow["sort_order"]</expression>
+                                    <property name="dataType">integer</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">ipaddress</property>
+                                    <expression name="expression">dataSetRow["ipaddress"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                            </list-property>
+                            <property name="pageBreakInterval">0</property>
+                            <list-property name="sort">
+                                <structure>
+                                    <expression name="key" type="javascript">row["sort_order"]</expression>
+                                    <property name="direction">asc</property>
+                                </structure>
+                            </list-property>
+                            <column id="967">
+                                <property name="width">50px</property>
+                            </column>
+                            <column id="1047">
+                                <property name="width">20px</property>
+                            </column>
+                            <column id="601">
+                                <property name="textAlign">left</property>
+                            </column>
+                            <column id="602">
+                                <property name="textAlign">center</property>
+                            </column>
+                            <column id="2423">
+                                <property name="textAlign">center</property>
+                            </column>
+                            <column id="2526">
+                                <property name="textAlign">center</property>
+                            </column>
+                            <column id="2426">
+                                <property name="textAlign">center</property>
+                            </column>
+                            <column id="2429">
+                                <property name="textAlign">center</property>
+                            </column>
+                            <column id="2438">
+                                <property name="textAlign">center</property>
+                            </column>
+                            <column id="603">
+                                <property name="textAlign">center</property>
+                            </column>
+                            <header>
+                                <row id="1025">
+                                    <cell id="1026"/>
+                                    <cell id="1045">
+                                        <property name="colSpan">2</property>
+                                        <property name="rowSpan">1</property>
+                                        <property name="borderLeftColor">#000000</property>
+                                        <property name="borderLeftStyle">solid</property>
+                                        <property name="borderRightStyle">none</property>
+                                        <label id="1034">
+                                            <text-property name="text" key="DataPort"></text-property>
+                                        </label>
+                                    </cell>
+                                    <cell id="1030">
+                                        <label id="617">
+                                            <text-property name="text" key="Connector">CONNECTOR_NAME</text-property>
+                                        </label>
+                                    </cell>
+                                    <cell id="2421">
+                                        <property name="colSpan">1</property>
+                                        <property name="rowSpan">1</property>
+                                        <label id="2441">
+                                            <text-property name="text" key="Protocol"></text-property>
+                                        </label>
+                                    </cell>
+                                    <cell id="2528">
+                                        <label id="2442">
+                                            <text-property name="text" key="Speed"></text-property>
+                                        </label>
+                                    </cell>
+                                    <cell id="2424">
+                                        <label id="2587">
+                                            <text-property name="text" key="IPAddress"></text-property>
+                                        </label>
+                                    </cell>
+                                    <cell id="2427">
+                                        <label id="2446">
+                                            <text-property name="text" key="VLAN"></text-property>
+                                        </label>
+                                    </cell>
+                                    <cell id="2436">
+                                        <label id="2445">
+                                            <text-property name="text" key="Color"></text-property>
+                                        </label>
+                                    </cell>
+                                    <cell id="1032">
+                                        <label id="1033">
+                                            <text-property name="text" key="Connected"></text-property>
+                                        </label>
+                                    </cell>
+                                </row>
+                            </header>
+                            <detail>
+                                <row id="593">
+                                    <property name="paddingTop">0pt</property>
+                                    <property name="paddingLeft">0pt</property>
+                                    <property name="paddingBottom">0pt</property>
+                                    <property name="paddingRight">0pt</property>
+                                    <property name="verticalAlign">middle</property>
+                                    <cell id="966">
+                                        <property name="paddingTop">0pt</property>
+                                        <property name="paddingLeft">0pt</property>
+                                        <property name="paddingBottom">0pt</property>
+                                        <property name="paddingRight">0pt</property>
+                                    </cell>
+                                    <cell id="1046">
+                                        <property name="borderLeftColor">#000000</property>
+                                        <property name="borderLeftStyle">solid</property>
+                                        <property name="borderRightColor">black</property>
+                                        <property name="borderRightWidth">1px</property>
+                                        <property name="paddingTop">0pt</property>
+                                        <property name="paddingLeft">0pt</property>
+                                        <property name="paddingBottom">0pt</property>
+                                        <property name="paddingRight">0pt</property>
+                                        <grid id="1081">
+                                            <property name="paddingLeft">0pt</property>
+                                            <property name="paddingBottom">0pt</property>
+                                            <property name="paddingRight">0pt</property>
+                                            <property name="height">100%</property>
+                                            <column id="1082">
+                                                <property name="paddingTop">0pt</property>
+                                                <property name="paddingLeft">0pt</property>
+                                                <property name="paddingBottom">0pt</property>
+                                                <property name="paddingRight">0pt</property>
+                                            </column>
+                                            <row id="1083">
+                                                <cell id="1084">
+                                                    <property name="paddingTop">0pt</property>
+                                                    <property name="paddingLeft">0pt</property>
+                                                    <property name="paddingBottom">0pt</property>
+                                                    <property name="paddingRight">0pt</property>
+                                                </cell>
+                                            </row>
+                                            <row id="1085">
+                                                <cell id="1086">
+                                                    <property name="borderTopColor">#000000</property>
+                                                    <property name="borderTopStyle">solid</property>
+                                                    <property name="borderTopWidth">1pt</property>
+                                                    <property name="marginTop">0pt</property>
+                                                    <property name="paddingTop">0pt</property>
+                                                    <property name="paddingLeft">0pt</property>
+                                                    <property name="paddingBottom">0pt</property>
+                                                    <property name="paddingRight">0pt</property>
+                                                </cell>
+                                            </row>
+                                        </grid>
+                                    </cell>
+                                    <cell id="594">
+                                        <data id="517">
+                                            <property name="resultSetColumn">port_name</property>
+                                        </data>
+                                    </cell>
+                                    <cell id="595">
+                                        <data id="519">
+                                            <property name="resultSetColumn">connector_name</property>
+                                        </data>
+                                    </cell>
+                                    <cell id="2422">
+                                        <property name="colSpan">1</property>
+                                        <property name="rowSpan">1</property>
+                                        <data id="2431">
+                                            <property name="resultSetColumn">protocol</property>
+                                        </data>
+                                    </cell>
+                                    <cell id="2527">
+                                        <data id="2433">
+                                            <property name="resultSetColumn">speed</property>
+                                        </data>
+                                    </cell>
+                                    <cell id="2425">
+                                        <data id="2586">
+                                            <property name="resultSetColumn">ipaddress</property>
+                                        </data>
+                                    </cell>
+                                    <cell id="2428">
+                                        <data id="2440">
+                                            <property name="resultSetColumn">vlan</property>
+                                        </data>
+                                    </cell>
+                                    <cell id="2437">
+                                        <data id="2435">
+                                            <property name="resultSetColumn">color</property>
+                                        </data>
+                                    </cell>
+                                    <cell id="596">
+                                        <image id="521">
+                                            <property name="height">12px</property>
+                                            <property name="width">12px</property>
+                                            <method name="onCreate"><![CDATA[this.imageName  = row['is_used'] ? "checked.png" : "unchecked.png";]]></method>
+                                            <property name="source">embed</property>
+                                            <property name="imageName">checked.png</property>
+                                        </image>
+                                    </cell>
+                                </row>
+                            </detail>
+                        </table>
+                    </cell>
+                </row>
+                <row id="933">
+                    <property name="borderLeftColor">black</property>
+                    <property name="borderLeftWidth">1px</property>
+                    <property name="paddingTop">0pt</property>
+                    <property name="paddingLeft">0pt</property>
+                    <property name="paddingBottom">0pt</property>
+                    <property name="paddingRight">0pt</property>
+                    <cell id="934">
+                        <property name="colSpan">36</property>
+                        <property name="rowSpan">1</property>
+                        <property name="paddingTop">0pt</property>
+                        <property name="paddingLeft">0pt</property>
+                        <property name="paddingBottom">0pt</property>
+                        <property name="paddingRight">0pt</property>
+                        <table id="572">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                            <property name="textAlign">left</property>
+                            <property name="dataSet">PowerPortsByItem</property>
+                            <list-property name="visibility">
+                                <structure>
+                                    <property name="format">all</property>
+                                    <expression name="valueExpr" type="javascript">!isColumnPresent("port_name")</expression>
+                                </structure>
+                            </list-property>
+                            <list-property name="paramBindings">
+                                <structure>
+                                    <property name="paramName">item</property>
+                                    <simple-property-list name="expression">
+                                        <value type="javascript">row["item_id"]</value>
+                                    </simple-property-list>
+                                </structure>
+                            </list-property>
+                            <list-property name="boundDataColumns">
+                                <structure>
+                                    <property name="name">port_name</property>
+                                    <expression name="expression">dataSetRow["port_name"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">is_used</property>
+                                    <expression name="expression">dataSetRow["is_used"]</expression>
+                                    <property name="dataType">integer</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">connector_name</property>
+                                    <expression name="expression">dataSetRow["connector_name"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">color</property>
+                                    <expression name="expression">dataSetRow["color"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">watts_nameplate</property>
+                                    <expression name="expression">dataSetRow["watts_nameplate"]</expression>
+                                    <property name="dataType">integer</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">watts_budget</property>
+                                    <expression name="expression">dataSetRow["watts_budget"]</expression>
+                                    <property name="dataType">integer</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">power_factor</property>
+                                    <expression name="expression">dataSetRow["power_factor"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">volts</property>
+                                    <expression name="expression">dataSetRow["volts"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">sort_order</property>
+                                    <expression name="expression">dataSetRow["sort_order"]</expression>
+                                    <property name="dataType">integer</property>
+                                </structure>
+                            </list-property>
+                            <property name="pageBreakInterval">0</property>
+                            <list-property name="sort">
+                                <structure>
+                                    <expression name="key" type="javascript">row["sort_order"]</expression>
+                                    <property name="direction">asc</property>
+                                </structure>
+                            </list-property>
+                            <column id="979">
+                                <property name="width">50px</property>
+                                <property name="paddingLeft">0pt</property>
+                                <property name="paddingBottom">0pt</property>
+                                <property name="paddingRight">0pt</property>
+                            </column>
+                            <column id="1050">
+                                <property name="width">20px</property>
+                                <property name="paddingLeft">0pt</property>
+                                <property name="paddingBottom">0pt</property>
+                                <property name="paddingRight">0pt</property>
+                            </column>
+                            <column id="585">
+                                <property name="textAlign">left</property>
+                            </column>
+                            <column id="586">
+                                <property name="textAlign">center</property>
+                            </column>
+                            <column id="2463">
+                                <property name="textAlign">center</property>
+                            </column>
+                            <column id="2466">
+                                <property name="textAlign">center</property>
+                            </column>
+                            <column id="2512">
+                                <property name="textAlign">center</property>
+                            </column>
+                            <column id="2515">
+                                <property name="textAlign">center</property>
+                            </column>
+                            <column id="2469">
+                                <property name="textAlign">center</property>
+                            </column>
+                            <column id="587">
+                                <property name="textAlign">center</property>
+                            </column>
+                            <header>
+                                <row id="1035">
+                                    <cell id="1036"/>
+                                    <cell id="1048">
+                                        <property name="colSpan">2</property>
+                                        <property name="rowSpan">1</property>
+                                        <property name="borderLeftStyle">solid</property>
+                                        <property name="borderLeftWidth">1px</property>
+                                        <label id="503">
+                                            <property name="fontWeight">bold</property>
+                                            <text-property name="text" key="PowerPort">PORT_NAME</text-property>
+                                        </label>
+                                    </cell>
+                                    <cell id="1040">
+                                        <label id="1043">
+                                            <text-property name="text" key="Connector">CONNECTOR_NAME</text-property>
+                                        </label>
+                                    </cell>
+                                    <cell id="2461">
+                                        <label id="2520">
+                                            <text-property name="text" key="Volts"></text-property>
+                                        </label>
+                                    </cell>
+                                    <cell id="2464">
+                                        <label id="2521">
+                                            <text-property name="text" key="WattsRated"></text-property>
+                                        </label>
+                                    </cell>
+                                    <cell id="2510">
+                                        <label id="2522">
+                                            <text-property name="text" key="WattsDerated"></text-property>
+                                        </label>
+                                    </cell>
+                                    <cell id="2513">
+                                        <label id="2523">
+                                            <text-property name="text" key="PowerFactor"></text-property>
+                                        </label>
+                                    </cell>
+                                    <cell id="2467">
+                                        <label id="2470">
+                                            <text-property name="text" key="Color"></text-property>
+                                        </label>
+                                    </cell>
+                                    <cell id="1042">
+                                        <label id="1044">
+                                            <text-property name="text" key="Connected"></text-property>
+                                        </label>
+                                    </cell>
+                                </row>
+                            </header>
+                            <detail>
+                                <row id="577">
+                                    <property name="paddingTop">0pt</property>
+                                    <property name="paddingLeft">0pt</property>
+                                    <property name="paddingBottom">0pt</property>
+                                    <property name="paddingRight">0pt</property>
+                                    <property name="verticalAlign">middle</property>
+                                    <cell id="978">
+                                        <property name="paddingTop">0pt</property>
+                                        <property name="paddingLeft">0pt</property>
+                                        <property name="paddingBottom">0pt</property>
+                                        <property name="paddingRight">0pt</property>
+                                    </cell>
+                                    <cell id="1049">
+                                        <property name="borderLeftColor">#000000</property>
+                                        <property name="borderLeftStyle">solid</property>
+                                        <property name="borderTopColor">black</property>
+                                        <property name="marginRight">0pt</property>
+                                        <property name="paddingTop">0pt</property>
+                                        <property name="paddingLeft">0pt</property>
+                                        <property name="paddingBottom">0pt</property>
+                                        <property name="paddingRight">0pt</property>
+                                        <grid id="1087">
+                                            <property name="paddingLeft">0pt</property>
+                                            <property name="paddingBottom">0pt</property>
+                                            <property name="paddingRight">0pt</property>
+                                            <property name="height">100%</property>
+                                            <column id="1088">
+                                                <property name="paddingTop">0pt</property>
+                                                <property name="paddingLeft">0pt</property>
+                                                <property name="paddingBottom">0pt</property>
+                                                <property name="paddingRight">0pt</property>
+                                            </column>
+                                            <row id="1089">
+                                                <cell id="1090">
+                                                    <property name="paddingTop">0pt</property>
+                                                    <property name="paddingLeft">0pt</property>
+                                                    <property name="paddingBottom">0pt</property>
+                                                    <property name="paddingRight">0pt</property>
+                                                </cell>
+                                            </row>
+                                            <row id="1091">
+                                                <cell id="1092">
+                                                    <property name="borderTopColor">#000000</property>
+                                                    <property name="borderTopStyle">solid</property>
+                                                    <property name="borderTopWidth">1pt</property>
+                                                    <property name="marginTop">0pt</property>
+                                                    <property name="paddingTop">0pt</property>
+                                                    <property name="paddingLeft">0pt</property>
+                                                    <property name="paddingBottom">0pt</property>
+                                                    <property name="paddingRight">0pt</property>
+                                                </cell>
+                                            </row>
+                                        </grid>
+                                    </cell>
+                                    <cell id="578">
+                                        <data id="504">
+                                            <property name="resultSetColumn">port_name</property>
+                                        </data>
+                                    </cell>
+                                    <cell id="579">
+                                        <data id="506">
+                                            <property name="resultSetColumn">connector_name</property>
+                                        </data>
+                                    </cell>
+                                    <cell id="2462">
+                                        <data id="2507">
+                                            <property name="resultSetColumn">volts</property>
+                                        </data>
+                                    </cell>
+                                    <cell id="2465">
+                                        <data id="2509">
+                                            <property name="resultSetColumn">watts_nameplate</property>
+                                        </data>
+                                    </cell>
+                                    <cell id="2511">
+                                        <data id="2517">
+                                            <property name="resultSetColumn">watts_budget</property>
+                                        </data>
+                                    </cell>
+                                    <cell id="2514">
+                                        <data id="2519">
+                                            <property name="resultSetColumn">power_factor</property>
+                                        </data>
+                                    </cell>
+                                    <cell id="2468">
+                                        <data id="2471">
+                                            <property name="resultSetColumn">color</property>
+                                        </data>
+                                    </cell>
+                                    <cell id="580">
+                                        <image id="507">
+                                            <property name="height">12px</property>
+                                            <property name="width">12px</property>
+                                            <method name="onCreate"><![CDATA[this.imageName  = row['is_used'] ? "checked.png" : "unchecked.png";]]></method>
+                                            <property name="source">embed</property>
+                                            <property name="imageName">checked.png</property>
+                                        </image>
+                                    </cell>
+                                </row>
+                            </detail>
+                        </table>
+                    </cell>
+                </row>
+            </detail>
+        </table>
+    </body>
+    <list-property name="images">
+        <structure>
+            <property name="name">checked.png</property>
+            <property name="type">image/png</property>
+            <property name="libReference">three_dot_0.checked.png</property>
+        </structure>
+        <structure>
+            <property name="name">unchecked.png</property>
+            <property name="type">image/png</property>
+            <property name="libReference">three_dot_0.unchecked.png</property>
+        </structure>
+    </list-property>
+</report>

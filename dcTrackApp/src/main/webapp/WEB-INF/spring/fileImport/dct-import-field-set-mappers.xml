@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<bean id="dctImportHeaderMapper" 
+		class="com.raritan.tdz.dctimport.job.DCTHeaderFieldSetMapper"/>
+	
+	<bean id="dctImportItemBeanMapper" 
+		class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+		<property name="prototypeBeanName" value="itemImport"/>
+	</bean>
+	
+	<bean id="dctImportCabinetItemBeanMapper" 
+		class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+		<property name="prototypeBeanName" value="cabinetItemImport"/>
+	</bean>
+	
+	<bean id="dctImportDataPanelItemBeanMapper" 
+		class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+		<property name="prototypeBeanName" value="dataPanelItemImport"/>
+	</bean>
+	
+	<bean id="dctImportPowerOutletItemBeanMapper" 
+		class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+		<property name="prototypeBeanName" value="powerOutletItemImport"/>
+	</bean>
+	
+	<bean id="dctImportPassiveItemBeanMapper" 
+		class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+		<property name="prototypeBeanName" value="passiveItemImport"/>
+	</bean>
+
+	<bean id="dctImportDeviceItemBeanMapper" 
+		class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+		<property name="prototypeBeanName" value="deviceItemImport"/>
+	</bean>
+
+	<bean id="dctImportNetworkItemBeanMapper" 
+		class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+		<property name="prototypeBeanName" value="networkItemImport"/>
+	</bean>
+
+	<bean id="dctImportUPSItemBeanMapper" 
+		class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+		<property name="prototypeBeanName" value="upsItemImport"/>
+	</bean>
+
+	<bean id="dctImportCRACItemBeanMapper" 
+		class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+		<property name="prototypeBeanName" value="cracItemImport"/>
+	</bean>
+	
+	<bean id="dctImportFloorPDUItemBeanMapper" 
+		class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+		<property name="prototypeBeanName" value="floorPduItemImport"/>
+	</bean>
+	
+	<util:map id="mapNamesId" key-type="java.lang.String" value-type="java.lang.String">
+		<entry key="customfield.+" value="tiCustomField"/>
+	</util:map>
+	
+	<bean id="dctImportItemMapper" 
+		class="com.raritan.tdz.dctimport.job.DCTBeanAndMapFieldSetMapper">
+		<constructor-arg name="beanFieldSetMapper" ref="dctImportItemBeanMapper"/>
+		<constructor-arg name="mapNames" ref="mapNamesId"/>
+	</bean> 
+
+	<bean id="dctImportCabinetItemMapper" 
+		class="com.raritan.tdz.dctimport.job.DCTBeanAndMapFieldSetMapper">
+		<constructor-arg name="beanFieldSetMapper" ref="dctImportCabinetItemBeanMapper"/>
+		<constructor-arg name="mapNames" ref="mapNamesId"/>
+	</bean> 
+	
+	<bean id="dctImportDataPanelItemMapper" 
+		class="com.raritan.tdz.dctimport.job.DCTBeanAndMapFieldSetMapper">
+		<constructor-arg name="beanFieldSetMapper" ref="dctImportDataPanelItemBeanMapper"/>
+		<constructor-arg name="mapNames" ref="mapNamesId"/>
+	</bean> 
+	
+	<bean id="dctImportPowerOutletItemMapper" 
+		class="com.raritan.tdz.dctimport.job.DCTBeanAndMapFieldSetMapper">
+		<constructor-arg name="beanFieldSetMapper" ref="dctImportPowerOutletItemBeanMapper"/>
+		<constructor-arg name="mapNames" ref="mapNamesId"/>
+	</bean> 
+	
+	<bean id="dctImportPassiveItemMapper" 
+		class="com.raritan.tdz.dctimport.job.DCTBeanAndMapFieldSetMapper">
+		<constructor-arg name="beanFieldSetMapper" ref="dctImportPassiveItemBeanMapper"/>
+		<constructor-arg name="mapNames" ref="mapNamesId"/>
+	</bean> 
+
+	<bean id="dctImportDeviceItemMapper" 
+		class="com.raritan.tdz.dctimport.job.DCTBeanAndMapFieldSetMapper">
+		<constructor-arg name="beanFieldSetMapper" ref="dctImportDeviceItemBeanMapper"/>
+		<constructor-arg name="mapNames" ref="mapNamesId"/>
+	</bean> 
+
+	<bean id="dctImportNetworkItemMapper" 
+		class="com.raritan.tdz.dctimport.job.DCTBeanAndMapFieldSetMapper">
+		<constructor-arg name="beanFieldSetMapper" ref="dctImportNetworkItemBeanMapper"/>
+		<constructor-arg name="mapNames" ref="mapNamesId"/>
+	</bean> 
+
+	<bean id="dctImportUPSItemMapper" 
+		class="com.raritan.tdz.dctimport.job.DCTBeanAndMapFieldSetMapper">
+		<constructor-arg name="beanFieldSetMapper" ref="dctImportUPSItemBeanMapper"/>
+		<constructor-arg name="mapNames" ref="mapNamesId"/>
+	</bean> 
+
+	<bean id="dctImportCRACItemMapper" 
+		class="com.raritan.tdz.dctimport.job.DCTBeanAndMapFieldSetMapper">
+		<constructor-arg name="beanFieldSetMapper" ref="dctImportCRACItemBeanMapper"/>
+		<constructor-arg name="mapNames" ref="mapNamesId"/>
+	</bean> 
+
+	<bean id="dctImportFloorPDUItemMapper" 
+		class="com.raritan.tdz.dctimport.job.DCTBeanAndMapFieldSetMapper">
+		<constructor-arg name="beanFieldSetMapper" ref="dctImportFloorPDUItemBeanMapper"/>
+		<constructor-arg name="mapNames" ref="mapNamesId"/>
+	</bean> 
+
+	<bean id="dctImportLocationMapper" 
+		class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+		<property name="prototypeBeanName" value="locationImport"/>
+	</bean>
+	
+	<bean id="dctImportPowerPortMapper"
+		class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+		<property name="prototypeBeanName" value="powerPortImport"/>
+	</bean>
+	
+	<bean id="dctImportDataPortMapper"
+		class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+		<property name="prototypeBeanName" value="dataPortImport"/>
+	</bean>
+	<bean id="dctImportDataConnBeanMapper" class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+		<property name="prototypeBeanName" value="dataConnImport"/>
+	</bean>
+	
+	<bean id="dctImportDataConnMapper"
+		class="com.raritan.tdz.dctimport.job.DCTBeanAndMapFieldSetMapper">
+		<constructor-arg name="beanFieldSetMapper" ref="dctImportDataConnBeanMapper"/>
+		<constructor-arg name="mapNames"> 
+ 			<map> 
+ 				<entry key="cord.+type" value="cordType"/> 
+ 				<entry key="cord.+id" value="cordId"/> 
+ 				<entry key="cord.+color" value="cordColor"/> 
+ 				<entry key="cord.+length" value="cordLength"/> 
+ 				<entry key="hop.+panelname" value="panelName"/> 
+ 				<entry key="hop.+portname" value="panelPortName"/>
+ 				<entry key="hop.+location" value="panelLocation"/> 
+ 			</map> 
+ 		</constructor-arg> 
+	</bean>
+	
+	<bean id="dctImportPowerConnMapper"
+		class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+		<property name="prototypeBeanName" value="powerConnImport"/>
+	</bean>
+	
+	<bean id="dctImportStructuredCablingConnMapper"
+		class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+		<property name="prototypeBeanName" value="structuredCablingConnImport"/>
+	</bean>
+	
+	<util:map id="importFieldSetMappers">
+		<entry key="operation*" value-ref="dctImportHeaderMapper"/>
+
+		<entry key="add,location*" value-ref="dctImportLocationMapper"/>
+		<entry key="edit,location*" value-ref="dctImportLocationMapper"/>
+		<entry key="delete,location*" value-ref="dctImportLocationMapper"/>
+		<entry key="unmap,location*" value-ref="dctImportLocationMapper"/>
+
+		<entry key="add,cabinet*" value-ref="dctImportCabinetItemMapper"/>
+		<entry key="add,device-freestanding*" value-ref="dctImportDeviceItemMapper"/>
+		<entry key="add,network-freestanding*" value-ref="dctImportNetworkItemMapper"/>
+		<entry key="add,data-port*" value-ref="dctImportDataPortMapper"/>
+		<entry key="edit,data-port*" value-ref="dctImportDataPortMapper"/>
+		<entry key="delete,data-port*" value-ref="dctImportDataPortMapper"/>
+		<entry key="add,ups*" value-ref="dctImportUPSItemMapper"/>
+		<entry key="add,crac*" value-ref="dctImportCRACItemMapper"/>
+		<entry key="add,floorpdu*" value-ref="dctImportFloorPDUItemMapper"/>
+		<entry key="add,powerpanel*" value-ref="dctImportItemMapper"/>
+		<entry key="add,device-rackable*" value-ref="dctImportDeviceItemMapper"/>
+		<entry key="add,device-bladechassis-rackable*" value-ref="dctImportDeviceItemMapper"/>
+		<entry key="add,network-chassis-rackable*" value-ref="dctImportNetworkItemMapper"/>
+		<entry key="add,network-rackable*" value-ref="dctImportNetworkItemMapper"/>
+		<entry key="add,datapanel-rackable*" value-ref="dctImportDataPanelItemMapper"/>
+		<entry key="add,rackpdu-rackable*" value-ref="dctImportItemMapper"/>
+		<entry key="add,probe-rackable*" value-ref="dctImportItemMapper"/>
+		<entry key="add,device-nonrackable*" value-ref="dctImportDeviceItemMapper"/>
+		<entry key="add,network-nonrackable*" value-ref="dctImportNetworkItemMapper"/>
+		<entry key="add,datapanel-nonrackable*" value-ref="dctImportDataPanelItemMapper"/>
+		<entry key="add,rackpdu-nonrackable*" value-ref="dctImportItemMapper"/>
+		<entry key="add,probe-nonrackable*" value-ref="dctImportItemMapper"/>
+		<entry key="add,device-zerou*" value-ref="dctImportDeviceItemMapper"/>
+		<entry key="add,rackpdu-zerou*" value-ref="dctImportItemMapper"/>
+		<entry key="add,probe-zerou*" value-ref="dctImportItemMapper"/>
+		<entry key="add,datapanel-zerou*" value-ref="dctImportDataPanelItemMapper"/>
+		<entry key="add,device-blade*" value-ref="dctImportDeviceItemMapper"/>
+		<entry key="add,network-blade*" value-ref="dctImportNetworkItemMapper"/>
+		<entry key="add,poweroutlet*" value-ref="dctImportPowerOutletItemMapper"/>
+		<entry key="add,passive*" value-ref="dctImportPassiveItemMapper"/>
+
+		<entry key="edit,cabinet*" value-ref="dctImportCabinetItemMapper"/>
+		<entry key="edit,device-freestanding*" value-ref="dctImportDeviceItemMapper"/>
+		<entry key="edit,network-freestanding*" value-ref="dctImportNetworkItemMapper"/>
+		<entry key="edit,ups*" value-ref="dctImportUPSItemMapper"/>
+		<entry key="edit,crac*" value-ref="dctImportCRACItemMapper"/>
+		<entry key="edit,floorpdu*" value-ref="dctImportFloorPDUItemMapper"/>
+		<entry key="edit,powerpanel*" value-ref="dctImportItemMapper"/>
+		<entry key="edit,device-rackable*" value-ref="dctImportDeviceItemMapper"/>
+		<entry key="edit,device-bladechassis-rackable*" value-ref="dctImportDeviceItemMapper"/>
+		<entry key="edit,network-chassis-rackable*" value-ref="dctImportNetworkItemMapper"/>
+		<entry key="edit,network-rackable*" value-ref="dctImportNetworkItemMapper"/>
+		<entry key="edit,datapanel-rackable*" value-ref="dctImportDataPanelItemMapper"/>
+		<entry key="edit,rackpdu-rackable*" value-ref="dctImportItemMapper"/>
+		<entry key="edit,probe-rackable*" value-ref="dctImportItemMapper"/>
+		<entry key="edit,device-nonrackable*" value-ref="dctImportDeviceItemMapper"/>
+		<entry key="edit,network-nonrackable*" value-ref="dctImportNetworkItemMapper"/>
+		<entry key="edit,datapanel-nonrackable*" value-ref="dctImportDataPanelItemMapper"/>
+		<entry key="edit,rackpdu-nonrackable*" value-ref="dctImportItemMapper"/>
+		<entry key="edit,probe-nonrackable*" value-ref="dctImportItemMapper"/>
+		<entry key="edit,device-zerou*" value-ref="dctImportDeviceItemMapper"/>
+		<entry key="edit,rackpdu-zerou*" value-ref="dctImportItemMapper"/>
+		<entry key="edit,probe-zerou*" value-ref="dctImportItemMapper"/>
+		<entry key="edit,datapanel-zerou*" value-ref="dctImportDataPanelItemMapper"/>
+		<entry key="edit,device-blade*" value-ref="dctImportDeviceItemMapper"/>
+		<entry key="edit,network-blade*" value-ref="dctImportNetworkItemMapper"/>
+		<entry key="edit,poweroutlet*" value-ref="dctImportPowerOutletItemMapper"/>
+
+		<entry key="delete,cabinet*" value-ref="dctImportCabinetItemMapper"/>
+		<entry key="delete,device-freestanding*" value-ref="dctImportDeviceItemMapper"/>
+		<entry key="delete,network-freestanding*" value-ref="dctImportNetworkItemMapper"/>
+		<entry key="delete,ups*" value-ref="dctImportUPSItemMapper"/>
+		<entry key="delete,crac*" value-ref="dctImportCRACItemMapper"/>
+		<entry key="delete,floorpdu*" value-ref="dctImportFloorPDUItemMapper"/>
+		<entry key="delete,powerpanel*" value-ref="dctImportItemMapper"/>
+		<entry key="delete,device-rackable*" value-ref="dctImportDeviceItemMapper"/>
+		<entry key="delete,device-bladechassis-rackable*" value-ref="dctImportDeviceItemMapper"/>
+		<entry key="delete,network-chassis-rackable*" value-ref="dctImportNetworkItemMapper"/>
+		<entry key="delete,network-rackable*" value-ref="dctImportNetworkItemMapper"/>
+		<entry key="delete,datapanel-rackable*" value-ref="dctImportDataPanelItemMapper"/>
+		<entry key="delete,rackpdu-rackable*" value-ref="dctImportItemMapper"/>
+		<entry key="delete,probe-rackable*" value-ref="dctImportItemMapper"/>
+		<entry key="delete,device-nonrackable*" value-ref="dctImportDeviceItemMapper"/>
+		<entry key="delete,network-nonrackable*" value-ref="dctImportNetworkItemMapper"/>
+		<entry key="delete,datapanel-nonrackable*" value-ref="dctImportDataPanelItemMapper"/>
+		<entry key="delete,rackpdu-nonrackable*" value-ref="dctImportItemMapper"/>
+		<entry key="delete,probe-nonrackable*" value-ref="dctImportItemMapper"/>
+		<entry key="delete,device-zerou*" value-ref="dctImportDeviceItemMapper"/>
+		<entry key="delete,rackpdu-zerou*" value-ref="dctImportItemMapper"/>
+		<entry key="delete,probe-zerou*" value-ref="dctImportItemMapper"/>
+		<entry key="delete,datapanel-zerou*" value-ref="dctImportDataPanelItemMapper"/>
+		<entry key="delete,device-blade*" value-ref="dctImportDeviceItemMapper"/>
+		<entry key="delete,network-blade*" value-ref="dctImportNetworkItemMapper"/>
+		<entry key="delete,poweroutlet*" value-ref="dctImportPowerOutletItemMapper"/>
+		<entry key="delete,passive*" value-ref="dctImportPassiveItemMapper"/>
+
+		<entry key="add,power-port*" value-ref="dctImportPowerPortMapper"/>
+		<entry key="edit,power-port*" value-ref="dctImportPowerPortMapper"/>
+		<entry key="delete,power-port*" value-ref="dctImportPowerPortMapper"/>
+
+		<entry key="add,data-connection*" value-ref="dctImportDataConnMapper"/>
+		<entry key="edit,data-connection*" value-ref="dctImportDataConnMapper"/>
+		<entry key="delete,data-connection*" value-ref="dctImportDataConnMapper"/>
+
+		<entry key="add,power-connection*" value-ref="dctImportPowerConnMapper"/>
+		<entry key="edit,power-connection*" value-ref="dctImportPowerConnMapper"/>
+		<entry key="delete,power-connection*" value-ref="dctImportPowerConnMapper"/>
+		
+		<entry key="delete,structured-cabling*" value-ref="dctImportStructuredCablingConnMapper"/>
+
+		<entry key="unmap,item*" value-ref="dctImportItemMapper"/>
+		
+	</util:map>
+</beans>

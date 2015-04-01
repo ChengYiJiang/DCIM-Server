@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+	<!-- ==================================== -->
+	<!-- Item to VM Request Issued -->
+	<!-- ==================================== -->
+	
+	<!-- Item to VM Request Issued Validator -->
+	
+	<import resource="request_validators.xml"/>
+	<import resource="request_executors.xml"/>
+	
+	<!-- Channel for to VM issued request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONVERT_TO_VM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.validateChannel"/> -->
+    <int:channel id="702.501.validateChannel"/>
+
+    <!-- Subscriber - service activator for to VM request approved validator -->
+    <int:service-activator id="itemToVMReqIssueValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONVERT_TO_VM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.validateChannel" 
+    		ref="itemToVMReqIssuedValidator" method="validate"/>
+
+	<!-- item to VM request issued validator bean -->
+    <bean id="itemToVMReqIssuedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemToVMWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item to VM Request Issued Executor -->
+	
+	<!-- Channel for to VM issue request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONVERT_TO_VM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.executeChannel"/> -->
+	<int:channel id="702.501.executeChannel"/>
+
+    <!-- Subscriber - service activator for to VM request issued executor -->
+    <int:service-activator id="itemToVMReqIssueExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONVERT_TO_VM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.executeChannel" 
+    		ref="itemToVMRequestStageIssued" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item to VM request issued executor bean -->
+	<bean id="itemToVMRequestStageIssued" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }"/>
+		<property name="requestStageHelpers" ref="itemToVMRequestIssuedExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Item to VM Request Updated -->
+	<!-- ==================================== -->
+	
+	<!-- Item to VM Request Updated Validator -->
+	
+	<!-- Channel for to VM updated request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONVERT_TO_VM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.validateChannel"/> -->
+    <int:channel id="702.503.validateChannel"/>
+
+    <!-- Subscriber - service activator for to VM request updated validator -->
+    <int:service-activator id="itemToVMReqUpdateValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONVERT_TO_VM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.validateChannel" 
+    		ref="itemToVMReqUpdatedValidator" method="validate"/>
+
+	<!-- item to VM request updated validator bean -->
+    <bean id="itemToVMReqUpdatedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemToVMWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item to VM Request Updated Executor -->
+	
+	<!-- Channel for to VM update request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONVERT_TO_VM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.executeChannel"/> -->
+	<int:channel id="702.503.executeChannel"/>
+
+    <!-- Subscriber - service activator for to VM request updated executor -->
+    <int:service-activator id="itemToVMReqUpdateExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONVERT_TO_VM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.executeChannel" 
+    		ref="itemToVMRequestStageUpdated" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item to VM request updated executor bean -->
+	<bean id="itemToVMRequestStageUpdated" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }"/>
+		<property name="requestStageHelpers" ref="itemToVMRequestUpdatedExecutors"/>
+	</bean>
+
+
+	
+	<!-- ==================================== -->
+	<!-- Item to VM Request Approved -->
+	<!-- ==================================== -->
+	
+	<!-- Item to VM Request Approved Validator -->
+	
+	<!-- Channel for to VM approve request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONVERT_TO_VM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.validateChannel"/> -->
+    <int:channel id="702.504.validateChannel"/>
+
+    <!-- Subscriber - service activator for to VM request approved validator -->
+    <int:service-activator id="itemToVMReqApproveValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONVERT_TO_VM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.validateChannel" 
+    		ref="itemToVMReqApprovedValidator" method="validate"/>
+
+	<!-- item to VM request approved validator bean -->
+    <bean id="itemToVMReqApprovedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemToVMWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item to VM Request Approved Executor -->
+	
+	<!-- Channel for to VM approve request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONVERT_TO_VM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.executeChannel"/> -->
+	<int:channel id="702.504.executeChannel"/>
+
+    <!-- Subscriber - service activator for to VM request approved executor -->
+    <int:service-activator id="itemToVMReqApproveExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONVERT_TO_VM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.executeChannel" 
+    		ref="itemToVMReqApprovedExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item to VM request approved executor bean -->
+    <bean id="itemToVMReqApprovedExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }"/>
+		<property name="requestStageHelpers" ref="itemToVMRequestApprovedExecutors"/>
+	</bean>
+    
+
+	<!-- ==================================== -->
+	<!-- Item to VM Work Order Issue -->
+	<!-- ==================================== -->
+	
+	<!-- Item to VM Work order issue Validator -->
+	
+	<!-- Channel for to VM Work Order Issue validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONVERT_TO_VM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.validateChannel"/> -->
+	<int:channel id="702.505.validateChannel"/>
+
+    <!-- Subscriber - service activator for to VM request approved validator -->
+    <int:service-activator id="itemToVMWorkorderIssueValidateActivator" requires-reply="false" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONVERT_TO_VM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.validateChannel" 
+    		ref="itemToVMWorkorderIssueValidator" method="validate"/>
+
+	<!-- item to VM request approved validator bean -->
+    <bean id="itemToVMWorkorderIssueValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemToVMWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item to VM Request Approved Executor -->
+	
+	<!-- Channel for to VM approve request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONVERT_TO_VM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.executeChannel"/> -->
+    <int:channel id="702.505.executeChannel"/>
+
+    <!-- Subscriber - service activator for to VM request approved executor -->
+    <int:service-activator id="itemToVMWorkorderIssueExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONVERT_TO_VM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.executeChannel" 
+    		ref="itemToVMWorkorderIssueExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item to VM request approved executor bean -->
+    <bean id="itemToVMWorkorderIssueExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }"/>
+		<property name="requestStageHelpers" ref="itemToVMWorkOrderIssueExecutors"/>
+	</bean>
+    
+
+	<!-- ==================================== -->
+	<!-- Item to VM Work Order Complete -->
+	<!-- ==================================== -->
+	
+	<!-- Item to VM Work order complete Validator -->
+	
+	<!-- Channel for to VM Work Order Complete validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONVERT_TO_VM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.validateChannel"/> -->
+    <int:channel id="702.506.validateChannel"/>
+
+    <!-- Subscriber - service activator for to VM work order complete validator -->
+    <int:service-activator id="itemToVMWorkorderCompleteValidateActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONVERT_TO_VM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.validateChannel" 
+    		ref="itemToVMWorkorderCompleteValidator" method="validate"/>
+
+	<!-- item to VM request complete validator bean -->
+    <bean id="itemToVMWorkorderCompleteValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemToVMWorkOrderCompleteValidators"/>
+    </bean>
+    
+	
+	<!-- Item to VM Workorder complete Executor -->
+	
+	<!-- Channel for to VM work order complete executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONVERT_TO_VM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.executeChannel"/> -->
+    <int:channel id="702.506.executeChannel"/>
+
+    <!-- Subscriber - service activator for to VM request approved executor -->
+    <int:service-activator id="itemToVMWorkorderCompleteExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONVERT_TO_VM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.executeChannel" 
+    		ref="itemToVMWorkorderCompleteExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item to VM request approved executor bean -->
+    <bean id="itemToVMWorkorderCompleteExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }"/>
+		<property name="requestStageHelpers" ref="itemToVMWorkOrderCompleteExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Item to VM Request Complete -->
+	<!-- ==================================== -->
+	
+	<!-- Item to VM Request complete Validator -->
+	
+	<!-- Channel for to VM Request Complete validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONVERT_TO_VM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.validateChannel"/> -->
+    <int:channel id="702.507.validateChannel"/>
+
+    <!-- Subscriber - service activator for to VM request complete validator -->
+    <int:service-activator id="itemToVMRequestCompleteValidateActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONVERT_TO_VM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.validateChannel" 
+    		ref="itemToVMRequestCompleteValidator" method="validate"/>
+
+	<!-- item to VM request complete validator bean -->
+    <bean id="itemToVMRequestCompleteValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemToVMWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item to VM Request complete Executor -->
+	
+	<!-- Channel for to VM request complete executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONVERT_TO_VM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.executeChannel"/> -->
+    <int:channel id="702.507.executeChannel"/>
+
+    <!-- Subscriber - service activator for to VM request approved executor -->
+    <!-- output-channel="nullChannel" -->
+    <int:service-activator id="itemToVMRequestCompleteExecuteActivator" requires-reply="false" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONVERT_TO_VM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.executeChannel" 
+    		ref="itemToVMRequestCompleteExecutor" method="process" output-channel="nullChannel"/>
+    		
+
+	<!-- item to VM request approved executor bean -->
+    <bean id="itemToVMRequestCompleteExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }"/>
+		<property name="requestStageHelpers" ref="itemToVMRequestCompleteExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Item to VM Routers               			-->
+	<!-- ==================================== -->
+
+	<!-- item to VM validate router -->
+	<!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONVERT_TO_VM }ValidateRouter"/> -->
+	<int:channel id="702.ValidateRouter"/>
+	<int:router input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONVERT_TO_VM }.ValidateRouter" ref="requestStageRouter" method="validatorRouter"/>
+	
+	<!-- item to VM execute router -->
+	<!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONVERT_TO_VM }ExecuteRouter"/> -->
+	<int:channel id="702.ExecuteRouter"/>
+	<int:router input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONVERT_TO_VM }.ExecuteRouter" ref="requestStageRouter" method="executorRouter"/>
+    
+
+
+</beans>

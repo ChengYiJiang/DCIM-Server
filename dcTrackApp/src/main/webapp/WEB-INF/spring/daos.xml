@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+    					http://www.springframework.org/schema/util
+    					http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+	
+	
+	
+    <!--  Dao Layer generic config-->
+    <bean id="genericDAO" class="com.raritan.tdz.dao.DaoImpl" abstract="true">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory"/>
+        </property>
+    </bean>
+    
+    
+	 <bean id="daoFinderIntroductionAdvisor" class="com.raritan.tdz.dao.DaoFinderIntroductionAdvisor"/>
+	  <bean id="daoUpdateIntroductionAdvisor" class="com.raritan.tdz.dao.DaoUpdateIntroductionAdvisor"/>
+    
+   
+    <bean id="abstractDao"
+    	class="org.springframework.aop.framework.ProxyFactoryBean" abstract="true">
+    	<property name="interceptorNames">
+    		<list>
+    			<value>daoFinderIntroductionAdvisor</value>
+    			<value>daoUpdateIntroductionAdvisor</value>
+    		</list>
+    	</property>	
+    </bean>
+    <!--  ================================== Special cases ============================================ -->
+    <bean id="genericDAOLoader" class="com.raritan.tdz.dao.GenericDAOLoader">
+        <constructor-arg name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+     
+    <!--  ================================== Dao Layer instances ====================================== -->
+     <!--  DAO for Item -->
+    <bean id="itemDAO" parent="abstractDao">
+    	<property name="proxyInterfaces">
+    		<list>
+	    		<value>com.raritan.tdz.item.dao.ItemFinderDAO</value>
+	    		<value>com.raritan.tdz.item.dao.ItemDAO</value>
+    		</list>
+    		
+    	</property>
+    	<property name="target">
+    		<bean class="com.raritan.tdz.item.dao.ItemDAOImpl" parent="genericDAO"/>
+    	</property>
+    </bean>
+    
+    <bean id="customFieldFinderDAO" parent="abstractDao">
+    	<property name="proxyInterfaces">
+    		<list>
+	    		<value>com.raritan.tdz.customfield.dao.CustomFieldsFinderDAO</value>
+    		</list>
+    		
+    	</property>
+    	<property name="target">
+    		<bean parent="genericDAO">
+    			<constructor-arg name="type" value="#{ T(com.raritan.tdz.domain.LkuData) }"/>
+    	  	</bean>
+    	</property>
+    </bean>
+
+    <bean id="modelDAO" class="com.raritan.tdz.model.dao.ModelDAOImpl" parent="genericDAO"  />
+    <bean id="dataPortDAO" parent="abstractDao" >
+    	<property name="proxyInterfaces">
+    		<list>
+    			<value>com.raritan.tdz.port.dao.DataPortFinderDAO</value>
+    			<value>com.raritan.tdz.port.dao.DataPortDAO</value>
+    		</list>
+    	</property>
+    	<property name="target">
+    		<bean class="com.raritan.tdz.port.dao.DataPortDAOImpl" parent="genericDAO" />
+    	</property>
+    </bean>
+
+
+    <bean id="powerPortDAO" parent="abstractDao">
+      	<property name="proxyInterfaces">
+    		<list>
+	    		<value>com.raritan.tdz.port.dao.PowerPortFinderDAO</value>
+	    		<value>com.raritan.tdz.port.dao.PowerPortUpdateDAO</value>
+	    		<value>com.raritan.tdz.port.dao.PowerPortDAO</value>
+    		</list>
+    		
+    	</property>
+    	<property name="target">
+    		<bean class="com.raritan.tdz.port.dao.PowerPortDAOImpl" parent="genericDAO"/>
+    	</property>
+    </bean>
+ 
+    <bean id="sensorPortDAO" parent="abstractDao">
+    	<property name="proxyInterfaces">
+    		<list>
+    			<value>com.raritan.tdz.port.dao.SensorPortFinderDAO</value>
+				<value>com.raritan.tdz.port.dao.SensorPortUpdaterDAO</value>
+	    		<value>com.raritan.tdz.port.dao.SensorPortDAO</value>
+    		</list>
+    	</property>
+    	<property name="target">
+    		<bean class="com.raritan.tdz.port.dao.SensorPortDAOImpl" parent="genericDAO"/>
+    	</property>
+    </bean>  
+    
+    <!-- DAO for Power Connection -->
+    <bean id="powerConnectionDAO" parent="abstractDao">
+    	<property name="proxyInterfaces">
+    		<list>
+	    		<value>com.raritan.tdz.circuit.dao.PowerConnFinderDAO</value>
+	    		<value>com.raritan.tdz.circuit.dao.PowerConnDAO</value>
+    		</list>    		
+    	</property>
+    	
+    	<property name="target">
+    		<bean class="com.raritan.tdz.circuit.dao.PowerConnDAOImpl" parent="genericDAO"/>
+    	</property>
+    </bean>
+       
+    <bean id="dataConnectionDAO" class="com.raritan.tdz.circuit.dao.DataConnDAOImpl" parent="genericDAO"  />
+    
+    <bean id="powerCircuitDAO" parent="abstractDao">
+    	<property name="proxyInterfaces">
+    		<list>
+    			<value>com.raritan.tdz.circuit.dao.PowerCircuitDAO</value>
+    			<value>com.raritan.tdz.circuit.dao.PowerCircuitFinderDAO</value>
+    		</list>
+    	</property>
+    	<property name="target">
+    		<bean  class="com.raritan.tdz.circuit.dao.PowerCircuitDAOImpl" parent="genericDAO"/>
+    	</property>
+    </bean>
+    
+    <bean id="dataCircuitDAO" class="com.raritan.tdz.circuit.dao.DataCircuitDAOImpl" parent="genericDAO"  />
+    
+    <!-- DAO for NetMask -->
+    <bean id="netMaskDAO" parent="abstractDao" autowire-candidate="true" autowire="byName">
+    	<property name="proxyInterfaces">
+    		<list>
+	    		<value>com.raritan.tdz.ip.dao.NetMaskDAO</value>
+    		</list>
+    		
+    	</property>
+    	<property name="target">
+    		<bean class="com.raritan.tdz.ip.dao.NetMaskDAOImpl" parent="genericDAO"/>
+    	</property>
+    </bean>
+    
+    <!-- DAO for Location -->
+    <bean id="locationDAO" parent="abstractDao" autowire-candidate="true" autowire="byName">
+    	<property name="proxyInterfaces">
+    		<list>
+	    		<value>com.raritan.tdz.location.dao.LocationFinderDAO</value>
+	    		<value>com.raritan.tdz.location.dao.LocationUpdateDAO</value>
+	    		<value>com.raritan.tdz.location.dao.LocationDAO</value>
+    		</list>
+    		
+    	</property>
+    	<property name="target">
+    		<bean class="com.raritan.tdz.location.dao.LocationDAOImpl" parent="genericDAO"/>
+    	</property>
+    </bean>
+    
+    <!-- DAO for fields  -->
+      <bean id="fieldsDAO" parent="abstractDao">
+    	<property name="proxyInterfaces">
+    		<list>
+	    		<value>com.raritan.tdz.field.dao.FieldsFinderDAO</value>
+    		</list>
+    		
+    	</property>
+    	<property name="target">
+    		<bean parent="genericDAO">
+    			<constructor-arg name="type" value="#{ T(com.raritan.tdz.field.domain.Fields) }"/>
+    		</bean>
+    	</property>
+    </bean>
+
+    <bean id="fieldDetailsDAO" parent="abstractDao">
+    	<property name="proxyInterfaces">
+    		<list>
+	    		<value>com.raritan.tdz.field.dao.FieldsFinderDAO</value>
+    		</list>
+    		
+    	</property>
+    	<property name="target">
+    		<bean parent="genericDAO">
+    			<constructor-arg name="type" value="#{ T(com.raritan.tdz.field.domain.FieldDetails) }"/>
+    	  	</bean>
+    	</property>
+    </bean>
+    
+    <bean id="systemLookupDAO" parent="abstractDao">
+    	<property name="proxyInterfaces">
+    		<list>
+	    		<value>com.raritan.tdz.lookup.dao.SystemLookupFinderDAO</value>
+    		</list>
+    		
+    	</property>
+    	<property name="target">
+    		<bean parent="genericDAO">
+    			<constructor-arg name="type" value="#{ T(com.raritan.tdz.domain.LksData) }"/>
+    	  	</bean>
+    	</property>
+    </bean>
+    
+    <bean id="userLookupDAO" parent="abstractDao">
+    	<property name="proxyInterfaces">
+    		<list>
+	    		<value>com.raritan.tdz.lookup.dao.UserLookupFinderDAO</value>
+    		</list>
+    		
+    	</property>
+    	<property name="target">
+    		<bean parent="genericDAO">
+    			<constructor-arg name="type" value="#{ T(com.raritan.tdz.domain.LkuData) }"/>
+    	  	</bean>
+    	</property>
+    </bean>
+    
+    <bean id="connectorLookupDAO" parent="abstractDao">
+    	<property name="proxyInterfaces">
+    		<list>
+	    		<value>com.raritan.tdz.lookup.dao.ConnectorLookupFinderDAO</value>
+    		</list>
+    		
+    	</property>
+    	<property name="target">
+    		<bean parent="genericDAO">
+    			<constructor-arg name="type" value="#{ T(com.raritan.tdz.domain.ConnectorLkuData) }"/>
+    	  	</bean>
+    	</property>
+    </bean>
+    
+	<bean id="eventLogDAO" parent="abstractDao">
+    	<property name="proxyInterfaces">
+    		<list>
+    			<value>com.raritan.tdz.events.dao.EventDAO</value>
+    		</list>
+    	</property>
+   	  	<property name="target">
+   			<bean class="com.raritan.tdz.events.dao.EventDAOImpl" parent="genericDAO"/>
+   		</property>
+    	
+    </bean>
+    
+    
+    <bean id="itemRequestDAO" class="com.raritan.tdz.item.request.ItemRequestDAO30Impl"
+		autowire-candidate="true" autowire="byName">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="requestIssueUpdateComments" ref="requestIssueCommentUpdate"/>
+	</bean>
+	
+	<bean id="powerPortDiagnosticsDAO" class="com.raritan.tdz.port.diagnostics.PowerPortDiagnosticsDAOImpl" parent="genericDAO" autowire-candidate="true" autowire="byName">
+		<property name="messageSource" ref="messageSource"/>
+	</bean>
+	
+	<bean id="circuitDiagnosticsDAO" class="com.raritan.tdz.port.diagnostics.CircuitDiagnosticsDAOImpl" parent="genericDAO" autowire-candidate="true" autowire="byName">
+		<property name="messageSource" ref="messageSource"/>
+	</bean>
+	
+	<bean id="fieldDetailsDao" class="com.raritan.tdz.field.dao.FieldDetailsDAOImpl" parent="genericDAO" autowire-candidate="true" autowire="byName"/>
+	
+	<bean id="ticketDetailsDAO" parent="abstractDao">
+    	<property name="proxyInterfaces">
+    		<list>
+	    		<value>com.raritan.tdz.externalticket.dao.ExternalTicketFinderDAO</value>
+    		</list>
+    		
+    	</property>
+    	<property name="target">
+    		<bean parent="genericDAO">
+    			<constructor-arg name="type" value="#{ T(com.raritan.tdz.domain.TicketFields) }"/>
+    	  	</bean>
+    	</property>
+    </bean>
+
+	<bean id="ticketsDAO" class="com.raritan.tdz.ticket.dao.TicketsDAOImpl" parent="genericDAO" autowire-candidate="true" autowire="byName">
+	</bean>
+    
+    <bean id="ticketFieldsDAO" class="com.raritan.tdz.ticket.dao.TicketFieldsDAOImpl" parent="genericDAO" autowire-candidate="true" autowire="byName">
+    </bean>
+
+	<bean id="ticketPortsDataDAO" class="com.raritan.tdz.ticket.dao.TicketPortsDataDAOImpl" parent="genericDAO" autowire-candidate="true" autowire="byName">
+	</bean>
+	
+	<bean id="ticketPortsPowerDAO" class="com.raritan.tdz.ticket.dao.TicketPortsPowerDAOImpl" parent="genericDAO" autowire-candidate="true" autowire="byName">
+	</bean>
+	
+	<bean id="powerPortMoveDAO" class="com.raritan.tdz.move.dao.PowerPortMoveDAOImpl" parent="genericDAO" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="type" value="com.raritan.tdz.domain.PowerPortMove"/>
+	</bean>
+	
+	<bean id="dataPortMoveDAO" class="com.raritan.tdz.move.dao.DataPortMoveDAOImpl" parent="genericDAO" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="type" value="com.raritan.tdz.domain.DataPortMove"/>
+	</bean>
+
+	<bean id="powerCircuitDAOExt" class="com.raritan.tdz.circuit.dao.PowerCircuitDAOExtImpl" parent="genericDAO" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="type" value="com.raritan.tdz.domain.PowerCircuit"/>
+		<constructor-arg name="isCircuitInCabinetQuery" value="select parent_item_id from dct_items 
+																				inner join dct_ports_power on dct_ports_power.item_id = dct_items.item_id
+																				inner join dct_connections_power connpower on dct_ports_power.port_power_id = connpower.source_port_id
+																				inner join dct_circuit_conns_power on connpower.connection_power_id = dct_circuit_conns_power.connection_power_id
+																				where connpower.circuit_power_id = :circuitId"/>
+		<constructor-arg name="getAssociatedDataCircuitsForCabinet" value="getAssociatedPowerCircuitsForCabinet"/>
+		<constructor-arg name="getCabinetPlannedCircuitIdsNotMovingQuery" value="getCabinetPowerCircuitIdsNotMoving"/>
+		<constructor-arg name="getParentMoveRequestQuery" value="getParentMoveRequestForPowerConn"/>
+		<constructor-arg name="getPendingCircuitRequestForItems" value="getPendingPowerCircuitRequestForItems"/>
+		<constructor-arg name="getReconnectCircuitReqInfo" value="getReconnectPowerCircuitReqInfo"/>
+		<constructor-arg name="getDisAndMoveCircuitReqInfo" value="getDisAndMovePowerCircuitReqInfo"/>
+	</bean>
+	
+	<bean id="dataCircuitDAOExt" class="com.raritan.tdz.circuit.dao.DataCircuitDAOExtImpl" parent="genericDAO" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="type" value="com.raritan.tdz.domain.DataCircuit"/>
+		<constructor-arg name="isCircuitInCabinetQuery" value="select parent_item_id from dct_items 
+																				inner join dct_ports_data on dct_ports_data.item_id = dct_items.item_id
+																				inner join dct_connections_data conndata on dct_ports_data.port_data_id = conndata.source_port_id
+																				inner join dct_circuit_conns_data on conndata.connection_data_id = dct_circuit_conns_data.connection_data_id
+																				where conndata.circuit_data_id = :circuitId"/>
+		<constructor-arg name="getAssociatedCircuitsForCabinet" value="getAssociatedDataCircuitsForCabinet"/>
+		<constructor-arg name="getCabinetPlannedCircuitIdsNotMovingQuery" value="getCabinetDataCircuitIdsNotMoving"/>
+		<constructor-arg name="getParentMoveRequestQuery" value="getParentMoveRequestForDataConn"/>
+		<constructor-arg name="getPendingCircuitRequestForItems" value="getPendingDataCircuitRequestForItems"/>
+		<constructor-arg name="getReconnectCircuitReqInfo" value="getReconnectDataCircuitReqInfo"/>
+		<constructor-arg name="getDisAndMoveCircuitReqInfo" value="getDisAndMoveDataCircuitReqInfo"/>
+	</bean>
+
+	<bean id="reservationDAO" class="com.raritan.tdz.reservation.dao.ReservationDAOImpl" parent="genericDAO" autowire-candidate="true" autowire="byName">
+	</bean>
+	
+	<bean id="ipAddressDAO" class="com.raritan.tdz.ip.dao.IPAddressDAOImpl" parent="genericDAO" autowire-candidate="true" autowire="byName"/>
+
+	<bean id="ipAddressDetailsDAO" class="com.raritan.tdz.ip.dao.IPAddressDetailsDAOImpl" parent="genericDAO" autowire-candidate="true" autowire="byName"/>
+
+	<bean id="ipTeamingDAO" class="com.raritan.tdz.ip.dao.IPTeamingDAOImpl" parent="genericDAO" autowire-candidate="true" autowire="byName"/>
+
+	<bean id="networksDAO" class="com.raritan.tdz.ip.dao.NetworksDAOImpl" parent="genericDAO" autowire-candidate="true" autowire="byName"/>
+
+	<bean id="requestDAO" class="com.raritan.tdz.request.dao.RequestDAOImpl" parent="genericDAO" autowire-candidate="true" autowire="byName">
+	</bean>
+	
+	<bean id="requestHistoryDAO" class="com.raritan.tdz.request.dao.RequestHistoryDAOImpl" autowire-candidate="true" autowire="byName"/>
+
+	<bean id="userDAO" class="com.raritan.tdz.user.dao.UserDAOImpl" autowire-candidate="true" autowire="byName"/>
+	
+	<bean id="lnEventDao" class="com.raritan.tdz.vbjavabridge.dao.LNEventDAOImpl" autowire-candidate="true" autowire="byName"/> 
+
+	<bean id="reportsDAO" class="com.raritan.tdz.reports.dao.ReportsDAOImpl" parent="genericDAO" autowire-candidate="true" autowire="byName"/>
+	<bean id="reportParamDAO" class="com.raritan.tdz.reports.dao.ReportParamDAOImpl" parent="genericDAO" autowire-candidate="true" autowire="byName"/>
+	<bean id="reportConfigDAO" class="com.raritan.tdz.reports.dao.ReportConfigDAOImpl" parent="genericDAO" autowire-candidate="true" autowire="byName"/>
+	<bean id="reportConfigDetailsDAO" class="com.raritan.tdz.reports.dao.ReportConfigDetailsDAOImpl" parent="genericDAO" autowire-candidate="true" autowire="byName"/>
+	
+	<bean id="applicationSettingsDAO" class="com.raritan.tdz.settings.dao.ApplicationSettingsDAOImpl" parent="genericDAO" autowire-candidate="true" autowire="byName"/>
+	
+	<bean id="modelMfrDetailsDAO" class="com.raritan.tdz.mfr.dao.ModelMfrDetailsDAOImpl" parent="genericDAO" autowire-candidate="true" autowire="byName"/>
+
+	<bean id="reservationDetailsDAO" class="com.raritan.tdz.reservation.dao.ReservationDetailsDAOImpl" parent="genericDAO" autowire-candidate="true" autowire="byName"/>	
+	
+	<bean id="userSessionDAO" class="com.raritan.tdz.session.dao.UserSessionDAOImpl" parent="genericDAO" autowire-candidate="true" autowire="byName"/>
+	
+	<bean id="itemSNMPDAO" class="com.raritan.tdz.item.snmp.dao.ItemSNMPDAOImpl" autowire-candidate="true" autowire="byName"/>
+	
+	<bean id="circuitViewDataDAO" class="com.raritan.tdz.circuit.dao.CircuitViewDataDAOImpl" parent="genericDAO" autowire-candidate="true" autowire="byName"/>
+	
+	<bean id="usersDAO" class="com.raritan.tdz.user.dao.UsersDAOImpl" parent="genericDAO" autowire-candidate="true" autowire="byName"/>
+	
+</beans>

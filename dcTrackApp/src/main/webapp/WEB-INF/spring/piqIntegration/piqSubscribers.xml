@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<import resource="piqSyncClient.xml"/>
+	
+	<bean id="lnHomePerPIQ" class="com.raritan.tdz.vbjavabridge.home.LNHomePerPIQImpl">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<property name="piqHost" value="${powerIQHost}"/>
+	</bean>
+	
+	<bean id="cabinetItemSubscriber"
+		class="com.raritan.tdz.vbjavabridge.subscribers.CabinetItemSubscriber">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+		<property name="piqSycRackClient">
+			<ref bean="piqSyncRackClient"/>
+		</property>
+	</bean>
+
+	<bean id="itItemSubscriber"
+		class="com.raritan.tdz.vbjavabridge.subscribers.ITItemSubscriber">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+		<property name="piqSycItemClient">
+			<ref bean="piqSyncDeviceClient"/>
+		</property>
+		<property name="itemHome" ref="itemHome" />
+		<property name="piqSysEventLogger" ref="piqSysEventLogger" />
+		<property name="piqProbeMapper" ref="piqProbeMapper" />
+	</bean>
+
+	<bean id="rPDUItemSubscriber"
+		class="com.raritan.tdz.vbjavabridge.subscribers.RPDUItemSubscriber">
+		<property name="piqSyncPDUClient">
+			<ref bean="piqSyncPDUClient"/>
+		</property>
+		<property name="piqSyncDeviceClient">
+			<ref bean="piqSyncDeviceClient"/>
+		</property>
+		<property name="itemHome" ref="itemHome" />
+		<property name="probeMapper" ref="piqProbeMapper" />
+	</bean>
+
+	<bean id="itemsEventSubscriber"
+		class="com.raritan.tdz.vbjavabridge.subscribers.ItemsEventSubscriberImpl"
+		init-method="subscribe">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="lnHomePerPIQ" />
+		</constructor-arg>
+		<constructor-arg index="2">
+			<map>
+				<entry key="1100" value-ref="cabinetItemSubscriber" />
+				<entry key="1200" value-ref="itItemSubscriber" />
+				<entry key="1300" value-ref="itItemSubscriber" />
+				<entry key="1400" value-ref="itItemSubscriber" />
+				<entry key="2100" value-ref="rPDUItemSubscriber" />
+			</map>
+		</constructor-arg>
+		<property name="messageSource" ref="messageSource" />
+	</bean>
+
+	<bean id="pduDataPortSubscriber"
+		class="com.raritan.tdz.vbjavabridge.subscribers.PDUDataPortSubscriber">
+		<property name="piqSyncPDUClient">
+			<ref bean="piqSyncPDUClient"/>
+		</property>
+		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="itemHome" ref="itemHome" />
+		<property name="piqSysEventLogger" ref="piqSysEventLogger" />
+	</bean>
+
+	<bean id="itItemDataPortSubscriber"
+		class="com.raritan.tdz.vbjavabridge.subscribers.ITItemDataPortSubscriber">
+		<property name="piqSycItemClient">
+			<ref bean="piqSyncDeviceClient"/>
+		</property>
+		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="itemHome" ref="itemHome" />
+		<property name="piqProbeMapper" ref="piqProbeMapper" />
+	</bean>
+
+	<bean id="dataPortsEventSubscriber"
+		class="com.raritan.tdz.vbjavabridge.subscribers.DataPortsEventSubscriberImpl"
+		init-method="subscribe">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="lnHomePerPIQ" />
+		</constructor-arg>
+		<constructor-arg index="2">
+			<map>
+				<entry key="1200" value-ref="itItemDataPortSubscriber" />
+				<entry key="1300" value-ref="itItemDataPortSubscriber" />
+				<entry key="1400" value-ref="itItemDataPortSubscriber" />
+				<entry key="2100" value-ref="pduDataPortSubscriber" />
+			</map>
+		</constructor-arg>
+		<property name="messageSource" ref="messageSource" />
+	</bean>
+
+	<bean id="itItemPowerPortSubscriber"
+		class="com.raritan.tdz.vbjavabridge.subscribers.ITItemPowerPortSubscriber">
+		<property name="piqSycItemClient">
+			<ref bean="piqSyncDeviceClient"/>
+		</property>
+		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="itemHome" ref="itemHome" />
+	</bean>
+
+	<bean id="powerPortsEventSubscriber"
+		class="com.raritan.tdz.vbjavabridge.subscribers.PowerPortsEventSubscriberImpl"
+		init-method="subscribe">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="lnHomePerPIQ" />
+		</constructor-arg>
+		<constructor-arg index="2">
+			<map>
+				<entry key="1200" value-ref="itItemPowerPortSubscriber" />
+				<entry key="1300" value-ref="itItemPowerPortSubscriber" />
+				<entry key="1400" value-ref="itItemPowerPortSubscriber" />
+			</map>
+		</constructor-arg>
+		<property name="messageSource" ref="messageSource" />
+	</bean>
+
+	<bean id="ipAddressesSubscriber"
+		class="com.raritan.tdz.vbjavabridge.subscribers.IPAddressesSubscriberImpl"
+		init-method="subscribe">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="lnHomePerPIQ" />
+		</constructor-arg>
+		<constructor-arg index="2">
+			<ref bean="piqSyncDeviceClient" />
+		</constructor-arg>
+		<constructor-arg index="3">
+			<ref bean="piqSyncPDUClient" />
+		</constructor-arg>
+		<constructor-arg index="4">
+			<ref bean="itemHome" />
+		</constructor-arg>
+		<constructor-arg index="5">
+			<ref bean="portHome" />
+		</constructor-arg>
+		<constructor-arg index="6">
+			<ref bean="piqProbeMapper" />
+		</constructor-arg>
+		<property name="messageSource" ref="messageSource" />
+	</bean>
+
+	<bean id="ipteamingSubscriber"
+		class="com.raritan.tdz.vbjavabridge.subscribers.IPTeamingSubscriberImpl"
+		init-method="subscribe">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="lnHomePerPIQ" />
+		</constructor-arg>
+		<constructor-arg index="2">
+			<ref bean="piqSyncDeviceClient" />
+		</constructor-arg>
+		<constructor-arg index="3">
+			<ref bean="piqSyncPDUClient" />
+		</constructor-arg>
+		<constructor-arg index="4">
+			<ref bean="itemHome" />
+		</constructor-arg>
+		<constructor-arg index="5">
+			<ref bean="piqProbeMapper" />
+		</constructor-arg>
+		<property name="messageSource" ref="messageSource" />
+	</bean>
+
+	<bean id="powerConnectionsSubscriber"
+		class="com.raritan.tdz.vbjavabridge.subscribers.PowerConnectionsSubscriberImpl"
+		init-method="subscribe">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="lnHomePerPIQ" />
+		</constructor-arg>
+		<constructor-arg index="2">
+			<ref bean="piqSyncOutletClient" />
+		</constructor-arg>
+		<constructor-arg index="3">
+			<ref bean="itemHome" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="dcSubscriber"
+		class="com.raritan.tdz.vbjavabridge.subscribers.DataCenterSubscriberImpl" init-method="subscribe">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="lnHomePerPIQ" />
+		</constructor-arg>
+		<constructor-arg index="2">
+			<ref bean="piqSyncLocationClient" />
+		</constructor-arg>
+		<property name="messageSource" ref="messageSource" />
+	</bean>
+	
+	<bean id="piqUpdateSubscriber" class="com.raritan.tdz.vbjavabridge.subscribers.PowerIQUpdateSubscriber" init-method="subscribe">
+		<constructor-arg name="lnHome" ref="lnHomePerPIQ"/>
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="piqBulkSyncService" ref="piqBulkUpdateGateway"/>
+	</bean>
+
+
+</beans>

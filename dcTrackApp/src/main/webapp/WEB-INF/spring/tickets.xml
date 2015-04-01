@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+
+
+
+	<!-- ============================================= -->
+	<!-- Ticket Utility (Helper for ticket save behaviors) -->
+	<!-- ============================================= -->
+	<!-- These ticket states do not allow editing -->
+	<util:list id="ticketStateNotEditable" value-type="java.lang.Long">	
+		<value>#{ T(com.raritan.tdz.lookup.SystemLookup$TicketStatus).TICKET_ARCHIVED }</value>
+		<value>#{ T(com.raritan.tdz.lookup.SystemLookup$TicketStatus).TICKET_COMPLETE }</value>
+	</util:list>
+
+
+	<!-- ticket utility API used across the ticketing behaviors -->
+	<bean id="ticketUtility" class="com.raritan.tdz.ticket.home.TicketUtilityImpl" autowire-candidate="true" autowire="byName">
+		<property name="ticketStateNotEditable" ref="ticketStateNotEditable"/>
+	</bean>
+
+	
+	<!-- ============================================= -->
+	<!-- Ticket Update Helper  -->
+	<!-- ============================================= -->
+	<bean id="ticketFieldsUpdateHelperImpl" class="com.raritan.tdz.ticket.home.TicketFieldsUpdateHelperImpl" autowire-candidate="true" autowire="byName"/>
+	
+	<bean id="ticketPowerPortFieldsUpdateHelperImpl" class="com.raritan.tdz.ticket.home.TicketPowerPortFieldsUpdateHelperImpl" autowire-candidate="true" autowire="byName"></bean>
+	
+	<bean id="ticketDataPortFieldsUpdateHelperImpl" class="com.raritan.tdz.ticket.home.TicketDataPortFieldsUpdateHelperImpl" autowire-candidate="true" autowire="byName"/>
+
+
+	<!-- ============================================= -->
+	<!-- Ticket's Item Save Behavior -->
+	<!-- ============================================= -->
+	<bean id="itemTicketSaveBehavior" class="com.raritan.tdz.ticket.home.ItemTicketSaveBehavior" autowire-candidate="true" autowire="byName"/>
+
+	<!-- ============================================= -->
+	<!-- Ticket's Request Save Behavior -->
+	<!-- ============================================= -->
+	<bean id="requestTicketSaveBehavior" class="com.raritan.tdz.ticket.home.RequestTicketSaveBehavior" autowire-candidate="true" autowire="byName"/>
+	
+	<!-- ============================================= -->
+	<!-- Placement Save Behavior -->
+	<!-- ============================================= -->
+	<bean id="placementLocationTicketSaveBehavior" class="com.raritan.tdz.ticket.home.PlacementLocationTicketSaveBehavior"  autowire-candidate="true" autowire="byName"/>
+	
+	<!-- ZEROU (Cabinet Side), Rackable (NOT USED), Non-Rackable (NOT USED), Blade (NOT USED), Free-Standing (NOT USED) -->
+	<bean id="placementCabinetSideTicketSaveBehavior" class="com.raritan.tdz.ticket.home.PlacementCabinetSideTicketSaveBehavior" autowire-candidate="true" autowire="byName"/>
+	
+	<!-- ZEROU (Cabinet), Rackable (Cabinet), Non-Rackable (Cabinet), Blade (Cabinet), Free-Standing (NOT USED) -->
+	<bean id="placementCabinetTicketSaveBehavior" class="com.raritan.tdz.ticket.home.PlacementCabinetTicketSaveBehavior" autowire-candidate="true" autowire="byName"/>
+	
+	<!-- ZEROU (U Pos), Rackable (U Pos), Non-Rackable (U Pos), Blade (U Pos), Free-Standing (NOT USED) -->
+	<bean id="placementUPositionTicketSaveBehavior" class="com.raritan.tdz.ticket.home.PlacementUPositionTicketSaveBehavior" autowire-candidate="true" autowire="byName"/>
+	
+	<!-- Chassis -->
+	<!-- ZEROU (NOT USED), Rackable (NOT USED), Non-Rackable (NOT USED), Blade (Chassis), Free-Standing (NOT USED) -->
+	<bean id="placementChassisTicketSaveBehavior" class="com.raritan.tdz.ticket.home.PlacementChassisTicketSaveBehavior" autowire-candidate="true" autowire="byName"/>
+	
+	<!-- Blade = Chassis Face (UI), facing_lks_id (dct_items), FACE(lks), chassis_face_lks_id (ticket fields) -->
+	<!-- ZEROU (NOT USED), Rackable (NOT USED), Non-Rackable (NOT USED), Blade (Chassis Face), Free-Standing (NOT USED) -->
+	<bean id="placementChassisFaceTicketSaveBehavior" class="com.raritan.tdz.ticket.home.PlacementChassisFaceTicketSaveBehavior" autowire-candidate="true" autowire="byName"/>
+	
+	<!-- ZEROU = Depth Position (UI), facing_lks_id (dct_items), ZEROU (lks), depth_position (ticket fields) -->
+	<!-- ZEROU (depth position), Rackable (NOT USED), Non-Rackable (NOT USED), Blade (NOT USED), Free-Standing (NOT USED) -->
+	<bean id="placementDepthPositionTicketSaveBehavior" class="com.raritan.tdz.ticket.home.PlacementDepthPositionTicketSaveBehavior" autowire-candidate="true" autowire="byName"/>
+	
+	<!-- Slot Position -->
+	<!-- ZEROU (NOT USED), Rackable (NOT USED), Non-Rackable (NOT USED), Blade (slot position), Free-Standing (NOT USED) -->
+	<bean id="placementSlotPositionTicketSaveBehavior" class="com.raritan.tdz.ticket.home.PlacementSlotPositionTicketSaveBehavior" autowire-candidate="true" autowire="byName"/>
+	
+	<!-- ZEROU (NOT USED), Rackable (NOT USED), Non-Rackable (NOT USED), Blade (NOT USED), Free-Standing (row label) -->
+	<bean id="placementPositionInRowTicketSaveBehavior" class="com.raritan.tdz.ticket.home.PlacementPositionInRowTicketSaveBehavior" autowire-candidate="true" autowire="byName"/>
+	
+	<!-- ZEROU (NOT USED), Rackable (NOT USED), Non-Rackable (NOT USED), Blade (NOT USED), Free-Standing (position in row) -->
+	<bean id="placementRowLabelTicketSaveBehavior" class="com.raritan.tdz.ticket.home.PlacementRowLabelTicketSaveBehavior" autowire-candidate="true" autowire="byName"/>
+	
+	<!-- Cabinet Rails Used -->
+	<!-- ZEROU (NOT USED), Rackable (Cabinet Rails Used), Non-Rackable (Cabinet Rails Used), Blade (NOT USED), Free-Standing (NOT USED) => lks(RAILS_USED) -->
+	<bean id="placementCabinetRailsUsedTicketSaveBehavior" class="com.raritan.tdz.ticket.home.PlacementCabinetRailsUsedTicketSaveBehavior" autowire-candidate="true" autowire="byName"/>
+	
+	<!-- Shelf Position -->
+	<!-- ZEROU (NOT USED), Rackable (NOT USED), Non-Rackable (Shelf Position), Blade (NOT USED), Free-Standing (NOT USED) -->
+	<bean id="placementShelfPositionTicketSaveBehavior" class="com.raritan.tdz.ticket.home.PlacementShelfPositionTicketSaveBehavior" autowire-candidate="true" autowire="byName"/>
+	
+	<!-- Cabinet Front Faces -->
+	<!-- ZEROU (NOT USED), Rackable (NOT USED), Non-Rackable (NOT USED), Blade (NOT USED), Free-Standing (Front Faces) => lks (FACING) => dct_items (facing_lks_id) -->
+	<bean id="placementCabinetFrontFacesTicketSaveBehavior" class="com.raritan.tdz.ticket.home.PlacementCabinetFrontFacesTicketSaveBehavior" autowire-candidate="true" autowire="byName"/>
+
+	<!-- Orientation -->
+	<!-- ZEROU (NOT USED), Rackable (Orientation), Non-Rackable (Orientation), Blade (NOT USED), Free-Standing (NOT USED) => lks(ORIENTATION) => facing_lks_id (dct_items) -->
+	<bean id="placementCabinetOrientationTicketSaveBehavior" class="com.raritan.tdz.ticket.home.PlacementCabinetOrientationTicketSaveBehavior" autowire-candidate="true" autowire="byName"/>
+	
+	<bean id="vmPlacementTicketSaveBehavior" class="com.raritan.tdz.ticket.home.TicketMultipleSaveBehavior" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="ticketSaveBehaviors">
+			<list>
+				<ref bean="placementLocationTicketSaveBehavior"/>
+			</list>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="rackablePlacementTicketSaveBehavior" class="com.raritan.tdz.ticket.home.TicketMultipleSaveBehavior"  autowire-candidate="true" autowire="byName">
+		<constructor-arg name="ticketSaveBehaviors">
+			<list>
+				<ref bean="placementLocationTicketSaveBehavior"/> <!-- Location -->
+				<ref bean="placementCabinetRailsUsedTicketSaveBehavior"/> <!-- Rails Used -->
+				<ref bean="placementCabinetTicketSaveBehavior"/> <!-- Cabinet -->
+				<ref bean="placementUPositionTicketSaveBehavior"/> <!-- U Position -->
+				<ref bean="placementCabinetOrientationTicketSaveBehavior"/> <!-- Orientation -->
+			</list>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="nonRackablePlacementTicketSaveBehavior" class="com.raritan.tdz.ticket.home.TicketMultipleSaveBehavior" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="ticketSaveBehaviors">
+			<list>
+				<ref bean="rackablePlacementTicketSaveBehavior"/>
+				<ref bean="placementShelfPositionTicketSaveBehavior"/>
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="zeroUPlacementTicketSaveBehavior" class="com.raritan.tdz.ticket.home.TicketMultipleSaveBehavior"  autowire-candidate="true" autowire="byName">
+		<constructor-arg name="ticketSaveBehaviors">
+			<list>
+				<ref bean="placementLocationTicketSaveBehavior"/> <!-- Location -->
+				<ref bean="placementCabinetTicketSaveBehavior"/> <!-- Cabinet -->
+				<ref bean="placementDepthPositionTicketSaveBehavior"/> <!-- Depth Position -->
+				<ref bean="placementCabinetSideTicketSaveBehavior"/> <!-- Cabinet Side -->
+				<ref bean="placementUPositionTicketSaveBehavior"/> <!-- U Position -->
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="bladePlacementTicketSaveBehavior" class="com.raritan.tdz.ticket.home.TicketMultipleSaveBehavior"  autowire-candidate="true" autowire="byName">
+		<constructor-arg name="ticketSaveBehaviors">
+			<list>
+				<ref bean="placementLocationTicketSaveBehavior"/> <!-- Location -->
+				<ref bean="placementCabinetTicketSaveBehavior"/> <!-- Cabinet -->
+				<ref bean="placementChassisTicketSaveBehavior"/> <!-- Chassis -->
+				<ref bean="placementChassisFaceTicketSaveBehavior"/> <!-- Chassis Face -->
+				<ref bean="placementSlotPositionTicketSaveBehavior"/> <!-- Slot Position -->
+			</list>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="fsPlacementTicketSaveBehavior" class="com.raritan.tdz.ticket.home.TicketMultipleSaveBehavior" autowire-candidate="true" autowire="byName">
+		<constructor-arg>
+			<list>
+				<ref bean="placementLocationTicketSaveBehavior"/>
+				<ref bean="placementRowLabelTicketSaveBehavior"/>
+				<ref bean="placementPositionInRowTicketSaveBehavior"/>
+				<ref bean="placementCabinetFrontFacesTicketSaveBehavior"/>
+			</list>
+		</constructor-arg>
+	</bean>
+
+
+	<!-- ============================================= -->
+	<!-- Hardware Save Behavior -->
+	<!-- ============================================= -->
+	<bean id="hardwareInfoTicketSaveBehavior" class="com.raritan.tdz.ticket.home.HardwareInfoTicketSaveBehavior" autowire-candidate="true" autowire="byName"/>
+
+
+	<!-- ============================================= -->
+	<!-- Identity Save Behavior -->
+	<!-- ============================================= -->
+	<bean id="identityInfoTicketSaveBehavior" class="com.raritan.tdz.ticket.home.IdentityInfoTicketSaveBehavior" autowire-candidate="true" autowire="byName"/>
+
+
+	<!-- ============================================= -->
+	<!-- Data Ports Save Behavior -->
+	<!-- ============================================= -->
+	<bean id="dataPortTicketSaveBehavior" class="com.raritan.tdz.ticket.home.DataPortTicketSaveBehavior" autowire-candidate="true" autowire="byName"/>
+
+	<!-- ============================================= -->
+	<!-- Physical Power Ports Save Behavior -->
+	<!-- ============================================= -->
+	<bean id="powerSupplyTicketSaveBehavior" class="com.raritan.tdz.ticket.home.PowerSupplyTicketSaveBehavior" autowire-candidate="true" autowire="byName"/>
+	
+	<!-- ============================================= -->
+	<!-- Rack PDU Inlet Port Save Behavior -->
+	<!-- ============================================= -->
+
+	<!-- ============================================= -->
+	<!-- Rack PDU Outlet Port Save Behavior -->
+	<!-- ============================================= -->
+	
+	<!-- ============================================= -->
+	<!-- Ticket Save Behavior based on the unique item id -->
+	<!-- ============================================= -->
+	<bean id="commonTicketSaveBehavior" class="com.raritan.tdz.ticket.home.TicketMultipleSaveBehavior" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="ticketSaveBehaviors">
+			<list>
+				<ref bean="itemTicketSaveBehavior"/> <!-- item information in ticket -->
+				<ref bean="hardwareInfoTicketSaveBehavior"/> <!-- hardware information in ticket -->
+				<ref bean="identityInfoTicketSaveBehavior"/> <!-- identity information in ticket -->
+			</list>
+		</constructor-arg>
+	</bean>
+	
+	<!-- "Device	VirtualMachine" -->
+	<util:list id="VMDevice">	
+		<ref bean="commonTicketSaveBehavior"/>
+		<ref bean="vmPlacementTicketSaveBehavior"/> <!-- placement -->
+		<ref bean="dataPortTicketSaveBehavior"/> <!-- Data Port -->
+	</util:list>
+	
+	<!-- "Device Rackable Fixed"	 	"Device	Standard Rackable" -->
+	<util:list id="DevStdRackable">	
+		<ref bean="commonTicketSaveBehavior"/>
+		<ref bean="rackablePlacementTicketSaveBehavior"/> <!-- placement information -->
+		<ref bean="powerSupplyTicketSaveBehavior"/> <!-- Power Supply Port -->
+		<ref bean="dataPortTicketSaveBehavior"/> <!-- Data Port -->
+	</util:list>
+	
+	<!-- "Device Non-Rackable Fixed"	 	"Device Standard Non-Rackable" -->
+	<util:list id="DevStdNonRackable">	
+		<ref bean="commonTicketSaveBehavior"/>
+		<ref bean="nonRackablePlacementTicketSaveBehavior"/> <!-- placement information -->
+		<ref bean="powerSupplyTicketSaveBehavior"/> <!-- Power Supply Port -->
+		<ref bean="dataPortTicketSaveBehavior"/> <!-- Data Port -->
+	</util:list>
+	
+	<!-- Device	Free-Standing	Fixed	 =	Device	Standard	 	Free-Standing Dev/Net -->
+	<util:list id="DevStdFS">	
+		<ref bean="commonTicketSaveBehavior"/>
+		<ref bean="fsPlacementTicketSaveBehavior"/> <!-- placement information -->
+		<ref bean="powerSupplyTicketSaveBehavior"/> <!-- Power Supply Port -->
+		<ref bean="dataPortTicketSaveBehavior"/> <!-- Data Port -->
+	</util:list>
+	
+	<!-- Device	Rackable	Chassis	 =	Device	Blade Chassis	 	Rackable -->
+	<util:list id="DevChassisRackable">
+		<ref bean="commonTicketSaveBehavior"/>
+		<ref bean="rackablePlacementTicketSaveBehavior"/> <!-- placement information -->
+		<ref bean="powerSupplyTicketSaveBehavior"/> <!-- Power Supply Port -->
+		<ref bean="dataPortTicketSaveBehavior"/> <!-- Data Port -->
+	</util:list>
+	
+	<!-- Device	Blade	any value	= 	Device	Blade Server	 	Blade -->
+	<util:list id="DevBladeServer">
+		<ref bean="commonTicketSaveBehavior"/>
+		<ref bean="bladePlacementTicketSaveBehavior"/> <!-- placement information -->
+		<ref bean="dataPortTicketSaveBehavior"/> <!-- Data Port -->
+	</util:list>
+	
+	<!-- Device	ZeroU	Fixed	 =	Device	Standard	 	ZeroU -->
+	<util:list id="DevStdZeroU">
+		<ref bean="commonTicketSaveBehavior"/>
+		<ref bean="zeroUPlacementTicketSaveBehavior"/> <!-- placement information -->
+		<ref bean="powerSupplyTicketSaveBehavior"/> <!-- Power Supply Port -->
+		<ref bean="dataPortTicketSaveBehavior"/> <!-- Data Port -->
+	</util:list>
+	
+	<!-- Network	Rackable 	Fixed	 =	Network	NetworkStack	 	Rackable -->
+	<util:list id="NWNetStackRackable">	
+		<ref bean="commonTicketSaveBehavior"/>
+		<ref bean="rackablePlacementTicketSaveBehavior"/> <!-- placement information -->
+		<ref bean="powerSupplyTicketSaveBehavior"/> <!-- Power Supply Port -->
+		<ref bean="dataPortTicketSaveBehavior"/> <!-- Data Port -->
+	</util:list>
+	
+	<!-- Network	Non-Rackable	Fixed	 =	Network	NetworkStack	 	Non-Rackable -->
+	<util:list id="NWNetStackNonRackable">
+		<ref bean="commonTicketSaveBehavior"/>
+		<ref bean="nonRackablePlacementTicketSaveBehavior"/> <!-- placement information -->
+		<ref bean="powerSupplyTicketSaveBehavior"/> <!-- Power Supply Port -->
+		<ref bean="dataPortTicketSaveBehavior"/> <!-- Data Port -->
+	</util:list>
+	
+	<!-- Network	Free-Standing	 Fixed	 =	Network	NetworkStack	 	Free-Standing Dev/Net -->
+	<util:list id="NWNetStackFS">
+		<ref bean="commonTicketSaveBehavior"/>
+		<ref bean="fsPlacementTicketSaveBehavior"/> <!-- placement information -->
+		<ref bean="powerSupplyTicketSaveBehavior"/> <!-- Power Supply Port -->
+		<ref bean="dataPortTicketSaveBehavior"/> <!-- Data Port -->
+	</util:list>
+	
+	<!-- Network	Rackable	 Chassis	 =	Network	Chassis	 	Rackable -->
+	<util:list id="NWChassisRackable">
+		<ref bean="commonTicketSaveBehavior"/>
+		<ref bean="rackablePlacementTicketSaveBehavior"/> <!-- placement information -->
+		<ref bean="powerSupplyTicketSaveBehavior"/> <!-- Power Supply Port -->
+		<ref bean="dataPortTicketSaveBehavior"/> <!-- Data Port -->
+	</util:list>
+	
+	<!-- Network	Blade	any value	= 	Network	Blade	 	Blade -->
+	<util:list id="NWBlade">
+		<ref bean="commonTicketSaveBehavior"/>
+		<ref bean="bladePlacementTicketSaveBehavior"/> <!-- placement information -->
+		<ref bean="dataPortTicketSaveBehavior"/> <!-- Data Port -->
+	</util:list>
+	
+	<!-- Network	ZeroU	Fixed	 =	Network	NetworkStack	 	ZeroU -->
+	<util:list id="NWNetStackZeroU">
+		<ref bean="commonTicketSaveBehavior"/>
+		<ref bean="zeroUPlacementTicketSaveBehavior"/> <!-- placement information -->
+		<ref bean="powerSupplyTicketSaveBehavior"/> <!-- Power Supply Port -->
+		<ref bean="dataPortTicketSaveBehavior"/> <!-- Data Port -->
+	</util:list>
+	
+	<!-- Rack PDU	Rackable 	Fixed	 =	Rack PDU	n/a	 	Rackable -->
+	<util:list id="RPDURackable">	
+		<ref bean="commonTicketSaveBehavior"/>
+		<ref bean="rackablePlacementTicketSaveBehavior"/> <!-- placement information -->
+		<!-- <ref bean="inputCordTicketSaveBehavior"/> --> <!-- TODO:: Input Cord Power Port -->
+		<!-- <ref bean="outletPortTicketSaveBehavior"/> --> <!-- TODO:: Outlet Port Power Port -->
+		<ref bean="dataPortTicketSaveBehavior"/> <!-- Data Port -->
+	</util:list>
+	
+	<!-- Rack PDU	Non-Rackable	Fixed	 =	Rack PDU	n/a	 	Non-Rackable -->
+	<util:list id="RPDUNonRackable">
+		<ref bean="commonTicketSaveBehavior"/>
+		<ref bean="nonRackablePlacementTicketSaveBehavior"/> <!-- placement information -->
+		<!-- <ref bean="inputCordTicketSaveBehavior"/> --> <!-- TODO:: Input Cord Power Port -->
+		<!-- <ref bean="outletPortTicketSaveBehavior"/> --> <!-- TODO:: Outlet Port Power Port -->
+		<ref bean="dataPortTicketSaveBehavior"/> <!-- Data Port -->
+	</util:list>
+	
+	<!-- Rack PDU	ZeroU	Fixed	 =	Rack PDU	n/a	 	ZeroU -->
+	<util:list id="RPDUZeroU">
+		<ref bean="commonTicketSaveBehavior"/>
+		<ref bean="zeroUPlacementTicketSaveBehavior"/> <!-- placement information -->
+		<!-- <ref bean="inputCordTicketSaveBehavior"/> --> <!-- TODO:: Input Cord Power Port -->
+		<!-- <ref bean="outletPortTicketSaveBehavior"/> --> <!-- TODO:: Outlet Port Power Port -->
+		<ref bean="dataPortTicketSaveBehavior"/> <!-- Data Port -->
+	</util:list>
+	
+	<!-- Cabinet	Free-Standing	4-Post Enclosure	 	Cabinet	n/a	 	Cabinet -->
+	<util:list id="CabinetFS">
+		<ref bean="commonTicketSaveBehavior"/>
+		<ref bean="fsPlacementTicketSaveBehavior"/> <!-- placement information -->
+	</util:list>
+	
+	<!-- Cabinet	Free-Standing	4-Post Enclosure	 =	Cabinet	Container Cabinet -->
+	<util:list id="CabinetContainerFS">
+		<ref bean="commonTicketSaveBehavior"/>
+		<ref bean="fsPlacementTicketSaveBehavior"/> <!-- placement information -->
+	</util:list>
+	
+	
+	
+	<bean id="ticketSaveBehaviorFactory" class="com.raritan.tdz.ticket.home.TicketSaveBehaviorFactoryImpl" autowire-candidate="true" autowire="byName">
+		<constructor-arg>
+			<map>
+				<entry key="100" value-ref="VMDevice"/>
+				<entry key="101" value-ref="DevStdRackable"/>
+				<entry key="102" value-ref="DevStdNonRackable"/>
+				<entry key="103" value-ref="DevStdFS"/>
+				<entry key="104" value-ref="DevChassisRackable"/>
+				<entry key="105" value-ref="DevBladeServer"/>
+				<entry key="106" value-ref="DevStdZeroU"/>
+				<entry key="201" value-ref="NWNetStackRackable"/>
+				<entry key="202" value-ref="NWNetStackNonRackable"/>
+				<entry key="203" value-ref="NWNetStackFS"/>
+				<entry key="204" value-ref="NWChassisRackable"/>
+				<entry key="205" value-ref="NWBlade"/>
+				<entry key="206" value-ref="NWNetStackZeroU"/>
+				<entry key="501" value-ref="RPDURackable"/>
+				<entry key="502" value-ref="RPDUNonRackable"/>
+				<entry key="506" value-ref="RPDUZeroU"/>
+				<entry key="603" value-ref="CabinetFS"/>
+				<entry key="613" value-ref="CabinetContainerFS"/>
+			</map>
+		</constructor-arg>
+	</bean>
+	
+	<!-- ====================================== -->
+	<!-- Reset behaviors when the item is deleted -->
+	<!-- ====================================== -->
+	
+	<bean id="ticketsResetBehavior" class="com.raritan.tdz.ticket.home.TicketsResetBehavior" autowire-candidate="true" autowire="byName"></bean>
+	
+	<bean id="ticketFieldsResetBehavior" class="com.raritan.tdz.ticket.home.TicketFieldsResetBehavior" autowire-candidate="true" autowire="byName"/>
+	
+	<bean id="ticketDataPortsResetBehavior" class="com.raritan.tdz.ticket.home.TicketDataPortsResetBehavior" autowire-candidate="true" autowire="byName"/>
+	
+	<bean id="ticketPowerSupplyResetBehavior" class="com.raritan.tdz.ticket.home.TicketPowerSupplyResetBehavior" autowire-candidate="true" autowire="byName"/>
+	
+	<bean id="ticketRpduInletPortsResetBehavior" class="com.raritan.tdz.ticket.home.TicketRpduInletPortsResetBehavior" autowire-candidate="true" autowire="byName"/>
+	
+	<bean id="ticketRpduOutletPortsResetBehavior" class="com.raritan.tdz.ticket.home.TicketRpduOutletPortsResetBehavior" autowire-candidate="true" autowire="byName"/>
+	
+	<bean id="ticketResetBehaviors" class="com.raritan.tdz.ticket.home.TicketMultipleResetBehavior" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="ticketDeleteBehaviors">
+			<list>
+				<ref bean="ticketsResetBehavior"/>
+				<ref bean="ticketFieldsResetBehavior"/>
+				<ref bean="ticketDataPortsResetBehavior"/>
+				<ref bean="ticketPowerSupplyResetBehavior"/>
+				<ref bean="ticketRpduInletPortsResetBehavior"/>
+				<ref bean="ticketRpduOutletPortsResetBehavior"/>
+			</list>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="ticketsCompletedResetBehavior" class="com.raritan.tdz.ticket.home.TicketsCompletedResetBehavior" autowire-candidate="true" autowire="byName"/>
+	
+	<bean id="ticketCompletedFieldsResetBehavior" class="com.raritan.tdz.ticket.home.TicketCompletedFieldsResetBehavior" autowire-candidate="true" autowire="byName"/>
+	
+	<bean id="ticketCompletedResetBehaviors" class="com.raritan.tdz.ticket.home.TicketMultipleResetBehavior" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="ticketDeleteBehaviors">
+			<list>
+				<ref bean="ticketsCompletedResetBehavior"/>
+				<ref bean="ticketCompletedFieldsResetBehavior"/>
+			</list>
+		</constructor-arg>
+	</bean>
+	
+
+</beans>

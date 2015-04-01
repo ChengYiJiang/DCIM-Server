@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+	targetNamespace="http://dctrack.raritan.com/xsd" xmlns:dcTrack="http://dctrack.raritan.com/xsd" elementFormDefault="qualified">
+
+	<element name="dcTrack">
+		<complexType>
+			<choice>
+				<sequence>
+					<element name="uiViews" type="dcTrack:uiViews" maxOccurs="unbounded" minOccurs="0"></element>
+				</sequence>
+			</choice>
+		</complexType>
+	</element>
+	
+	<complexType name="uiViews">
+		<sequence>
+			<element name="uiView" type="dcTrack:uiView" maxOccurs="unbounded" minOccurs="0"></element>
+		</sequence>
+	</complexType>
+	
+	<complexType name="uiView">
+    	<sequence>
+    		<element name="uiViewPanel" type="dcTrack:uiViewPanel" maxOccurs="unbounded" minOccurs="1"></element>
+    	</sequence>
+    	<attribute name="uiId" type="string"></attribute>
+    	<attribute name="label" type="string"></attribute>
+    	<attribute name="remoteRef" type="string"></attribute>
+    	<attribute name="editable" type="boolean"></attribute>
+    </complexType>
+    
+    <complexType name="uiViewPanel">
+    	<sequence>
+    		<element name="uiViewComponents" type="dcTrack:uiComponents"></element>
+    	</sequence>
+    	<attribute name="editable" type="boolean"></attribute>
+    	<attribute name="uiLabel" type="string"></attribute>
+    	<attribute name="uiId" type="string"></attribute>
+    </complexType>
+
+
+    <complexType name="uiComponents">
+    	<sequence>
+    		<element name="uiViewComponent" type="dcTrack:uiComponent" maxOccurs="unbounded" minOccurs="1"></element>
+    	</sequence>
+    </complexType>
+    
+    <complexType name="altUiValueIdFieldMap">
+    	<sequence>
+    		<element name="uiValueIdField"
+    					type="dcTrack:uiValueIdField" maxOccurs="1" minOccurs="0"/>
+    	</sequence>
+    	<attribute name="id" type="ID" use="required"/>
+    </complexType>
+    
+    <complexType name="uiComponent">
+    	<sequence>
+    		<choice>
+    			<sequence>
+    				<element name="uiLookupField"
+    					type="dcTrack:uiLookupFields" maxOccurs="1" minOccurs="0">
+    				</element>
+    				<element name="uiValueIdField"
+    					type="dcTrack:uiValueIdField" maxOccurs="1" minOccurs="0">
+    				</element>
+    			</sequence>
+    			<element name="altUiValueIdFieldMap"
+    				type="dcTrack:altUiValueIdFieldMap" maxOccurs="unbounded" minOccurs="0">
+    			</element>
+    		</choice>
+    	</sequence>
+    	<attribute name="uiId" type="string"></attribute>
+    	<attribute name="uiType" type="string"></attribute>
+    	<attribute name="remoteName" type="string"></attribute>
+    	<attribute name="uiLabel" type="string"></attribute>
+    	<attribute name="editable" type="boolean"></attribute>
+    	<attribute name="lockStatus" type="boolean"></attribute>
+    	<attribute name="required" type="boolean"></attribute>
+    	<attribute name="hide" type="boolean"></attribute>
+    	<attribute name="classMountingFormFactorValue" type="string"></attribute>
+    </complexType>
+
+    <complexType name="uiValueIdField">
+    	<sequence>
+    		<element name="valueId" type="anySimpleType"></element>
+    		<element name="value" type="anySimpleType"></element>
+    		<element name="uiDefaultValue" type="dcTrack:uiDefaultType" minOccurs="0" maxOccurs="unbounded"></element>
+    	</sequence>
+    	<attribute name="remoteRef" type="string"></attribute>
+    </complexType>
+
+    <complexType name="uiLookupFields">
+    	<sequence>
+    		<element name="dataRow" type="dcTrack:dataRow"
+    			maxOccurs="unbounded" minOccurs="1">
+    		</element>
+    	</sequence>
+    	<attribute name="remoteRef" type="string"></attribute>
+    </complexType>
+
+	<complexType name="dataRow">
+		<sequence>
+			<element name="column" type="dcTrack:dataColumn"
+    			maxOccurs="1" minOccurs="1">
+    		</element>
+		</sequence>
+	</complexType>
+	
+	<complexType name="dataColumn">
+		<sequence>
+			<element name="valueIdField" type="dcTrack:uiValueIdField" maxOccurs="1" minOccurs="1"></element>
+		</sequence>
+	</complexType>
+ 
+
+	<complexType name="uiDefaultType">
+		<sequence>
+			<element name="valueId" type="string"></element>
+			<element name="value" type="string"></element>
+		</sequence>
+		<attribute name="classMountingFormFactorValue" type="string"></attribute>
+	</complexType>
+</schema>

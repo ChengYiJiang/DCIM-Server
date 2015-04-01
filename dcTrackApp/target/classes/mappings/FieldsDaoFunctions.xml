@@ -1,0 +1,36 @@
+﻿<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE hibernate-mapping
+   PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+   
+<hibernate-mapping>
+
+  <query name="Fields.findFieldsById">
+  	<![CDATA[select f from Fields f where f.fieldId = ?]]>
+  </query>
+  
+  <query name="Fields.findFieldsByViewId">
+  	<![CDATA[select f from Fields f where f.uiViewId = ?]]>
+  </query>
+  
+  <query name="Fields.findFieldIdsByViewId">
+  	<![CDATA[select f.fieldId from Fields f where f.uiViewId = ?]]>
+  </query>
+  
+   <query name="Fields.findFieldDetailsByFieldId">
+  	<![CDATA[select fd from FieldDetails fd left join fetch fd.field f where f.fieldId = ?]]>
+  </query>
+  
+  <query name="Fields.findFieldDetailsByFieldIdAndClass">
+  	<![CDATA[select fd from FieldDetails fd left join fetch fd.field f left join fetch fd.classLks c where f.fieldId = ? and c.lkpValueCode = ? ]]>
+  </query>
+  
+   <query name="Fields.findUiFieldName">
+  	<![CDATA[select f.defaultName from Fields f where f.uiComponentId = ?]]>
+  </query>
+  
+  <query name="Fields.findFieldDetailsByClass">
+  	<![CDATA[select fd from FieldDetails fd left join fetch fd.field f where fd.classLks.lkpValueCode = ?]]>
+  </query>
+                  
+</hibernate-mapping>

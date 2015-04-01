@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+	<!-- ==================================== -->
+	<!-- Item Install Request Issued -->
+	<!-- ==================================== -->
+	
+	<!-- Item Install Request Issued Validator -->
+	
+	<import resource="request_validators.xml"/>
+	<import resource="request_executors.xml"/>
+	
+	<!-- Channel for Install issued request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).NEW_ITEM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.validateChannel"/> -->
+    <int:channel id="701.501.validateChannel"/>
+
+    <!-- Subscriber - service activator for Install request approved validator -->
+    <int:service-activator id="itemInstallReqIssueValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).NEW_ITEM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.validateChannel" 
+    		ref="itemInstallReqIssuedValidator" method="validate"/>
+
+	<!-- item Install request issued validator bean -->
+    <bean id="itemInstallReqIssuedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemInstallWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item Install Request Issued Executor -->
+	
+	<!-- Channel for Install issue request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).NEW_ITEM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.executeChannel"/> -->
+	<int:channel id="701.501.executeChannel"/>
+
+    <!-- Subscriber - service activator for Install request issued executor -->
+    <int:service-activator id="itemInstallReqIssueExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).NEW_ITEM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.executeChannel" 
+    		ref="itemInstallRequestStageIssued" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item Install request issued executor bean -->
+	<bean id="itemInstallRequestStageIssued" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }"/>
+		<property name="requestStageHelpers" ref="itemInstallRequestIssuedExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Item Install Request Updated -->
+	<!-- ==================================== -->
+	
+	<!-- Item Install Request Updated Validator -->
+	
+	<!-- Channel for Install updated request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).NEW_ITEM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.validateChannel"/> -->
+    <int:channel id="701.503.validateChannel"/>
+
+    <!-- Subscriber - service activator for Install request updated validator -->
+    <int:service-activator id="itemInstallReqUpdateValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).NEW_ITEM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.validateChannel" 
+    		ref="itemInstallReqUpdatedValidator" method="validate"/>
+
+	<!-- item Install request updated validator bean -->
+    <bean id="itemInstallReqUpdatedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemInstallWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item Install Request Updated Executor -->
+	
+	<!-- Channel for Install update request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).NEW_ITEM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.executeChannel"/> -->
+	<int:channel id="701.503.executeChannel"/>
+
+    <!-- Subscriber - service activator for Install request updated executor -->
+    <int:service-activator id="itemInstallReqUpdateExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).NEW_ITEM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.executeChannel" 
+    		ref="itemInstallRequestStageUpdated" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item Install request updated executor bean -->
+	<bean id="itemInstallRequestStageUpdated" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }"/>
+		<property name="requestStageHelpers" ref="itemInstallRequestUpdatedExecutors"/>
+	</bean>
+
+
+	
+	<!-- ==================================== -->
+	<!-- Item Install Request Approved -->
+	<!-- ==================================== -->
+	
+	<!-- Item Install Request Approved Validator -->
+	
+	<!-- Channel for Install approve request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).NEW_ITEM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.validateChannel"/> -->
+    <int:channel id="701.504.validateChannel"/>
+
+    <!-- Subscriber - service activator for Install request approved validator -->
+    <int:service-activator id="itemInstallReqApproveValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).NEW_ITEM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.validateChannel" 
+    		ref="itemInstallReqApprovedValidator" method="validate"/>
+
+	<!-- item Install request approved validator bean -->
+    <bean id="itemInstallReqApprovedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemInstallWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item Install Request Approved Executor -->
+	
+	<!-- Channel for Install approve request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).NEW_ITEM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.executeChannel"/> -->
+	<int:channel id="701.504.executeChannel"/>
+
+    <!-- Subscriber - service activator for Install request approved executor -->
+    <int:service-activator id="itemInstallReqApproveExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).NEW_ITEM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.executeChannel" 
+    		ref="itemInstallReqApprovedExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item Install request approved executor bean -->
+    <bean id="itemInstallReqApprovedExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }"/>
+		<property name="requestStageHelpers" ref="itemInstallRequestApprovedExecutors"/>
+	</bean>
+    
+
+	<!-- ==================================== -->
+	<!-- Item Install Work Order Issue -->
+	<!-- ==================================== -->
+	
+	<!-- Item Install Work order issue Validator -->
+	
+	<!-- Channel for Install Work Order Issue validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).NEW_ITEM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.validateChannel"/> -->
+	<int:channel id="701.505.validateChannel"/>
+
+    <!-- Subscriber - service activator for Install request approved validator -->
+    <int:service-activator id="itemInstallWorkorderIssueValidateActivator" requires-reply="false" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).NEW_ITEM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.validateChannel" 
+    		ref="itemInstallWorkorderIssueValidator" method="validate"/>
+
+	<!-- item Install request approved validator bean -->
+    <bean id="itemInstallWorkorderIssueValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemInstallWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item Install Request Approved Executor -->
+	
+	<!-- Channel for Install approve request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).NEW_ITEM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.executeChannel"/> -->
+    <int:channel id="701.505.executeChannel"/>
+
+    <!-- Subscriber - service activator for Install request approved executor -->
+    <int:service-activator id="itemInstallWorkorderIssueExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).NEW_ITEM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.executeChannel" 
+    		ref="itemInstallWorkorderIssueExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item Install request approved executor bean -->
+    <bean id="itemInstallWorkorderIssueExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }"/>
+		<property name="requestStageHelpers" ref="itemInstallWorkOrderIssueExecutors"/>
+	</bean>
+    
+
+	<!-- ==================================== -->
+	<!-- Item Install Work Order Complete -->
+	<!-- ==================================== -->
+	
+	<!-- Item Install Work order complete Validator -->
+	
+	<!-- Channel for Install Work Order Complete validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).NEW_ITEM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.validateChannel"/> -->
+    <int:channel id="701.506.validateChannel"/>
+
+    <!-- Subscriber - service activator for Install work order complete validator -->
+    <int:service-activator id="itemInstallWorkorderCompleteValidateActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).NEW_ITEM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.validateChannel" 
+    		ref="itemInstallWorkorderCompleteValidator" method="validate"/>
+
+	<!-- item Install request complete validator bean -->
+    <bean id="itemInstallWorkorderCompleteValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemInstallWorkOrderCompleteValidators"/>
+    </bean>
+    
+	
+	<!-- Item Install Workorder complete Executor -->
+	
+	<!-- Channel for Install work order complete executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).NEW_ITEM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.executeChannel"/> -->
+    <int:channel id="701.506.executeChannel"/>
+
+    <!-- Subscriber - service activator for Install request approved executor -->
+    <int:service-activator id="itemInstallWorkorderCompleteExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).NEW_ITEM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.executeChannel" 
+    		ref="itemInstallWorkorderCompleteExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item Install request approved executor bean -->
+    <bean id="itemInstallWorkorderCompleteExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }"/>
+		<property name="requestStageHelpers" ref="itemInstallWorkOrderCompleteExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Item Install Request Complete -->
+	<!-- ==================================== -->
+	
+	<!-- Item Install Request complete Validator -->
+	
+	<!-- Channel for Install Request Complete validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).NEW_ITEM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.validateChannel"/> -->
+    <int:channel id="701.507.validateChannel"/>
+
+    <!-- Subscriber - service activator for Install request complete validator -->
+    <int:service-activator id="itemInstallRequestCompleteValidateActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).NEW_ITEM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.validateChannel" 
+    		ref="itemInstallRequestCompleteValidator" method="validate"/>
+
+	<!-- item Install request complete validator bean -->
+    <bean id="itemInstallRequestCompleteValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemInstallWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item Install Request complete Executor -->
+	
+	<!-- Channel for Install request complete executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).NEW_ITEM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.executeChannel"/> -->
+    <int:channel id="701.507.executeChannel"/>
+
+    <!-- Subscriber - service activator for Install request approved executor -->
+    <!-- output-channel="nullChannel" -->
+    <int:service-activator id="itemInstallRequestCompleteExecuteActivator" requires-reply="false" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).NEW_ITEM }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.executeChannel" 
+    		ref="itemInstallRequestCompleteExecutor" method="process" output-channel="nullChannel"/>
+    		
+
+	<!-- item Install request approved executor bean -->
+    <bean id="itemInstallRequestCompleteExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }"/>
+		<property name="requestStageHelpers" ref="itemInstallRequestCompleteExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Item Install Routers               				-->
+	<!-- ==================================== -->
+
+	<!-- item Install validate router -->
+	<!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).NEW_ITEM }ValidateRouter"/> -->
+	<int:channel id="701.ValidateRouter"/>
+	<int:router input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).NEW_ITEM }.ValidateRouter" ref="requestStageRouter" method="validatorRouter"/>
+	
+	<!-- item Install execute router -->
+	<!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).NEW_ITEM }ExecuteRouter"/> -->
+	<int:channel id="701.ExecuteRouter"/>
+	<int:router input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).NEW_ITEM }.ExecuteRouter" ref="requestStageRouter" method="executorRouter"/>
+    
+
+
+</beans>

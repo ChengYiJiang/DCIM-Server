@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+	<!-- ==================================== -->
+	<!-- Item Onsite Request Issued -->
+	<!-- ==================================== -->
+	
+	<!-- Item Onsite Request Issued Validator -->
+	
+	<import resource="request_validators.xml"/>
+	<import resource="request_executors.xml"/>
+	
+	<!-- Channel for Onsite issued request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_ON_SITE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.validateChannel"/> -->
+    <int:channel id="712.501.validateChannel"/>
+
+    <!-- Subscriber - service activator for Onsite request approved validator -->
+    <int:service-activator id="itemOnsiteReqIssueValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_ON_SITE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.validateChannel" 
+    		ref="itemOnsiteReqIssuedValidator" method="validate"/>
+
+	<!-- item Onsite request issued validator bean -->
+    <bean id="itemOnsiteReqIssuedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemOnsiteWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item Onsite Request Issued Executor -->
+	
+	<!-- Channel for Onsite issue request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_ON_SITE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.executeChannel"/> -->
+	<int:channel id="712.501.executeChannel"/>
+
+    <!-- Subscriber - service activator for Onsite request issued executor -->
+    <int:service-activator id="itemOnsiteReqIssueExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_ON_SITE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.executeChannel" 
+    		ref="itemOnsiteRequestStageIssued" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item Onsite request issued executor bean -->
+	<bean id="itemOnsiteRequestStageIssued" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }"/>
+		<property name="requestStageHelpers" ref="itemOnsiteRequestIssuedExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Item Onsite Request Updated -->
+	<!-- ==================================== -->
+	
+	<!-- Item Onsite Request Updated Validator -->
+	
+	<!-- Channel for Onsite updated request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_ON_SITE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.validateChannel"/> -->
+    <int:channel id="712.503.validateChannel"/>
+
+    <!-- Subscriber - service activator for Onsite request updated validator -->
+    <int:service-activator id="itemOnsiteReqUpdateValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_ON_SITE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.validateChannel" 
+    		ref="itemOnsiteReqUpdatedValidator" method="validate"/>
+
+	<!-- item Onsite request updated validator bean -->
+    <bean id="itemOnsiteReqUpdatedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemOnsiteWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item Onsite Request Updated Executor -->
+	
+	<!-- Channel for Onsite update request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_ON_SITE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.executeChannel"/> -->
+	<int:channel id="712.503.executeChannel"/>
+
+    <!-- Subscriber - service activator for Onsite request updated executor -->
+    <int:service-activator id="itemOnsiteReqUpdateExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_ON_SITE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.executeChannel" 
+    		ref="itemOnsiteRequestStageUpdated" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item Onsite request updated executor bean -->
+	<bean id="itemOnsiteRequestStageUpdated" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }"/>
+		<property name="requestStageHelpers" ref="itemOnsiteRequestUpdatedExecutors"/>
+	</bean>
+
+
+	
+	<!-- ==================================== -->
+	<!-- Item Onsite Request Approved -->
+	<!-- ==================================== -->
+	
+	<!-- Item Onsite Request Approved Validator -->
+	
+	<!-- Channel for Onsite approve request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_ON_SITE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.validateChannel"/> -->
+    <int:channel id="712.504.validateChannel"/>
+
+    <!-- Subscriber - service activator for Onsite request approved validator -->
+    <int:service-activator id="itemOnsiteReqApproveValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_ON_SITE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.validateChannel" 
+    		ref="itemOnsiteReqApprovedValidator" method="validate"/>
+
+	<!-- item Onsite request approved validator bean -->
+    <bean id="itemOnsiteReqApprovedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemOnsiteWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item Onsite Request Approved Executor -->
+	
+	<!-- Channel for Onsite approve request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_ON_SITE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.executeChannel"/> -->
+	<int:channel id="712.504.executeChannel"/>
+
+    <!-- Subscriber - service activator for Onsite request approved executor -->
+    <int:service-activator id="itemOnsiteReqApproveExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_ON_SITE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.executeChannel" 
+    		ref="itemOnsiteReqApprovedExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item Onsite request approved executor bean -->
+    <bean id="itemOnsiteReqApprovedExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }"/>
+		<property name="requestStageHelpers" ref="itemOnsiteRequestApprovedExecutors"/>
+	</bean>
+    
+
+	<!-- ==================================== -->
+	<!-- Item Onsite Work Order Issue -->
+	<!-- ==================================== -->
+	
+	<!-- Item Onsite Work order issue Validator -->
+	
+	<!-- Channel for Onsite Work Order Issue validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_ON_SITE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.validateChannel"/> -->
+	<int:channel id="712.505.validateChannel"/>
+
+    <!-- Subscriber - service activator for Onsite request approved validator -->
+    <int:service-activator id="itemOnsiteWorkorderIssueValidateActivator" requires-reply="false" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_ON_SITE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.validateChannel" 
+    		ref="itemOnsiteWorkorderIssueValidator" method="validate"/>
+
+	<!-- item Onsite request approved validator bean -->
+    <bean id="itemOnsiteWorkorderIssueValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemOnsiteWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item Onsite Request Approved Executor -->
+	
+	<!-- Channel for Onsite approve request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_ON_SITE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.executeChannel"/> -->
+    <int:channel id="712.505.executeChannel"/>
+
+    <!-- Subscriber - service activator for Onsite request approved executor -->
+    <int:service-activator id="itemOnsiteWorkorderIssueExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_ON_SITE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.executeChannel" 
+    		ref="itemOnsiteWorkorderIssueExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item Onsite request approved executor bean -->
+    <bean id="itemOnsiteWorkorderIssueExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }"/>
+		<property name="requestStageHelpers" ref="itemOnsiteWorkOrderIssueExecutors"/>
+	</bean>
+    
+
+	<!-- ==================================== -->
+	<!-- Item Onsite Work Order Complete -->
+	<!-- ==================================== -->
+	
+	<!-- Item Onsite Work order complete Validator -->
+	
+	<!-- Channel for Onsite Work Order Complete validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_ON_SITE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.validateChannel"/> -->
+    <int:channel id="712.506.validateChannel"/>
+
+    <!-- Subscriber - service activator for Onsite work order complete validator -->
+    <int:service-activator id="itemOnsiteWorkorderCompleteValidateActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_ON_SITE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.validateChannel" 
+    		ref="itemOnsiteWorkorderCompleteValidator" method="validate"/>
+
+	<!-- item Onsite request complete validator bean -->
+    <bean id="itemOnsiteWorkorderCompleteValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemOnsiteWorkOrderCompleteValidators"/>
+    </bean>
+    
+	
+	<!-- Item Onsite Workorder complete Executor -->
+	
+	<!-- Channel for Onsite work order complete executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_ON_SITE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.executeChannel"/> -->
+    <int:channel id="712.506.executeChannel"/>
+
+    <!-- Subscriber - service activator for Onsite request approved executor -->
+    <int:service-activator id="itemOnsiteWorkorderCompleteExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_ON_SITE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.executeChannel" 
+    		ref="itemOnsiteWorkorderCompleteExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item Onsite request approved executor bean -->
+    <bean id="itemOnsiteWorkorderCompleteExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }"/>
+		<property name="requestStageHelpers" ref="itemOnsiteWorkOrderCompleteExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Item Onsite Request Complete -->
+	<!-- ==================================== -->
+	
+	<!-- Item Onsite Request complete Validator -->
+	
+	<!-- Channel for Onsite Request Complete validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_ON_SITE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.validateChannel"/> -->
+    <int:channel id="712.507.validateChannel"/>
+
+    <!-- Subscriber - service activator for Onsite request complete validator -->
+    <int:service-activator id="itemOnsiteRequestCompleteValidateActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_ON_SITE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.validateChannel" 
+    		ref="itemOnsiteRequestCompleteValidator" method="validate"/>
+
+	<!-- item Onsite request complete validator bean -->
+    <bean id="itemOnsiteRequestCompleteValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemOnsiteWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item Onsite Request complete Executor -->
+	
+	<!-- Channel for Onsite request complete executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_ON_SITE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.executeChannel"/> -->
+    <int:channel id="712.507.executeChannel"/>
+
+    <!-- Subscriber - service activator for Onsite request approved executor -->
+    <!-- output-channel="nullChannel" -->
+    <int:service-activator id="itemOnsiteRequestCompleteExecuteActivator" requires-reply="false" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_ON_SITE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.executeChannel" 
+    		ref="itemOnsiteRequestCompleteExecutor" method="process" output-channel="nullChannel"/>
+    		
+
+	<!-- item Onsite request approved executor bean -->
+    <bean id="itemOnsiteRequestCompleteExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }"/>
+		<property name="requestStageHelpers" ref="itemOnsiteRequestCompleteExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Item Onsite Routers               			-->
+	<!-- ==================================== -->
+
+	<!-- item Onsite validate router -->
+	<!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_ON_SITE }ValidateRouter"/> -->
+	<int:channel id="712.ValidateRouter"/>
+	<int:router input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_ON_SITE }.ValidateRouter" ref="requestStageRouter" method="validatorRouter"/>
+	
+	<!-- item Onsite execute router -->
+	<!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_ON_SITE }ExecuteRouter"/> -->
+	<int:channel id="712.ExecuteRouter"/>
+	<int:router input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_ON_SITE }.ExecuteRouter" ref="requestStageRouter" method="executorRouter"/>
+    
+
+
+</beans>

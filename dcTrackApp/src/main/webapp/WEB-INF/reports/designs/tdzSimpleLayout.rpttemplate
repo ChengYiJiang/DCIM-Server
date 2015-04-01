@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 4.2.2.v201301221637 Build &lt;4.2.2.v20130206-1509></property>
+    <simple-property-list name="includeResource">
+        <value>../locale/report_en_US</value>
+    </simple-property-list>
+    <property name="units">in</property>
+    <property name="theme">three_dot_0.defaultTheme</property>
+    <text-property name="displayName">3dot0 Look and Feel</text-property>
+    <property name="eventHandlerClass">com.raritan.tdz.reports.eventhandler.ReportEH</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <list-property name="libraries">
+        <structure>
+            <property name="fileName">three_dot_0.rptlibrary</property>
+            <property name="namespace">three_dot_0</property>
+        </structure>
+    </list-property>
+    <parameters>
+        <scalar-parameter name="SiteCode" id="216" extends="three_dot_0.SiteCode"/>
+        <scalar-parameter name="Orientation" id="217" extends="three_dot_0.Orientation"/>
+    </parameters>
+    <page-setup>
+        <simple-master-page name="dcTrackMaster" id="215" extends="three_dot_0.dcTrackMaster">
+            <overridden-values>
+                <ref-entry baseId="136" name="NewGrid" id="136"/>
+                <ref-entry baseId="137" id="137"/>
+                <ref-entry baseId="138" id="138"/>
+                <ref-entry baseId="139" id="139"/>
+                <ref-entry baseId="140" id="140"/>
+                <ref-entry baseId="141" id="141"/>
+                <ref-entry baseId="148" name="NewLabel" id="148"/>
+                <ref-entry baseId="142" id="142"/>
+                <ref-entry baseId="146" name="NewImage" id="146"/>
+                <ref-entry baseId="143" id="143"/>
+                <ref-entry baseId="147" name="NewImage1" id="147"/>
+                <ref-entry baseId="149" name="NewGrid1" id="149"/>
+                <ref-entry baseId="150" id="150"/>
+                <ref-entry baseId="151" id="151"/>
+                <ref-entry baseId="152" id="152"/>
+                <ref-entry baseId="153" id="153"/>
+                <ref-entry baseId="154" id="154"/>
+                <ref-entry baseId="175" name="NewGrid3" id="175"/>
+                <ref-entry baseId="176" id="176"/>
+                <ref-entry baseId="177" id="177"/>
+                <ref-entry baseId="178" id="178"/>
+                <ref-entry baseId="181" name="NewText2" id="181"/>
+                <ref-entry baseId="179" id="179"/>
+                <ref-entry baseId="180" id="180"/>
+                <ref-entry baseId="183" name="NewText21" id="183"/>
+                <ref-entry baseId="155" id="155"/>
+                <ref-entry baseId="157" name="NewGrid2" id="157"/>
+                <ref-entry baseId="158" id="158"/>
+                <ref-entry baseId="159" id="159"/>
+                <ref-entry baseId="160" id="160"/>
+                <ref-entry baseId="161" id="161"/>
+                <ref-entry baseId="162" id="162"/>
+                <ref-entry baseId="163" name="NewAutoText" id="163"/>
+                <ref-entry baseId="164" id="164"/>
+                <ref-entry baseId="165" name="NewText" id="165"/>
+                <ref-entry baseId="166" id="166"/>
+                <ref-entry baseId="167" name="NewAutoText1" id="167"/>
+                <ref-entry baseId="156" id="156"/>
+                <ref-entry baseId="168" name="NewText1" id="168"/>
+            </overridden-values>
+        </simple-master-page>
+    </page-setup>
+</report>

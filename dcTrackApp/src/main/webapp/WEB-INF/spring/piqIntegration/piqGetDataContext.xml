@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/context
+    					http://www.springframework.org/schema/context/spring-context-3.2.xsd
+						http://www.springframework.org/schema/integration
+						http://www.springframework.org/schema/integration/spring-integration.xsd
+						http://www.springframework.org/schema/tx 
+           				http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
+	
+	<!--  this is required for annotation (e.g. @Autowired) configuration to work in the context -->
+	<context:annotation-config/>
+	
+	<context:property-placeholder ignore-unresolvable="true" />
+	
+	<bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+      <property name="scopes">
+          <map>
+              <entry key="thread">
+                  <bean class="org.springframework.context.support.SimpleThreadScope"/>
+              </entry>
+              <entry key="session">
+                  <bean class="org.springframework.context.support.SimpleThreadScope"/>
+              </entry>
+          </map>
+      </property>
+  	</bean>
+  	
+	<!-- =========================================== -->
+  	<!-- resources required for communicating with   -->
+  	<!-- PIQ via rest API and updating dcTrack       -->
+	<!-- =========================================== -->
+	
+	<import resource="../messageSources.xml" />
+	<import resource="../daos.xml"/>
+	<import resource="piqSyncClient.xml"/>
+	
+	
+	<!-- =========================================== -->
+	<!-- channel to get readings and events from piq -->
+	<!-- =========================================== -->
+	
+	<int:channel id="syncPduReadingCmdChannel"/>
+	<int:channel id="syncAllPduReadingsCmdChannel"/>
+
+
+	<!-- =========================================== -->
+	<!-- service activator for syncPduReadings       -->
+	<!-- =========================================== -->
+	
+	<int:service-activator id="piqGetDataActivator"
+					input-channel="syncPduReadingCmdChannel" 
+					ref="piqSyncPDUClient"
+					method="syncPduReadings" auto-startup="false"/>
+	
+	<int:service-activator id="piqSyncAllPduReadingsActivator"
+					input-channel="syncAllPduReadingsCmdChannel" 
+					ref="piqSyncPDUClient"
+					method="syncAllPduReadings" auto-startup="false"/>
+					
+	<!-- =========================================== -->
+	<!-- channel to get readings and events from piq -->
+	<!-- =========================================== -->
+	
+	<int:channel id="piqGetDataChannel"/>
+					
+	<!-- =========================================== -->
+	<!-- header-value command router                 -->
+	<!-- =========================================== -->
+						
+	<int:header-value-router input-channel="piqGetDataChannel" header-name="command">
+		<int:mapping value="syncPduReadings" channel="syncPduReadingCmdChannel" />
+		<int:mapping value="syncAllPduReadings" channel="syncAllPduReadingsCmdChannel"/>
+	</int:header-value-router>	
+
+	<!-- =========================================== -->
+	<!-- transaction manager                         -->
+	<!-- =========================================== -->
+	
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	
+</beans>
+

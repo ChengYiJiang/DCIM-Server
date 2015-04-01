@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+	<import resource="powerCalcValidators.xml" />
+	
+	<import resource="validators.xml" />
+
+	<!-- Diagnostic LN event Subscriber -->
+	<util:list id="diagnoseSubscribeActions" value-type="java.lang.String">
+		<value>#{ T(com.raritan.tdz.diagnostics.DiagnosticsLookup$Action).DIAGNOSE_POWER_PORTS }</value>
+		<value>#{ T(com.raritan.tdz.diagnostics.DiagnosticsLookup$Action).DIAGNOSE_ITEM_POWER_PORTS }</value>
+		<value>#{ T(com.raritan.tdz.diagnostics.DiagnosticsLookup$Action).DIAGNOSE_POWER_CONNECTIONS }</value>
+		<value>#{ T(com.raritan.tdz.diagnostics.DiagnosticsLookup$Action).DIAGNOSE_POWER_PORT_LOAD }</value>
+	</util:list>
+	
+	
+	<bean id="diagnosticsSubscriber"
+		class="com.raritan.tdz.vbjavabridge.subscribers.DiagnosticSubscriber" init-method="subscribe">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="listenNotifyHome" />
+		</constructor-arg>
+		<constructor-arg index="2">
+			<ref bean="diagnosticsHome" />
+		</constructor-arg>
+		<constructor-arg index="3">
+			<ref bean="diagnoseSubscribeActions"/>
+		</constructor-arg>
+	</bean>
+
+
+	<!-- ===================== -->
+	<!-- Diagnostics Home -->
+	<!-- ===================== -->
+	<bean id="diagnosticsHome" class="com.raritan.tdz.diagnostics.DiagnosticsHomeImpl"  autowire-candidate="true" autowire="byName">
+		<constructor-arg name="diagnosers">
+			<map>
+			
+				<!-- Request to diagnose power ports -->
+				<entry key="#{ T(com.raritan.tdz.diagnostics.DiagnosticsLookup$Action).DIAGNOSE_POWER_PORTS }" value-ref="powerPortDiagnostics" />
+			
+				<!-- Request to diagnose item power ports -->
+				<entry key="#{ T(com.raritan.tdz.diagnostics.DiagnosticsLookup$Action).DIAGNOSE_ITEM_POWER_PORTS }" value-ref="itemPowerPortDiagnose" />
+				
+				<!-- Request to diagnose power connections -->
+				<entry key="#{ T(com.raritan.tdz.diagnostics.DiagnosticsLookup$Action).DIAGNOSE_POWER_CONNECTIONS }" value-ref="powerConnectionDiagnose" />
+
+				<!-- Request to diagnose power port load against the limit -->
+				<entry key="#{ T(com.raritan.tdz.diagnostics.DiagnosticsLookup$Action).DIAGNOSE_POWER_PORT_LOAD }" value-ref="powerPortLoadDiagnose" />
+			
+			</map>
+		</constructor-arg>
+	</bean>
+
+	<!-- ====================== -->
+	<!-- Power Port Diagnostics -->
+	<!-- ====================== --> 
+	<util:list id="diagnosePortSubClass" value-type="java.lang.Long">	
+		<value>#{ T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).PANEL_BREAKER }</value>
+		<value>#{ T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).PDU_INPUT_BREAKER }</value>
+		<value>#{ T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).UPS_OUTPUT_BREAKER }</value>
+	</util:list>
+
+	<bean id="powerPortDiagnostics" class="com.raritan.tdz.port.diagnostics.PowerPortDiagnose"  autowire-candidate="true" autowire="byName">
+		<property name="portSubClass" ref="diagnosePortSubClass"></property>
+	</bean>
+
+	<!-- ========================== -->
+	<!-- Item Power Port Diagnostics -->
+	<!-- ========================== -->
+	<bean id="itemPowerPortDiagnose" class="com.raritan.tdz.port.diagnostics.ItemPowerPortDiagnose" autowire-candidate="true" autowire="byName">
+	</bean>
+	
+	<!-- ============================ -->
+	<!-- Power Connection Diagnostics -->
+	<!-- ============================ -->
+	<!-- inject connections that between source and destination port subclass that are required to be diagnose -->
+	<util:map id="portSubclassConnectionMap" key-type="java.lang.Long">
+	
+		<!-- Connection Diagnostics from branch circuit breaker port -->
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).BRANCH_CIRCUIT_BREAKER }" value-ref="fromBCBList"/>
+		
+		<!-- Connection Diagnostics from panel breaker port -->
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).PANEL_BREAKER }" value-ref="fromPanelBreakerList"/>
+		
+		<!-- Connection Diagnostics from pdu main breaker port -->
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).PDU_INPUT_BREAKER }" value-ref="fromPduBreakerList"/>
+		
+	</util:map>
+	
+	<util:list id="fromBCBList" value-type="java.lang.Long">
+		<value>#{ T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).PANEL_BREAKER }</value>
+	</util:list>
+
+	<util:list id="fromPanelBreakerList" value-type="java.lang.Long">
+		<value>#{ T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).PDU_INPUT_BREAKER }</value>
+	</util:list>
+
+	<util:list id="fromPduBreakerList" value-type="java.lang.Long">
+		<value>#{ T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).UPS_OUTPUT_BREAKER }</value>
+	</util:list>
+	
+	<!-- Power Connection Compatibility Validations -->
+	<util:map id="powerPortConnectionValidator" key-type="java.lang.String">
+	
+		<!-- Connection Diagnostics from branch circuit breaker port -->
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).BRANCH_CIRCUIT_BREAKER }:#{ T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).PANEL_BREAKER }" value-ref="branchCircuitBreakerPowerConnCompatibilityValidator"/>
+		
+		<!-- Connection Diagnostics from panel breaker port -->
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).PANEL_BREAKER }:#{ T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).PDU_INPUT_BREAKER }" value-ref="powerPanelBreakerPowerConnCompatibilityValidator"/>
+		
+		<!-- Connection Diagnostics from pdu main breaker port -->
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).PDU_INPUT_BREAKER }:#{ T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).UPS_OUTPUT_BREAKER }" value-ref="floorPDUBreakerPowerConnCompatibilityValidator"/>
+		
+	</util:map>
+
+	<util:list id="informationErrorCodes" value-type="java.lang.String">
+		<value>powerProc.AmpsRatingExceedsPrev</value>
+	</util:list>
+	
+	
+	<bean id="powerConnectionDiagnose" class="com.raritan.tdz.port.diagnostics.PowerConnectionDiagnose" autowire-candidate="true" autowire="byName">
+		<property name="portSubclassConnection" ref="portSubclassConnectionMap"/>
+		<property name="connectionCompatibilityValidators" ref="powerPortConnectionValidator"/>
+		<property name="informationalErrorCode" ref="informationErrorCodes"/>
+	</bean>
+	
+	<!-- =========================== -->
+	<!-- Port Load / Limit Diagnostics -->
+	<!-- =========================== -->
+	<bean id="powerPortLoadDiagnose" class="com.raritan.tdz.port.diagnostics.PowerPortLoadDiagnose" autowire-candidate="true" autowire="byName">
+		<property name="portSubClass" ref="diagnosePortSubClass"/>
+	</bean>
+	
+</beans>

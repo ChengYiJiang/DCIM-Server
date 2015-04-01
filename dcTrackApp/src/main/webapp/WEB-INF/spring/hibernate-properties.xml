@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+          "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+<session-factory>
+    <property name="connection.provider_class">org.hibernate.service.jdbc.connections.internal.C3P0ConnectionProvider</property>
+	<property name="connection.username">dctrack</property>
+	<property name="connection.password">(ManageMyStuff)!</property>
+	
+	<property name="connection.url">jdbc:postgresql://localhost:5432/raritan?autoReconnect=true</property>
+	<property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>		
+	<property name="connection.driver_class">org.postgresql.Driver</property>
+	<property name="connection.autocommit">true</property>
+	<property name="show_sql">false</property>
+	<!-- <property name="hbm2ddl">true</property> -->
+	<property name="generate_statistics">false</property>
+	<property name="hibernate.c3p0.max_size">30</property>
+	<property name="hibernate.c3p0.min_size">5</property>
+	<property name="hibernate.c3p0.timeout">1800</property>
+	<property name="hibernate.c3p0.idle_test_period">25200</property>
+	<property name="hibernate.c3p0.preferredTestQuery">select 1</property>
+	<property name="hibernate.c3p0.acquire_increment">5</property>
+	<property name="javax.persistence.validation.mode">none</property>
+
+	<property name="hibernate.show_sql">true</property>
+	
+	<!-- Caching -->
+	<!--
+	<property name="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</property>
+	<property name="hibernate.cache.use_second_level_cache">true</property>
+	<property name="hibernate.cache.use_query_cache">true</property>
+	<property name="hibernate.cache.default_cache_concurrency_strategy">nonstrict-read-write</property>
+	-->
+
+	<mapping class="com.raritan.tdz.util.AvailableCabinets"/>
+	<mapping class="com.raritan.tdz.util.AvailablePorts"/>           
+</session-factory>
+</hibernate-configuration>
+

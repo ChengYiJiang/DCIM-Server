@@ -1,0 +1,174 @@
+lku_connector_id|lku_type_name|connector_name|attribute|description
+1|Comm|DB25 Female|Female|
+2|Comm|DB25 Male|Male|
+3|Comm|DB9 Female|Female|
+4|Comm|DB9 Male|Male|
+5|Comm|Fiber FDDI|Male|
+6|Comm|Fiber LC|Male|
+7|Comm|Fiber MTRJ|Male|
+8|Comm|Fiber SC|Male|
+9|Comm|Fiber ST|Male|
+10|Comm|Fiber VF45|Male|
+12|Comm|NetApp112-01838||
+13|Comm|RJ11|6-pin Modular|
+14|Comm|RJ45|8-pin Modular|
+15|Comm|SCSI 60-pin Micro Centronics (IBM)|Male|
+16|Comm|SCSI-1 50-pin Centronics Male|Male|
+20|Comm|SCSI-2 50-pin Micro Male|Male|
+21|Comm|SCSI-3 68-pin Micro Male|Male|
+42|Power|NEMA 5-15P|Plug|
+43|Power|NEMA 5-20P|Plug|
+44|Power|NEMA 5-50P|Plug|
+45|Power|NEMA 6-15P|Plug|
+172|Power|IEC 60309 16A 400V 3P+N+PE||
+173|Power|IEC 60309 16A P+N+PE||
+174|Power|IEC 60309 20A 3P||
+175|Power|IEC 60309 2P+E 6h 16A||
+176|Power|IEC 60309 2P+E 6h 32A||
+177|Power|IEC 60309 2P+E 6h 60A||
+178|Power|IEC 60309 2P+E 6h 63A||
+179|Power|IEC 60309 32A||
+180|Power|IEC 60309 32A 250V P+N+PE||
+181|Power|IEC 60309 32A 3P+N+PE||
+182|Power|IEC 60309 32A 400V 3P+N+PE||
+183|Power|IEC 60309 32A 400V P+N+PE||
+184|Power|IEC 60309 32A P+N+PE||
+185|Power|IEC 60309 3P+E 9h 100A||
+186|Power|IEC 60309 3P+E 9h 60A||
+187|Power|IEC 60309 3P+N+E 6h 16A||
+188|Power|IEC 60309 3P+N+E 6h 32A||
+189|Power|IEC 60309 3P+N+E 6h 60A||
+190|Power|IEC 60309 3P+N+E 6h 63A||
+46|Power|NEMA 6-20P|Plug|
+47|Power|NEMA 6-30P|Plug|
+48|Power|NEMA 6-50P|Plug|
+49|Power|NEMA L14-30P|Plug|
+50|Power|NEMA L5-20P|Plug|
+51|Power|NEMA L5-15P|Plug|
+52|Power|NEMA L5-30P|Plug|
+53|Power|NEMA L6-15P|Plug|
+191|Power|IEC 60309 3P+N+PE 16A||
+192|Power|IEC 60309 3P+N+PE 32A||
+193|Power|IEC 60309 3P+PE 60A||
+194|Power|IEC 60309 60A 250V 3P+PE||
+195|Power|IEC 60309 60A 3P+PE||
+196|Power|IEC 60309 P+N+PE 16A||
+197|Power|IEC60320 C13 Locking||
+198|Power|IEC60320 C19 Locking||
+199|Power|NEMA 15-60P||
+200|Power|NEMA L5-20P PSE||
+201|Power|NEMA L7-30P||
+202|Power|Neutrik NAC3MPA-1||
+203|Power|Neutrik NAC3MP-HC||
+204|Power|NO PLUG||
+205|Power|Russellstoll 9C34U2||
+206|Power|Russellstoll 9C53U2||
+207|Power|Russellstoll 9P34U2||
+54|Power|NEMA L6-20P|Plug|
+55|Power|NEMA L6-30P|Plug|
+56|Power|Russellstoll® 9P54U2|Plug|250VAC 3-Phase, 50A
+57|Power|IEC 309||
+58|Power|NEMA 5-15R|Receptacle|
+208|Power|Russellstoll 9P53U2||
+209|Power|Wonpro R4 Universal Socket||
+59|Power|NEMA 5-20R|Receptacle|
+60|Power|NEMA 5-50R|Receptacle|
+61|Power|NEMA 6-15R|Receptacle|
+62|Power|NEMA 6-20R|Receptacle|
+63|Power|NEMA 6-30R|Receptacle|
+64|Power|NEMA 6-50R|Receptacle|
+65|Power|NEMA L14-30R|Receptacle|
+66|Power|NEMA L5-20R|Receptacle|
+67|Power|NEMA L5-15R|Receptacle|
+68|Power|NEMA L5-30R|Receptacle|
+69|Power|NEMA L6-15R|Receptacle|
+70|Power|NEMA L6-20R|Receptacle|
+71|Power|NEMA L6-30R|Receptacle|
+90|Power|Cisco 22-Pin RPS|Male|
+91|Power|NEMA 7-20R|Receptacle|
+77|Breaker|1-Pole Breaker|1|
+78|Breaker|2-Pole Breaker|2|
+79|Breaker|3-Pole Breaker|3|
+76|Power|IEC-320-C19|Receptacle|
+92|Power|NEMA 7-20P|Plug|
+93|Power|NEMA L15-20R|Receptacle|
+94|Power|NEMA L15-20P|Plug|
+95|Power|NEMA L15-30R|Receptacle|
+96|Power|NEMA L15-30P|Plug|
+97|Power|NEMA L16-30R|Receptacle|
+98|Power|NEMA L16-30P|Plug|
+99|Power|NEMA L21-30R|Receptacle|
+100|Power|NEMA L21-30P|Plug|
+101|Comm|Fiber MTP|Male|
+102|Comm|DB15 Female|Female|
+103|Comm|DB15 Male|Male|
+104|Comm|DB37 Male|Male|
+105|Comm|DB37 Female|Female|
+106|Comm|HD15 Male|Male|
+107|Comm|HD15 Female|Female|
+108|Comm|SCSI-3 68-pin Micro Female|Female|
+109|Comm|SCSI-1 50-pin Centronics Female|Female|
+110|Comm|Centronics 36-pin Male|Male|
+111|Comm|Centronics 36-pin Female|Male|
+112|Comm|SCSI-3 68-pin VHDCI 0.8mm|Male|
+113|Comm|SCSI-2 50-pin Micro Centronics|Male|
+115|Comm|V.35 Male|Male|
+116|Comm|V.35 Female|Female|
+117|Comm|Din 5-pin Male|Male|
+118|Comm|Din 5-pin Female|Female|
+119|Comm|Din 4-pin Mini Male|Male|
+120|Comm|Din 4-pin Mini Female|Female|
+121|Comm|Din 6-pin Mini Male|Male|
+122|Comm|Din 6-pin Mini Female|Female|
+123|Comm|Din 8-pin Mini Male|Male|
+124|Comm|Din 8-pin Mini Female|Female|
+125|Comm|Fiber Opti-Jack|Male|
+126|Comm|MiniRJ21|48-pin Modular|
+127|Comm|Infiniband||
+128|Comm|RJ21|Female|
+129|Power|CS8365C|Plug|California Style, 50 Ampere,
+131|Power|Clipsal 56PA320|Plug|
+132|Power|NEMA L21-20P|Plug|
+133|Power|NEMA L21-20R|Receptacle|
+130|Power|IEC-60309|Plug|
+134|Power|IEC-60309 Socket|Female|
+41|Power|IEC-320-C13|Receptacle|
+72|Power|IEC-320-C14|Plug|
+73|Power|IEC-320-C20|Plug|
+135|Power|BS1363 Socket|Female|
+136|Power|BS1363|Plug|
+137|Comm|CX4|Female|
+138|Comm|SFP|Modular|
+139|Power|AU1-10P|Plug|
+140|Power|CEE 7 (Schuko)|Plug|
+141|Power|IEC-320-C15|Plug|
+142|Power|IEC-320-C16|Receptacle|
+143|Power|NEMA L14-20P|Plug|
+144|Power|NEMA L14-20R|Receptacle|
+145|Power|NEMA L22-20P|Plug|
+146|Power|NEMA L22-30P|Plug|
+147|Power|UK1-13P|Plug|
+148|Comm|mSAS|Plug|
+149|Comm|QSFP|Plug|
+150|Comm|XFP|Plug|
+151|Power|AC Terminal||
+152|Power|CEE 7/7||
+153|Power|Clipsal 439SXHD||
+154|Power|Clipsal 56P315||
+155|Power|Clipsal 56P320||
+156|Power|Clipsal 56P320F||
+157|Power|Clipsal 56P332||
+158|Power|Clipsal 56P532||
+159|Power|Clipsal 56P550||
+160|Power|Clipsal 56PA332||
+161|Power|Clipsal 56PA532||
+162|Power|Clipsal 56PO550||
+163|Power|Clipsal P56PA332||
+164|Power|Cord||
+165|Power|CS8369||
+166|Power|GB2099.1/GB1002 2P+E 10A||
+167|Power|GB2099.1/GB1002 2P+E 16A||
+168|Power|IEC 309 430PW9|Plug|
+169|Power|IEC 60309 16A 230V P+N+PE||
+170|Power|IEC 60309 16A 250V P+N+PE||
+171|Power|IEC 60309 16A 3P+N+PE||

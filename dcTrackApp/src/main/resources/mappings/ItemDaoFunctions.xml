@@ -1,0 +1,71 @@
+﻿<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE hibernate-mapping
+   PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+   
+<hibernate-mapping>
+
+  <query name="Item.findById">
+  	<![CDATA[select i from Item i where i.itemId = ?]]>
+  </query>
+
+  <query name="Item.findByName">
+  	<![CDATA[select i from Item i where i.itemName = ?]]>
+  </query>
+
+  <query name="Item.findItemsByCreationDate">
+  	<![CDATA[select i from Item i where i.itemServiceDetails.sysCreationDate = ?]]>
+  </query>  
+  
+  <query name="Item.findItemNameById">
+  	<![CDATA[select i.itemName from Item i where i.itemId = ?]]>
+  </query>
+  
+  <query name="Item.findEAssetTagById">
+  	<![CDATA[select i.raritanAssetTag from Item i where i.itemId = ?]]>
+  </query>
+  
+  <query name="Item.findEAssetTagVerifiedById">
+  	<![CDATA[select i.isAssetTagVerified from Item i where i.itemId = ?]]>
+  </query>
+  
+  <query name="Item.findChildItemsFromParentId">
+  	<![CDATA[select distinct i from Item i inner join i.parentItem p where p.itemId = ?]]>
+  </query>
+  
+  <query name="Item.findChildCountFromParentId">
+  	<![CDATA[select distinct count(*) from Item i inner join i.parentItem p where p.itemId = ?]]>
+  </query>
+  
+  <query name="Item.findChildItemsFromParentIdAndClass">
+  	<![CDATA[select distinct i from Item i inner join i.parentItem p inner join i.classLookup c where p.itemId = ? and c.lkpValueCode = ?]]>
+  </query>
+
+  <query name="Item.findAllMeItemsByClass">
+    <![CDATA[select m from MeItem m 
+                inner join m.classLookup c 
+                inner join m.dataCenterLocation l 
+                inner join m.powerPorts p
+            where c.lkpValueCode = ? order by l.code, m.itemName]]>
+  </query>
+
+  <query name="Item.findAllBladesInChassisSorted">
+    <![CDATA[select i from ItItem i  
+        left outer join i.facingLookup l
+        where i.bladeChassis.itemId = ?
+        order by l.lksId, i.slotPosition asc]]>
+  </query>
+  
+  <query name="Item.findChildCountFromParentIdAndClass">
+  	<![CDATA[ select distinct count(*) from 
+  				Item i inner join i.parentItem p inner join i.classLookup c where p.itemId = ? 
+  				and c.lkpValueCode = ? 
+  	]]>
+  </query>
+  
+    <query name="Item.findItemByPIQId">
+    	<![CDATA[select i from Item i where i.piqId = ? and dataCenterLocation.applicationSetting.value = ? and dataCenterLocation.applicationSetting.lksData.lkpValueCode = ?]]>
+  </query>
+  
+  
+</hibernate-mapping>

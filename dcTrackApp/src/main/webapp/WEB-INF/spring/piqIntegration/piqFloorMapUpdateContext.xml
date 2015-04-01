@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/context
+    					http://www.springframework.org/schema/context/spring-context-3.2.xsd
+						http://www.springframework.org/schema/integration
+						http://www.springframework.org/schema/integration/spring-integration.xsd
+						http://www.springframework.org/schema/tx 
+           				http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
+	
+	<!--  this is required for annotation (e.g. @Autowired) configuration to work in the context -->
+	<context:annotation-config/>
+	
+	<context:property-placeholder ignore-unresolvable="true" />
+	
+	<bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+      <property name="scopes">
+          <map>
+              <entry key="thread">
+                  <bean class="org.springframework.context.support.SimpleThreadScope"/>
+              </entry>
+              <entry key="session">
+                  <bean class="org.springframework.context.support.SimpleThreadScope"/>
+              </entry>
+          </map>
+      </property>
+  	</bean>
+  	
+	<!-- =========================================== -->
+  	<!-- resources required for communicating with   -->
+  	<!-- PIQ via rest API and updating dcTrack       -->
+	<!-- =========================================== -->
+	
+	<import resource="../messageSources.xml" />
+	<import resource="../daos.xml"/>
+	<import resource="../rest.xml"/>
+
+	<bean id="contextAppSettings" class="com.raritan.tdz.settings.home.ApplicationSettingsImpl">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+	</bean>
+	
+	<bean id="piqReconfiguration" class="com.raritan.tdz.piq.home.PIQReconfigurationImpl">
+		<constructor-arg name="piqRestClients">
+			<list>
+				<ref bean="piqSyncFloorMap"/>
+			</list>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="piqSyncFloorMap" class="com.raritan.tdz.piq.home.PIQSyncFloorMapImpl">
+		<constructor-arg name="appSettings" ref="contextAppSettings"/>
+		<property name="service" value="upload" />
+		<property name="restTemplate" ref="restTemplate" />
+		<property name="eventHome" ref="eventHome" />
+		<property name="messageSource" ref="messageSource" />
+	</bean>
+	
+	<!-- =========================================== -->
+	<!-- channel to floorMap upload to piq -->
+	<!-- =========================================== -->
+	
+	<int:channel id="uploadFloorMapCmdChannel"/>
+	
+
+
+	<!-- =========================================== -->
+	<!-- service activator for floor map uploads     -->
+	<!-- =========================================== -->
+	
+	<int:service-activator id="uploadFloorMapActivator"
+					input-channel="uploadFloorMapCmdChannel" 
+					ref="piqSyncFloorMap"
+					method="uploadFloorMap"/>
+					
+	<!-- =========================================== -->
+	<!-- channel to get readings and events from piq -->
+	<!-- =========================================== -->
+	
+	<int:channel id="piqFloorMapChannel"/>
+					
+	<!-- =========================================== -->
+	<!-- header-value command router                 -->
+	<!-- =========================================== -->
+						
+	<int:header-value-router id="piqFloorMapHeaderRouter" input-channel="piqFloorMapChannel" header-name="command" auto-startup="false">
+		<int:mapping value="uploadFloorMap" channel="uploadFloorMapCmdChannel" />
+	</int:header-value-router>	
+
+	<!-- =========================================== -->
+	<!-- transaction manager                         -->
+	<!-- =========================================== -->
+	
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	
+</beans>

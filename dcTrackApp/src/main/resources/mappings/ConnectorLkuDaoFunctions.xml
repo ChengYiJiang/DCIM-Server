@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE hibernate-mapping
+   PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+   
+<hibernate-mapping>
+
+  <query name="ConnectorLkuData.findById">
+  	<![CDATA[select c from ConnectorLkuData c where c.connectorId = ?]]>
+  </query>
+  
+  <query name="ConnectorLkuData.findByName">
+  	<![CDATA[select c from ConnectorLkuData c where c.connectorName = ?]]>
+  </query>
+  
+  <query name="ConnectorLkuData.findByNameCaseInsensitive">
+  	<![CDATA[select c from ConnectorLkuData c where upper(c.connectorName) = upper(?)]]>
+  </query>
+  
+</hibernate-mapping>

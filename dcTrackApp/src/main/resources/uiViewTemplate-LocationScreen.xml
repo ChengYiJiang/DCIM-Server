@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dcTrack xmlns="http://dctrack.raritan.com/xsd">
+	<uiViews>
+		<uiView uiId="locationView" remoteRef="CONSTANTS_LOCATION_VIEW" editable="true">
+			<uiViewPanel uiId="siteInformationPanel" editable="true">
+				<uiViewComponents>
+					<uiViewComponent editable="true" uiId="tiLocationName" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_LOCATION_NAME"/>
+					</uiViewComponent>
+					<uiViewComponent editable="true" uiId="tiLocationCode" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_LOCATION_CODE"/>
+					</uiViewComponent>
+					<uiViewComponent editable="true" uiId="cbDefaultSite" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_LOCATION_DEFAULT_SITE"/>
+					</uiViewComponent>
+					<uiViewComponent editable="true" uiId="cmbLocationType" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_LOCATION_TYPE"/>
+					</uiViewComponent>
+					<uiViewComponent editable="true" uiId="tiLocationArea" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_LOCATION_AREA"/>
+					</uiViewComponent>
+					<uiViewComponent editable="true" uiId="tiRoomLength" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_LOCATION_ROOM_LENGTH"/>
+					</uiViewComponent>
+					<uiViewComponent editable="true" uiId="tiRoomWidth" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_LOCATION_ROOM_WIDTH"/>
+					</uiViewComponent>
+					<uiViewComponent editable="true" uiId="tiRaisedFloorHeight" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_LOCATION_RAISED_FLOOR"/>
+					</uiViewComponent>
+					<uiViewComponent editable="true" uiId="tiFloorCeilingHeight" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_LOCATION_FLOOR_CEILING"/>
+					</uiViewComponent>
+					<uiViewComponent editable="true" uiId="tiPlenumCeilingHeight" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_LOCATION_PLENUM_CEILING_HEIGHT"/>
+					</uiViewComponent>
+				</uiViewComponents>
+			</uiViewPanel>
+			<uiViewPanel uiId="addressPanel" editable="true">
+				<uiViewComponents>
+					<uiViewComponent editable="true" uiId="cmbAddressCountry" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_LOCATION_ADDRESS_COUNTRY"/>
+					</uiViewComponent>
+					<uiViewComponent editable="true" uiId="tiAddressFloor" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_LOCATION_ADDRESS_FLOOR"/>
+					</uiViewComponent>
+					<uiViewComponent editable="true" uiId="tiAddressStreet" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_LOCATION_ADDRESS_STREET"/>
+					</uiViewComponent>
+					<uiViewComponent editable="true" uiId="tiAddressCity" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_LOCATION_ADDRESS_CITY"/>
+					</uiViewComponent>
+					<uiViewComponent editable="true" uiId="tiAddressState" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_LOCATION_ADDRESS_STATE"/>
+					</uiViewComponent>
+					<uiViewComponent editable="true" uiId="tiAddressZip" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_LOCATION_ADDRESS_ZIP"/>
+					</uiViewComponent>
+				</uiViewComponents>	
+			</uiViewPanel>
+			<uiViewPanel uiId="floorMapDrawingPanel" editable="true">
+				<uiViewComponents>
+					<uiViewComponent editable="true" uiId="tiLocationPicturePath" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_LOCATION_PICTURE_PATH"/>
+					</uiViewComponent>
+					<uiViewComponent editable="true" uiId="tiLocationCADPath" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_LOCATION_CAD_PATH"/>
+					</uiViewComponent>
+					<uiViewComponent editable="true" uiId="cmbDrawingNorth" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_LOCATION_DRAWING_NORTH">
+                            <uiDefaultValue>
+                                <value>1</value>  <!-- North -->
+                            </uiDefaultValue>
+                        </uiValueIdField>
+					</uiViewComponent>
+					<uiViewComponent editable="true" uiId="cmbXAxisNumbers" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_LOCATION_XAXIS_NUMBERS"/>
+					</uiViewComponent>
+					<uiViewComponent editable="true" uiId="cmbOrientationNorthSouth" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_LOCATION_ORIENTATION_NS"/>
+					</uiViewComponent>
+					<uiViewComponent editable="true" uiId="cmbOrientationEastWest" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_LOCATION_ORIENTATION_EW"/>
+					</uiViewComponent>
+				</uiViewComponents>
+			</uiViewPanel>
+			<uiViewPanel uiId="piqPanel" editable="true">
+				<uiViewComponents>
+					<uiViewComponent editable="true" uiId="tiPiqExternalKey" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_LOCATION_PIQ_EXTERNAL_KEY"/>
+					</uiViewComponent>
+				</uiViewComponents>	
+			</uiViewPanel>
+		</uiView>
+	</uiViews>
+</dcTrack>

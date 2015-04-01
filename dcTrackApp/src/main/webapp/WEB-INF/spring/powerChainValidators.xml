@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+	<import resource="powerCalcValidators.xml"/>
+
+	<bean id="powerConnectionLoadValidator" class="com.raritan.tdz.powerchain.validator.PowerConnectionLoadValidator" autowire-candidate="true" autowire="byName">
+	</bean>
+	
+	<bean id="powerChainPowerConnRatingValidator" class="com.raritan.tdz.powerchain.validator.PowerChainPowerConnRatingValidator" autowire-candidate="true" autowire="byName">
+	</bean>
+	
+	<bean id="powerConnectionDeleteValidator" class="com.raritan.tdz.powerchain.validator.PowerConnectionDeleteValidator" autowire-candidate="true" autowire="byName">
+	</bean>
+	
+	<bean id="powerChainLoadValidator" class="com.raritan.tdz.powerchain.validator.PowerChainLoadValidator" autowire-candidate="true" autowire="byName"/>
+	
+	<bean id="powerChainPowerConnectionValidator" class="com.raritan.tdz.powerchain.validator.PowerConnectionValidator" autowire-candidate="true" autowire="byName">
+		<property name="validators">
+  			<list>
+  				<ref bean="powerChainPowerConnRatingValidator"/>
+  				<ref bean="powerConnectionLoadValidator"/>
+  				<ref bean="powerChainLoadValidator"/>
+  			</list>
+  		</property>
+	</bean>
+
+</beans>

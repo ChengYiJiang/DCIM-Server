@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<int:channel id="exportItemInputProcessorChannel"/>
+	<int:channel id="exportItemOutputProcessorChannel"/>
+	<int:gateway id="exportItemProcessorGateway" service-interface="com.raritan.tdz.dctexport.processor.ExportProcessor">
+		<int:method name="process" 
+			request-channel="exportItemInputProcessorChannel" 
+			reply-channel="exportItemOutputProcessorChannel"/>
+	</int:gateway>
+	
+</beans>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+                        http://www.springframework.org/schema/util
+                        http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+    <!-- Inpector: Cabinet Metrics -->
+    <bean id="cabinetMetricHome" class="com.raritan.tdz.component.inspector.home.impl.CabinetMetricHomeImpl" autowire-candidate="true" autowire="byName" />
+
+    <bean id="cabinetMetricDao" class="com.raritan.tdz.component.inspector.dao.impl.CabinetMetricDaoImpl">
+        <constructor-arg index="0">
+            <ref bean="sessionFactory" />
+        </constructor-arg>
+    </bean>
+
+</beans>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+
+<bean id="importLineErrorLoggerInterceptor" class="com.raritan.tdz.dctimport.integration.interceptors.ImportLineErrorLoggerInterceptor"/>
+<int:channel id="importErrorHandlerChannel">
+	<int:interceptors>
+		<int:ref bean="importLineErrorLoggerInterceptor"/>
+	</int:interceptors>
+</int:channel>
+
+<bean id="importLineWarningLoggerInterceptor" class="com.raritan.tdz.dctimport.integration.interceptors.ImportLineWarningLoggerInterceptor"/>
+<int:channel id="importWarningHandlerChannel">
+	<int:interceptors>
+		<int:ref bean="importLineWarningLoggerInterceptor"/>
+	</int:interceptors>
+</int:channel>
+
+<int:channel id="importExceptionHandlerChannel"/>
+
+<bean id="importFileNotFoundExceptionHandler" class="com.raritan.tdz.dctimport.integration.exceptions.ImportFileNotFoundExceptionHandler" scope="prototype"/>
+<bean id="importJobAlreadyRunningExceptionHandler" class="com.raritan.tdz.dctimport.integration.exceptions.ImportJobAlreadyRunningExceptionHandler" scope="prototype"/>
+<bean id="importJobExecutionNotRunningExceptionHandler" class="com.raritan.tdz.dctimport.integration.exceptions.ImportJobExecutionNotRunningExceptionHandler" scope="prototype"/>
+<bean id="importIgnoreExceptionHandler" class="com.raritan.tdz.dctimport.integration.exceptions.ImportIgnoreExceptionHandler"/>
+<bean id="importFileTypeInvalidExceptionHandler" class="com.raritan.tdz.dctimport.integration.exceptions.ImportFileTypeInvalidExceptionHandler"/>
+<bean id="importExceptionHandler" class="com.raritan.tdz.dctimport.integration.exceptions.ImportErrorHandlerImpl">
+	<constructor-arg name="exceptionHandlers">
+		<map>
+			<entry key="java.io.FileNotFoundException" value-ref="importFileNotFoundExceptionHandler"/>
+			<entry key="org.springframework.batch.core.repository.JobExecutionAlreadyRunningException" value-ref="importJobAlreadyRunningExceptionHandler"/>
+			<entry key="org.springframework.batch.core.launch.JobExecutionNotRunningException" value-ref="importJobExecutionNotRunningExceptionHandler"/>
+			<entry key="com.raritan.tdz.dctimport.integration.exceptions.ImportFileTypeInvalidException" value-ref="importFileTypeInvalidExceptionHandler"/>
+			<entry key="com.raritan.tdz.dctimport.integration.exceptions.IgnoreException" value-ref="importIgnoreExceptionHandler"/>
+		</map>
+	</constructor-arg>
+</bean>
+
+
+<int:gateway id="importErrorHandlerGateway" service-interface="com.raritan.tdz.dctimport.integration.exceptions.ImportErrorHandler">
+	<int:method name="handleLineErrors" request-channel="importErrorHandlerChannel"/>
+	<int:method name="handleLineWarnings" request-channel="importWarningHandlerChannel"/>
+</int:gateway>
+
+
+<int:service-activator id="importExceptionHandlerActivator" input-channel="importExceptionHandlerChannel" ref="importExceptionHandler" method="handleException"/>
+<int:service-activator id="importErrorHandlerActivator" input-channel="importErrorHandlerChannel" ref="importExceptionHandler" method="handleLineErrors"/>
+<int:service-activator id="importWarningHandlerActivator" input-channel="importWarningHandlerChannel" ref="importExceptionHandler" method="handleLineWarnings"/>
+</beans>

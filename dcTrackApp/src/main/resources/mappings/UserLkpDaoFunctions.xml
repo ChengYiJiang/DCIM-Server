@@ -1,0 +1,41 @@
+﻿<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE hibernate-mapping
+   PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+   
+<hibernate-mapping>
+
+  <query name="LkuData.findById">
+  	<![CDATA[select s from LkuData s where s.lkuId = ?]]>
+  </query>
+  
+  
+  <query name="LkuData.findByLkpType">
+  	<![CDATA[select s from LkuData s where s.lkuTypeName = ?]]>
+  </query>
+  
+   <query name="LkuData.findByLkpValue">
+  	<![CDATA[select s from LkuData s where s.lkuValue = ?]]>
+  </query>
+  
+   <query name="LkuData.findByLkpAttribute">
+  	<![CDATA[select s from LkuData s where s.lkuAttribute = ?]]>
+  </query>
+  
+   <query name="LkuData.findByLkpAttributeAndType">
+  	<![CDATA[select s from LkuData s where s.lkuAttribute = ? and s.lkuTypeName = ?]]>
+  </query>
+  
+  <query name="LkuData.findByLkpTypeAndLkpValueCode">
+  	<![CDATA[select s from LkuData s where s.lkuTypeName = ? and s.lksData.lkpValueCode = ?]]>
+  </query>
+                  
+  <query name="LkuData.findByLkpValueAndTypeCaseInsensitive">
+  	<![CDATA[select s from LkuData s where upper(s.lkuValue) = upper(?) and upper(s.lkuTypeName) = upper(?)]]>
+  </query>
+  
+  <query name="LkuData.findByLkpValueLkpAttributeAndTypeCaseInsensitive">
+  	<![CDATA[select s from LkuData s where upper(s.lkuValue) = upper(?) and upper(COALESCE(s.lkuAttribute,'')) like upper(?) and upper(s.lkuTypeName) = upper(?) ]]>
+  </query>
+                  
+</hibernate-mapping>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+	
+	<suite name="Suite" parallel="false">
+  	<test name="Test" preserve-order="true">
+    	<packages>
+    		<package name="com.raritan.tdz.unit.*"/>
+      		<package name="com.raritan.tdz.model.*" />
+      		<package name="com.raritan.tdz.settings.*" />
+      		<package name="com.raritan.tdz.util.*" />
+      		<package name="com.raritan.tdz.domain.*" />
+      		<package name="com.raritan.tdz.item.*" />
+      		<package name="com.raritan.tdz.rest.*" />
+      		<package name="com.raritan.tdz.field.*" />
+      		<package name="com.raritan.tdz.port" />
+      		<package name="com.raritan.tdz.powerchain.*"/>
+      		<package name="com.raritan.tdz.diagnostics.*"/>
+      		<package name="com.raritan.tdz.tickets.*"/>
+      		
+<!--  
+			<package name="com.raritan.tdz.circuit.*" />
+			<package name="com.raritan.tdz.home.*" />
+			<package name="com.raritan.tdz.chassis.*" />
+			<package name="com.raritan.tdz.assetstrip.*" />
+			<package name="com.raritan.tdz.tests.*" />
+			<package name="com.raritan.tdz.piq.*" />
+			<package name="com.raritan.tdz.vbjavabridge.*"/>
+-->
+		</packages>
+		
+		<classes>
+			<class name="com.raritan.tdz.changemgmt.home.ItemRequestTest"/>
+			<class name="com.raritan.tdz.changemgmt.home.ItemRequestMoveTest"/>
+			<class name="com.raritan.tdz.changemgmt.home.ChangeMgmtTests"/>
+			
+		</classes>
+		
+	</test> <!-- Test -->
+</suite> <!-- Suite -->

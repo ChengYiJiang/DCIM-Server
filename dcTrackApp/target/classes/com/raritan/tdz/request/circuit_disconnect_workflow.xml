@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+	<!-- ==================================== -->
+	<!-- Circuit Disconnect Request Issued 		-->
+	<!-- ==================================== -->
+	
+	<!-- Circuit Disconnect Request Issued Validator -->
+	
+	<import resource="request_validators.xml"/>
+	<import resource="request_executors.xml"/>
+	
+	<!-- Channel for Circuit Disconnect issued request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.validateChannel"/> -->
+    <int:channel id="708.501.validateChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Disconnect request approved validator -->
+    <int:service-activator id="circuitDisconnectReqIssueValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.validateChannel" 
+    		ref="circuitDisconnectReqIssuedValidator" method="validate"/>
+
+	<!-- Circuit Disconnect request issued validator bean -->
+    <bean id="circuitDisconnectReqIssuedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="circuitDisconnectWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Circuit Disconnect Request Issued Executor -->
+	
+	<!-- Channel for Circuit Disconnect issue request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.executeChannel"/> -->
+	<int:channel id="708.501.executeChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Disconnect request issued executor -->
+    <int:service-activator id="circuitDisconnectReqIssueExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.executeChannel" 
+    		ref="circuitDisconnectRequestStageIssued" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- Circuit Disconnect request issued executor bean -->
+	<bean id="circuitDisconnectRequestStageIssued" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }"/>
+		<property name="requestStageHelpers" ref="circuitDisconnectRequestIssuedExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Circuit Disconnect Request Updated -->
+	<!-- ==================================== -->
+	
+	<!-- Circuit Disconnect Request Updated Validator -->
+	
+	<!-- Channel for Circuit Disconnect updated request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.validateChannel"/> -->
+    <int:channel id="708.503.validateChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Disconnect request updated validator -->
+    <int:service-activator id="circuitDisconnectReqUpdateValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.validateChannel" 
+    		ref="circuitDisconnectReqUpdatedValidator" method="validate"/>
+
+	<!-- Circuit Disconnect request updated validator bean -->
+    <bean id="circuitDisconnectReqUpdatedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="circuitDisconnectWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Circuit Disconnect Request Updated Executor -->
+	
+	<!-- Channel for Circuit Disconnect update request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.executeChannel"/> -->
+	<int:channel id="708.503.executeChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Disconnect request updated executor -->
+    <int:service-activator id="circuitDisconnectReqUpdateExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.executeChannel" 
+    		ref="circuitDisconnectRequestStageUpdated" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- Circuit Disconnect request updated executor bean -->
+	<bean id="circuitDisconnectRequestStageUpdated" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }"/>
+		<property name="requestStageHelpers" ref="circuitDisconnectRequestUpdatedExecutors"/>
+	</bean>
+
+
+	
+	<!-- ==================================== -->
+	<!-- Circuit Disconnect Request Approved -->
+	<!-- ==================================== -->
+	
+	<!-- Circuit Disconnect Request Approved Validator -->
+	
+	<!-- Channel for Circuit Disconnect approve request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.validateChannel"/> -->
+    <int:channel id="708.504.validateChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Disconnect request approved validator -->
+    <int:service-activator id="circuitDisconnectReqApproveValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.validateChannel" 
+    		ref="circuitDisconnectReqApprovedValidator" method="validate"/>
+
+	<!-- Circuit Disconnect request approved validator bean -->
+    <bean id="circuitDisconnectReqApprovedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="circuitDisconnectWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Circuit Disconnect Request Approved Executor -->
+	
+	<!-- Channel for Circuit Disconnect approve request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.executeChannel"/> -->
+	<int:channel id="708.504.executeChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Disconnect request approved executor -->
+    <int:service-activator id="circuitDisconnectReqApproveExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.executeChannel" 
+    		ref="circuitDisconnectReqApprovedExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- Circuit Disconnect request approved executor bean -->
+    <bean id="circuitDisconnectReqApprovedExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }"/>
+		<property name="requestStageHelpers" ref="circuitDisconnectRequestApprovedExecutors"/>
+	</bean>
+    
+
+	<!-- ==================================== -->
+	<!-- Circuit Disconnect Work Order Issue -->
+	<!-- ==================================== -->
+	
+	<!-- Circuit Disconnect Work order issue Validator -->
+	
+	<!-- Channel for Circuit Disconnect Work Order Issue validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.validateChannel"/> -->
+	<int:channel id="708.505.validateChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Disconnect request approved validator -->
+    <int:service-activator id="circuitDisconnectWorkorderIssueValidateActivator" requires-reply="false" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.validateChannel" 
+    		ref="circuitDisconnectWorkorderIssueValidator" method="validate"/>
+
+	<!-- Circuit Disconnect request approved validator bean -->
+    <bean id="circuitDisconnectWorkorderIssueValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="circuitDisconnectWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Circuit Disconnect Request Approved Executor -->
+	
+	<!-- Channel for Circuit Disconnect approve request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.executeChannel"/> -->
+    <int:channel id="708.505.executeChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Disconnect request approved executor -->
+    <int:service-activator id="circuitDisconnectWorkorderIssueExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.executeChannel" 
+    		ref="circuitDisconnectWorkorderIssueExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- Circuit Disconnect request approved executor bean -->
+    <bean id="circuitDisconnectWorkorderIssueExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }"/>
+		<property name="requestStageHelpers" ref="circuitDisconnectWorkOrderIssueExecutors"/>
+	</bean>
+    
+
+	<!-- ==================================== -->
+	<!-- Circuit Disconnect Work Order Complete -->
+	<!-- ==================================== -->
+	
+	<!-- Circuit Disconnect Work order complete Validator -->
+	
+	<!-- Channel for Circuit Disconnect Work Order Complete validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.validateChannel"/> -->
+    <int:channel id="708.506.validateChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Disconnect work order complete validator -->
+    <int:service-activator id="circuitDisconnectWorkorderCompleteValidateActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.validateChannel" 
+    		ref="circuitDisconnectWorkorderCompleteValidator" method="validate"/>
+
+	<!-- Circuit Disconnect request complete validator bean -->
+    <bean id="circuitDisconnectWorkorderCompleteValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="circuitDisconnectWorkOrderCompleteValidators"/>
+    </bean>
+    
+	
+	<!-- Circuit Disconnect Workorder complete Executor -->
+	
+	<!-- Channel for Circuit Disconnect work order complete executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.executeChannel"/> -->
+    <int:channel id="708.506.executeChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Disconnect request approved executor -->
+    <int:service-activator id="circuitDisconnectWorkorderCompleteExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.executeChannel" 
+    		ref="circuitDisconnectWorkorderCompleteExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- Circuit Disconnect request approved executor bean -->
+    <bean id="circuitDisconnectWorkorderCompleteExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }"/>
+		<property name="requestStageHelpers" ref="circuitDisconnectWorkOrderCompleteExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Circuit Disconnect Request Complete -->
+	<!-- ==================================== -->
+	
+	<!-- Circuit Disconnect Request complete Validator -->
+	
+	<!-- Channel for Circuit Disconnect Request Complete validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.validateChannel"/> -->
+    <int:channel id="708.507.validateChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Disconnect request complete validator -->
+    <int:service-activator id="circuitDisconnectRequestCompleteValidateActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.validateChannel" 
+    		ref="circuitDisconnectRequestCompleteValidator" method="validate"/>
+
+	<!-- Circuit Disconnect request complete validator bean -->
+    <bean id="circuitDisconnectRequestCompleteValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="circuitDisconnectWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Circuit Disconnect Request complete Executor -->
+	
+	<!-- Channel for Circuit Disconnect request complete executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.executeChannel"/> -->
+    <int:channel id="708.507.executeChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Disconnect request approved executor -->
+    <!-- output-channel="nullChannel" -->
+    <int:service-activator id="circuitDisconnectRequestCompleteExecuteActivator" requires-reply="false" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.executeChannel" 
+    		ref="circuitDisconnectRequestCompleteExecutor" method="process" output-channel="nullChannel"/>
+    		
+
+	<!-- Circuit Disconnect request approved executor bean -->
+    <bean id="circuitDisconnectRequestCompleteExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }"/>
+		<property name="requestStageHelpers" ref="circuitDisconnectRequestCompleteExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Circuit Disconnect Routers               				-->
+	<!-- ==================================== -->
+
+	<!-- Circuit Disconnect validate router -->
+	<!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT }ValidateRouter"/> -->
+	<int:channel id="708.ValidateRouter"/>
+	<int:router input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT }.ValidateRouter" ref="requestStageRouter" method="validatorRouter"/>
+	
+	<!-- Circuit Disconnect execute router -->
+	<!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT }ExecuteRouter"/> -->
+	<int:channel id="708.ExecuteRouter"/>
+	<int:router input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT }.ExecuteRouter" ref="requestStageRouter" method="executorRouter"/>
+
+</beans>

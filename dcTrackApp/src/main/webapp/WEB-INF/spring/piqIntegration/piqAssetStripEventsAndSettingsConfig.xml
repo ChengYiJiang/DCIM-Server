@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/integration 
+						http://www.springframework.org/schema/integration/spring-integration.xsd">
+	
+
+	<bean id="piqAssetStripAndSettingsRouterResolver" class="com.raritan.tdz.piq.integration.PowerIQRouterImpl">
+		<constructor-arg name="channelName" value="piqAssetStripAndSettingsChannel"/>
+		<constructor-arg name="springContextPath" value="${piqContextPathPrefix}/piqAssetStripEventsAndSettingsContext.xml"/>
+	</bean>
+	
+	<int:channel id="piqAssetStripAndSettingRouterChannel"/>
+	
+	
+	<int:router input-channel="piqAssetStripAndSettingRouterChannel" 
+		expression="@piqAssetStripAndSettingsRouterResolver.resolve(payload[0])"/>
+		
+	
+	<int:publish-subscribe-channel id="piqReconfigurationChannel"/>
+		
+	<int:channel id="initializeSettingsEnricherChannel"/>
+	<int:channel id="reloadSettingsEnricherChannel"/>
+	<int:channel id="testSettingsEnricherChannel"/>
+	
+	<int:header-enricher input-channel="initializeSettingsEnricherChannel" output-channel="piqAssetStripAndSettingRouterChannel">
+		<int:header name="command" value="initializeCommand"/>
+	</int:header-enricher>
+	
+	<int:header-enricher input-channel="reloadSettingsEnricherChannel" output-channel="piqAssetStripAndSettingRouterChannel">
+		<int:header name="command" value="reloadSettingsCommand"/>
+	</int:header-enricher>
+	
+	<int:header-enricher input-channel="testSettingsEnricherChannel" output-channel="piqAssetStripAndSettingRouterChannel">
+		<int:header name="command" value="testSettingsCommand"/>
+	</int:header-enricher>
+		
+	<int:gateway id="piqSettingGateway" 
+				service-interface="com.raritan.tdz.piq.home.PIQSettingsHome">
+		<int:method name="initalize" request-channel="initializeSettingsEnricherChannel" payload-expression="T(java.util.Arrays).asList(#args[0])"/>
+		<int:method name="reloadSettings" request-channel="reloadSettingsEnricherChannel" payload-expression="T(java.util.Arrays).asList(#args[0])"/>
+		<int:method name="testSettings" request-channel="testSettingsEnricherChannel" payload-expression="T(java.util.Arrays).asList(#args[0],#args[1],#args[2])"/>
+	</int:gateway>
+	
+	<bean id="piqAssetStripEventBoot" class="com.raritan.tdz.piq.home.PIQAssetStripEventBoot">
+		<constructor-arg name="piqSettingHome" ref="piqSettingGateway"/>
+		<constructor-arg name="settingsHome" ref="appSettings"/>
+	</bean>	
+	
+	<!-- ========================================================== -->
+	<!-- service activator for reloadingCommunicationSettings       -->
+	<!-- ========================================================== -->
+	
+	<int:service-activator id="assetStripAndSettingsReloadCommunicatioinSettingsActivator"
+						input-channel="piqReconfigurationChannel"
+						ref="piqAssetStripAndSettingsRouterResolver"
+						method="reloadCommunicationSettings"/>	
+						
+	<int:gateway id="piqReconfigurationGw" 
+		default-request-channel="piqReconfigurationChannel"
+		service-interface="com.raritan.tdz.piq.home.PIQReconfiguration"/>
+		
+	<bean id="piqSettingsDTOValidator" class="com.raritan.tdz.settings.validators.PIQSettingsDTOValidator">
+		<constructor-arg name="settingsHome" ref="appSettings"/>
+	</bean>
+	
+	<int:publish-subscribe-channel id="piqRemoveContextChannel"></int:publish-subscribe-channel>
+	<int:gateway id="piqRemoveContextGW" 
+		default-request-channel="piqRemoveContextChannel"
+		service-interface="com.raritan.tdz.piq.integration.PowerIQRouter"/>
+		
+	<!-- ========================================================== -->
+	<!-- service activator for removing context                     -->
+	<!-- ========================================================== -->				
+	<int:service-activator id="piqAssetStripEventsAndSettingsRemoveContext"
+			input-channel="piqRemoveContextChannel"
+			ref="piqAssetStripAndSettingsRouterResolver"
+			method="remove"/>
+</beans>

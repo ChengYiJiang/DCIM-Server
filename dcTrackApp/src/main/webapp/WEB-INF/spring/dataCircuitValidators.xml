@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+	<bean id="dataConnConnectorValidator" class="com.raritan.tdz.circuit.validators.DataConnConnectorValidator" autowire-candidate="true" autowire="byName">
+	</bean>
+	<bean id="dataConnLogicalValidator" class="com.raritan.tdz.circuit.validators.DataConnLogicalValidator" autowire-candidate="true" autowire="byName">
+	</bean>
+	<bean id="dataConnMediaValidator" class="com.raritan.tdz.circuit.validators.DataConnMediaValidator" autowire-candidate="true" autowire="byName">
+	</bean>
+	<bean id="dataConnPortValidator" class="com.raritan.tdz.circuit.validators.DataConnPortValidator" autowire-candidate="true" autowire="byName">
+	</bean>
+	<bean id="dataConnVmClusterValidator" class="com.raritan.tdz.circuit.validators.DataConnVmClusterValidator" autowire-candidate="true" autowire="byName">
+	</bean>
+	<bean id="dataConnPhys2LogOrVmValidator" class="com.raritan.tdz.circuit.validators.DataConnPhys2LogOrVmValidator" autowire-candidate="true" autowire="byName">
+	</bean>
+	<bean id="dataCircuitValidator" class="com.raritan.tdz.circuit.validators.DataCircuitValidator" autowire-candidate="true" autowire="byName">
+	</bean>
+	<bean id="circuitItemsValidator" class="com.raritan.tdz.circuit.validators.CircuitItemsValidator" autowire-candidate="true" autowire="byName">
+	</bean>
+	<bean id="dataConnToExistingCircuitValidator" class="com.raritan.tdz.circuit.validators.DataConnToExistingCircuitValidator" autowire-candidate="true" autowire="byName">
+	</bean>
+
+
+ 	<bean id="dataConnCompatibilityFactory" class="com.raritan.tdz.circuit.validators.DataConnCompatibilityValidatorFactoryImpl">
+ 		<constructor-arg name="validatorMap">
+ 		<!--  The map key is the port subclass of the destination port under consideration -->
+ 			<map>
+ 				<entry key="#{  T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).ACTIVE }" value-ref="dataConnACCompatibilityValidator"/>
+ 				<entry key="#{  T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).PASSIVE }" value-ref="dataConnPACompatibilityValidator"/>
+ 				<entry key="#{  T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).VIRTUAL }" value-ref="dataConnVICompatibilityValidator"/>
+ 				<entry key="#{  T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).LOGICAL }" value-ref="dataConnLOCompatibilityValidator"/>
+			</map>
+ 		</constructor-arg>
+ 	</bean>
+ 	
+ 	<bean id="dataConnACCompatibilityValidator" class="com.raritan.tdz.circuit.validators.DataConnCompatibilityValidator">
+ 		<constructor-arg name="connValidatorList">
+ 			<list>
+ 				<ref bean="dataConnConnectorValidator"/>
+ 				<ref bean="dataConnMediaValidator"/>
+ 				<ref bean="dataConnPhys2LogOrVmValidator"/>
+ 			</list>
+ 		</constructor-arg>
+ 	</bean>
+ 
+ 	<bean id="dataConnPACompatibilityValidator" class="com.raritan.tdz.circuit.validators.DataConnCompatibilityValidator">
+ 		<constructor-arg name="connValidatorList">
+ 			<list>
+ 				<ref bean="dataConnConnectorValidator"/>
+ 				<ref bean="dataConnMediaValidator"/>
+ 				<ref bean="dataConnPhys2LogOrVmValidator"/>
+ 			</list>
+ 		</constructor-arg>
+ 	</bean>
+ 
+ 	<bean id="dataConnVICompatibilityValidator" class="com.raritan.tdz.circuit.validators.DataConnCompatibilityValidator">
+ 		<constructor-arg name="connValidatorList">
+ 			<list>
+ 				<ref bean="dataConnVmClusterValidator"/>
+ 			</list>
+ 		</constructor-arg>
+ 	</bean>
+
+ 	<bean id="dataConnLOCompatibilityValidator" class="com.raritan.tdz.circuit.validators.DataConnCompatibilityValidator">
+ 		<constructor-arg name="connValidatorList">
+ 			<list>
+ 				<ref bean="dataConnLogicalValidator"/>
+ 			</list>
+ 		</constructor-arg>
+ 	</bean> 				
+</beans>

@@ -1,0 +1,645 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dcTrack xmlns="http://dctrack.raritan.com/xsd">
+	<uiViews>
+		<uiView uiId="itemView" remoteRef="CONSTANTS_ITEM_VIEW" editable="true">
+			<uiViewPanel uiId="identityInformationPanel" editable="true">
+				<uiViewComponents>
+					<uiViewComponent editable="true" uiId="tiName" remoteName="item_name" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_NAME_FOR_ITEM"/>
+						<altUiValueIdFieldMap id="ticket">
+							<uiValueIdField remoteRef="CONSTANT_NAME_FOR_ITEM_TICKET"/>
+						</altUiValueIdFieldMap>
+					</uiViewComponent>
+					<uiViewComponent editable="true" uiId="tiSerialNumber" remoteName="serial_number" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_SERIAL_NUMBER_FOR_ITEM"/>
+						<altUiValueIdFieldMap id="ticket">
+							<uiValueIdField remoteRef="CONSTANT_SERIAL_NUMBER_FOR_ITEM_TICKET"/>
+						</altUiValueIdFieldMap>
+					</uiViewComponent>
+					<uiViewComponent editable="true" uiId="tieAssetTag" remoteName="easset_tag" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_ASSET_TAG_ID_FOR_ITEM"/>
+					</uiViewComponent>
+					<uiViewComponent editable="true" uiId="tiAssetTag" remoteName="asset_tag" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_ASSET_NUMBER_FOR_ITEM"/>
+						<altUiValueIdFieldMap id="ticket">
+							<uiValueIdField remoteRef="CONSTANT_ASSET_NUMBER_FOR_ITEM_TICKET"/>
+						</altUiValueIdFieldMap>
+					</uiViewComponent>
+					<uiViewComponent editable="true" uiId="tiAlias" remoteName="alias" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_ALIAS_FOR_ITEM"/>
+					</uiViewComponent>
+					<uiViewComponent editable="true" uiId="cmbStatus" remoteName="status" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_STATUS_FOR_ITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="cmbSystemAdmin" remoteName="sys_admin" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_ADMIN_USER_OF_ITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="cmbSystemAdminTeam" remoteName="sys_admin_team" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_ADMIN_TEAM_OF_ITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="cmbType" remoteName="type" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_TYPE_FOR_ITEM"/>
+						<altUiValueIdFieldMap id="ticket">
+							<uiValueIdField remoteRef="CONSTANT_TYPE_FOR_ITEM_TICKET"/>
+						</altUiValueIdFieldMap>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="cmbFunction" remoteName="function" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_FUNCTION_FOR_ITEM"/>
+						<altUiValueIdFieldMap id="ticket">
+							<uiValueIdField remoteRef="CONSTANT_FUNCTION_FOR_ITEM_TICKET"/>
+						</altUiValueIdFieldMap>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="cmbCustomer" remoteName="customer" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_CUSTOMER_FOR_ITEM"/>
+					</uiViewComponent>
+					
+				</uiViewComponents>
+			</uiViewPanel>
+			<uiViewPanel uiId="hardwarePanel" editable="true">
+				<uiViewComponents>
+					<uiViewComponent editable="true" uiId="cmbMake" remoteName="make" lockStatus="false"
+						classMountingFormFactorValue="101,102,103,104,105,202,203,204,205,201,302,301,306,411,412,502,501,506,702,701,706,603,613,1103,1114,1115,1116,1203,1303,3001,3007,3008">
+						<uiValueIdField remoteRef="CONSTANT_MAKE_FOR_ITEM"/>
+						<altUiValueIdFieldMap id="ticket">
+							<uiValueIdField remoteRef="CONSTANT_MAKE_FOR_ITEM_TICKET"/>
+						</altUiValueIdFieldMap>
+					</uiViewComponent>
+					<uiViewComponent editable="true" uiId="cmbModel" remoteName="model" lockStatus="false"
+						classMountingFormFactorValue="101,102,103,104,105,202,203,204,205,201,302,301,306,411,412,502,501,506,702,701,706,603,613,1103,1114,1115,1116,1203,1303,3001,3007,3008">
+						<uiValueIdField remoteRef="CONSTANT_MODEL_FOR_ITEM"/>
+						<altUiValueIdFieldMap id="ticket">
+							<uiValueIdField remoteRef="CONSTANT_MODEL_FOR_ITEM_TICKET"/>
+						</altUiValueIdFieldMap>
+					</uiViewComponent>
+					<uiViewComponent editable="false" uiId="tiWeight" remoteName="weight" lockStatus="false"
+						classMountingFormFactorValue="101,102,103,104,105,202,203,204,205,201,302,301,306,411,412,502,501,506,702,701,706,603,613,1103,1114,1115,1116,1203,1303,3001,3007,3008">
+						<uiValueIdField remoteRef="CONSTANT_WEIGHT_FOR_ITEM"/>
+					</uiViewComponent>
+					<uiViewComponent editable="false" uiId="tiClass" remoteName="class" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_CLASS_FOR_ITEM"/>
+						<altUiValueIdFieldMap id="ticket">
+							<uiValueIdField remoteRef="CONSTANT_CLASS_FOR_ITEM_TICKET"/>
+						</altUiValueIdFieldMap>
+					</uiViewComponent>
+					<uiViewComponent editable="false" uiId="tiDimension" remoteName="dimension" lockStatus="false"
+						classMountingFormFactorValue="101,102,103,104,105,202,203,204,205,201,302,301,306,411,412,502,501,506,702,701,706,603,613,1103,1114,1115,1116,1203,1303,3001,3007,3008">
+						<uiValueIdField remoteRef="CONSTANT_DIMENSION_FOR_ITEM"/>
+					</uiViewComponent>
+					<uiViewComponent editable="false" uiId="tiRackUnits" remoteName="rack_units" lockStatus="false"
+						classMountingFormFactorValue="101,102,103,104,105,202,203,204,205,201,302,301,306,411,412,502,501,506,702,701,706,603,613,1103,1114,1115,1116,1203,1303,3001,3007,3008">
+						<uiValueIdField remoteRef="CONSTANT_RACKUNITS_FOR_ITEM"/>
+					</uiViewComponent>
+					<uiViewComponent editable="false" uiId="tiMounting" remoteName="mounting" lockStatus="false"
+						classMountingFormFactorValue="101,102,103,104,105,202,203,204,205,201,302,301,306,411,412,502,501,506,702,701,706,603,613,1103,1114,1115,1116,1203,1303,3001,3007,3008">
+						<uiValueIdField remoteRef="CONSTANT_MOUNTING_FOR_ITEM"/>
+					</uiViewComponent>
+					<uiViewComponent editable="false" uiId="tiFormfactor" remoteName="form_factor" lockStatus="false"
+						classMountingFormFactorValue="101,102,103,104,105,202,203,204,205,201,302,301,306,411,412,502,501,506,702,701,706,603,613,1103,1114,1115,1116,1203,1303,3001,3007,3008">
+						<uiValueIdField remoteRef="CONSTANT_FORMFACTOR_FOR_ITEM"/>
+					</uiViewComponent>
+					<uiViewComponent editable="false" uiId="tiSubClass" remoteName="sub_class" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_SUBCLASS_FOR_ITEM"/>
+					</uiViewComponent>	
+				</uiViewComponents>	
+			</uiViewPanel>
+			<uiViewPanel uiId="placementPanel" editable="true">
+				<uiViewComponents>
+					<uiViewComponent editable="true" uiId="cmbLocation" remoteName="location" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_LOCATION_OF_ITEM"/>
+						<altUiValueIdFieldMap id="ticket">
+							<uiValueIdField remoteRef="CONSTANT_LOCATION_OF_ITEM_TICKET"/>
+						</altUiValueIdFieldMap>
+					</uiViewComponent>
+					<uiViewComponent editable="true" uiId="cmbRowLabel" remoteName="row_label" lockStatus="false"
+						classMountingFormFactorValue="103,203,603,613">
+						<uiValueIdField remoteRef="CONSTANT_ROWLABEL_OF_CABINET_ITEM"/>
+						<altUiValueIdFieldMap id="ticket">
+							<uiValueIdField remoteRef="CONSTANT_ROWLABEL_OF_CABINET_ITEM_TICKET"/>
+						</altUiValueIdFieldMap>
+					</uiViewComponent>
+					<uiViewComponent editable="true" uiId="cmbRowPosition" remoteName="row_position" lockStatus="false"
+						classMountingFormFactorValue="103,203,603,613">
+						<uiValueIdField remoteRef="CONSTANT_ROWPOSITION_OF_CABINET_ITEM"/>
+						<altUiValueIdFieldMap id="ticket">
+							<uiValueIdField remoteRef="CONSTANT_ROWPOSITION_OF_CABINET_ITEM_TICKET"/>
+						</altUiValueIdFieldMap>
+					</uiViewComponent>
+					<uiViewComponent editable="true" uiId="radioFrontFaces" remoteName="front_faces" lockStatus="false"
+						classMountingFormFactorValue="103,203,603,613,1103,1203,1303">
+						<uiValueIdField remoteRef="CONSTANT_FRONTFACES_OF_ITEM">
+							<uiDefaultValue>
+								<valueId>5021</valueId> <!-- North -->
+							</uiDefaultValue>
+						</uiValueIdField>
+						<altUiValueIdFieldMap id="ticket">
+							<uiValueIdField remoteRef="CONSTANT_FRONTFACES_OF_ITEM_TICKET"/>
+						</altUiValueIdFieldMap>
+					</uiViewComponent>
+					<uiViewComponent editable="true" uiId="tiLocationRef" remoteName="location_ref" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_LOCATIONREF_CABINET_ITEM"/>
+					</uiViewComponent>
+					<uiViewComponent editable="true" uiId="radioCabinetSide" remoteName="cabinet_side" lockStatus="false"
+						classMountingFormFactorValue="106,206,306,506,706">
+						<uiValueIdField remoteRef="CONSTANT_CABINET_SIDE_FOR_ITEM">
+							<uiDefaultValue>
+								<valueId>8004</valueId> <!-- Left Side -->
+							</uiDefaultValue>
+						</uiValueIdField>
+						<altUiValueIdFieldMap id="ticket">
+							<uiValueIdField remoteRef="CONSTANT_CABINET_SIDE_FOR_ITEM_TICKET"/>
+						</altUiValueIdFieldMap>
+					</uiViewComponent>
+					<uiViewComponent editable="true" uiId="radioDepthPosition" remoteName="depth_position" lockStatus="false"
+						classMountingFormFactorValue="106,206,306,506,706">
+						<uiValueIdField remoteRef="CONSTANT_DEPTH_POSITION_FOR_ITEM">
+							<uiDefaultValue>
+								<valueId>7083</valueId> <!-- Front -->
+							</uiDefaultValue>
+						</uiValueIdField>
+						<altUiValueIdFieldMap id="ticket">
+							<uiValueIdField remoteRef="CONSTANT_DEPTH_POSITION_FOR_ITEM_TICKET"/>
+						</altUiValueIdFieldMap>
+					</uiViewComponent>
+					<uiViewComponent editable="true" uiId="radioRailsUsed" remoteName="rails_used" lockStatus="false"
+						classMountingFormFactorValue="101,102,104,204,201,301,501,701,202,302,502,702,3001,3007,3008">
+						<uiValueIdField remoteRef="CONSTANT_RAILS_USED_FOR_ITEM">
+							<uiDefaultValue
+								classMountingFormFactorValue="101,104,204,201,301,501,701, 3008">
+								<valueId>8003</valueId> <!-- Both -->
+							</uiDefaultValue>
+							<uiDefaultValue
+								classMountingFormFactorValue="102,202,302,502,702,3007">
+								<valueId>8001</valueId> <!-- Front -->
+							</uiDefaultValue>
+							<uiDefaultValue
+								classMountingFormFactorValue="3001">
+								<valueId>8002</valueId> <!-- Back -->
+							</uiDefaultValue>
+						</uiValueIdField>
+						<altUiValueIdFieldMap id="ticket">
+							<uiValueIdField remoteRef="CONSTANT_RAILS_USED_FOR_ITEM_TICKET"/>
+						</altUiValueIdFieldMap>
+					</uiViewComponent>
+					<uiViewComponent editable="true" uiId="cmbCabinet" remoteName="cabinet" lockStatus="false"
+						classMountingFormFactorValue="101,103,104,204,201,301,501,701,306,506,706,105,205,102,202,203,302,502,702,411,412,3001,3007,3008">
+						<uiValueIdField remoteRef="CONSTANT_PARENT_OF_ITEM"/>
+						<altUiValueIdFieldMap id="ticket">
+							<uiValueIdField remoteRef="CONSTANT_PARENT_OF_ITEM_TICKET"/>
+						</altUiValueIdFieldMap>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="cmbUPosition" remoteName="u_position" lockStatus="false"
+						classMountingFormFactorValue="101,103,203,104,106,204,201,206,301,501,701,306,506,706,102,202,302,502,702,411,412,3001,3007,3008">
+						<uiValueIdField remoteRef="CONSTANT_UPOSITION_FOR_ITEM"/>
+						<altUiValueIdFieldMap id="ticket">
+							<uiValueIdField remoteRef="CONSTANT_UPOSITION_FOR_ITEM_TICKET"/>
+						</altUiValueIdFieldMap>
+					</uiViewComponent>
+
+					
+					<uiViewComponent editable="true" uiId="cmbOrientation" remoteName="orientation" lockStatus="false"
+						classMountingFormFactorValue="101,104,204,201,301,501,701,102,202,302,502,702">
+						<uiValueIdField remoteRef="CONSTANT_FRONTFACES_OF_ITEM">
+							<uiDefaultValue>
+								<valueId>7081</valueId> <!-- item front faces cabinet front -->
+							</uiDefaultValue>
+						</uiValueIdField>
+						<altUiValueIdFieldMap id="ticket">
+							<uiValueIdField remoteRef="CONSTANT_ORIENTATION_OF_ITEM_TICKET"/>
+						</altUiValueIdFieldMap>
+					</uiViewComponent>
+
+					<uiViewComponent editable="true" uiId="radioChassisFace" remoteName="chassis_face" lockStatus="false"
+						classMountingFormFactorValue="105,205">
+						<uiValueIdField remoteRef="CONSTANT_FRONTFACES_OF_ITEM">
+							<uiDefaultValue>
+								<valueId>20501</valueId> <!--  Front -->
+							</uiDefaultValue>
+						</uiValueIdField>
+						<altUiValueIdFieldMap id="ticket">
+							<uiValueIdField remoteRef="CONSTANT_CHASSIS_FRONTFACES_OF_ITEM_TICKET"/>
+						</altUiValueIdFieldMap>
+					</uiViewComponent>
+
+					<uiViewComponent editable="true" uiId="cmbChassis" remoteName="chassis" lockStatus="false"
+						classMountingFormFactorValue="105,205">
+						<uiValueIdField remoteRef="CONSTANT_CHASSIS_OF_ITEM"/>
+						<altUiValueIdFieldMap id="ticket">
+							<uiValueIdField remoteRef="CONSTANT_CHASSIS_OF_ITEM_TICKET"/>
+						</altUiValueIdFieldMap>
+					</uiViewComponent>
+
+					<uiViewComponent editable="true" uiId="cmbSlotPosition" remoteName="slot_position" lockStatus="false"
+						classMountingFormFactorValue="105,205">
+						<uiValueIdField remoteRef="CONSTANT_SLOT_POSITION_FOR_ITEM"/>
+						<altUiValueIdFieldMap id="ticket">
+							<uiValueIdField remoteRef="CONSTANT_SLOT_POSITION_FOR_ITEM_TICKET"/>
+						</altUiValueIdFieldMap>
+					</uiViewComponent>
+
+					<uiViewComponent editable="true" uiId="tiNoInGroup" remoteName="no_in_group" lockStatus="false"
+						classMountingFormFactorValue="502,501,506">
+						<uiValueIdField remoteRef="CONSTANT_NUMBER_IN_GROUP_FOR_ITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="cmbOrder" remoteName="order" lockStatus="false"
+						classMountingFormFactorValue="102,202,302,502,702">
+						<uiValueIdField remoteRef="CONSTANT_SHELF_POSITION_FOR_ITEM"/>
+						<altUiValueIdFieldMap id="ticket">
+							<uiValueIdField remoteRef="CONSTANT_SHELF_POSITION_FOR_ITEM_TICKET"/>
+						</altUiValueIdFieldMap>
+					</uiViewComponent>
+					
+				</uiViewComponents>
+			</uiViewPanel>
+			
+			<uiViewPanel uiId="assetAndMaintenance" editable="true">
+				<uiViewComponents>
+					<uiViewComponent editable="true" uiId="tiPONumber" remoteName="po_number" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_PO_NUMBER_FOR_ITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="cmbProjectNumber" remoteName="project_number" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_PROJECT_NUMBER_FOR_ITEM"/>
+					</uiViewComponent>		
+								
+					<uiViewComponent editable="true" uiId="tiPurchasePrice" remoteName="purchase_price" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_PURCHASE_PRICE_FOR_ITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="dtPurchaseDate" remoteName="purchase_date" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_PURCHASE_DATE_FOR_ITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="dtInstallationDate" remoteName="installation_date" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_INSTALL_DATE_FOR_ITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="cmbSLAProfile" remoteName="sla_profile" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_SLA_PROFILE_FOR_ITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="cmbContractNumber" remoteName="contract_number" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_CONTRACT_NUMBER_FOR_ITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="tiContractAmount" remoteName="contract_amount" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_CONTRACT_AMOUNT_FOR_ITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="dtContractStartDate" remoteName="contract_start_date" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_CONTRACT_BEGIN_DATE_FOR_ITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="dtContractEndDate" remoteName="contract_end_date" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_CONTRACT_EXPIRE_DATE_FOR_ITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="tiNotes" remoteName="notes" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_DESCRIPTION_FOR_ITEM"/>
+					</uiViewComponent>
+					
+				</uiViewComponents>
+			</uiViewPanel>
+			
+			<uiViewPanel uiId="configuration" editable="true">
+				<uiViewComponents>
+					<uiViewComponent editable="true" uiId="cmbOperatingSystem" remoteName="operating_system" lockStatus="false"
+						classMountingFormFactorValue="101,102,103,104,105,100,202,203,204,205,201">
+						<uiValueIdField remoteRef="CONSTANT_OS_FOR_ITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="cmbDomain" remoteName="domain" lockStatus="false"
+						classMountingFormFactorValue="101,102,103,104,105,100">
+						<uiValueIdField remoteRef="CONSTANT_DOMAIN_FOR_ITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="tiCpuType" remoteName="cpu_type" lockStatus="false"
+						classMountingFormFactorValue="101,102,103,104,105,100">
+						<uiValueIdField remoteRef="CONSTANT_CPUTYPE_FOR_ITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="tiCpuQuantity" remoteName="cpu_quantity" lockStatus="false"
+						classMountingFormFactorValue="101,102,103,104,105,100">
+						<uiValueIdField remoteRef="CONSTANT_CPUQUANTITY_FOR_ITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="tiRAM" remoteName="ram" lockStatus="false"
+						classMountingFormFactorValue="101,102,103,104,105,100">
+						<uiValueIdField remoteRef="CONSTANT_RAMGB_FOR_ITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="tiUsers" remoteName="users" lockStatus="false"
+						classMountingFormFactorValue="101,102,103,104,105,100">
+						<uiValueIdField remoteRef="CONSTANT_TOTALUSERS_FOR_ITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="tiProcesses" remoteName="processes" lockStatus="false"
+						classMountingFormFactorValue="101,102,103,104,105,100">
+						<uiValueIdField remoteRef="CONSTANT_TOTALPROCESSES_FOR_ITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="tiServices" remoteName="services" lockStatus="false"
+						classMountingFormFactorValue="101,102,103,104,105,100">
+						<uiValueIdField remoteRef="CONSTANT_SERVICES_FOR_ITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="cmbVMCluster" remoteName="vm_cluster" lockStatus="false"
+						classMountingFormFactorValue="101,102,103,104,105,100">
+						<uiValueIdField remoteRef="CONSTANT_VM_CLUSTER_FOR_ITEM"/>
+					</uiViewComponent>	
+					
+					<uiViewComponent editable="true" uiId="cbPropagate" lockStatus="false"
+						classMountingFormFactorValue="202,203,204,205,201">
+						<uiValueIdField remoteRef="CONSTANT_PROPAGATE_FOR_ITEM"/>
+					</uiViewComponent>	
+					
+					<uiViewComponent editable="true" uiId="cmbOSILayer" remoteName="osi_layer" lockStatus="false"
+						classMountingFormFactorValue="202,203,204,205,201">
+						<uiValueIdField remoteRef="CONSTANT_OSI_LAYER_FOR_ITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="tiGroup" remoteName="group" lockStatus="false"
+						classMountingFormFactorValue="502,501,506">
+						<uiValueIdField remoteRef="CONSTANT_GROUPING_NAME_FOR_ITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="tiNoInGroup" remoteName="no_in_group" lockStatus="false"
+						classMountingFormFactorValue="502,501,506">
+						<uiValueIdField remoteRef="CONSTANT_NUMBER_IN_GROUP_FOR_ITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="cmbCabinetGrouping" remoteName="cabinet_grouping" lockStatus="false"
+						classMountingFormFactorValue="603,613">
+						<uiValueIdField remoteRef="CONSTANT_CABINET_GROUP_FOR_ITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="tiLoadCapacity" remoteName="load_capacity" lockStatus="false"
+						classMountingFormFactorValue="603,613">
+						<uiValueIdField remoteRef="CONSTANT_LOADING_CAPACITY_FOR_ITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="tiRailWidth" remoteName="rail_width" lockStatus="false"
+						classMountingFormFactorValue="603,613">
+						<uiValueIdField remoteRef="CONSTANT_RAIL_WIDTH_FOR_ITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="tiFrontRailOffset" remoteName="front_rail_offset" lockStatus="false"
+						classMountingFormFactorValue="603,613">
+						<uiValueIdField remoteRef="CONSTANT_FRONT_RAIL_OFFSET_FOR_ITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="tiRearRailOffset" remoteName="rear_rail_offset" lockStatus="false"
+						classMountingFormFactorValue="603,613">
+						<uiValueIdField remoteRef="CONSTANT_REAR_RAIL_OFFSET_FOR_ITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="tiFrontDoorPerforation" remoteName="front_door_perforation" lockStatus="false"
+						classMountingFormFactorValue="603,613">
+						<uiValueIdField remoteRef="CONSTANT_FDOOR_PERFORATION_FOR_ITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="tiRearDoorPerforation" remoteName="rear_door_perforation" lockStatus="false"
+						classMountingFormFactorValue="603,613">
+						<uiValueIdField remoteRef="CONSTANT_RDOOR_PERFORATION_FOR_ITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="tiFrontClearance" remoteName="front_clearance" lockStatus="false"
+						classMountingFormFactorValue="603,613">
+						<uiValueIdField remoteRef="CONSTANT_CLEARANCE_FRONT_FOR_CABITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="tiRearClearance" remoteName="rear_clearance" lockStatus="false"
+						classMountingFormFactorValue="603,613">
+						<uiValueIdField remoteRef="CONSTANT_CLEARANCE_REAR_FOR_CABITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="tiLeftClearance" remoteName="left_clearance" lockStatus="false"
+						classMountingFormFactorValue="603,613">
+						<uiValueIdField remoteRef="CONSTANT_CLEARANCE_LEFT_FOR_CABITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="tiRightClearance" remoteName="right_clearance" lockStatus="false"
+						classMountingFormFactorValue="603,613">
+						<uiValueIdField remoteRef="CONSTANT_CLEARANCE_RIGHT_FOR_CABITEM"/>
+					</uiViewComponent>
+					
+                    <uiViewComponent editable="true" uiId="tiFPDURatingkVA" remoteName="rating_kVA" locakStatus="false" 
+                        classMountingFormFactorValue="1103,1114,1115,1116,1203">
+                        <uiValueIdField remoteRef="CONSTANT_RATING_KVA_FOR_ITEM"/>
+                    </uiViewComponent>
+
+                    <uiViewComponent editable="true" uiId="tiFPDUBrkrAmps" remoteName="breaker_Amps" locakStatus="false" 
+                        classMountingFormFactorValue="1103,1114,1115,1116">
+                        <uiValueIdField remoteRef="CONSTANT_RATING_AMPS_FOR_ITEM"/>
+                    </uiViewComponent>
+
+                    <uiViewComponent editable="true" uiId="cmbFromUPSBank" remoteName="ups_bank" locakStatus="false" 
+                        classMountingFormFactorValue="1103,1114,1115,1116">
+                        <uiValueIdField remoteRef="CONSTANT_UPS_BANK_OF_ITEM"/>
+                    </uiViewComponent>
+
+                    <uiViewComponent editable="true" uiId="cmbFromFPDUBreaker" remoteName="fpdu_breaker" locakStatus="false" 
+                        classMountingFormFactorValue="1103,1114,1115,1116">
+                        <uiValueIdField remoteRef="CONSTANT_FPDU_BREAKER_OF_ITEM"/>
+                    </uiViewComponent>
+                    
+                    <uiViewComponent editable="false" uiId="tiFPDUInputVoltage" remoteName="fpdu_in_volts" locakStatus="false" 
+                        classMountingFormFactorValue="1103,1114,1115,1116,1203">
+                        <uiValueIdField remoteRef="CONSTANT_FPDU_INPUT_VOLTAGE_OF_ITEM"/>
+                    </uiViewComponent>
+
+                    <uiViewComponent editable="false" uiId="tiFPDUInputWiring" remoteName="fpdu_in_wiring" locakStatus="false" 
+                        classMountingFormFactorValue="1103,1114,1115,1116">
+                        <uiValueIdField remoteRef="CONSTANT_FPDU_INPUT_WIRING_OF_ITEM"/>
+                    </uiViewComponent>
+
+                    <uiViewComponent editable="true" uiId="cmbFPDUOutputWiring" remoteName="fpdu_out_wiring" locakStatus="false" 
+                        classMountingFormFactorValue="1103,1114,1115,1116">
+                        <uiValueIdField remoteRef="CONSTANT_FPDU_OUTPUT_WIRING_OF_ITEM"/>
+                    </uiViewComponent>
+                    
+                    <!-- <uiViewComponent editable="true" uiId="tiPiqExternalKey" remoteName="piq_external_key" locakStatus="false">
+                        <uiValueIdField remoteRef="CONSTANT_PIQ_EXTERNAL_KEY"/>
+                    </uiViewComponent> -->
+                    
+				</uiViewComponents>
+			</uiViewPanel>
+
+
+			<uiViewPanel uiId="customFields" editable="true">
+				<uiViewComponents>
+					<uiViewComponent editable="true" uiId="tiCustomField" remoteName="custom_field" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_CUSTOM_FIELDS_FOR_ITEM"/>
+					</uiViewComponent>
+				</uiViewComponents>
+			</uiViewPanel>
+
+			<uiViewPanel uiId="dataPorts" editable="true">
+				<uiViewComponents>
+					<uiViewComponent editable="true" uiId="tabDataPorts" remoteName="data_ports" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_DATA_PORTS_FOR_ITEM"/>
+					</uiViewComponent>
+				</uiViewComponents>
+			</uiViewPanel>
+
+			<uiViewPanel uiId="powerPorts" editable="true">
+				<uiViewComponents>
+					<uiViewComponent editable="true" uiId="cmbPSRedundancy" remoteName="redundancy_info" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_PS_REDUNDANCY_FOR_ITITEM"/>
+						<altUiValueIdFieldMap id="ticket">
+							<uiValueIdField remoteRef="CONSTANT_PS_REDUNDANCY_FOR_ITITEM_TICKET"/>
+						</altUiValueIdFieldMap>
+					</uiViewComponent>
+					<uiViewComponent editable="false" uiId="tiEffectivePower" remoteName="effective_power" lockStatus="false" classMountingFormFactorValue="101,102,103,104,105,106, 201, 202, 203, 204, 205, 206, 701, 702, 706">
+					<uiValueIdField remoteRef="CONSTANT_EFFECTIVE_POWER_FOR_ITITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="tiPortNamePrefix" remoteName="portnameprefix_info" lockStatus="false">
+                            <uiValueIdField remoteRef="CONSTANT_PORTNAME_PREFIX_FOR_ITITEM"/>
+                            <altUiValueIdFieldMap id="ticket">
+                                    <uiValueIdField remoteRef="CONSTANT_PORTNAME_PREFIX_FOR_ITITEM_TICKET"/>
+                            </altUiValueIdFieldMap>
+                    </uiViewComponent>
+                    
+                    <uiViewComponent editable="true" uiId="cmbPowerPortQuantity" remoteName="portnameprefix_info" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_POWER_PORT_QTY_FOR_ITITEM"/>
+						<altUiValueIdFieldMap id="ticket">
+							<uiValueIdField remoteRef="CONSTANT_POWER_PORT_QTY_FOR_ITITEM_TICKET"/>
+						</altUiValueIdFieldMap>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="tabPowerPorts" remoteName="power_ports" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_POWER_PORTS_FOR_ITEM"/>
+					</uiViewComponent>
+				</uiViewComponents>
+			</uiViewPanel>
+			
+			<uiViewPanel uiId="sensorPorts" editable="true">
+				<uiViewComponents>
+					<uiViewComponent editable="true" uiId="tabSensorPorts" remoteName="sensor_ports" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_SENSOR_PORTS_FOR_ITEM"/>
+					</uiViewComponent>
+				</uiViewComponents>
+			</uiViewPanel>
+			
+			<uiViewPanel uiId="ticketPanel" editable="false">
+				<uiViewComponents>
+					<!-- ticket number -->
+					<uiViewComponent uiId="tiTicketNumber" editable="false" remoteName="ticket_number" lockStatus="false" 
+						classMountingFormFactorValue="100,101,103,102,106,104,105,201,202,204,203,205,206,501,502,506,603,613">
+						<uiValueIdField remoteRef="CONSTANT_TICKET_NUMBER_FOR_ITEM"/>
+					</uiViewComponent>
+					<!-- ticket action -->
+					<uiViewComponent uiId="cmbTicketAction" editable="false" remoteName="ticket_action" lockStatus="false" 
+						classMountingFormFactorValue="100,101,103,102,106,104,105,201,202,204,203,205,206,501,502,506,603,613">
+						<uiValueIdField remoteRef="CONSTANT_TICKET_ACTION_FOR_ITEM"/>
+					</uiViewComponent>
+					<!-- ticket status -->
+					<uiViewComponent uiId="cmbTicketStatus" editable="false" remoteName="ticket_status" lockStatus="false" 
+						classMountingFormFactorValue="100,101,103,102,106,104,105,201,202,203,204,205,206,501,502,506,603,613">
+						<uiValueIdField remoteRef="CONSTANT_TICKET_STATUS_FOR_ITEM"/>
+					</uiViewComponent>
+					<!-- ticket description -->
+					<uiViewComponent uiId="tiTicketDesc" editable="false" remoteName="ticket_desc" lockStatus="false" 
+						classMountingFormFactorValue="100,101,103,102,106,104,105,201,202,203,204,205,206,501,502,506,603,613">
+						<uiValueIdField remoteRef="CONSTANT_TICKET_DESC_FOR_ITEM"/>
+					</uiViewComponent>
+					<!-- ticket comments -->
+					<uiViewComponent uiId="tiTicketComments" editable="false" remoteName="status_comments" lockStatus="false" 
+						classMountingFormFactorValue="100,101,103,102,106,104,105,201,202,203,204,205,206,501,502,506,603,613">
+						<uiValueIdField remoteRef="CONSTANT_TICKET_COMMENTS_FOR_ITEM"/>
+					</uiViewComponent>
+				</uiViewComponents>
+			</uiViewPanel>
+
+			<uiViewPanel uiId="snmpCredentials" editable="true">
+				<uiViewComponents>
+					<uiViewComponent editable="true" uiId="tiPXUsername" remoteName="px_username" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_PX_USERNAME_FOR_ITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="tiPXPassword" remoteName="px_password" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_PX_PASSWORD_FOR_ITEM"/>
+					</uiViewComponent>		
+								
+					<uiViewComponent editable="true" uiId="cmbSnmpV3Enabled" remoteName="snmp_v3_enabled" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_SNMP_V3_ENABLED_FOR_ITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="tiSnmpV3Username" remoteName="snmp_v3_username" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_SNMP_V3_USERNAME_FOR_ITEM"/>
+					</uiViewComponent>
+
+					<uiViewComponent editable="true" uiId="cmbSnmpV3AuthLevel" remoteName="snmp_v3_auth_level" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_SNMP_V3_AUTH_LEVEL_FOR_ITEM"/>
+					</uiViewComponent>
+
+					<uiViewComponent editable="true" uiId="cmbSnmpV3AuthProtocol" remoteName="snmp_v3_auth_protocol" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_SNMP_V3_AUTH_PROTOCOL_FOR_ITEM"/>
+					</uiViewComponent>
+
+					<uiViewComponent editable="true" uiId="tiSnmpV3AuthPasskey" remoteName="snmp_v3_auth_passkey" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_SNMP_V3_AUTH_PASSKEY_FOR_ITEM"/>
+					</uiViewComponent>
+
+					<uiViewComponent editable="true" uiId="cmbSnmpV3PrivacyProtocol" remoteName="snmp_v3_privacy_protocol" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_SNMP_V3_PRIVACY_PROTOCOL_FOR_ITEM"/>
+					</uiViewComponent>
+
+					<uiViewComponent editable="true" uiId="tiSnmpV3PrivacyPasskey" remoteName="snmp_v3_privacy_passkey" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_SNMP_V3_PRIVACY_PASSKEY_FOR_ITEM"/>
+					</uiViewComponent>
+
+					<uiViewComponent editable="true" uiId="tiSnmpWriteCommString" remoteName="snmp_v2_community_string" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_SNMP_WRITE_COMM_STRING_FOR_ITEM"/>
+					</uiViewComponent>
+					
+					<uiViewComponent editable="true" uiId="ipAddressPortName" remoteName="snmp_v2_data_port" lockStatus="false">
+						<uiValueIdField remoteRef="CONSTANT_SNMP_DATA_PORT"/>
+					</uiViewComponent>
+					
+				</uiViewComponents>
+			</uiViewPanel>
+
+			<!-- This panel is not for display. This is used for internal purpose -->
+			<uiViewPanel uiId="_specialFields" editable="true">
+				<uiViewComponents>
+					<uiViewComponent editable="true" uiId="_tiSkipValidation" remoteName="skip_vlidation" lockStatus="false">
+						<uiValueIdField remoteRef="_CONSTANT_SKIP_VALIDATION"/>
+					</uiViewComponent>
+					<uiViewComponent editable="true" uiId="_isItemEditable" remoteName="item_editable" lockStatus="false">
+						<uiValueIdField remoteRef="_CONSTANT_ITEM_EDITABLE"/>
+					</uiViewComponent>
+					<uiViewComponent editable="false" hide="true" uiId="_tiOrigin" remoteName="item_origin" lockStatus="false">
+						<uiValueIdField remoteRef="_CONSTANT_ITEM_ORIGIN"/>
+					</uiViewComponent>
+					<uiViewComponent editable="false" uiId="_piqId" remoteName="piq_id" lockStatus="false">
+						<uiValueIdField remoteRef="_CONSTANT_ITEM_PIQ_ID"/>
+					</uiViewComponent>
+					<uiViewComponent editable="false" uiId="_itemToMoveId" remoteName="item_to_move_id" lockStatus="false">
+						<uiValueIdField remoteRef="_CONSTANT_ITEM_TO_MOVE_ID"/>
+					</uiViewComponent>
+					<uiViewComponent editable="false" uiId="_whenMoveItemId" remoteName="when_move_item_id" lockStatus="false">
+						<uiValueIdField remoteRef="_CONSTANT_WHEN_MOVE_ITEM_ID"/>
+					</uiViewComponent>
+					<uiViewComponent editable="false" uiId="_itemRequests" remoteName="item_request_list" lockStatus="false">
+						<uiValueIdField remoteRef="_CONSTANT_ITEM_REQUEST_LIST"/>
+					</uiViewComponent>
+					<uiViewComponent editable="false" uiId="_reservationId" remoteName="reservation_id" lockStatus="false">
+						<uiValueIdField remoteRef="_CONSTANT_RESERVATION_ID_ITEM"/>
+					</uiViewComponent>		
+					<uiViewComponent editable="true" uiId="tiPiqExternalKey" remoteName="piq_external_key" locakStatus="false">
+                        <uiValueIdField remoteRef="CONSTANT_PIQ_EXTERNAL_KEY"/>
+                    </uiViewComponent>			
+				</uiViewComponents>
+			</uiViewPanel>
+				
+		</uiView>
+	</uiViews>
+</dcTrack>

@@ -1,0 +1,1885 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 4.2.2.v201301221637 Build &lt;4.2.2.v20130206-1509></property>
+    <simple-property-list name="includeResource">
+        <value>../locale/report_en_US</value>
+    </simple-property-list>
+    <property name="units">in</property>
+    <property name="theme">three_dot_0.defaultTheme</property>
+    <text-property name="displayName">3dot0 Look and Feel</text-property>
+    <property name="eventHandlerClass">com.raritan.tdz.reports.eventhandler.ReportEH</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <list-property name="libraries">
+        <structure>
+            <property name="fileName">three_dot_0.rptlibrary</property>
+            <property name="namespace">three_dot_0</property>
+        </structure>
+    </list-property>
+    <parameters>
+        <scalar-parameter name="SiteCode" id="216" extends="three_dot_0.SiteCode"/>
+        <scalar-parameter name="Orientation" id="217" extends="three_dot_0.Orientation"/>
+        <scalar-parameter name="cabinetIdList" id="221" extends="three_dot_0.cabinetIdList"/>
+    </parameters>
+    <data-sources>
+        <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="raritan" id="220"
+ extends="three_dot_0.raritan">
+            <list-property name="privateDriverProperties">
+                <ex-property>
+                    <name>contentBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>metadataBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>disabledMetadataBidiFormatStr</name>
+                </ex-property>
+                <ex-property>
+                    <name>disabledContentBidiFormatStr</name>
+                </ex-property>
+            </list-property>
+            <property name="odaDriverClass">org.postgresql.Driver</property>
+            <property name="odaURL">jdbc:postgresql://localhost:5432/raritan</property>
+            <property name="odaUser">dctrack</property>
+            <encrypted-property name="odaPassword" encryptionID="base64">KE1hbmFnZU15U3R1ZmYpIQ==</encrypted-property>
+        </oda-data-source>
+    </data-sources>
+    <data-sets>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="PowerSupplies" id="11">
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">item_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">parent_id</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">parent_item_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">status</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">psredundancy</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">redundancy</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">ps_qty</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">ps_item_name_0</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">ps_port_name_0</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">ps_input_cord_id_0</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">11</property>
+                        <property name="name">ps_brkr_port_id_0</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">12</property>
+                        <property name="name">ups_item_name_0</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">13</property>
+                        <property name="name">ups_id_0</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">14</property>
+                        <property name="name">ps_item_name_1</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">15</property>
+                        <property name="name">ps_port_name_1</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">16</property>
+                        <property name="name">ps_input_cord_id_1</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">17</property>
+                        <property name="name">ps_brkr_port_id_1</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">18</property>
+                        <property name="name">ups_item_name_1</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">19</property>
+                        <property name="name">ups_id_1</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">20</property>
+                        <property name="name">ps_item_name_2</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">21</property>
+                        <property name="name">ps_port_name_2</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">22</property>
+                        <property name="name">ps_input_cord_id_2</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">23</property>
+                        <property name="name">ps_brkr_port_id_2</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">24</property>
+                        <property name="name">ups_item_name_2</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">25</property>
+                        <property name="name">ups_id_2</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">26</property>
+                        <property name="name">ps_item_name_3</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">27</property>
+                        <property name="name">ps_port_name_3</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">28</property>
+                        <property name="name">ps_input_cord_id_3</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">29</property>
+                        <property name="name">ps_brkr_port_id_3</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">30</property>
+                        <property name="name">ups_item_name_3</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">31</property>
+                        <property name="name">ups_id_3</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">32</property>
+                        <property name="name">ps_item_name_4</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">33</property>
+                        <property name="name">ps_port_name_4</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">34</property>
+                        <property name="name">ps_input_cord_id_4</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">35</property>
+                        <property name="name">ps_brkr_port_id_4</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">36</property>
+                        <property name="name">ups_item_name_4</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">37</property>
+                        <property name="name">ups_id_4</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">38</property>
+                        <property name="name">ps_item_name_5</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">39</property>
+                        <property name="name">ps_port_name_5</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">40</property>
+                        <property name="name">ps_input_cord_id_5</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">41</property>
+                        <property name="name">ps_brkr_port_id_5</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">42</property>
+                        <property name="name">ups_item_name_5</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">43</property>
+                        <property name="name">ups_id_5</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">44</property>
+                        <property name="name">ps_item_name_6</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">45</property>
+                        <property name="name">ps_port_name_6</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">46</property>
+                        <property name="name">ps_input_cord_id_6</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">47</property>
+                        <property name="name">ps_brkr_port_id_6</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">48</property>
+                        <property name="name">ups_item_name_6</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">49</property>
+                        <property name="name">ups_id_6</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">50</property>
+                        <property name="name">ps_item_name_7</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">51</property>
+                        <property name="name">ps_port_name_7</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">52</property>
+                        <property name="name">ps_input_cord_id_7</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">53</property>
+                        <property name="name">ps_brkr_port_id_7</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">54</property>
+                        <property name="name">ups_item_name_7</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">55</property>
+                        <property name="name">ups_id_7</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <method name="beforeOpen"><![CDATA[importPackage(Packages.com.raritan.tdz.reports.eventhandler);
+
+this.queryText += " WHERE status.lkp_value_code <> 5086 ";
+//attach where clause to filter certain ids
+cabs = reportContext.getParameterValue(ReportConstants.CABINET_LIST_PARAM_ID);
+if (cabs) {
+	cablist = "";
+	for (var i = 0; i < cabs.length; i++) {
+		if (i > 0) cablist += ",";
+		cablist += cabs[i];
+	}
+	//5086 Status discarded
+	this.queryText += " AND parent.item_id IN (" + cablist + ") ";
+}
+this.queryText += " GROUP BY item.item_name, parent.item_id, parent.item_name, \
+					status.lkp_value, dct_items_it.psredundancy, \
+					circuit_0.item_name, circuit_0.port_name, circuit_0.input_cord_port_id, circuit_0.brkr_port_id, circuit_0.ups_name, circuit_0.ups_id, \
+					circuit_1.item_name, circuit_1.port_name, circuit_1.input_cord_port_id, circuit_1.brkr_port_id, circuit_1.ups_name, circuit_1.ups_id, \
+					circuit_2.item_name, circuit_2.port_name, circuit_2.input_cord_port_id, circuit_2.brkr_port_id, circuit_2.ups_name, circuit_2.ups_id, \
+					circuit_3.item_name, circuit_3.port_name, circuit_3.input_cord_port_id, circuit_3.brkr_port_id, circuit_3.ups_name, circuit_3.ups_id, \
+					circuit_4.item_name, circuit_4.port_name, circuit_4.input_cord_port_id, circuit_4.brkr_port_id, circuit_4.ups_name, circuit_4.ups_id, \
+					circuit_5.item_name, circuit_5.port_name, circuit_5.input_cord_port_id, circuit_5.brkr_port_id, circuit_5.ups_name, circuit_5.ups_id, \
+					circuit_6.item_name, circuit_6.port_name, circuit_6.input_cord_port_id, circuit_6.brkr_port_id, circuit_6.ups_name, circuit_6.ups_id, \
+					circuit_7.item_name, circuit_7.port_name, circuit_7.input_cord_port_id, circuit_7.brkr_port_id, circuit_7.ups_name, circuit_7.ups_id"
+					
+this.queryText += " ORDER BY parent.item_name ASC, item.item_name ASC";
+]]></method>
+            <property name="dataSource">raritan</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">item_name</property>
+                    <property name="nativeName">item_name</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">parent_id</property>
+                    <property name="nativeName">parent_id</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">parent_item_name</property>
+                    <property name="nativeName">parent_item_name</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">status</property>
+                    <property name="nativeName">status</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">psredundancy</property>
+                    <property name="nativeName">psredundancy</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">redundancy</property>
+                    <property name="nativeName">redundancy</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">ps_qty</property>
+                    <property name="nativeName">ps_qty</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">ps_item_name_0</property>
+                    <property name="nativeName">ps_item_name_0</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">ps_port_name_0</property>
+                    <property name="nativeName">ps_port_name_0</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">10</property>
+                    <property name="name">ps_input_cord_id_0</property>
+                    <property name="nativeName">ps_input_cord_id_0</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">11</property>
+                    <property name="name">ps_brkr_port_id_0</property>
+                    <property name="nativeName">ps_brkr_port_id_0</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">12</property>
+                    <property name="name">ups_item_name_0</property>
+                    <property name="nativeName">ups_item_name_0</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">13</property>
+                    <property name="name">ups_id_0</property>
+                    <property name="nativeName">ups_id_0</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">14</property>
+                    <property name="name">ps_item_name_1</property>
+                    <property name="nativeName">ps_item_name_1</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">15</property>
+                    <property name="name">ps_port_name_1</property>
+                    <property name="nativeName">ps_port_name_1</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">16</property>
+                    <property name="name">ps_input_cord_id_1</property>
+                    <property name="nativeName">ps_input_cord_id_1</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">17</property>
+                    <property name="name">ps_brkr_port_id_1</property>
+                    <property name="nativeName">ps_brkr_port_id_1</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">18</property>
+                    <property name="name">ups_item_name_1</property>
+                    <property name="nativeName">ups_item_name_1</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">19</property>
+                    <property name="name">ups_id_1</property>
+                    <property name="nativeName">ups_id_1</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">20</property>
+                    <property name="name">ps_item_name_2</property>
+                    <property name="nativeName">ps_item_name_2</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">21</property>
+                    <property name="name">ps_port_name_2</property>
+                    <property name="nativeName">ps_port_name_2</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">22</property>
+                    <property name="name">ps_input_cord_id_2</property>
+                    <property name="nativeName">ps_input_cord_id_2</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">23</property>
+                    <property name="name">ps_brkr_port_id_2</property>
+                    <property name="nativeName">ps_brkr_port_id_2</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">24</property>
+                    <property name="name">ups_item_name_2</property>
+                    <property name="nativeName">ups_item_name_2</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">25</property>
+                    <property name="name">ups_id_2</property>
+                    <property name="nativeName">ups_id_2</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">26</property>
+                    <property name="name">ps_item_name_3</property>
+                    <property name="nativeName">ps_item_name_3</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">27</property>
+                    <property name="name">ps_port_name_3</property>
+                    <property name="nativeName">ps_port_name_3</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">28</property>
+                    <property name="name">ps_input_cord_id_3</property>
+                    <property name="nativeName">ps_input_cord_id_3</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">29</property>
+                    <property name="name">ps_brkr_port_id_3</property>
+                    <property name="nativeName">ps_brkr_port_id_3</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">30</property>
+                    <property name="name">ups_item_name_3</property>
+                    <property name="nativeName">ups_item_name_3</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">31</property>
+                    <property name="name">ups_id_3</property>
+                    <property name="nativeName">ups_id_3</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">32</property>
+                    <property name="name">ps_item_name_4</property>
+                    <property name="nativeName">ps_item_name_4</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">33</property>
+                    <property name="name">ps_port_name_4</property>
+                    <property name="nativeName">ps_port_name_4</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">34</property>
+                    <property name="name">ps_input_cord_id_4</property>
+                    <property name="nativeName">ps_input_cord_id_4</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">35</property>
+                    <property name="name">ps_brkr_port_id_4</property>
+                    <property name="nativeName">ps_brkr_port_id_4</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">36</property>
+                    <property name="name">ups_item_name_4</property>
+                    <property name="nativeName">ups_item_name_4</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">37</property>
+                    <property name="name">ups_id_4</property>
+                    <property name="nativeName">ups_id_4</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">38</property>
+                    <property name="name">ps_item_name_5</property>
+                    <property name="nativeName">ps_item_name_5</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">39</property>
+                    <property name="name">ps_port_name_5</property>
+                    <property name="nativeName">ps_port_name_5</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">40</property>
+                    <property name="name">ps_input_cord_id_5</property>
+                    <property name="nativeName">ps_input_cord_id_5</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">41</property>
+                    <property name="name">ps_brkr_port_id_5</property>
+                    <property name="nativeName">ps_brkr_port_id_5</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">42</property>
+                    <property name="name">ups_item_name_5</property>
+                    <property name="nativeName">ups_item_name_5</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">43</property>
+                    <property name="name">ups_id_5</property>
+                    <property name="nativeName">ups_id_5</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">44</property>
+                    <property name="name">ps_item_name_6</property>
+                    <property name="nativeName">ps_item_name_6</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">45</property>
+                    <property name="name">ps_port_name_6</property>
+                    <property name="nativeName">ps_port_name_6</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">46</property>
+                    <property name="name">ps_input_cord_id_6</property>
+                    <property name="nativeName">ps_input_cord_id_6</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">47</property>
+                    <property name="name">ps_brkr_port_id_6</property>
+                    <property name="nativeName">ps_brkr_port_id_6</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">48</property>
+                    <property name="name">ups_item_name_6</property>
+                    <property name="nativeName">ups_item_name_6</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">49</property>
+                    <property name="name">ups_id_6</property>
+                    <property name="nativeName">ups_id_6</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">50</property>
+                    <property name="name">ps_item_name_7</property>
+                    <property name="nativeName">ps_item_name_7</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">51</property>
+                    <property name="name">ps_port_name_7</property>
+                    <property name="nativeName">ps_port_name_7</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">52</property>
+                    <property name="name">ps_input_cord_id_7</property>
+                    <property name="nativeName">ps_input_cord_id_7</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">53</property>
+                    <property name="name">ps_brkr_port_id_7</property>
+                    <property name="nativeName">ps_brkr_port_id_7</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">54</property>
+                    <property name="name">ups_item_name_7</property>
+                    <property name="nativeName">ups_item_name_7</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">55</property>
+                    <property name="name">ups_id_7</property>
+                    <property name="nativeName">ups_id_7</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[/* fetch item and up to 8 power supply port ids */
+SELECT 	item.item_name,
+		parent.item_id as parent_id,
+		parent.item_name as parent_item_name,
+		status.lkp_value as status,
+		dct_items_it.psredundancy,
+		substring(dct_items_it.psredundancy from E'(\\d+)') as redundancy,
+		COUNT(dct_ports_power.port_power_id) as ps_qty,
+		
+		circuit_0.item_name as ps_item_name_0,
+		circuit_0.port_name as ps_port_name_0,
+		circuit_0.input_cord_port_id as ps_input_cord_id_0,
+		circuit_0.brkr_port_id as ps_brkr_port_id_0,
+		circuit_0.ups_name as ups_item_name_0,
+		circuit_0.ups_id as ups_id_0,
+		
+		circuit_1.item_name as ps_item_name_1,
+		circuit_1.port_name as ps_port_name_1,
+		circuit_1.input_cord_port_id as ps_input_cord_id_1,
+		circuit_1.brkr_port_id as ps_brkr_port_id_1,
+		circuit_1.ups_name as ups_item_name_1,
+		circuit_1.ups_id as ups_id_1,
+		
+		circuit_2.item_name as ps_item_name_2,
+		circuit_2.port_name as ps_port_name_2,
+		circuit_2.input_cord_port_id as ps_input_cord_id_2,
+		circuit_2.brkr_port_id as ps_brkr_port_id_2,
+		circuit_2.ups_name as ups_item_name_2,
+		circuit_2.ups_id as ups_id_2,
+		
+		circuit_3.item_name as ps_item_name_3,
+		circuit_3.port_name as ps_port_name_3,
+		circuit_3.input_cord_port_id as ps_input_cord_id_3,
+		circuit_3.brkr_port_id as ps_brkr_port_id_3,
+		circuit_3.ups_name as ups_item_name_3,
+		circuit_3.ups_id as ups_id_3,
+		
+		circuit_4.item_name as ps_item_name_4,
+		circuit_4.port_name as ps_port_name_4,
+		circuit_4.input_cord_port_id as ps_input_cord_id_4,
+		circuit_4.brkr_port_id as ps_brkr_port_id_4,
+		circuit_4.ups_name as ups_item_name_4,
+		circuit_4.ups_id as ups_id_4,
+		
+		circuit_5.item_name as ps_item_name_5,
+		circuit_5.port_name as ps_port_name_5,
+		circuit_5.input_cord_port_id as ps_input_cord_id_5,
+		circuit_5.brkr_port_id as ps_brkr_port_id_5,
+		circuit_5.ups_name as ups_item_name_5,
+		circuit_5.ups_id as ups_id_5,
+		
+		circuit_6.item_name as ps_item_name_6,
+		circuit_6.port_name as ps_port_name_6,
+		circuit_6.input_cord_port_id as ps_input_cord_id_6,
+		circuit_6.brkr_port_id as ps_brkr_port_id_6,
+		circuit_6.ups_name as ups_item_name_6,
+		circuit_6.ups_id as ups_id_6,
+		
+		circuit_7.item_name as ps_item_name_7,
+		circuit_7.port_name as ps_port_name_7,
+		circuit_7.input_cord_port_id as ps_input_cord_id_7,
+		circuit_7.brkr_port_id as ps_brkr_port_id_7,
+		circuit_7.ups_name as ups_item_name_7,
+		circuit_7.ups_id as ups_id_7
+		
+FROM 
+/* create a cross tab from item power ports  */
+crosstab (
+	'SELECT	dct_items.item_id::integer, /* row */
+		 	dct_ports_power.port_power_id::integer, /* column cat */
+		 	dct_ports_power.port_power_id::integer	/* column val */
+	FROM dct_items
+	INNER JOIN dct_ports_power ON dct_items.item_id = dct_ports_power.item_id
+	INNER JOIN dct_lks_data as class on dct_items.class_lks_id = class.lks_id
+	/* device, network or probe */
+	WHERE class.lkp_value_code IN (1200, 1300, 1400)
+	ORDER BY dct_items.item_id, dct_ports_power.sort_order'
+) as item_supplies_map (	
+	item_id integer,
+	ps_port_id0 integer, ps_port_id1 integer, ps_port_id2 integer, ps_port_id3 integer, 
+	ps_port_id4 integer, ps_port_id5 integer, ps_port_id6 integer, ps_port_id7 integer
+)
+INNER JOIN dct_items AS item ON item_supplies_map.item_id = item.item_id
+INNER JOIN dct_items AS parent ON item.parent_item_id = parent.item_id
+INNER JOIN dct_items_it ON item.item_id = dct_items_it.item_id
+INNER JOIN dct_ports_power ON item.item_id = dct_ports_power.item_id
+INNER JOIN dct_lks_data AS status ON item.status_lks_id = status.lks_id
+
+LEFT JOIN (
+	SELECT 	src_con.source_port_id,
+			ps_items.item_name,
+			ps_ports.port_name,
+			ps_ports.input_cord_port_id,
+			ps_ports.brkr_port_id,
+			ups.item_name as ups_name,
+			ups.item_id as ups_id
+	FROM dct_circuits_power
+	INNER JOIN dct_connections_power AS src_con ON dct_circuits_power.start_conn_id = src_con.connection_power_id
+	INNER JOIN dct_ports_power AS ps_ports ON src_con.dest_port_id = ps_ports.port_power_id
+	INNER JOIN dct_items AS ps_items ON ps_ports.item_id = ps_items.item_id
+	
+	INNER JOIN dct_connections_power AS end_con ON dct_circuits_power.end_conn_id = end_con.connection_power_id
+	INNER JOIN dct_ports_power AS pb_ports ON end_con.source_port_id = pb_ports.port_power_id
+	INNER JOIN dct_items AS pb_items ON pb_ports.item_id = pb_items.item_id
+	INNER JOIN dct_items_me ON pb_items.parent_item_id = dct_items_me.item_id
+	INNER JOIN dct_items AS ups ON dct_items_me.ups_bank_item_id = ups.item_id
+) AS circuit_0 ON circuit_0.source_port_id = item_supplies_map.ps_port_id0
+
+LEFT JOIN (
+	SELECT 	src_con.source_port_id,
+			ps_items.item_name,
+			ps_ports.port_name,
+			ps_ports.input_cord_port_id,
+			ps_ports.brkr_port_id,
+			ups.item_name as ups_name,
+			ups.item_id as ups_id
+	FROM dct_circuits_power
+	INNER JOIN dct_connections_power AS src_con ON dct_circuits_power.start_conn_id = src_con.connection_power_id
+	INNER JOIN dct_ports_power AS ps_ports ON src_con.dest_port_id = ps_ports.port_power_id
+	INNER JOIN dct_items AS ps_items ON ps_ports.item_id = ps_items.item_id
+	
+	INNER JOIN dct_connections_power AS end_con ON dct_circuits_power.end_conn_id = end_con.connection_power_id
+	INNER JOIN dct_ports_power AS pb_ports ON end_con.source_port_id = pb_ports.port_power_id
+	INNER JOIN dct_items AS pb_items ON pb_ports.item_id = pb_items.item_id
+	INNER JOIN dct_items_me ON pb_items.parent_item_id = dct_items_me.item_id
+	INNER JOIN dct_items AS ups ON dct_items_me.ups_bank_item_id = ups.item_id
+) AS circuit_1 ON circuit_1.source_port_id = item_supplies_map.ps_port_id1
+
+LEFT JOIN (
+	SELECT 	src_con.source_port_id,
+			ps_items.item_name,
+			ps_ports.port_name,
+			ps_ports.input_cord_port_id,
+			ps_ports.brkr_port_id,
+			ups.item_name as ups_name,
+			ups.item_id as ups_id
+	FROM dct_circuits_power
+	INNER JOIN dct_connections_power AS src_con ON dct_circuits_power.start_conn_id = src_con.connection_power_id
+	INNER JOIN dct_ports_power AS ps_ports ON src_con.dest_port_id = ps_ports.port_power_id
+	INNER JOIN dct_items AS ps_items ON ps_ports.item_id = ps_items.item_id
+	
+	INNER JOIN dct_connections_power AS end_con ON dct_circuits_power.end_conn_id = end_con.connection_power_id
+	INNER JOIN dct_ports_power AS pb_ports ON end_con.source_port_id = pb_ports.port_power_id
+	INNER JOIN dct_items AS pb_items ON pb_ports.item_id = pb_items.item_id
+	INNER JOIN dct_items_me ON pb_items.parent_item_id = dct_items_me.item_id
+	INNER JOIN dct_items AS ups ON dct_items_me.ups_bank_item_id = ups.item_id
+) AS circuit_2 ON circuit_2.source_port_id = item_supplies_map.ps_port_id2
+
+LEFT JOIN (
+	SELECT 	src_con.source_port_id,
+			ps_items.item_name,
+			ps_ports.port_name,
+			ps_ports.input_cord_port_id,
+			ps_ports.brkr_port_id,
+			ups.item_name as ups_name,
+			ups.item_id as ups_id
+	FROM dct_circuits_power
+	INNER JOIN dct_connections_power AS src_con ON dct_circuits_power.start_conn_id = src_con.connection_power_id
+	INNER JOIN dct_ports_power AS ps_ports ON src_con.dest_port_id = ps_ports.port_power_id
+	INNER JOIN dct_items AS ps_items ON ps_ports.item_id = ps_items.item_id
+	
+	INNER JOIN dct_connections_power AS end_con ON dct_circuits_power.end_conn_id = end_con.connection_power_id
+	INNER JOIN dct_ports_power AS pb_ports ON end_con.source_port_id = pb_ports.port_power_id
+	INNER JOIN dct_items AS pb_items ON pb_ports.item_id = pb_items.item_id
+	INNER JOIN dct_items_me ON pb_items.parent_item_id = dct_items_me.item_id
+	INNER JOIN dct_items AS ups ON dct_items_me.ups_bank_item_id = ups.item_id
+) AS circuit_3 ON circuit_3.source_port_id = item_supplies_map.ps_port_id3
+
+LEFT JOIN (
+	SELECT 	src_con.source_port_id,
+			ps_items.item_name,
+			ps_ports.port_name,
+			ps_ports.input_cord_port_id,
+			ps_ports.brkr_port_id,
+			ups.item_name as ups_name,
+			ups.item_id as ups_id
+	FROM dct_circuits_power
+	INNER JOIN dct_connections_power AS src_con ON dct_circuits_power.start_conn_id = src_con.connection_power_id
+	INNER JOIN dct_ports_power AS ps_ports ON src_con.dest_port_id = ps_ports.port_power_id
+	INNER JOIN dct_items AS ps_items ON ps_ports.item_id = ps_items.item_id
+	
+	INNER JOIN dct_connections_power AS end_con ON dct_circuits_power.end_conn_id = end_con.connection_power_id
+	INNER JOIN dct_ports_power AS pb_ports ON end_con.source_port_id = pb_ports.port_power_id
+	INNER JOIN dct_items AS pb_items ON pb_ports.item_id = pb_items.item_id
+	INNER JOIN dct_items_me ON pb_items.parent_item_id = dct_items_me.item_id
+	INNER JOIN dct_items AS ups ON dct_items_me.ups_bank_item_id = ups.item_id
+) AS circuit_4 ON circuit_4.source_port_id = item_supplies_map.ps_port_id4
+
+LEFT JOIN (
+	SELECT 	src_con.source_port_id,
+			ps_items.item_name,
+			ps_ports.port_name,
+			ps_ports.input_cord_port_id,
+			ps_ports.brkr_port_id,
+			ups.item_name as ups_name,
+			ups.item_id as ups_id
+	FROM dct_circuits_power
+	INNER JOIN dct_connections_power AS src_con ON dct_circuits_power.start_conn_id = src_con.connection_power_id
+	INNER JOIN dct_ports_power AS ps_ports ON src_con.dest_port_id = ps_ports.port_power_id
+	INNER JOIN dct_items AS ps_items ON ps_ports.item_id = ps_items.item_id
+	
+	INNER JOIN dct_connections_power AS end_con ON dct_circuits_power.end_conn_id = end_con.connection_power_id
+	INNER JOIN dct_ports_power AS pb_ports ON end_con.source_port_id = pb_ports.port_power_id
+	INNER JOIN dct_items AS pb_items ON pb_ports.item_id = pb_items.item_id
+	INNER JOIN dct_items_me ON pb_items.parent_item_id = dct_items_me.item_id
+	INNER JOIN dct_items AS ups ON dct_items_me.ups_bank_item_id = ups.item_id
+) AS circuit_5 ON circuit_5.source_port_id = item_supplies_map.ps_port_id5
+
+LEFT JOIN (
+	SELECT 	src_con.source_port_id,
+			ps_items.item_name,
+			ps_ports.port_name,
+			ps_ports.input_cord_port_id,
+			ps_ports.brkr_port_id,
+			ups.item_name as ups_name,
+			ups.item_id as ups_id
+	FROM dct_circuits_power
+	INNER JOIN dct_connections_power AS src_con ON dct_circuits_power.start_conn_id = src_con.connection_power_id
+	INNER JOIN dct_ports_power AS ps_ports ON src_con.dest_port_id = ps_ports.port_power_id
+	INNER JOIN dct_items AS ps_items ON ps_ports.item_id = ps_items.item_id
+	
+	INNER JOIN dct_connections_power AS end_con ON dct_circuits_power.end_conn_id = end_con.connection_power_id
+	INNER JOIN dct_ports_power AS pb_ports ON end_con.source_port_id = pb_ports.port_power_id
+	INNER JOIN dct_items AS pb_items ON pb_ports.item_id = pb_items.item_id
+	INNER JOIN dct_items_me ON pb_items.parent_item_id = dct_items_me.item_id
+	INNER JOIN dct_items AS ups ON dct_items_me.ups_bank_item_id = ups.item_id
+) AS circuit_6 ON circuit_6.source_port_id = item_supplies_map.ps_port_id6
+
+LEFT JOIN (
+	SELECT 	src_con.source_port_id,
+			ps_items.item_name,
+			ps_ports.port_name,
+			ps_ports.input_cord_port_id,
+			ps_ports.brkr_port_id,
+			ups.item_name as ups_name,
+			ups.item_id as ups_id
+	FROM dct_circuits_power
+	INNER JOIN dct_connections_power AS src_con ON dct_circuits_power.start_conn_id = src_con.connection_power_id
+	INNER JOIN dct_ports_power AS ps_ports ON src_con.dest_port_id = ps_ports.port_power_id
+	INNER JOIN dct_items AS ps_items ON ps_ports.item_id = ps_items.item_id
+	
+	INNER JOIN dct_connections_power AS end_con ON dct_circuits_power.end_conn_id = end_con.connection_power_id
+	INNER JOIN dct_ports_power AS pb_ports ON end_con.source_port_id = pb_ports.port_power_id
+	INNER JOIN dct_items AS pb_items ON pb_ports.item_id = pb_items.item_id
+	INNER JOIN dct_items_me ON pb_items.parent_item_id = dct_items_me.item_id
+	INNER JOIN dct_items AS ups ON dct_items_me.ups_bank_item_id = ups.item_id
+) AS circuit_7 ON circuit_7.source_port_id = item_supplies_map.ps_port_id7
+/* additonal clauses @ script hook */
+
+]]></xml-property>
+        </oda-data-set>
+    </data-sets>
+    <page-setup>
+        <simple-master-page name="dcTrackMaster" id="215" extends="three_dot_0.dcTrackMaster">
+            <property name="orientation">landscape</property>
+            <overridden-values>
+                <ref-entry baseId="136" name="NewGrid" id="853"/>
+                <ref-entry baseId="137" id="863"/>
+                <ref-entry baseId="138" id="862"/>
+                <ref-entry baseId="139" id="861"/>
+                <ref-entry baseId="140" id="854"/>
+                <ref-entry baseId="141" id="859"/>
+                <ref-entry baseId="148" name="NewLabel" id="860">
+                    <property name="textID">PowerSupplyRedundancy</property>
+                </ref-entry>
+                <ref-entry baseId="142" id="857"/>
+                <ref-entry baseId="146" name="NewImage" id="858"/>
+                <ref-entry baseId="143" id="855"/>
+                <ref-entry baseId="147" name="NewImage1" id="856"/>
+                <ref-entry baseId="149" name="NewGrid1" id="825"/>
+                <ref-entry baseId="150" id="852"/>
+                <ref-entry baseId="151" id="851"/>
+                <ref-entry baseId="152" id="850"/>
+                <ref-entry baseId="153" id="826"/>
+                <ref-entry baseId="154" id="841"/>
+                <ref-entry baseId="175" name="NewGrid3" id="842"/>
+                <ref-entry baseId="176" id="849"/>
+                <ref-entry baseId="177" id="846"/>
+                <ref-entry baseId="178" id="847"/>
+                <ref-entry baseId="181" name="NewText2" id="848"/>
+                <ref-entry baseId="179" id="843"/>
+                <ref-entry baseId="180" id="844"/>
+                <ref-entry baseId="183" name="NewText21" id="845"/>
+                <ref-entry baseId="155" id="829"/>
+                <ref-entry baseId="157" name="NewGrid2" id="830"/>
+                <ref-entry baseId="158" id="840"/>
+                <ref-entry baseId="159" id="839"/>
+                <ref-entry baseId="160" id="838"/>
+                <ref-entry baseId="161" id="831"/>
+                <ref-entry baseId="162" id="836"/>
+                <ref-entry baseId="163" name="NewAutoText" id="837"/>
+                <ref-entry baseId="164" id="834"/>
+                <ref-entry baseId="165" name="NewText" id="835"/>
+                <ref-entry baseId="166" id="832"/>
+                <ref-entry baseId="167" name="NewAutoText1" id="833"/>
+                <ref-entry baseId="156" id="827"/>
+                <ref-entry baseId="168" name="NewText1" id="828"/>
+            </overridden-values>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <table id="222">
+            <property name="dataSet">PowerSupplies</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">item_name</property>
+                    <expression name="expression">dataSetRow["item_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">parent_id</property>
+                    <expression name="expression">dataSetRow["parent_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">parent_item_name</property>
+                    <expression name="expression">dataSetRow["parent_item_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ps_item_name_0</property>
+                    <expression name="expression">dataSetRow["ps_item_name_0"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ps_port_name_0</property>
+                    <expression name="expression">dataSetRow["ps_port_name_0"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ps_item_name_1</property>
+                    <expression name="expression">dataSetRow["ps_item_name_1"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ps_port_name_1</property>
+                    <expression name="expression">dataSetRow["ps_port_name_1"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ps_item_name_2</property>
+                    <expression name="expression">dataSetRow["ps_item_name_2"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ps_port_name_2</property>
+                    <expression name="expression">dataSetRow["ps_port_name_2"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ps_item_name_3</property>
+                    <expression name="expression">dataSetRow["ps_item_name_3"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ps_port_name_3</property>
+                    <expression name="expression">dataSetRow["ps_port_name_3"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ps_item_name_4</property>
+                    <expression name="expression">dataSetRow["ps_item_name_4"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ps_port_name_4</property>
+                    <expression name="expression">dataSetRow["ps_port_name_4"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ps_item_name_5</property>
+                    <expression name="expression">dataSetRow["ps_item_name_5"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ps_port_name_5</property>
+                    <expression name="expression">dataSetRow["ps_port_name_5"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ps_item_name_6</property>
+                    <expression name="expression">dataSetRow["ps_item_name_6"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ps_port_name_6</property>
+                    <expression name="expression">dataSetRow["ps_port_name_6"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ps_item_name_7</property>
+                    <expression name="expression">dataSetRow["ps_item_name_7"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ps_port_name_7</property>
+                    <expression name="expression">dataSetRow["ps_port_name_7"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">status</property>
+                    <text-property name="displayName">status</text-property>
+                    <expression name="expression">dataSetRow["status"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">psredundancy</property>
+                    <expression name="expression">dataSetRow["psredundancy"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ps_qty</property>
+                    <expression name="expression">dataSetRow["ps_qty"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">redundancy</property>
+                    <expression name="expression">dataSetRow["redundancy"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ps_input_cord_id_0</property>
+                    <expression name="expression">dataSetRow["ps_input_cord_id_0"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">ps_brkr_port_id_0</property>
+                    <expression name="expression">dataSetRow["ps_brkr_port_id_0"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">ps_input_cord_id_1</property>
+                    <expression name="expression">dataSetRow["ps_input_cord_id_1"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">ps_brkr_port_id_1</property>
+                    <expression name="expression">dataSetRow["ps_brkr_port_id_1"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">ps_input_cord_id_2</property>
+                    <expression name="expression">dataSetRow["ps_input_cord_id_2"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">ps_brkr_port_id_2</property>
+                    <expression name="expression">dataSetRow["ps_brkr_port_id_2"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">ps_input_cord_id_3</property>
+                    <expression name="expression">dataSetRow["ps_input_cord_id_3"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">ps_brkr_port_id_3</property>
+                    <expression name="expression">dataSetRow["ps_brkr_port_id_3"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">ps_input_cord_id_4</property>
+                    <expression name="expression">dataSetRow["ps_input_cord_id_4"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">ps_brkr_port_id_4</property>
+                    <expression name="expression">dataSetRow["ps_brkr_port_id_4"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">ps_input_cord_id_5</property>
+                    <expression name="expression">dataSetRow["ps_input_cord_id_5"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">ps_brkr_port_id_5</property>
+                    <expression name="expression">dataSetRow["ps_brkr_port_id_5"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">ps_input_cord_id_6</property>
+                    <expression name="expression">dataSetRow["ps_input_cord_id_6"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">ps_brkr_port_id_6</property>
+                    <expression name="expression">dataSetRow["ps_brkr_port_id_6"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">ps_input_cord_id_7</property>
+                    <expression name="expression">dataSetRow["ps_input_cord_id_7"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">ps_brkr_port_id_7</property>
+                    <expression name="expression">dataSetRow["ps_brkr_port_id_7"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">ups_item_name_0</property>
+                    <expression name="expression">dataSetRow["ups_item_name_0"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ups_id_0</property>
+                    <expression name="expression">dataSetRow["ups_id_0"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">ups_item_name_1</property>
+                    <expression name="expression">dataSetRow["ups_item_name_1"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ups_id_1</property>
+                    <expression name="expression">dataSetRow["ups_id_1"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">ups_item_name_2</property>
+                    <expression name="expression">dataSetRow["ups_item_name_2"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ups_id_2</property>
+                    <expression name="expression">dataSetRow["ups_id_2"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">ups_item_name_3</property>
+                    <expression name="expression">dataSetRow["ups_item_name_3"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ups_id_3</property>
+                    <expression name="expression">dataSetRow["ups_id_3"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">ups_item_name_4</property>
+                    <expression name="expression">dataSetRow["ups_item_name_4"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ups_id_4</property>
+                    <expression name="expression">dataSetRow["ups_id_4"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">ups_item_name_5</property>
+                    <expression name="expression">dataSetRow["ups_item_name_5"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ups_id_5</property>
+                    <expression name="expression">dataSetRow["ups_id_5"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">ups_item_name_6</property>
+                    <expression name="expression">dataSetRow["ups_item_name_6"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ups_id_6</property>
+                    <expression name="expression">dataSetRow["ups_id_6"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">ups_item_name_7</property>
+                    <expression name="expression">dataSetRow["ups_item_name_7"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ups_id_7</property>
+                    <expression name="expression">dataSetRow["ups_id_7"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+            </list-property>
+            <property name="pageBreakInterval">0</property>
+            <column id="253"/>
+            <column id="457">
+                <property name="textAlign">center</property>
+            </column>
+            <column id="463">
+                <property name="width">35px</property>
+                <property name="textAlign">center</property>
+            </column>
+            <column id="613">
+                <property name="width">35px</property>
+                <property name="textAlign">center</property>
+            </column>
+            <column id="824">
+                <property name="width">15px</property>
+                <property name="textAlign">center</property>
+            </column>
+            <column id="657"/>
+            <column id="254"/>
+            <column id="255"/>
+            <column id="256"/>
+            <column id="257"/>
+            <column id="258"/>
+            <column id="259"/>
+            <column id="260"/>
+            <column id="261"/>
+            <header>
+                <row id="545">
+                    <property name="fontWeight">normal</property>
+                    <cell id="546">
+                        <property name="colSpan">14</property>
+                        <property name="rowSpan">1</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <grid id="557">
+                            <column id="558">
+                                <property name="width">28%</property>
+                            </column>
+                            <column id="663">
+                                <property name="width">1%</property>
+                            </column>
+                            <column id="559"/>
+                            <column id="660">
+                                <property name="width">1%</property>
+                            </column>
+                            <column id="598">
+                                <property name="width">50%</property>
+                            </column>
+                            <row id="629">
+                                <cell id="630">
+                                    <property name="colSpan">1</property>
+                                    <property name="rowSpan">1</property>
+                                    <property name="paddingLeft">1pt</property>
+                                    <property name="paddingRight">1pt</property>
+                                    <text id="865">
+                                        <property name="fontWeight">normal</property>
+                                        <property name="contentType">html</property>
+                                        <text-property name="content"><![CDATA[<B>
+<VALUE-OF>reportContext.getMessage("ItemNameColorCode", reportContext.getLocale())</VALUE-OF>
+</B><sup>1</sup>]]></text-property>
+                                    </text>
+                                </cell>
+                                <cell id="661">
+                                    <property name="paddingLeft">1pt</property>
+                                    <property name="paddingRight">1pt</property>
+                                </cell>
+                                <cell id="636">
+                                    <property name="colSpan">1</property>
+                                    <property name="rowSpan">1</property>
+                                    <property name="paddingLeft">1pt</property>
+                                    <property name="paddingRight">1pt</property>
+                                    <text id="866">
+                                        <property name="fontWeight">normal</property>
+                                        <property name="contentType">html</property>
+                                        <text-property name="content"><![CDATA[<B>
+<VALUE-OF>reportContext.getMessage("QuantityColorCode", reportContext.getLocale())</VALUE-OF>
+</B><sup>2</sup>]]></text-property>
+                                    </text>
+                                </cell>
+                                <cell id="658">
+                                    <property name="paddingLeft">1pt</property>
+                                    <property name="paddingRight">1pt</property>
+                                </cell>
+                                <cell id="639">
+                                    <property name="colSpan">1</property>
+                                    <property name="rowSpan">1</property>
+                                    <property name="paddingLeft">1pt</property>
+                                    <property name="paddingRight">1pt</property>
+                                    <text id="867">
+                                        <property name="fontWeight">normal</property>
+                                        <property name="contentType">html</property>
+                                        <text-property name="content"><![CDATA[<B>
+<VALUE-OF>reportContext.getMessage("NXColorCodes", reportContext.getLocale())</VALUE-OF>
+</B><sup>3</sup>]]></text-property>
+                                    </text>
+                                </cell>
+                            </row>
+                            <row id="561">
+                                <cell id="562">
+                                    <property name="colSpan">1</property>
+                                    <property name="rowSpan">1</property>
+                                    <property name="paddingLeft">1pt</property>
+                                    <property name="paddingRight">1pt</property>
+                                    <grid id="512">
+                                        <property name="borderBottomColor">#000000</property>
+                                        <property name="borderBottomStyle">solid</property>
+                                        <property name="borderBottomWidth">1px</property>
+                                        <property name="borderLeftColor">#000000</property>
+                                        <property name="borderLeftStyle">solid</property>
+                                        <property name="borderLeftWidth">1px</property>
+                                        <property name="borderRightColor">#000000</property>
+                                        <property name="borderRightStyle">solid</property>
+                                        <property name="borderRightWidth">1px</property>
+                                        <property name="borderTopColor">#000000</property>
+                                        <property name="borderTopStyle">solid</property>
+                                        <property name="borderTopWidth">1px</property>
+                                        <column id="513">
+                                            <property name="width">11%</property>
+                                        </column>
+                                        <column id="641"/>
+                                        <column id="643">
+                                            <property name="width">29%</property>
+                                        </column>
+                                        <column id="645"/>
+                                        <row id="516">
+                                            <cell id="517">
+                                                <property name="style">itemNameNACell</property>
+                                                <property name="paddingLeft">0pt</property>
+                                                <property name="paddingRight">0pt</property>
+                                                <label id="646">
+                                                    <text-property name="text" key="n/a"></text-property>
+                                                </label>
+                                            </cell>
+                                            <cell id="640">
+                                                <property name="style">itemNameNotConnectedCell</property>
+                                                <property name="paddingLeft">0pt</property>
+                                                <property name="paddingRight">0pt</property>
+                                                <label id="479">
+                                                    <text-property name="text" key="NotConnectedRedundantly"></text-property>
+                                                </label>
+                                            </cell>
+                                            <cell id="642">
+                                                <property name="style">itemNameCircuitRedundancyCell</property>
+                                                <property name="paddingLeft">0pt</property>
+                                                <property name="paddingRight">0pt</property>
+                                                <label id="647">
+                                                    <text-property name="text" key="CircuitRedundancy"></text-property>
+                                                </label>
+                                            </cell>
+                                            <cell id="644">
+                                                <property name="style">itemNamePowerSourceCell</property>
+                                                <property name="paddingLeft">0pt</property>
+                                                <property name="paddingRight">0pt</property>
+                                                <label id="648">
+                                                    <text-property name="text" key="PowerSourceRedundancy"></text-property>
+                                                </label>
+                                            </cell>
+                                        </row>
+                                    </grid>
+                                </cell>
+                                <cell id="662">
+                                    <property name="paddingLeft">1pt</property>
+                                    <property name="paddingRight">1pt</property>
+                                </cell>
+                                <cell id="563">
+                                    <property name="colSpan">1</property>
+                                    <property name="rowSpan">1</property>
+                                    <property name="paddingLeft">1pt</property>
+                                    <property name="paddingRight">1pt</property>
+                                    <grid id="518">
+                                        <property name="borderBottomColor">#000000</property>
+                                        <property name="borderBottomStyle">solid</property>
+                                        <property name="borderLeftColor">#000000</property>
+                                        <property name="borderLeftStyle">solid</property>
+                                        <property name="borderRightColor">#000000</property>
+                                        <property name="borderRightStyle">solid</property>
+                                        <property name="borderTopColor">#000000</property>
+                                        <property name="borderTopStyle">solid</property>
+                                        <column id="519"/>
+                                        <row id="522">
+                                            <cell id="523">
+                                                <property name="style">qtyPSNotConnectedCell</property>
+                                                <text id="665">
+                                                    <property name="contentType">html</property>
+                                                    <text-property name="content"><![CDATA[<VALUE-OF format="HTML">reportContext.getMessage("ExistingPowerSupplyNotConnected", reportContext.getLocale())</VALUE-OF>
+ ]]></text-property>
+                                                </text>
+                                            </cell>
+                                        </row>
+                                    </grid>
+                                </cell>
+                                <cell id="659">
+                                    <property name="paddingLeft">1pt</property>
+                                    <property name="paddingRight">1pt</property>
+                                </cell>
+                                <cell id="564">
+                                    <property name="colSpan">1</property>
+                                    <property name="rowSpan">1</property>
+                                    <property name="paddingLeft">1pt</property>
+                                    <property name="paddingRight">1pt</property>
+                                    <grid id="524">
+                                        <property name="borderBottomColor">#000000</property>
+                                        <property name="borderBottomStyle">solid</property>
+                                        <property name="borderLeftColor">#000000</property>
+                                        <property name="borderLeftStyle">solid</property>
+                                        <property name="borderRightColor">#000000</property>
+                                        <property name="borderRightStyle">solid</property>
+                                        <property name="borderTopColor">#000000</property>
+                                        <property name="borderTopStyle">solid</property>
+                                        <column id="525"/>
+                                        <column id="527"/>
+                                        <column id="528"/>
+                                        <column id="529">
+                                            <property name="width">25%</property>
+                                        </column>
+                                        <column id="650"/>
+                                        <row id="536">
+                                            <cell id="537">
+                                                <property name="style">redundancyNo</property>
+                                                <label id="483">
+                                                    <text-property name="text" key="NoRedundancy"></text-property>
+                                                </label>
+                                            </cell>
+                                            <cell id="539">
+                                                <property name="style">redundancySupplyRedundancy</property>
+                                                <label id="485">
+                                                    <text-property name="text" key="PowerSupplyRedundancy"></text-property>
+                                                </label>
+                                            </cell>
+                                            <cell id="540">
+                                                <property name="style">redundancySourceRedundancy</property>
+                                                <label id="486">
+                                                    <text-property name="text" key="PowerSourceRedundancy"></text-property>
+                                                </label>
+                                            </cell>
+                                            <cell id="541">
+                                                <property name="style">redundancySupplySourceRedundancy</property>
+                                                <label id="487">
+                                                    <text-property name="text" key="PowerSupplySourceRedundancy"></text-property>
+                                                </label>
+                                            </cell>
+                                            <cell id="649">
+                                                <property name="style">redundancyIncorrect</property>
+                                                <label id="484">
+                                                    <text-property name="text" key="RedundancyIsIncorrect"></text-property>
+                                                </label>
+                                            </cell>
+                                        </row>
+                                    </grid>
+                                </cell>
+                            </row>
+                        </grid>
+                    </cell>
+                </row>
+            </header>
+            <group id="325">
+                <property name="groupName">Cabinet</property>
+                <property name="interval">none</property>
+                <property name="sortDirection">asc</property>
+                <expression name="keyExpr" type="javascript">row["parent_id"]</expression>
+                <structure name="toc">
+                    <expression name="expressionValue" type="javascript">row["parent_item_name"]</expression>
+                </structure>
+                <property name="repeatHeader">true</property>
+                <property name="hideDetail">false</property>
+                <property name="pageBreakAfter">auto</property>
+                <property name="pageBreakBefore">auto</property>
+                <property name="pageBreakInside">auto</property>
+                <list-property name="sort">
+                    <structure>
+                        <expression name="key" type="javascript">row["parent_item_name"]</expression>
+                        <property name="direction">asc</property>
+                    </structure>
+                </list-property>
+                <header>
+                    <row id="326">
+                        <property name="style">mainGroupHeaderBG</property>
+                        <cell id="327">
+                            <property name="colSpan">14</property>
+                            <property name="rowSpan">1</property>
+                            <text id="302">
+                                <property name="style">groupFont1</property>
+                                <property name="contentType">html</property>
+                                <text-property name="content"><![CDATA[<VALUE-OF>reportContext.getMessage("Cabinet", reportContext.getLocale())</VALUE-OF>
+<span style="color: #009dff;"> <VALUE-OF>row["parent_item_name"]</VALUE-OF></span>]]></text-property>
+                            </text>
+                        </cell>
+                    </row>
+                    <row id="347">
+                        <property name="style">subTableHeader</property>
+                        <cell id="348">
+                            <text id="864">
+                                <property name="fontWeight">normal</property>
+                                <property name="contentType">html</property>
+                                <text-property name="content"><![CDATA[<B>
+<VALUE-OF>reportContext.getMessage("ItemName", reportContext.getLocale())</VALUE-OF>
+</B><sup>1</sup>]]></text-property>
+                            </text>
+                        </cell>
+                        <cell id="454">
+                            <label id="464">
+                                <text-property name="text" key="Status"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="460">
+                            <property name="colSpan">1</property>
+                            <property name="rowSpan">1</property>
+                            <text id="868">
+                                <property name="fontWeight">normal</property>
+                                <property name="contentType">html</property>
+                                <text-property name="content"><![CDATA[<B>
+<VALUE-OF>reportContext.getMessage("Qty", reportContext.getLocale())</VALUE-OF>
+</B><sup>2</sup>]]></text-property>
+                            </text>
+                        </cell>
+                        <cell id="651">
+                            <text id="869">
+                                <property name="fontWeight">normal</property>
+                                <property name="contentType">html</property>
+                                <text-property name="content"><![CDATA[<B>
+<VALUE-OF>reportContext.getMessage("N+x", reportContext.getLocale())</VALUE-OF>
+</B><sup>3</sup>]]></text-property>
+                            </text>
+                        </cell>
+                        <cell id="820"/>
+                        <cell id="655"/>
+                        <cell id="349">
+                            <label id="358">
+                                <text-property name="text" key="Supply1"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="350">
+                            <label id="359">
+                                <text-property name="text" key="Supply2"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="351">
+                            <label id="360">
+                                <text-property name="text" key="Supply3"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="352">
+                            <label id="361">
+                                <text-property name="text" key="Supply4"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="353">
+                            <label id="362">
+                                <text-property name="text" key="Supply5"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="354">
+                            <label id="363">
+                                <text-property name="text" key="Supply6"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="355">
+                            <label id="364">
+                                <text-property name="text" key="Supply7"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="356">
+                            <label id="365">
+                                <text-property name="text" key="Supply8"></text-property>
+                            </label>
+                        </cell>
+                    </row>
+                </header>
+            </group>
+            <detail>
+                <row id="233">
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <cell id="234">
+                        <property name="colSpan">1</property>
+                        <property name="rowSpan">3</property>
+                        <method name="onCreate"><![CDATA[setPSupplyRedunItemNameColor(this);
+]]></method>
+                        <data id="366">
+                            <property name="resultSetColumn">item_name</property>
+                        </data>
+                    </cell>
+                    <cell id="455">
+                        <property name="colSpan">1</property>
+                        <property name="rowSpan">3</property>
+                        <data id="607">
+                            <property name="resultSetColumn">status</property>
+                        </data>
+                    </cell>
+                    <cell id="461">
+                        <property name="colSpan">1</property>
+                        <property name="rowSpan">3</property>
+                        <list-property name="highlightRules">
+                            <structure>
+                                <property name="operator">is-false</property>
+                                <expression name="testExpr" type="javascript">allPSConnected()</expression>
+                                <property name="style">qtyPSNotConnectedCell</property>
+                            </structure>
+                        </list-property>
+                        <text-data id="628">
+                            <property name="textAlign">right</property>
+                            <expression name="valueExpr">row["ps_qty"] + "@ "</expression>
+                            <property name="contentType">html</property>
+                        </text-data>
+                    </cell>
+                    <cell id="612">
+                        <property name="colSpan">1</property>
+                        <property name="rowSpan">3</property>
+                        <list-property name="highlightRules">
+                            <structure>
+                                <property name="operator">lt</property>
+                                <expression name="testExpr" type="javascript">row["redundancy"]</expression>
+                                <simple-property-list name="value1">
+                                    <value>row["ps_qty"]/2</value>
+                                </simple-property-list>
+                                <property name="style">redundancySupplyRedundancy</property>
+                            </structure>
+                            <structure>
+                                <property name="operator">eq</property>
+                                <expression name="testExpr" type="javascript">row["redundancy"]</expression>
+                                <simple-property-list name="value1">
+                                    <value>row["ps_qty"]/2</value>
+                                </simple-property-list>
+                                <property name="style">redundancySourceRedundancy</property>
+                            </structure>
+                            <structure>
+                                <property name="operator">gt</property>
+                                <expression name="testExpr" type="javascript">row["redundancy"]</expression>
+                                <simple-property-list name="value1">
+                                    <value>row["ps_qty"]/2</value>
+                                </simple-property-list>
+                                <property name="style">redundancySupplySourceRedundancy</property>
+                            </structure>
+                            <structure>
+                                <property name="operator">ge</property>
+                                <expression name="testExpr" type="javascript">row["redundancy"]</expression>
+                                <simple-property-list name="value1">
+                                    <value>row["ps_qty"]</value>
+                                </simple-property-list>
+                                <property name="style">redundancyIncorrect</property>
+                            </structure>
+                            <structure>
+                                <property name="operator">is-null</property>
+                                <expression name="testExpr" type="javascript">row["redundancy"]</expression>
+                                <property name="style">redundancyNo</property>
+                            </structure>
+                            <structure>
+                                <property name="operator">eq</property>
+                                <expression name="testExpr" type="javascript">row["redundancy"]</expression>
+                                <simple-property-list name="value1">
+                                    <value>0</value>
+                                </simple-property-list>
+                                <property name="style">redundancyNo</property>
+                            </structure>
+                            <structure>
+                                <property name="operator">is-null</property>
+                                <expression name="testExpr" type="javascript">row["psredundancy"]</expression>
+                                <property name="style">redundancyIncorrect</property>
+                            </structure>
+                        </list-property>
+                        <data id="616">
+                            <property name="textAlign">left</property>
+                            <property name="resultSetColumn">psredundancy</property>
+                        </data>
+                    </cell>
+                    <cell id="821">
+                        <property name="colSpan">1</property>
+                        <property name="rowSpan">3</property>
+                    </cell>
+                    <cell id="656">
+                        <label id="800">
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text" key="OnPort"></text-property>
+                        </label>
+                    </cell>
+                    <cell id="235">
+                        <data id="803">
+                            <property name="resultSetColumn">ps_port_name_0</property>
+                        </data>
+                    </cell>
+                    <cell id="236">
+                        <data id="805">
+                            <property name="resultSetColumn">ps_port_name_1</property>
+                        </data>
+                    </cell>
+                    <cell id="237">
+                        <data id="806">
+                            <property name="resultSetColumn">ps_port_name_2</property>
+                        </data>
+                    </cell>
+                    <cell id="238">
+                        <data id="807">
+                            <property name="resultSetColumn">ps_port_name_3</property>
+                        </data>
+                    </cell>
+                    <cell id="239">
+                        <data id="808">
+                            <property name="resultSetColumn">ps_port_name_4</property>
+                        </data>
+                    </cell>
+                    <cell id="240">
+                        <data id="809">
+                            <property name="resultSetColumn">ps_port_name_5</property>
+                        </data>
+                    </cell>
+                    <cell id="241">
+                        <data id="810">
+                            <property name="resultSetColumn">ps_port_name_6</property>
+                        </data>
+                    </cell>
+                    <cell id="242">
+                        <data id="811">
+                            <property name="resultSetColumn">ps_port_name_7</property>
+                        </data>
+                    </cell>
+                </row>
+                <row id="734">
+                    <cell id="739">
+                        <label id="801">
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text" key="OnItem"></text-property>
+                        </label>
+                    </cell>
+                    <cell id="740">
+                        <data id="802">
+                            <property name="resultSetColumn">ps_item_name_0</property>
+                        </data>
+                    </cell>
+                    <cell id="741">
+                        <data id="804">
+                            <property name="resultSetColumn">ps_item_name_1</property>
+                        </data>
+                    </cell>
+                    <cell id="742">
+                        <data id="814">
+                            <property name="resultSetColumn">ps_item_name_2</property>
+                        </data>
+                    </cell>
+                    <cell id="743">
+                        <data id="815">
+                            <property name="resultSetColumn">ps_item_name_3</property>
+                        </data>
+                    </cell>
+                    <cell id="744">
+                        <data id="816">
+                            <property name="resultSetColumn">ps_item_name_4</property>
+                        </data>
+                    </cell>
+                    <cell id="745">
+                        <data id="817">
+                            <property name="resultSetColumn">ps_item_name_5</property>
+                        </data>
+                    </cell>
+                    <cell id="746">
+                        <data id="813">
+                            <property name="resultSetColumn">ps_item_name_6</property>
+                        </data>
+                    </cell>
+                    <cell id="747">
+                        <data id="812">
+                            <property name="resultSetColumn">ps_item_name_7</property>
+                        </data>
+                    </cell>
+                </row>
+                <row id="786">
+                    <cell id="791">
+                        <label id="748">
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text" key="OnUPSBank"></text-property>
+                        </label>
+                    </cell>
+                    <cell id="792">
+                        <data id="750">
+                            <property name="resultSetColumn">ups_item_name_0</property>
+                        </data>
+                    </cell>
+                    <cell id="793">
+                        <data id="757">
+                            <property name="resultSetColumn">ups_item_name_1</property>
+                        </data>
+                    </cell>
+                    <cell id="794">
+                        <data id="756">
+                            <property name="resultSetColumn">ups_item_name_2</property>
+                        </data>
+                    </cell>
+                    <cell id="795">
+                        <data id="755">
+                            <property name="resultSetColumn">ups_item_name_3</property>
+                        </data>
+                    </cell>
+                    <cell id="796">
+                        <data id="754">
+                            <property name="resultSetColumn">ups_item_name_4</property>
+                        </data>
+                    </cell>
+                    <cell id="797">
+                        <data id="753">
+                            <property name="resultSetColumn">ups_item_name_5</property>
+                        </data>
+                    </cell>
+                    <cell id="798">
+                        <data id="752">
+                            <property name="resultSetColumn">ups_item_name_6</property>
+                        </data>
+                    </cell>
+                    <cell id="799">
+                        <data id="751">
+                            <property name="resultSetColumn">ups_item_name_7</property>
+                        </data>
+                    </cell>
+                </row>
+            </detail>
+        </table>
+    </body>
+</report>

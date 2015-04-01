@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+<int:channel id="importFileTypeRouterChannel"/>
+<int:channel id="importCSVFilePathTransformerChannel"/>
+<int:channel id="importExcelToCSVTransformerChannel"/>
+<int:channel id="importFileTypeTransformEnricherChannel"/>
+
+<bean id="fileTypeResolver" class="com.raritan.tdz.dctimport.integration.routers.ImportFileTypeRouterImpl">
+	<constructor-arg name="fileTypeMap">
+		<map>
+			<entry key="text/csv" value-ref="importCSVFilePathTransformerChannel"/>
+			<entry key="application/vnd.ms-excel" value-ref="importExcelToCSVTransformerChannel"/>
+			<entry key="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" value-ref="importExcelToCSVTransformerChannel"/>
+		</map>
+	</constructor-arg>
+</bean>
+
+<int:router id="fileTypeRouter" 
+	input-channel="importFileTypeRouterChannel"
+	expression="@fileTypeResolver.resolve(payload.get(1))"/>
+
+
+<bean id="importExcelToCSVTransformer" class="com.raritan.tdz.dctimport.integration.transformers.ImportExcelToCSVTransformer"/>
+<bean id="importCSVFilePathTransformer" class="com.raritan.tdz.dctimport.integration.transformers.ImportCSVFilePathTransformer"/>
+
+<int:transformer input-channel="importExcelToCSVTransformerChannel" output-channel="importFileTypeTransformEnricherChannel"
+	ref="importExcelToCSVTransformer" method="transform"/>
+
+
+<int:transformer input-channel="importCSVFilePathTransformerChannel" output-channel="launchValidationJobChannel"
+	ref="importCSVFilePathTransformer" method="transform"/>
+	
+<int:transformer id="importFileTypeTransformerEnricher" input-channel="importFileTypeTransformEnricherChannel"
+	output-channel="launchValidationJobChannel" expression="T(java.util.Arrays).asList(payload)"
+	/>
+</beans>

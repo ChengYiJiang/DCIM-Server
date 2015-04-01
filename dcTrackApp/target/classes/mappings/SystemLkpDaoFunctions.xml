@@ -1,0 +1,35 @@
+﻿<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE hibernate-mapping
+   PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+   
+<hibernate-mapping>
+
+  <query name="LksData.findById">
+  	<![CDATA[select s from LksData s where s.lksId = ?]]>
+  </query>
+  
+  <query name="LksData.findByLkpValueCode">
+  	<![CDATA[select s from LksData s where s.lkpValueCode = ?]]>
+  </query>
+  
+  <query name="LksData.findByLkpType">
+  	<![CDATA[select s from LksData s where s.lkpTypeName = ? order by s.lkpValue]]>
+  </query>
+  
+   <query name="LksData.findByLkpTypeNameAndLkpValue">
+  	<![CDATA[select s from LksData s where s.lkpTypeName = ? and s.lkpValue = ?]]>
+  </query>
+  
+   <query name="LksData.findByLkpValue">
+  	<![CDATA[select s from LksData s where s.lkpValue = ?]]>
+  </query>
+  
+   <query name="LksData.findByLkpValueAndType">
+  	<![CDATA[select s from LksData s where s.lkpValue = ? and s.lkpTypeName = ?]]>
+  </query>
+
+   <query name="LksData.findByLkpValueAndTypeCaseInsensitive">
+  	<![CDATA[select s from LksData s where upper(s.lkpValue) = UPPER(?) and upper(s.lkpTypeName) = upper(?)]]>
+  </query>
+</hibernate-mapping>

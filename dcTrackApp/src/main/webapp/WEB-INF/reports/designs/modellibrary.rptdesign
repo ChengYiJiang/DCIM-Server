@@ -1,0 +1,1556 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 4.2.2.v201301221637 Build &lt;4.2.2.v20130206-1509></property>
+    <simple-property-list name="includeResource">
+        <value>../locale/report_en_US</value>
+    </simple-property-list>
+    <property name="units">in</property>
+    <property name="theme">three_dot_0.defaultTheme</property>
+    <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="eventHandlerClass">com.raritan.tdz.reports.eventhandler.ReportEH</property>
+    <property name="layoutPreference">fixed layout</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <list-property name="libraries">
+        <structure>
+            <property name="fileName">three_dot_0.rptlibrary</property>
+            <property name="namespace">three_dot_0</property>
+        </structure>
+    </list-property>
+    <parameters>
+        <scalar-parameter name="Orientation" id="754" extends="three_dot_0.Orientation"/>
+        <scalar-parameter name="ModelList" id="763" extends="three_dot_0.ModelList"/>
+        <scalar-parameter name="ManufacturerId" id="765" extends="three_dot_0.ManufacturerId"/>
+    </parameters>
+    <data-sources>
+        <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="raritan" id="757"
+ extends="three_dot_0.raritan">
+            <list-property name="privateDriverProperties">
+                <ex-property>
+                    <name>contentBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>metadataBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>disabledMetadataBidiFormatStr</name>
+                </ex-property>
+                <ex-property>
+                    <name>disabledContentBidiFormatStr</name>
+                </ex-property>
+            </list-property>
+            <property name="odaDriverClass">org.postgresql.Driver</property>
+            <property name="odaURL">jdbc:postgresql://localhost:5432/raritan</property>
+            <property name="odaUser">dctrack</property>
+            <encrypted-property name="odaPassword" encryptionID="base64">KE1hbmFnZU15U3R1ZmYpIQ==</encrypted-property>
+        </oda-data-source>
+    </data-sources>
+    <data-sets>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Models" id="194">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">model_id</property>
+                    <text-property name="displayName">model_id</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">model_name</property>
+                    <text-property name="displayName">model_name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">front_image</property>
+                    <text-property name="displayName">front_image</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">rear_image</property>
+                    <text-property name="displayName">rear_image</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">mounting</property>
+                    <text-property name="displayName">mounting</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">ru_height</property>
+                    <text-property name="displayName">ru_height</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">dim_h</property>
+                    <text-property name="displayName">dim_h</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">dim_w</property>
+                    <text-property name="displayName">dim_w</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">dim_d</property>
+                    <text-property name="displayName">dim_d</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">weight</property>
+                    <text-property name="displayName">weight</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">library_version</property>
+                    <text-property name="displayName">library_version</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">mfr_id</property>
+                    <text-property name="displayName">mfr_id</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">mfr_name</property>
+                    <text-property name="displayName">mfr_name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">lkp_value</property>
+                    <text-property name="displayName">lkp_value</text-property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">model_id</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">model_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">front_image</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">rear_image</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">mounting</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">ru_height</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">dim_h</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">dim_w</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">dim_d</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">weight</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">11</property>
+                        <property name="name">library_version</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">12</property>
+                        <property name="name">mfr_id</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">13</property>
+                        <property name="name">mfr_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">14</property>
+                        <property name="name">lkp_value</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <method name="beforeOpen"><![CDATA[importPackage(Packages.com.raritan.tdz.reports.eventhandler);
+
+var mfrfilter = null;
+var modelfilter = null;
+
+//attach where clause to filter certain ids
+
+mfrs = reportContext.getParameterValue(ReportConstants.MANUFACTURER_ID_PARAM_ID);
+if (mfrs) {
+	mfrfilter = "dct_mfrs.mfr_id IN (" + mfrs + ")";
+}
+
+models = reportContext.getParameterValue(ReportConstants.MODEL_LIST_PARAM_ID);
+if (models) {
+	modelfilter = "dct_models.model_id IN ("
+	for (var i = 0; i < models.length; i++) {
+		if (i > 0) modelfilter += ",";
+		modelfilter += models[i];
+	}
+	modelfilter += ")";
+}
+
+if (mfrfilter || modelfilter) {
+	this.queryText += " WHERE ";
+	if (mfrfilter) {
+		this.queryText += mfrfilter;
+		if (modelfilter) {
+			this.queryText += " OR ";
+			this.queryText += modelfilter;		
+		}
+	} else {
+		this.queryText += modelfilter;		
+	}
+}
+//sort
+this.queryText += " ORDER BY mfr_name asc, lkp_value asc, model_name asc";
+info(this.queryText );
+
+]]></method>
+            <property name="dataSource">raritan</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">model_id</property>
+                    <property name="nativeName">model_id</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">model_name</property>
+                    <property name="nativeName">model_name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">front_image</property>
+                    <property name="nativeName">front_image</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">-7</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">rear_image</property>
+                    <property name="nativeName">rear_image</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">-7</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">mounting</property>
+                    <property name="nativeName">mounting</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">ru_height</property>
+                    <property name="nativeName">ru_height</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">dim_h</property>
+                    <property name="nativeName">dim_h</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">dim_w</property>
+                    <property name="nativeName">dim_w</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">dim_d</property>
+                    <property name="nativeName">dim_d</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
+                </structure>
+                <structure>
+                    <property name="position">10</property>
+                    <property name="name">weight</property>
+                    <property name="nativeName">weight</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
+                </structure>
+                <structure>
+                    <property name="position">11</property>
+                    <property name="name">library_version</property>
+                    <property name="nativeName">library_version</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
+                </structure>
+                <structure>
+                    <property name="position">12</property>
+                    <property name="name">mfr_id</property>
+                    <property name="nativeName">mfr_id</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">13</property>
+                    <property name="name">mfr_name</property>
+                    <property name="nativeName">mfr_name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">14</property>
+                    <property name="name">lkp_value</property>
+                    <property name="nativeName">lkp_value</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[SELECT
+	dct_models.model_id,
+	dct_models.model_name,
+	dct_models.front_image,
+	dct_models.rear_image,
+	dct_models.mounting,
+	dct_models.ru_height,
+	dct_models.dim_h,
+	dct_models.dim_w,
+	dct_models.dim_d,
+	dct_models.weight,
+	dct_models.library_version,
+	dct_mfrs.mfr_id,
+	dct_mfrs.mfr_name,
+	dct_lks_data.lkp_value
+FROM dct_models 
+INNER JOIN dct_mfrs ON dct_models.mfr_id = dct_mfrs.mfr_id 
+INNER JOIN dct_lks_data ON dct_models.class_lks_id = dct_lks_data.lks_id
+/*
+	Note in script callback a "where clause" and an "order by" is added
+*/
+]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>1.0</Version>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>MODEL_DETAIL_ID</design:name>
+            <design:position>1</design:position>
+            <design:nativeDataTypeCode>-5</design:nativeDataTypeCode>
+            <design:precision>20</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>MODEL_DETAIL_ID</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>MODEL_DETAIL_ID</design:label>
+            <design:formattingHints>
+              <design:displaySize>20</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>MODEL_NAME</design:name>
+            <design:position>2</design:position>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>64</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>MODEL_NAME</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>MODEL_NAME</design:label>
+            <design:formattingHints>
+              <design:displaySize>64</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>SYS_MODEL_MFR_NAME</design:name>
+            <design:position>3</design:position>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>128</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>SYS_MODEL_MFR_NAME</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>SYS_MODEL_MFR_NAME</design:label>
+            <design:formattingHints>
+              <design:displaySize>128</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>CLASS_LKS_ID</design:name>
+            <design:position>4</design:position>
+            <design:nativeDataTypeCode>-5</design:nativeDataTypeCode>
+            <design:precision>20</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>CLASS_LKS_ID</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>CLASS_LKS_ID</design:label>
+            <design:formattingHints>
+              <design:displaySize>20</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>MODEL_CATEG</design:name>
+            <design:position>5</design:position>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>50</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>MODEL_CATEG</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>MODEL_CATEG</design:label>
+            <design:formattingHints>
+              <design:displaySize>50</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>MOUNTING</design:name>
+            <design:position>6</design:position>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>50</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>MOUNTING</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>MOUNTING</design:label>
+            <design:formattingHints>
+              <design:displaySize>50</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>ORIENTATION</design:name>
+            <design:position>7</design:position>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>50</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>ORIENTATION</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>ORIENTATION</design:label>
+            <design:formattingHints>
+              <design:displaySize>50</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>FORM_FACTOR</design:name>
+            <design:position>8</design:position>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>50</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>FORM_FACTOR</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>FORM_FACTOR</design:label>
+            <design:formattingHints>
+              <design:displaySize>50</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>RU_HEIGHT</design:name>
+            <design:position>9</design:position>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>RU_HEIGHT</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>RU_HEIGHT</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>MAX_SLOTS</design:name>
+            <design:position>10</design:position>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>MAX_SLOTS</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>MAX_SLOTS</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>SCREW_HOLES</design:name>
+            <design:position>11</design:position>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>50</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>SCREW_HOLES</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>SCREW_HOLES</design:label>
+            <design:formattingHints>
+              <design:displaySize>50</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>WEIGHT</design:name>
+            <design:position>12</design:position>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>19</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>WEIGHT</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>WEIGHT</design:label>
+            <design:formattingHints>
+              <design:displaySize>18</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>PSREDUNDANCY</design:name>
+            <design:position>13</design:position>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>50</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>PSREDUNDANCY</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>PSREDUNDANCY</design:label>
+            <design:formattingHints>
+              <design:displaySize>50</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>NUM_PS_MAX</design:name>
+            <design:position>14</design:position>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>NUM_PS_MAX</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>NUM_PS_MAX</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>BTU</design:name>
+            <design:position>15</design:position>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>19</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>BTU</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>BTU</design:label>
+            <design:formattingHints>
+              <design:displaySize>18</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>CLEARANCE_LEFT</design:name>
+            <design:position>16</design:position>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>19</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>CLEARANCE_LEFT</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>CLEARANCE_LEFT</design:label>
+            <design:formattingHints>
+              <design:displaySize>18</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>CLEARANCE_RIGHT</design:name>
+            <design:position>17</design:position>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>19</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>CLEARANCE_RIGHT</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>CLEARANCE_RIGHT</design:label>
+            <design:formattingHints>
+              <design:displaySize>18</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>CLEARANCE_FRONT</design:name>
+            <design:position>18</design:position>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>19</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>CLEARANCE_FRONT</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>CLEARANCE_FRONT</design:label>
+            <design:formattingHints>
+              <design:displaySize>18</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>CLEARANCE_REAR</design:name>
+            <design:position>19</design:position>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>19</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>CLEARANCE_REAR</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>CLEARANCE_REAR</design:label>
+            <design:formattingHints>
+              <design:displaySize>18</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>DIM_H</design:name>
+            <design:position>20</design:position>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>19</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>DIM_H</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>DIM_H</design:label>
+            <design:formattingHints>
+              <design:displaySize>18</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>DIM_W</design:name>
+            <design:position>21</design:position>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>19</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>DIM_W</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>DIM_W</design:label>
+            <design:formattingHints>
+              <design:displaySize>18</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>DIM_D</design:name>
+            <design:position>22</design:position>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>19</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>DIM_D</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>DIM_D</design:label>
+            <design:formattingHints>
+              <design:displaySize>18</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>REAR_IMAGE</design:name>
+            <design:position>23</design:position>
+            <design:nativeDataTypeCode>-7</design:nativeDataTypeCode>
+            <design:precision>1</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>REAR_IMAGE</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>REAR_IMAGE</design:label>
+            <design:formattingHints>
+              <design:displaySize>1</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>FRONT_IMAGE</design:name>
+            <design:position>24</design:position>
+            <design:nativeDataTypeCode>-7</design:nativeDataTypeCode>
+            <design:precision>1</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>FRONT_IMAGE</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>FRONT_IMAGE</design:label>
+            <design:formattingHints>
+              <design:displaySize>1</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>CREATION_DATE</design:name>
+            <design:position>25</design:position>
+            <design:nativeDataTypeCode>93</design:nativeDataTypeCode>
+            <design:precision>19</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>CREATION_DATE</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>CREATION_DATE</design:label>
+            <design:formattingHints>
+              <design:displaySize>19</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>UPDATE_DATE</design:name>
+            <design:position>26</design:position>
+            <design:nativeDataTypeCode>93</design:nativeDataTypeCode>
+            <design:precision>19</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>UPDATE_DATE</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>UPDATE_DATE</design:label>
+            <design:formattingHints>
+              <design:displaySize>19</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>CREATED_BY</design:name>
+            <design:position>27</design:position>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>255</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>CREATED_BY</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>CREATED_BY</design:label>
+            <design:formattingHints>
+              <design:displaySize>255</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>STATUS_LKS_ID</design:name>
+            <design:position>28</design:position>
+            <design:nativeDataTypeCode>-5</design:nativeDataTypeCode>
+            <design:precision>20</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>STATUS_LKS_ID</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>STATUS_LKS_ID</design:label>
+            <design:formattingHints>
+              <design:displaySize>20</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>MODEL_MFR_DETAIL_ID</design:name>
+            <design:position>29</design:position>
+            <design:nativeDataTypeCode>-5</design:nativeDataTypeCode>
+            <design:precision>20</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>MODEL_MFR_DETAIL_ID</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>MODEL_MFR_DETAIL_ID</design:label>
+            <design:formattingHints>
+              <design:displaySize>20</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>LIBRARY_VERSION</design:name>
+            <design:position>30</design:position>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>19</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>LIBRARY_VERSION</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>LIBRARY_VERSION</design:label>
+            <design:formattingHints>
+              <design:displaySize>18</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>MODEL_MFR_DETAIL_ID</design:name>
+            <design:position>31</design:position>
+            <design:nativeDataTypeCode>-5</design:nativeDataTypeCode>
+            <design:precision>20</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>MODEL_MFR_DETAIL_ID</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>MODEL_MFR_DETAIL_ID</design:label>
+            <design:formattingHints>
+              <design:displaySize>20</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>MFR_NAME</design:name>
+            <design:position>32</design:position>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>64</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>MFR_NAME</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>MFR_NAME</design:label>
+            <design:formattingHints>
+              <design:displaySize>64</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>MFR_URL</design:name>
+            <design:position>33</design:position>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>255</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>MFR_URL</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>MFR_URL</design:label>
+            <design:formattingHints>
+              <design:displaySize>255</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>MFR_TICKER</design:name>
+            <design:position>34</design:position>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>20</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>MFR_TICKER</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>MFR_TICKER</design:label>
+            <design:formattingHints>
+              <design:displaySize>20</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>TEL_CUST_SERVICE</design:name>
+            <design:position>35</design:position>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>20</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>TEL_CUST_SERVICE</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>TEL_CUST_SERVICE</design:label>
+            <design:formattingHints>
+              <design:displaySize>20</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>TEL_TECH_SUPPORT</design:name>
+            <design:position>36</design:position>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>20</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>TEL_TECH_SUPPORT</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>TEL_TECH_SUPPORT</design:label>
+            <design:formattingHints>
+              <design:displaySize>20</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>ACCT_NUMBER</design:name>
+            <design:position>37</design:position>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>20</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>ACCT_NUMBER</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>ACCT_NUMBER</design:label>
+            <design:formattingHints>
+              <design:displaySize>20</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>NOTES</design:name>
+            <design:position>38</design:position>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>21845</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>NOTES</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>NOTES</design:label>
+            <design:formattingHints>
+              <design:displaySize>21845</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>PARENT_MFR_ID</design:name>
+            <design:position>39</design:position>
+            <design:nativeDataTypeCode>-5</design:nativeDataTypeCode>
+            <design:precision>20</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>PARENT_MFR_ID</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>PARENT_MFR_ID</design:label>
+            <design:formattingHints>
+              <design:displaySize>20</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>LKS_ID</design:name>
+            <design:position>40</design:position>
+            <design:nativeDataTypeCode>-5</design:nativeDataTypeCode>
+            <design:precision>20</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>LKS_ID</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>LKS_ID</design:label>
+            <design:formattingHints>
+              <design:displaySize>20</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>LKP_TYPE_NAME</design:name>
+            <design:position>41</design:position>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>255</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>LKP_TYPE_NAME</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>LKP_TYPE_NAME</design:label>
+            <design:formattingHints>
+              <design:displaySize>255</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>LKP_VALUE_CODE</design:name>
+            <design:position>42</design:position>
+            <design:nativeDataTypeCode>-5</design:nativeDataTypeCode>
+            <design:precision>20</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>LKP_VALUE_CODE</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>LKP_VALUE_CODE</design:label>
+            <design:formattingHints>
+              <design:displaySize>20</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>ATTRIBUTE</design:name>
+            <design:position>43</design:position>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>255</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>ATTRIBUTE</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>ATTRIBUTE</design:label>
+            <design:formattingHints>
+              <design:displaySize>255</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>LKP_VALUE</design:name>
+            <design:position>44</design:position>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>255</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>LKP_VALUE</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>LKP_VALUE</design:label>
+            <design:formattingHints>
+              <design:displaySize>255</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>PARENT_LKS_ID</design:name>
+            <design:position>45</design:position>
+            <design:nativeDataTypeCode>-5</design:nativeDataTypeCode>
+            <design:precision>20</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>PARENT_LKS_ID</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>PARENT_LKS_ID</design:label>
+            <design:formattingHints>
+              <design:displaySize>20</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+    </data-sets>
+    <page-setup>
+        <simple-master-page name="dcTrackMaster-noSiteCode" id="744" extends="three_dot_0.dcTrackMaster-noSiteCode">
+            <overridden-values>
+                <ref-entry baseId="190" name="NewGrid4" id="190"/>
+                <ref-entry baseId="191" id="191"/>
+                <ref-entry baseId="192" id="192"/>
+                <ref-entry baseId="193" id="193"/>
+                <ref-entry baseId="194" id="767"/>
+                <ref-entry baseId="195" id="195"/>
+                <ref-entry baseId="196" name="NewLabel1" id="196">
+                    <property name="textID">ModelsLibrary</property>
+                </ref-entry>
+                <ref-entry baseId="197" id="197"/>
+                <ref-entry baseId="198" name="NewImage2" id="198"/>
+                <ref-entry baseId="199" id="199"/>
+                <ref-entry baseId="200" name="NewImage11" id="200"/>
+                <ref-entry baseId="201" name="NewGrid11" id="201"/>
+                <ref-entry baseId="202" id="202"/>
+                <ref-entry baseId="203" id="203"/>
+                <ref-entry baseId="204" id="204"/>
+                <ref-entry baseId="205" id="205"/>
+                <ref-entry baseId="206" id="206"/>
+                <ref-entry baseId="214" name="NewText211" id="214"/>
+                <ref-entry baseId="215" id="215"/>
+                <ref-entry baseId="216" name="NewGrid21" id="216"/>
+                <ref-entry baseId="217" id="217"/>
+                <ref-entry baseId="218" id="218"/>
+                <ref-entry baseId="219" id="219"/>
+                <ref-entry baseId="220" id="220"/>
+                <ref-entry baseId="221" id="221"/>
+                <ref-entry baseId="222" name="NewAutoText2" id="222"/>
+                <ref-entry baseId="223" id="223"/>
+                <ref-entry baseId="224" name="NewText3" id="224"/>
+                <ref-entry baseId="225" id="225"/>
+                <ref-entry baseId="226" name="NewAutoText11" id="226"/>
+                <ref-entry baseId="227" id="227"/>
+                <ref-entry baseId="228" name="NewText11" id="228"/>
+            </overridden-values>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <table id="375">
+            <property name="pageBreakAfter">auto</property>
+            <property name="pageBreakBefore">auto</property>
+            <property name="pageBreakInside">auto</property>
+            <property name="canShrink">false</property>
+            <property name="width">100%</property>
+            <property name="dataSet">Models</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">model_name</property>
+                    <expression name="expression">dataSetRow["model_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">front_image</property>
+                    <expression name="expression">dataSetRow["front_image"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">rear_image</property>
+                    <expression name="expression">dataSetRow["rear_image"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">mounting</property>
+                    <expression name="expression">dataSetRow["mounting"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ru_height</property>
+                    <expression name="expression">dataSetRow["ru_height"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">dim_h</property>
+                    <expression name="expression">dataSetRow["dim_h"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">dim_w</property>
+                    <expression name="expression">dataSetRow["dim_w"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">dim_d</property>
+                    <expression name="expression">dataSetRow["dim_d"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">weight</property>
+                    <expression name="expression">dataSetRow["weight"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">library_version</property>
+                    <expression name="expression">dataSetRow["library_version"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">mfr_name</property>
+                    <expression name="expression">dataSetRow["mfr_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">lkp_value</property>
+                    <expression name="expression">dataSetRow["lkp_value"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">model_id</property>
+                    <expression name="expression">dataSetRow["model_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">mfr_id</property>
+                    <expression name="expression">dataSetRow["mfr_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+            </list-property>
+            <property name="pageBreakInterval">0</property>
+            <column id="382">
+                <property name="width">200px</property>
+            </column>
+            <column id="502"/>
+            <column id="518"/>
+            <column id="526"/>
+            <column id="534"/>
+            <column id="542"/>
+            <column id="558"/>
+            <column id="566"/>
+            <group id="383">
+                <property name="groupName">Manufacturer</property>
+                <property name="interval">none</property>
+                <property name="sortDirection">asc</property>
+                <expression name="keyExpr" type="javascript">row["mfr_id"]</expression>
+                <structure name="toc">
+                    <expression name="expressionValue" type="javascript">row["mfr_name"]</expression>
+                </structure>
+                <property name="repeatHeader">true</property>
+                <property name="hideDetail">false</property>
+                <property name="pageBreakAfter">avoid</property>
+                <property name="pageBreakBefore">auto</property>
+                <property name="pageBreakInside">auto</property>
+                <list-property name="sort">
+                    <structure>
+                        <expression name="key" type="javascript">row["mfr_name"]</expression>
+                        <property name="direction">asc</property>
+                    </structure>
+                </list-property>
+                <header>
+                    <row id="384">
+                        <property name="style">mainGroupHeaderBG</property>
+                        <property name="borderBottomColor">#000000</property>
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <cell id="385">
+                            <property name="colSpan">8</property>
+                            <property name="rowSpan">1</property>
+                            <text id="740">
+                                <property name="style">groupFont1</property>
+                                <property name="contentType">html</property>
+                                <text-property name="content"><![CDATA[<VALUE-OF>reportContext.getMessage("Manufacturer", reportContext.getLocale())</VALUE-OF><span style="color: #009dff;"> <VALUE-OF>row["mfr_name"]</VALUE-OF></span>
+]]></text-property>
+                            </text>
+                        </cell>
+                    </row>
+                </header>
+            </group>
+            <group id="389">
+                <property name="groupName">Class</property>
+                <property name="interval">none</property>
+                <property name="sortDirection">asc</property>
+                <expression name="keyExpr" type="javascript">row["lkp_value"]</expression>
+                <structure name="toc">
+                    <expression name="expressionValue" type="javascript">row["lkp_value"]</expression>
+                </structure>
+                <property name="repeatHeader">true</property>
+                <property name="hideDetail">false</property>
+                <property name="pageBreakAfter">avoid</property>
+                <property name="pageBreakBefore">avoid</property>
+                <property name="pageBreakInside">auto</property>
+                <header>
+                    <row id="390">
+                        <cell id="391">
+                            <property name="colSpan">8</property>
+                            <property name="rowSpan">1</property>
+                            <grid id="402">
+                                <property name="fontSize">12pt</property>
+                                <property name="canShrink">true</property>
+                                <column id="403">
+                                    <property name="fontWeight">bold</property>
+                                </column>
+                                <column id="404"/>
+                                <row id="405">
+                                    <cell id="406">
+                                        <property name="colSpan">2</property>
+                                        <property name="rowSpan">1</property>
+                                        <property name="fontWeight">normal</property>
+                                        <text id="646">
+                                            <property name="style">groupFont2</property>
+                                            <property name="textLineThrough">none</property>
+                                            <property name="contentType">html</property>
+                                            <text-property name="content"><![CDATA[<VALUE-OF>reportContext.getMessage("Class", reportContext.getLocale())</VALUE-OF>
+<span> </span>
+<VALUE-OF>row["lkp_value"]</VALUE-OF>]]></text-property>
+                                        </text>
+                                    </cell>
+                                </row>
+                            </grid>
+                        </cell>
+                    </row>
+                    <row id="601">
+                        <property name="style">subTableHeader</property>
+                        <property name="fontWeight">bold</property>
+                        <cell id="602">
+                            <label id="612">
+                                <structure name="toc"/>
+                                <text-property name="text" key="Model">Model</text-property>
+                            </label>
+                        </cell>
+                        <cell id="603">
+                            <label id="630">
+                                <property name="textAlign">center</property>
+                                <text-property name="text" key="FrontImage">Front</text-property>
+                            </label>
+                        </cell>
+                        <cell id="604">
+                            <label id="631">
+                                <property name="textAlign">center</property>
+                                <text-property name="text" key="RearImage">Rear</text-property>
+                            </label>
+                        </cell>
+                        <cell id="605">
+                            <label id="626">
+                                <text-property name="text" key="Mounting">Mounting</text-property>
+                            </label>
+                        </cell>
+                        <cell id="606">
+                            <label id="624">
+                                <property name="textAlign">center</property>
+                                <text-property name="text" key="RackUnits">RU</text-property>
+                            </label>
+                        </cell>
+                        <cell id="607">
+                            <label id="616">
+                                <property name="textAlign">center</property>
+                                <text-property name="text" key="HxWxD">Height</text-property>
+                            </label>
+                        </cell>
+                        <cell id="610">
+                            <label id="622">
+                                <property name="textAlign">center</property>
+                                <text-property name="text" key="Weight">Weight</text-property>
+                            </label>
+                        </cell>
+                        <cell id="611">
+                            <label id="614">
+                                <property name="textAlign">center</property>
+                                <text-property name="text" key="Version">BTU</text-property>
+                            </label>
+                        </cell>
+                    </row>
+                </header>
+            </group>
+            <detail>
+                <row id="378">
+                    <cell id="379">
+                        <data id="613">
+                            <property name="resultSetColumn">model_name</property>
+                        </data>
+                    </cell>
+                    <cell id="498">
+                        <property name="textAlign">center</property>
+                        <property name="verticalAlign">middle</property>
+                        <image id="751">
+                            <property name="height">12px</property>
+                            <method name="onCreate"><![CDATA[this.imageName  = row['front_image'] ? "checked.png" : "unchecked.png";]]></method>
+                            <property name="source">embed</property>
+                            <property name="imageName">checked.png</property>
+                        </image>
+                    </cell>
+                    <cell id="514">
+                        <property name="textAlign">center</property>
+                        <property name="verticalAlign">middle</property>
+                        <image id="752">
+                            <property name="height">12px</property>
+                            <method name="onCreate"><![CDATA[this.imageName  = row['rear_image'] ? "checked.png" : "unchecked.png";]]></method>
+                            <property name="source">embed</property>
+                            <property name="imageName">checked.png</property>
+                        </image>
+                    </cell>
+                    <cell id="522">
+                        <data id="627">
+                            <property name="resultSetColumn">mounting</property>
+                        </data>
+                    </cell>
+                    <cell id="530">
+                        <data id="625">
+                            <property name="textAlign">center</property>
+                            <property name="resultSetColumn">ru_height</property>
+                        </data>
+                    </cell>
+                    <cell id="538">
+                        <text id="741">
+                            <property name="textAlign">center</property>
+                            <property name="contentType">html</property>
+                            <text-property name="content"><![CDATA[<VALUE-OF>getHWD()</VALUE-OF>]]></text-property>
+                        </text>
+                    </cell>
+                    <cell id="554">
+                        <data id="623">
+                            <property name="textAlign">center</property>
+                            <list-property name="visibility">
+                                <structure>
+                                    <property name="format">all</property>
+                                    <expression name="valueExpr" type="javascript">row["weight"]&lt;= 0</expression>
+                                </structure>
+                            </list-property>
+                            <property name="resultSetColumn">weight</property>
+                        </data>
+                    </cell>
+                    <cell id="562">
+                        <data id="753">
+                            <property name="textAlign">center</property>
+                            <property name="resultSetColumn">library_version</property>
+                        </data>
+                    </cell>
+                </row>
+            </detail>
+        </table>
+    </body>
+    <list-property name="images">
+        <structure>
+            <property name="name">checked.png</property>
+            <property name="type">image/png</property>
+            <property name="libReference">three_dot_0.checked.png</property>
+        </structure>
+        <structure>
+            <property name="name">unchecked.png</property>
+            <property name="type">image/png</property>
+            <property name="libReference">three_dot_0.unchecked.png</property>
+        </structure>
+    </list-property>
+</report>

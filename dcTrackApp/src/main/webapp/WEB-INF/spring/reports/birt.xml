@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration
+		http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop.xsd
+		">
+
+	<bean id="birtEngineConfig" class="org.eclipse.birt.report.engine.api.EngineConfig"/>
+	
+	<bean id="birtReportEngine" class="org.eclipse.birt.report.engine.api.ReportEngine">
+		<constructor-arg name="config" ref="birtEngineConfig"/>
+	</bean>
+	
+	<bean id="htmlRenderOption" class="org.eclipse.birt.report.engine.api.RenderOption" scope="prototype">
+		<property name="outputFormat" value="html"/>
+	</bean>
+	
+	<bean id="pdfRenderOption" class="org.eclipse.birt.report.engine.api.RenderOption" scope="prototype">
+		<property name="outputFormat" value="pdf"/>
+	</bean>	
+</beans>

@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 4.2.2.v201301221637 Build &lt;4.2.2.v20130206-1509></property>
+    <simple-property-list name="includeResource">
+        <value>../locale/report_en_US</value>
+    </simple-property-list>
+    <property name="units">in</property>
+    <property name="theme">three_dot_0.defaultTheme</property>
+    <text-property name="displayName">3dot0 Look and Feel</text-property>
+    <property name="eventHandlerClass">com.raritan.tdz.reports.eventhandler.ReportEH</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <list-property name="libraries">
+        <structure>
+            <property name="fileName">three_dot_0.rptlibrary</property>
+            <property name="namespace">three_dot_0</property>
+        </structure>
+    </list-property>
+    <parameters>
+        <scalar-parameter name="SiteCode" id="218" extends="three_dot_0.SiteCode"/>
+        <scalar-parameter name="cabinetIdList" id="236" extends="three_dot_0.cabinetIdList"/>
+        <scalar-parameter name="Orientation" id="238" extends="three_dot_0.Orientation"/>
+        <scalar-parameter name="ConnectionType" id="239" extends="three_dot_0.ConnectionType"/>
+    </parameters>
+    <data-sets>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="CabConnectionsList" id="354"
+ extends="three_dot_0.CabConnectionsList"/>
+    </data-sets>
+    <page-setup>
+        <simple-master-page name="dcTrackMaster" id="215" extends="three_dot_0.dcTrackMaster">
+            <overridden-values>
+                <ref-entry baseId="136" name="NewGrid" id="136"/>
+                <ref-entry baseId="137" id="137"/>
+                <ref-entry baseId="138" id="138"/>
+                <ref-entry baseId="139" id="139"/>
+                <ref-entry baseId="140" id="140"/>
+                <ref-entry baseId="141" id="141"/>
+                <ref-entry baseId="148" name="NewLabel" id="148">
+                    <property name="textID">ConnectionsPerCabinet</property>
+                </ref-entry>
+                <ref-entry baseId="142" id="142"/>
+                <ref-entry baseId="146" name="NewImage" id="146"/>
+                <ref-entry baseId="143" id="143"/>
+                <ref-entry baseId="147" name="NewImage1" id="147"/>
+                <ref-entry baseId="149" name="NewGrid1" id="149"/>
+                <ref-entry baseId="150" id="150"/>
+                <ref-entry baseId="151" id="151"/>
+                <ref-entry baseId="152" id="152"/>
+                <ref-entry baseId="153" id="153"/>
+                <ref-entry baseId="154" id="154"/>
+                <ref-entry baseId="175" name="NewGrid3" id="175"/>
+                <ref-entry baseId="176" id="176"/>
+                <ref-entry baseId="177" id="177"/>
+                <ref-entry baseId="178" id="178"/>
+                <ref-entry baseId="181" name="NewText2" id="181"/>
+                <ref-entry baseId="179" id="179"/>
+                <ref-entry baseId="180" id="180"/>
+                <ref-entry baseId="183" name="NewText21" id="183"/>
+                <ref-entry baseId="155" id="155"/>
+                <ref-entry baseId="157" name="NewGrid2" id="157"/>
+                <ref-entry baseId="158" id="158"/>
+                <ref-entry baseId="159" id="159"/>
+                <ref-entry baseId="160" id="160"/>
+                <ref-entry baseId="161" id="161"/>
+                <ref-entry baseId="162" id="162"/>
+                <ref-entry baseId="163" name="NewAutoText" id="163"/>
+                <ref-entry baseId="164" id="164"/>
+                <ref-entry baseId="165" name="NewText" id="165"/>
+                <ref-entry baseId="166" id="166"/>
+                <ref-entry baseId="167" name="NewAutoText1" id="167"/>
+                <ref-entry baseId="156" id="156"/>
+                <ref-entry baseId="168" name="NewText1" id="168"/>
+            </overridden-values>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <table id="240">
+            <property name="dataSet">CabConnectionsList</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">src_item_id</property>
+                    <expression name="expression">dataSetRow["src_item_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">src_item_name</property>
+                    <expression name="expression">dataSetRow["src_item_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">src_parent_item_id</property>
+                    <expression name="expression">dataSetRow["src_parent_item_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">src_parent_name</property>
+                    <expression name="expression">dataSetRow["src_parent_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">src_parent_class_code</property>
+                    <expression name="expression">dataSetRow["src_parent_class_code"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">src_u_position</property>
+                    <expression name="expression">dataSetRow["src_u_position"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">src_port_name</property>
+                    <expression name="expression">dataSetRow["src_port_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">src_port_group</property>
+                    <expression name="expression">dataSetRow["src_port_group"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">src_class</property>
+                    <expression name="expression">dataSetRow["src_class"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">src_color</property>
+                    <expression name="expression">dataSetRow["src_color"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">dest_item_id</property>
+                    <expression name="expression">dataSetRow["dest_item_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">dest_item_name</property>
+                    <expression name="expression">dataSetRow["dest_item_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">dest_dc_name</property>
+                    <expression name="expression">dataSetRow["dest_dc_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">dest_port_name</property>
+                    <expression name="expression">dataSetRow["dest_port_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">dest_class</property>
+                    <expression name="expression">dataSetRow["dest_class"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">dest_parent_name</property>
+                    <expression name="expression">dataSetRow["dest_parent_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cord_label</property>
+                    <expression name="expression">dataSetRow["cord_label"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cord</property>
+                    <expression name="expression">dataSetRow["cord"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cord_color</property>
+                    <expression name="expression">dataSetRow["cord_color"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <property name="pageBreakInterval">0</property>
+            <list-property name="sort">
+                <structure>
+                    <expression name="key" type="javascript">getUPos(row["src_u_position"] )</expression>
+                    <property name="direction">asc</property>
+                </structure>
+            </list-property>
+            <list-property name="filter">
+                <structure>
+                    <property name="operator">eq</property>
+                    <expression name="expr" type="javascript">row["src_parent_class_code"]</expression>
+                    <simple-property-list name="value1">
+                        <value>importPackage(Packages.com.raritan.tdz.util);&#13;
+&#13;
+GlobalConstants.CABINET_VAL_CODE</value>
+                    </simple-property-list>
+                </structure>
+            </list-property>
+            <column id="271"/>
+            <column id="272">
+                <property name="width">7%</property>
+            </column>
+            <column id="273"/>
+            <column id="274"/>
+            <column id="275"/>
+            <column id="276"/>
+            <column id="277"/>
+            <column id="278"/>
+            <column id="279"/>
+            <column id="324"/>
+            <group id="280">
+                <property name="groupName">Cabinet</property>
+                <property name="interval">none</property>
+                <property name="sortDirection">asc</property>
+                <expression name="keyExpr" type="javascript">row["src_parent_item_id"]</expression>
+                <structure name="toc">
+                    <expression name="expressionValue" type="javascript">row["src_parent_name"]</expression>
+                </structure>
+                <property name="repeatHeader">true</property>
+                <property name="hideDetail">false</property>
+                <property name="pageBreakAfter">auto</property>
+                <property name="pageBreakBefore">auto</property>
+                <property name="pageBreakInside">auto</property>
+                <list-property name="sort">
+                    <structure>
+                        <expression name="key" type="javascript">row["src_parent_name"]</expression>
+                        <property name="direction">asc</property>
+                    </structure>
+                </list-property>
+                <header>
+                    <row id="281">
+                        <property name="style">mainGroupHeaderBG</property>
+                        <cell id="282">
+                            <property name="colSpan">10</property>
+                            <property name="rowSpan">1</property>
+                            <text id="302">
+                                <property name="style">groupFont1</property>
+                                <property name="contentType">html</property>
+                                <text-property name="content"><![CDATA[<VALUE-OF>reportContext.getMessage("Cabinet", reportContext.getLocale())</VALUE-OF>
+<span style="color: #009dff;"> <VALUE-OF>row["src_parent_name"]</VALUE-OF></span>]]></text-property>
+                            </text>
+                        </cell>
+                    </row>
+                    <row id="327">
+                        <property name="style">subTableHeader</property>
+                        <cell id="328">
+                            <label id="338">
+                                <text-property name="text" key="Class"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="329">
+                            <label id="339">
+                                <text-property name="text" key="Position"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="330">
+                            <label id="340">
+                                <text-property name="text" key="ItemName"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="331">
+                            <label id="341">
+                                <text-property name="text" key="Port"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="332">
+                            <label id="342">
+                                <text-property name="text" key="ConnectsWith"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="333">
+                            <label id="343">
+                                <text-property name="text" key="Label"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="334">
+                            <label id="346">
+                                <text-property name="text" key="Class"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="335">
+                            <label id="347">
+                                <text-property name="text" key="Cabinet"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="336">
+                            <label id="348">
+                                <text-property name="text" key="ItemName"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="337">
+                            <label id="349">
+                                <text-property name="text" key="Port"></text-property>
+                            </label>
+                        </cell>
+                    </row>
+                </header>
+            </group>
+            <detail>
+                <row id="251">
+                    <cell id="252">
+                        <data id="304">
+                            <property name="resultSetColumn">src_class</property>
+                        </data>
+                    </cell>
+                    <cell id="253">
+                        <data id="306">
+                            <property name="textAlign">center</property>
+                            <list-property name="mapRules">
+                                <structure>
+                                    <expression name="testExpr" type="javascript">row["src_u_position"]</expression>
+                                    <property name="operator">eq</property>
+                                    <simple-property-list name="value1">
+                                        <value>-9</value>
+                                    </simple-property-list>
+                                </structure>
+                                <structure>
+                                    <expression name="testExpr" type="javascript">row["src_u_position"]</expression>
+                                    <property name="operator">eq</property>
+                                    <simple-property-list name="value1">
+                                        <value>-1</value>
+                                    </simple-property-list>
+                                    <text-property name="display" key="below"></text-property>
+                                </structure>
+                                <structure>
+                                    <expression name="testExpr" type="javascript">row["src_u_position"]</expression>
+                                    <property name="operator">eq</property>
+                                    <simple-property-list name="value1">
+                                        <value>-2</value>
+                                    </simple-property-list>
+                                    <text-property name="display" key="above"></text-property>
+                                </structure>
+                            </list-property>
+                            <property name="resultSetColumn">src_u_position</property>
+                        </data>
+                    </cell>
+                    <cell id="254">
+                        <data id="308">
+                            <property name="resultSetColumn">src_item_name</property>
+                        </data>
+                    </cell>
+                    <cell id="255">
+                        <data id="310">
+                            <property name="resultSetColumn">src_port_name</property>
+                        </data>
+                    </cell>
+                    <cell id="256">
+                        <text-data id="352">
+                            <expression name="valueExpr">cord = row["cord_color"]  ? row["cord_color"] + " ": "";&#13;
+cord += row["cord"] ? row["cord"] : "";</expression>
+                            <property name="contentType">html</property>
+                        </text-data>
+                    </cell>
+                    <cell id="257">
+                        <data id="353">
+                            <property name="resultSetColumn">cord_label</property>
+                        </data>
+                    </cell>
+                    <cell id="258">
+                        <data id="314">
+                            <property name="resultSetColumn">dest_class</property>
+                        </data>
+                    </cell>
+                    <cell id="259">
+                        <data id="316">
+                            <property name="resultSetColumn">dest_parent_name</property>
+                        </data>
+                    </cell>
+                    <cell id="260">
+                        <data id="318">
+                            <property name="resultSetColumn">dest_item_name</property>
+                        </data>
+                    </cell>
+                    <cell id="321">
+                        <data id="326">
+                            <property name="resultSetColumn">dest_port_name</property>
+                        </data>
+                    </cell>
+                </row>
+            </detail>
+        </table>
+    </body>
+</report>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-3.0.xsd">
+
+	<!-- ======================================= -->					
+	<!--  beans definition                       -->
+	<!-- ======================================= -->					
+	
+	<bean id="piqBulkUpdateRouterResolver" class="com.raritan.tdz.piq.integration.PowerIQRouterImpl">
+		<constructor-arg name="channelName" value="piqBulkUpdateChannel"/>
+		<constructor-arg name="springContextPath" value="${piqContextPathPrefix}/piqBulkUpdateContext.xml"/>
+		<property name="endPointsToStart">
+			<list>
+				<value>piqBulkUpdateHeaderRouter</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- =========================================================== -->					
+	<!-- The router picks up the data from 'piqBulkUpdateRouterChannel' --> 
+	<!-- input-channel and makes service call which is excecuted in  -->
+	<!-- in a separate application context.                          -->
+	<!-- =========================================================== -->					
+	
+	<int:channel id="piqBulkUpdateRouterChannel"/>
+	
+	<int:router input-channel="piqBulkUpdateRouterChannel" 
+		expression="@piqBulkUpdateRouterResolver.resolve(payload)"/>
+
+	<!-- =========================================================== -->
+	<!-- Enrichers -->
+	<!-- =========================================================== -->
+	
+	<!-- enrich the update call with the command and --> 
+	<!-- send message to the bulk update router that sends the message to the context for bulk update -->
+	
+	<int:channel id="updatePIQDataEnricherChannel"/>
+	
+	<int:header-enricher input-channel="updatePIQDataEnricherChannel" output-channel="piqBulkUpdateRouterChannel">
+		<int:header name="command" value="updatePIQData"/>
+	</int:header-enricher>
+	
+	<!-- enrich the stop update call with the command and --> 
+	<!-- send message to the bulk update router that sends the message to the context for bulk update -->
+	
+	<int:channel id="stopPIQDataUpdateEnricherChannel"/>
+	
+	<int:header-enricher input-channel="stopPIQDataUpdateEnricherChannel" output-channel="piqBulkUpdateRouterChannel">
+		<int:header name="command" value="stopPIQDataUpdate"/>
+	</int:header-enricher>
+
+	<!-- enrich the get update status call with the command and --> 
+	<!-- send message to the bulk update router that sends the message to the context for bulk update -->
+	
+	<int:channel id="getPIQUpdateDataStatusEnricherChannel"/>
+	
+	<int:header-enricher input-channel="getPIQUpdateDataStatusEnricherChannel" output-channel="piqBulkUpdateRouterChannel">
+		<int:header name="command" value="getPIQUpdateDataStatus"/>
+	</int:header-enricher>
+
+	<!-- 1. ========================================== -->					
+	<!--  Gateway defining the service interface       -->
+	<!--  called from ApplicationSettingServiceImpl and PowerIQ ln event subscriber     -->
+	<!--  #### THIS IS ENTRY POINT ####                -->
+	<!--  send the message to the enricher that adds power iq ip address and the command      -->
+	<!-- ============================================+ -->					
+
+	<int:gateway id="piqBulkUpdateGateway" service-interface="com.raritan.tdz.piq.service.PIQBulkSyncService">
+		<int:method name="updatePIQData" request-channel="updatePIQDataEnricherChannel"/>
+		<int:method name="stopPIQDataUpdate" request-channel="stopPIQDataUpdateEnricherChannel"/>
+		<int:method name="getPIQUpdateDataStatus" request-channel="getPIQUpdateDataStatusEnricherChannel"/>
+	</int:gateway>
+
+	<!-- ========================================================== -->
+	<!-- service activator for reloadingCommunicationSettings       -->
+	<!-- ========================================================== -->
+	
+	<int:service-activator id="bulkUpdateReloadCommunicatioinSettingsActivator"
+						input-channel="piqReconfigurationChannel"
+						ref="piqBulkUpdateRouterResolver"
+						method="reloadCommunicationSettings"/>
+						
+	<!-- ========================================================== -->
+	<!-- service activator for removing context                     -->
+	<!-- ========================================================== -->			
+	<int:service-activator id="piqBulkUpdateRemoveContext"
+			input-channel="piqRemoveContextChannel"
+			ref="piqBulkUpdateRouterResolver"
+			method="remove"/>
+</beans>

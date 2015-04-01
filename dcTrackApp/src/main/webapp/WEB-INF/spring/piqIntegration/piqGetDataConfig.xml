@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/integration 
+						http://www.springframework.org/schema/integration/spring-integration.xsd">
+	
+	<!-- ======================================= -->					
+	<!--  beans definition                       -->
+	<!-- ======================================= -->					
+	
+	<bean id="piqGetDataRouterResolver" class="com.raritan.tdz.piq.integration.PowerIQRouterImpl">
+		<constructor-arg name="channelName" value="piqGetDataChannel"/>
+		<constructor-arg name="springContextPath" value="${piqContextPathPrefix}/piqGetDataContext.xml"/>
+		<property name="endPointsToStart">
+			<list>
+				<value>piqGetDataActivator</value>
+				<value>piqSyncAllPduReadingsActivator</value>
+			</list>
+		</property>
+	</bean>
+	
+	<int:channel id="syncPduReadingCmdChannel"/>
+	<int:channel id="syncAllPduReadingCmdChannel"/>
+	
+	<!-- =========================================================== -->					
+	<!-- The router picks up the data from 'piqGetDataRouterChannel' --> 
+	<!-- input-channel and makes service call which is excecuted in  -->
+	<!-- in a separate application context.                          -->
+	<!-- =========================================================== -->					
+	
+	<int:router input-channel="syncPduReadingCmdChannel" 
+		expression="@piqGetDataRouterResolver.resolve(payload.get(0).piqHost)"/>
+		
+	<int:router input-channel="syncAllPduReadingCmdChannel" 
+		expression="@piqGetDataRouterResolver.resolve(payload.get(0))"/>
+		
+	<!-- =========================================================== -->
+	<!-- An intermediate router to route to the correct GetDataRouterChannel -->
+	<!-- =========================================================== -->	
+	<int:header-value-router input-channel="piqGetDataRouterChannel" header-name="command">
+		<int:mapping value="syncPduReadings" channel="syncPduReadingCmdChannel" />
+		<int:mapping value="syncAllPduReadings" channel="syncAllPduReadingCmdChannel"/>
+	</int:header-value-router>	
+
+	<!-- 2. ======================================= -->					
+	<!-- header enricher                            -->
+	<!-- ========================================== -->					
+
+	<int:header-enricher input-channel="syncPDUReadingsHeaderEnricher" output-channel="piqGetDataRouterChannel">
+ 		<int:header name="command" value="syncPduReadings"/>
+	</int:header-enricher>
+	
+	<int:header-enricher input-channel="syncAllPDUReadingsHeaderEnricher" output-channel="piqGetDataRouterChannel">
+ 		<int:header name="command" value="syncAllPduReadings"/>
+	</int:header-enricher>
+
+	<!-- ========================================== -->					
+	<!-- header enricher channel                    -->
+	<!-- ========================================== -->					
+	
+	<int:channel id="syncPDUReadingsHeaderEnricher"/>
+	<int:channel id="syncAllPDUReadingsHeaderEnricher"/>		
+
+	<!-- 4. ======================================== -->
+	<!-- piqGetDataGateway is injected to IPEnhancer -->
+	<!-- After enhancer groups items for PIQ,        -->
+	<!-- it puts items to piqGetDataRouterChannel    -->
+	<!-- channel                                     -->
+	<!-- =========================================== -->
+	
+	<int:gateway id="piqGetDataGateway" 
+				service-interface="com.raritan.tdz.piq.home.PIQSyncPDUClient">
+		<int:method name="syncPduReadings" request-channel="syncPDUReadingsHeaderEnricher"/>
+	</int:gateway>
+
+	<!-- ======================================= -->					
+	<!--  GetData router channels                -->
+	<!-- ======================================= -->					
+
+	<int:channel id="piqGetDataRouterChannel"/>
+
+	<!-- ======================================= -->					
+	<!--  ip enhancer bean resolving piq-host    -->
+	<!-- ======================================= -->					
+	
+	<!-- This bean locates the piq-host managing the item and update piq-host of an item -->
+	<bean id="ipEnhancer" class="com.raritan.tdz.piq.integration.DataEnhancerImpl">
+		<property name="piqSyncPDUClient" ref="piqGetDataGateway"/>
+	</bean>
+		
+	<!-- 3. ======================================= -->					
+	<!-- IPEnhancer service activator               -->
+	<!-- receives data from ipEnhancer channel and  -->
+	<!--  enhances by grouping items for PIQ        -->
+	<!-- puts group of items to piqGetDataGateway   -->
+	<!-- channlel                                   -->
+	<!-- ========================================== -->					
+
+	<int:service-activator id="ipEnhanceActivator"
+					input-channel="ipEnhancerChannel" 
+					ref="ipEnhancer"
+					method="enhance"/>
+
+	<!-- 2. ======================================= -->					
+	<!-- IPEnhancer channel                         -->
+	<!-- ========================================== -->					
+
+	<int:channel id="ipEnhancerChannel"/>
+		
+	<!-- 1. ========================================== -->					
+	<!--  Gateway defining the service interface       -->
+	<!--  called from ItemHomeImpl.syncPduReadings     -->
+	<!--  #### THIS IS ENTRY POINT ####                -->
+	<!--  List<items> sent to ip enhancer channel      -->
+	<!-- ============================================+ -->					
+		
+	<int:gateway id="piqSyncGateway"  
+				service-interface="com.raritan.tdz.piq.home.PIQSyncPDUClient">
+		<int:method name="syncPduReadings" request-channel="ipEnhancerChannel"/>	
+		<int:method name="syncAllPduReadings" request-channel="syncAllPDUReadingsHeaderEnricher" 
+			payload-expression="T(java.util.Arrays).asList(#args[0],#args[1],#args[2])"/>	
+	</int:gateway>
+	
+	<!-- ========================================================== -->
+	<!-- service activator for reloadingCommunicationSettings       -->
+	<!-- ========================================================== -->
+	
+	<int:service-activator id="getDataReloadCommunicatioinSettingsActivator"
+						input-channel="piqReconfigurationChannel"
+						ref="piqGetDataRouterResolver"
+						method="reloadCommunicationSettings"/>	
+						
+	<!-- ========================================================== -->
+	<!-- service activator for removing context                     -->
+	<!-- ========================================================== -->								
+	<int:service-activator id="piqGetDataRemoveContext"
+			input-channel="piqRemoveContextChannel"
+			ref="piqGetDataRouterResolver"
+			method="remove"/>
+				
+</beans>
+

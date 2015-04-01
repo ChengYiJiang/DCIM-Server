@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	
+	<int:channel id="importStructuredCablingConnDeleteChannel"/>
+	
+	<bean id="structuredCablingConnImportProcessor" class="com.raritan.tdz.dctimport.processors.ImportProcessorImpl">
+		<constructor-arg name="messageChannelMap">
+			<map>				
+				<entry key="#{T(com.raritan.tdz.dctimport.processors.ImportProcessorImpl).DELETE_OPERATION}" value-ref="importStructuredCablingConnDeleteChannel"/>
+			</map>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="structuredCablingConnBeanDeleteTransformer" class="com.raritan.tdz.dctimport.integration.transformers.StructuredCablingConnBeanDeleteTransformer">
+		<constructor-arg name="uuid" value="${UserUUIDProperty}"/>
+	</bean>
+		
+	<bean id="structuredCablingConnBeanDeleteTranslator" class="com.raritan.tdz.dctimport.integration.transformers.ImportBeanTransformer">
+		<constructor-arg name="beanConverter" ref="structuredCablingConnBeanDeleteTransformer"/>
+		<property name="importErrorHandler" ref="importErrorHandlerGateway"/>
+	</bean>		
+	
+	<int:chain input-channel="importStructuredCablingConnDeleteChannel">
+		<int:transformer id="structuredCablingConnBeanToDtoDeleteTransformer" ref="structuredCablingConnBeanDeleteTranslator" method="transform"/>
+		<int:service-activator id="structuredCablingConnHomeActivator" expression="@importCircuitService.deleteStructuredCablingConnection(payload.get(0))"
+			requires-reply="false"/>
+	</int:chain>
+		
+	<int:service-activator id="structuredCablingConnProcessor" input-channel="importStructuredCablingConnChannel" ref="structuredCablingConnImportProcessor" method="process"/>
+	
+</beans>

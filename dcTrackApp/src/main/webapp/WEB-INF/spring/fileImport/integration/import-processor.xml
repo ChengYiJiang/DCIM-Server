@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<int:channel id="importOperationRouterChannel"/>
+	<int:channel id="importObjectTypeRouterChannel"/>
+	
+
+	<int:gateway id="importProcessorGateway" 
+		error-channel="importExceptionHandlerChannel" 
+		service-interface="com.raritan.tdz.dctimport.processors.ImportProcessor">
+		
+		<int:method name="process" 
+			payload-expression="T(java.util.Arrays).asList(#args[0])"
+			request-channel="importObjectTypeRouterChannel"/>
+	
+	</int:gateway>
+	
+	<bean id="importProcessorIntroductionAdvisor" class="com.raritan.tdz.dctimport.processors.ImportProcessorIntroductionAdvisor">
+		<constructor-arg name="importErrorHandlerGateway"  ref="importErrorHandlerGateway"/>
+	</bean>
+	
+	<bean id="abstractImportProcessor"
+    	class="org.springframework.aop.framework.ProxyFactoryBean" abstract="true">
+    	<property name="interceptorNames">
+    		<list>
+    			<value>importProcessorIntroductionAdvisor</value>
+    		</list>
+    	</property>	
+    </bean>
+
+</beans>

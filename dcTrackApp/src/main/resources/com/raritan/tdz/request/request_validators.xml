@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+	<import resource="request_stage_helper.xml"/>
+
+	<!-- Item Move Validators -->
+	<util:list id="itemMoveWorkOrderCompleteValidators" value-type="com.raritan.tdz.request.validator.RequestValidator">
+		<ref bean="validateUserPermission"/>
+		<ref bean="supportedItemClassForMove"/>
+   		<ref bean="mandatoryFieldCheckForInstallState"/>
+   		<ref bean="childCheckParentRequestValidator"/>
+   		<!-- <ref bean="itemMoveUniquenessValidator"/> -->
+	</util:list>
+
+	<!-- Item Install Validators -->
+	<util:list id="itemInstallWorkOrderCompleteValidators"  value-type="com.raritan.tdz.request.validator.RequestValidator">
+		<ref bean="validateUserPermission"/>
+   		<ref bean="mandatoryFieldCheckForInstallState"/>
+   		<ref bean="childCheckParentRequestValidator"/>
+	</util:list>
+
+	<!-- Item Offsite Validators -->
+	<util:list id="itemOffsiteWorkOrderCompleteValidators"  value-type="com.raritan.tdz.request.validator.RequestValidator">
+		<ref bean="validateUserPermission"/>
+   		<ref bean="parentCheckChildRequestValidator"/>
+	</util:list>
+	
+	<!-- Item Onsite Validators -->
+	<util:list id="itemOnsiteWorkOrderCompleteValidators"  value-type="com.raritan.tdz.request.validator.RequestValidator">
+		<ref bean="validateUserPermission"/>
+   		<ref bean="mandatoryFieldCheckForInstallState"/>
+   		<ref bean="childCheckParentRequestValidator"/>
+	</util:list>
+
+	<!-- Item to VM Validators -->
+	<util:list id="itemToVMWorkOrderCompleteValidators"  value-type="com.raritan.tdz.request.validator.RequestValidator">
+		<ref bean="validateUserPermission"/>
+   		<ref bean="mandatoryFieldCheckForInstallState"/>
+	</util:list>
+
+	<!-- Power Off Item Validators -->
+	<util:list id="itemPoweroffWorkOrderCompleteValidators"  value-type="com.raritan.tdz.request.validator.RequestValidator">
+		<ref bean="validateUserPermission"/>
+		<ref bean="parentCheckChildRequestValidator"/>
+	</util:list>
+	
+	<!-- Power On Item Validators -->
+	<util:list id="itemPoweronWorkOrderCompleteValidators"  value-type="com.raritan.tdz.request.validator.RequestValidator">
+		<ref bean="validateUserPermission"/>
+   		<ref bean="mandatoryFieldCheckForInstallState"/>
+   		<ref bean="childCheckParentRequestValidator"/>
+	</util:list>
+	
+	<!-- Item Remove Storage Item Validators -->
+	<util:list id="itemStorageWorkOrderCompleteValidators"  value-type="com.raritan.tdz.request.validator.RequestValidator">
+		<ref bean="validateUserPermission"/>
+   		<ref bean="parentCheckChildRequestValidator"/>
+   		<ref bean="itemCheckRequestValidator"/>
+   		<ref bean="validateNoCircuits"/>
+	</util:list>
+
+	<!-- Item Remove Archive Item Validators -->
+	<util:list id="itemArchiveWorkOrderCompleteValidators"  value-type="com.raritan.tdz.request.validator.RequestValidator">
+		<ref bean="validateUserPermission"/>
+		<ref bean="parentCheckChildRequestValidator"/>
+		<ref bean="itemCheckRequestValidator"/>
+		<ref bean="validateNoCircuits"/>
+	</util:list>
+
+	<!-- Circuit Connect Validators -->
+	<util:list id="circuitConnectWorkOrderCompleteValidators"  value-type="com.raritan.tdz.request.validator.RequestValidator">
+		<ref bean="validateUserPermission"/>
+		<ref bean="circuitCheckRequestValidator"/> 	<!-- is item in conflict -->
+		<ref bean="childCheckParentRequestValidator"/> <!-- check if the item is ok against its parents --> 
+	</util:list>
+
+	<!-- Circuit Disconnect Validators -->
+	<util:list id="circuitDisconnectWorkOrderCompleteValidators"  value-type="com.raritan.tdz.request.validator.RequestValidator">
+		<ref bean="validateUserPermission"/>
+		<!-- <ref bean="circuitDisconnectValidator"/> -->
+	</util:list>
+
+	<!-- Circuit Reconnect Storage Item Validators -->
+	<util:list id="circuitReconnectWorkOrderCompleteValidators"  value-type="com.raritan.tdz.request.validator.RequestValidator">
+		<ref bean="validateUserPermission"/>
+		<ref bean="circuitCheckRequestValidator"/> 	<!-- is item in conflict -->
+		<ref bean="childCheckParentRequestValidator"/> <!-- check if the item is ok against its parents -->
+		<!-- <ref bean="supportedItemClassForMove"/>
+   		<ref bean="parentItemStatusCheckForMove"/> -->
+   		<!-- <ref bean="mandatoryFieldCheckForInstallState"/> -->
+   		<!-- <ref bean="childCheckParentRequestValidator"/> -->
+	</util:list>
+
+	<!-- Circuit Connect Validators -->
+	<util:list id="circuitDisconnectNMoveWorkOrderCompleteValidators"  value-type="com.raritan.tdz.request.validator.RequestValidator">
+		<ref bean="validateUserPermission"/>
+		<!-- <ref bean="circuitCheckRequestValidator"/> --> 	<!-- is item in conflict -->
+	</util:list>
+
+
+</beans>

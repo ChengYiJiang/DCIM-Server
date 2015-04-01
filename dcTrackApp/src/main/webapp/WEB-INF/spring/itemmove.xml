@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+	<!--  ========================== -->
+	<!--  Move Cabinet Request       -->
+	<!--  ========================== -->
+	
+	<!-- <bean id="cabinetMoveRequest" class="com.raritan.tdz.move.home.CabinetItemMoveRequestImpl"/> -->
+	
+	<bean id="cabinetMoveRequest" class="com.raritan.tdz.move.home.ItemMoveRequestImpl">
+		<constructor-arg name="moveDisconnectRequest" ref="cabinetMoveDisconnectRequest"/>
+		<constructor-arg name="disconnect" value="true"/>
+	</bean>
+	
+	<bean id="cabinetMoveDisconnectRequest" class="com.raritan.tdz.move.home.CabinetMoveDisconnectRequest"/>
+	
+	<!--  ========================== -->
+	<!--  Move Blade Request       -->
+	<!--  ========================== -->
+	
+	<bean id="bladeMoveRequest" class="com.raritan.tdz.move.home.ItemMoveRequestImpl">
+		<constructor-arg name="moveDisconnectRequest" ref="bladeMoveDisconnectRequest"/>
+		<constructor-arg name="disconnect" value="false"/>
+	</bean>
+	
+	<bean id="bladeMoveDisconnectRequest" class="com.raritan.tdz.move.home.BladeMoveDisconnectRequest"/>
+	
+	<!-- =========================== -->
+	<!-- Move Item Delete Behavior(s) -->
+	<!-- =========================== -->
+	<bean id="moveItemDeleteBehavior" class="com.raritan.tdz.move.home.MoveItemDeleteBehavior" scope="prototype"/>
+
+	<!-- ================================ -->
+	<!-- Move Item Request Save Behavior -->
+	<!-- ================================ -->
+	<bean id="itemMoveRequestBehavior" class="com.raritan.tdz.move.home.ItemMoveRequestBehavior" autowire-candidate="true" autowire="byName" scope="prototype">
+		<constructor-arg name="itemRequest" ref="itemRequest"/>
+	</bean>
+	
+	<bean id="itemMoveRequestCommentBehavior" class="com.raritan.tdz.move.home.ItemMoveRequestCommentBehavior" autowire-candidate="true" autowire="byName"/>
+	
+	<bean id="cabinetItemMoveRequestBehavior" class="com.raritan.tdz.move.home.ItemMoveRequestBehavior" autowire-candidate="true" autowire="byName" scope="prototype">
+		<constructor-arg name="itemRequest" ref="cabinetMoveRequest"/>
+	</bean>
+	
+	<bean id="bladeItemMoveRequestBehavior" class="com.raritan.tdz.move.home.ItemMoveRequestBehavior" autowire-candidate="true" autowire="byName" scope="prototype">
+		<constructor-arg name="itemRequest" ref="bladeMoveRequest"/>
+	</bean>
+	
+	<bean id="itemMoveDeletePlannedCircuits" class="com.raritan.tdz.move.home.ItemMoveDeletePlannedCircuits" autowire-candidate="true" autowire="byName"/>
+	
+	<bean id="logicalCircuitRequestMoveBehavior" class="com.raritan.tdz.move.home.LogicalCircuitRequestMoveBehavior"/>
+
+	<!-- ================= -->
+	<!-- Port Move DAOs -->
+	<!-- ================= -->
+	<!-- <bean id="powerPortMoveDAO" class="com.raritan.tdz.move.dao.PowerPortMoveDAOImpl" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="type" value="com.raritan.tdz.domain.PowerPortMove"/>
+	</bean>
+	
+	<bean id="dataPortMoveDAO" class="com.raritan.tdz.move.dao.DataPortMoveDAOImpl" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="type" value="com.raritan.tdz.domain.DataPortMove"/>
+	</bean> -->
+	
+	<!-- ================================ -->
+	<!-- Port Move Save Behaviors Helper  -->
+	<!-- ================================ -->
+	<bean id="powerPortMoveBehaviorHelper" class="com.raritan.tdz.move.home.PortMoveBehaviorHelperImpl" autowire-candidate="true" autowire="byName" scope="prototype">
+		<constructor-arg name="type" value="com.raritan.tdz.domain.PowerPort"/>
+		<constructor-arg name="portMoveDAO" ref="powerPortMoveDAO"/>
+		<constructor-arg name="tableName" value="dct_ports_power"/>
+	</bean>
+
+	<bean id="dataPortMoveBehaviorHelper" class="com.raritan.tdz.move.home.PortMoveBehaviorHelperImpl" autowire-candidate="true" autowire="byName" scope="prototype">
+		<constructor-arg name="type" value="com.raritan.tdz.domain.DataPort"/>
+		<constructor-arg name="portMoveDAO" ref="dataPortMoveDAO"/>
+		<constructor-arg name="tableName" value="dct_ports_data"/>
+	</bean>
+
+	<!-- ======================== -->
+	<!-- Port Move Save Behaviors -->
+	<!-- ======================== -->
+	<bean id="powerPortMoveBehavior" class="com.raritan.tdz.move.home.PowerPortMoveBehavior" autowire-candidate="true" autowire="byName" scope="prototype">
+		<property name="portMoveBehaviorHelper" ref="powerPortMoveBehaviorHelper"/>
+	</bean>
+	
+	<bean id="dataPortMoveBehavior" class="com.raritan.tdz.move.home.DataPortMoveBehavior" autowire-candidate="true" autowire="byName" scope="prototype">
+		<property name="portMoveBehaviorHelper" ref="dataPortMoveBehaviorHelper"/>
+	</bean>
+	
+	<!-- itemObjectFactory -->
+	<bean id="clearWhenMovedItemMoveBehavior" class="com.raritan.tdz.move.home.ClearWhenMovedItemMoveBehavior" autowire-candidate="true" autowire="byName" scope="prototype">
+		<property name="itemObjectTemplateFactory" ref="itemObjectTemplateFactory"/>
+	</bean>
+	
+	<bean id="requestBypassMoveBehavior" class="com.raritan.tdz.move.home.RequestBypassMoveBehavior" autowire-candidate="true" autowire="byName" scope="prototype">
+		<property name="requestHome" ref="requestHomeGateway"/>
+	</bean>
+	
+	<util:list id="moveSaveBehaviors">
+		<ref bean="itemMoveRequestBehavior"/>
+		<!-- <ref bean="itemMoveDeletePlannedCircuits"/> -->
+		<ref bean="powerPortMoveBehavior"/>
+		<ref bean="dataPortMoveBehavior"/>
+		<ref bean="clearWhenMovedItemMoveBehavior"/>
+		<ref bean="itemMoveRequestCommentBehavior"/>
+		<ref bean="requestBypassMoveBehavior"/>
+	</util:list>
+	
+	<util:list id="cabinetMoveSaveBehaviors">
+		<ref bean="cabinetItemMoveRequestBehavior"/>
+		<ref bean="powerPortMoveBehavior"/>
+		<ref bean="dataPortMoveBehavior"/>
+		<ref bean="clearWhenMovedItemMoveBehavior"/>
+		<ref bean="itemMoveRequestCommentBehavior"/>
+		<ref bean="requestBypassMoveBehavior"/>
+	</util:list>
+	
+	<util:list id="bladeMoveSaveBehaviors">
+		<ref bean="bladeItemMoveRequestBehavior"/>
+		<ref bean="logicalCircuitRequestMoveBehavior"/>
+		<ref bean="powerPortMoveBehavior"/>
+		<ref bean="dataPortMoveBehavior"/>
+		<ref bean="clearWhenMovedItemMoveBehavior"/>
+		<ref bean="itemMoveRequestCommentBehavior"/>
+		<ref bean="requestBypassMoveBehavior"/>
+	</util:list>
+
+	<!-- ===================== -->
+	<!-- Move Item Validators -->
+	<!-- ==================== -->
+
+	<bean id="itemMoveCabinetValidator" class="com.raritan.tdz.move.validator.ItemMoveCabinetValidator" scope="prototype"/>
+	
+	<!-- when the moving item is edit, remind the user about the move request -->
+	<bean id="itemMoveEditValidator" class="com.raritan.tdz.move.validator.ItemMoveEditValidator" scope="prototype"/>
+	
+	<!-- Validate all supported item class for move -->
+	<bean id="itemMoveSupportedItemValidator" class="com.raritan.tdz.move.validator.ItemMoveSupportedItemValidator" scope="prototype"/>
+	
+	<bean id="itemMoveMandatoryFieldValidator" class="com.raritan.tdz.move.validator.ItemMoveMandatoryFieldValidator">
+		<constructor-arg name="mandatoryFieldValidators">
+			<map>
+				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).RACKABLE }" value-ref="mandatoryFieldValidatorITItemInstalled"/>
+				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).NON_RACKABLE }" value-ref="mandatoryFieldValidatorITItemInstalled"/> <!-- we may need another bean for non-rackables -->
+				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).ZERO_U }" value="#{ null }"/> <!-- moving zeroU is not permitted -->
+				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).FREE_STANDING }" value-ref="mandatoryFieldValidatorCabInstalled"/>
+				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).BLADE }" value="#{ null }"/> <!-- moving blade is not permitted -->
+				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).BUSWAY }" value="#{ null }"/> <!-- moving blade is not permitted -->
+				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).VSTACK }" value="#{ null }"/> <!-- moving blade is not permitted -->
+			</map>
+		</constructor-arg>
+		<!-- <constructor-arg name="mandatoryFieldValidator" ref="mandatoryFieldValidatorITItemInstalled"/> -->
+		<!-- mandatoryFieldValidatorCabInstalled -->
+	</bean>
+	
+	<bean id="validateCircuitWithinCabinet" class="com.raritan.tdz.move.validator.ValidateCircuitWithinCabinet" autowire="byName" autowire-candidate="true">
+		<constructor-arg name="circuitDaoMap">
+			<map>
+				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$PortClass).DATA }" value-ref="dataCircuitDAOExt"/>
+				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$PortClass).POWER }" value-ref="powerCircuitDAOExt"/>
+			</map>
+		</constructor-arg>
+	</bean>
+	
+	<!-- checks if the children items has any pending request and notifies the user if they would like to continue -->
+	<bean id="validateChildrenRequest" class="com.raritan.tdz.move.validator.ValidateChildrenRequest"/>
+	
+	<!-- checks if the parent item has any pending request and notifies the user if they would like to continue -->
+	<bean id="validateParentRequest" class="com.raritan.tdz.move.validator.ValidateParentRequest"/>
+	
+	<!-- checks if item is been placed in the moving cabinet, if yes, notify the user -->
+	<bean id="validatePlacementInMovingCabinet" class="com.raritan.tdz.move.validator.ValidatePlacementInMovingCabinet"/>
+	
+	<!-- checks if item is been placed in the moving chassis, if yes, notify the user -->
+	<bean id="validatePlacementInMovingChassis" class="com.raritan.tdz.move.validator.ValidatePlacementInMovingChassis"/>
+	
+	<!-- checks if circuit is been created using items that are in the moving chassis/cabinet, if yes, notify the user -->
+	<bean id="validateCircuitParentRequest" class="com.raritan.tdz.move.validator.ValidateCircuitParentRequest"/>
+	
+	<!-- check if reservation exist on the given item and warns the user -->
+	<bean id="validateReservation" class="com.raritan.tdz.move.validator.ValidateReservations"/>
+	
+	<util:list id="moveValidators">
+		<ref bean="validateChildrenRequest"/>
+		<ref bean="validateParentRequest"/>
+		<ref bean="validateReservation"/>
+		<ref bean="itemMoveSupportedItemValidator"/>
+		<ref bean="itemMoveEditValidator"/>
+		<ref bean="itemMoveCabinetValidator"/>
+		<ref bean="itemMoveMandatoryFieldValidator"/>
+	</util:list>
+
+	<!-- Move Home -->
+	<bean id="moveHome" class="com.raritan.tdz.move.home.MoveHomeImpl"/>
+	
+	<bean id="itemMoveHelper" class="com.raritan.tdz.move.home.ItemMoveHelperImpl"/>
+	</beans>

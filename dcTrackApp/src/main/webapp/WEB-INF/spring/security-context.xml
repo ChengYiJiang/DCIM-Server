@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	   xmlns:beans="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+                           http://www.springframework.org/schema/security
+                           http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+    
+    <global-method-security secured-annotations="disabled" />
+    
+    <http pattern="/api/**" entry-point-ref="basicAuthenticationEntryPoint" authentication-manager-ref="RESTAPIAuthManager"
+		    create-session="stateless">
+        <intercept-url pattern="/api/**" access="ROLE_USER"/>
+        <custom-filter ref="restAPIAuthenticationFilter" position="FORM_LOGIN_FILTER"/>
+     <!--    <custom-filter ref="restAPIAuthenticationFilter" position="BASIC_AUTH_FILTER"/> -->
+    </http>
+    
+  	<http entry-point-ref="entryPoint" pattern="/**" authentication-manager-ref="authenticationManager">
+        <anonymous enabled="false"/>
+        <!--We need to disable session fixation protection for Spring/Flex authentication
+        since it will cause the initial session to be invalidated and ultimately cause
+        the duplicate HTTP flex session key problem -->
+        <session-management session-fixation-protection="none" />
+    </http>
+    
+    <beans:bean id="entryPoint" 
+        class="org.springframework.flex.security3.FlexAuthenticationEntryPoint"/>
+        
+    <beans:bean id="basicAuthenticationEntryPoint"
+    	class="com.raritan.tdz.security.RESTAPIBasicAuthenticationEntryPoint">
+    </beans:bean>
+    
+    <beans:bean id="basicAuthenticationFilter"
+    	class="org.springframework.security.web.authentication.www.BasicAuthenticationFilter">
+    	<beans:constructor-arg name="authenticationEntryPoint" ref="basicAuthenticationEntryPoint"/>
+    	<beans:constructor-arg name="authenticationManager" ref="RESTAPIAuthManager"/>	
+    	<beans:property name="authenticationDetailsSource" ref="restAPIAuthDetailSource"/>
+    </beans:bean>
+    
+    <beans:bean id="restAPIAuthenticationFilter"
+    	class="com.raritan.tdz.security.RESTAPIBasicAuthenticationFilter">
+    	<beans:constructor-arg name="authenticationEntryPoint" ref="basicAuthenticationEntryPoint"/>
+    	<beans:constructor-arg name="authenticationManager" ref="RESTAPIAuthManager"/>	
+    	<beans:property name="authenticationDetailsSource" ref="restAPIAuthDetailSource"/>  	
+    </beans:bean>
+    
+ <!--   <authentication-manager alias="RESTAPIAuthManager">
+    	<authentication-provider>
+  			<user-service>
+  				<user name="admin" password="raritan" authorities="ROLE_USER"/>
+  			</user-service>
+  		</authentication-provider>
+    </authentication-manager> -->
+    
+    <user-service id="restUds">
+    	<user name="admin" password="raritan" authorities="ROLE_USER"/>
+    </user-service>
+    
+  	<beans:bean id="dcTrackSessionMgrUsingMemory" class="com.raritan.tdz.session.DCTrackSessionManagerUsingMemory"/>
+  	<beans:bean id="dcTrackSessionMgrUsingDB" class="com.raritan.tdz.session.DCTrackSessionManagerUsingDB">
+  		<beans:constructor-arg name="sessionFactory" ref="sessionFactory"/>
+  	</beans:bean>
+  	
+    <beans:bean id="dcTrackSessionMgr" class="com.raritan.tdz.session.DCTrackSessionManager">
+    	<beans:constructor-arg name="dcTrackSessionManagerUsingMemory" ref="dcTrackSessionMgrUsingMemory"/>
+    	<beans:constructor-arg name="dcTrackSessionManagerUsingDB" ref="dcTrackSessionMgrUsingDB"/>
+    	<beans:property name="dbAttributes">
+    		<beans:list>
+    			<beans:value>lastAccessedTime</beans:value>
+    		</beans:list>
+    	</beans:property>
+    	<beans:property name="logoutEventHandlers">
+    		<beans:list>
+    			<beans:ref bean="requestBypassCleanupHandler"/>
+    			<beans:ref bean="reportUserContextRouterResolver"/>
+    			<beans:ref bean="importUserContextResolver"/>
+    		</beans:list>
+    	</beans:property>
+    </beans:bean>
+    
+    <beans:bean id="RESTAPIAuthManager" class="org.springframework.security.authentication.ProviderManager">
+		<beans:constructor-arg name="providers">
+			<beans:list>
+				<beans:ref bean="restAuthProvider"/>
+			</beans:list>
+		</beans:constructor-arg> 
+    </beans:bean>
+    
+    <beans:bean id="restAPIAuthDetailSource" class="com.raritan.tdz.security.RESTAPIAuthenticationDetailSource"/>
+    
+   	<authentication-manager alias="authenticationManager">
+  		<authentication-provider ref="authProvider" />
+  	</authentication-manager>
+  	
+  	<!-- Our custom Authentication Provider -->
+  	<beans:bean id="authProvider" class="com.raritan.tdz.security.FlexSessionKeyAuthenticator">
+		<beans:constructor-arg index="0">
+			<beans:ref bean="sessionFactory" />
+		</beans:constructor-arg>
+  	</beans:bean>
+  	
+  	<beans:bean id="restAuthProvider" class="com.raritan.tdz.security.RESTAPIUserAuthenticator">
+  		<beans:constructor-arg>
+  			<beans:ref bean="sessionFactory" />
+  		</beans:constructor-arg>
+  	</beans:bean>
+   	
+   	<beans:bean id="restLogoutHandler" class="com.raritan.tdz.security.RESTAPILogoutHandler"/>
+   	
+  	<!-- JAAS authentication Provider - used for authentication with Bonita  -->
+  	<beans:bean id="jaasAuthenticationProvider" 
+  		class="org.springframework.security.authentication.jaas.JaasAuthenticationProvider">
+	    <beans:property name="loginConfig" value="classpath:jaas-standard.cfg"/>
+	    <beans:property name="loginContextName" value="Bonita"/>
+	    <beans:property name="callbackHandlers">
+	       <beans:list>
+	          <beans:bean class="org.springframework.security.authentication.jaas.JaasNameCallbackHandler" />
+	          <beans:bean class="org.springframework.security.authentication.jaas.JaasPasswordCallbackHandler" />
+	       </beans:list>
+	    </beans:property>
+	    <beans:property name="authorityGranters">
+	    	<beans:list>
+	    		<beans:bean class="com.raritan.tdz.security.BonitaAuthorityGranter" />
+	    	</beans:list>
+	    </beans:property>
+ 	</beans:bean>
+  	
+  	<beans:bean id="sessionTimeoutCheckInterceptor" class="com.raritan.tdz.interceptor.SessionTimeoutCheckInterceptor" 
+				factory-method="aspectOf" autowire="byName" init-method="init"/>
+</beans:beans>

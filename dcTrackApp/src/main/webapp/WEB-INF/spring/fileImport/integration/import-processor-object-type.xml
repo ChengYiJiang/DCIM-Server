@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<!-- TODO: Add a default channel for unknown object types and capture them as warnings -->
+	<int:router input-channel="importObjectTypeRouterChannel" expression="payload.get(0).getObjectType()">
+		<int:mapping value="location" channel="importLocationChannel"/>
+		
+		<int:mapping value="cabinet" channel="importItemChannel"/>
+		<int:mapping value="device-freestanding" channel="importItemChannel"/>
+		<int:mapping value="network-freestanding" channel="importItemChannel"/>
+		<int:mapping value="data-port" channel="importDataPortChannel"/>
+		<int:mapping value="ups" channel="importItemChannel"/>
+		<int:mapping value="crac" channel="importItemChannel"/>
+		<int:mapping value="floorpdu" channel="importItemChannel"/>
+		<int:mapping value="powerpanel" channel="importItemChannel"/>
+		<int:mapping value="device-rackable" channel="importItemChannel"/>
+		<int:mapping value="device-bladechassis-rackable" channel="importItemChannel"/>
+		<int:mapping value="network-chassis-rackable" channel="importItemChannel"/>
+		<int:mapping value="network-rackable" channel="importItemChannel"/>
+		<int:mapping value="datapanel-rackable" channel="importItemChannel"/>
+		<int:mapping value="rackpdu-rackable" channel="importItemChannel"/>
+		<int:mapping value="probe-rackable" channel="importItemChannel"/>
+		<int:mapping value="device-nonrackable" channel="importItemChannel"/>
+		<int:mapping value="network-nonrackable" channel="importItemChannel"/>
+		<int:mapping value="rackpdu-nonrackable" channel="importItemChannel"/>
+		<int:mapping value="datapanel-nonrackable" channel="importItemChannel"/>
+		<int:mapping value="probe-nonrackable" channel="importItemChannel"/>
+		<int:mapping value="device-zerou" channel="importItemChannel"/>
+		<int:mapping value="rackpdu-zerou" channel="importItemChannel"/>
+		<int:mapping value="probe-zerou" channel="importItemChannel"/>
+		<int:mapping value="datapanel-zerou" channel="importItemChannel"/>
+		<int:mapping value="device-blade" channel="importItemChannel"/>
+		<int:mapping value="network-blade" channel="importItemChannel"/>
+		<int:mapping value="poweroutlet" channel="importItemChannel"/>
+		<int:mapping value="passive" channel="importItemChannel"/>
+		<int:mapping value="item" channel="importItemChannel"/>
+		
+		<int:mapping value="power-port" channel="importPowerPortChannel"/>
+		
+		<int:mapping value="data-connection" channel="importDataConnChannel"/>
+		<int:mapping value="power-connection" channel="importPowerConnChannel"/>
+		<int:mapping value="structured-cabling" channel="importStructuredCablingConnChannel"/>
+	</int:router>
+	
+</beans>

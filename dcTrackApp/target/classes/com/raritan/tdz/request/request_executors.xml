@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+	<import resource="request_stage_helper.xml"/>
+
+	<!-- =============== -->
+	<!-- Item Move Executors -->
+	<!-- =============== -->
+	<util:list id="itemMoveRequestIssuedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+
+	<util:list id="itemMoveRequestUpdatedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="itemMoveRequestApprovedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="itemMoveWorkOrderIssueExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="workOrderIssueUpdater"/>
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="itemMoveWorkOrderCompleteExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestDeletePlannedCircuits"/>
+		<ref bean="itemSetArchived"/>
+		<ref bean="itemMoveWorkOrderComplete"/>
+		<ref bean="workOrderCompleteUpdater"/>
+		<ref bean="requestStageUpdateHistory"/>
+		<!-- <ref bean="updateChildrenRequestComments"/>
+		<ref bean="updateParentRequestComments"/> -->
+		<ref bean="updateChildrenInstallCircuitRequestComment"/>
+	</util:list>
+	
+	<util:list id="itemMoveRequestCompleteExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+
+	<!-- =============== -->
+	<!-- Item Install Executors -->
+	<!-- =============== -->
+	<util:list id="itemInstallRequestIssuedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+
+	<util:list id="itemInstallRequestUpdatedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="itemInstallRequestApprovedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="itemInstallWorkOrderIssueExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="workOrderIssueUpdater"/>
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="itemInstallWorkOrderCompleteExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+			<ref bean="itemInstalledWorkOrderComplete"/>
+			<ref bean="circuitPowerOnWorkOrderComplete"/>
+			<ref bean="workOrderCompleteUpdater"/>
+			<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="itemInstallRequestCompleteExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+
+	<!-- =============== -->
+	<!-- Item Off site Executors -->
+	<!-- =============== -->
+	<util:list id="itemOffsiteRequestIssuedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+
+	<util:list id="itemOffsiteRequestUpdatedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="itemOffsiteRequestApprovedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="itemOffsiteWorkOrderIssueExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="workOrderIssueUpdater"/>
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="itemOffsiteWorkOrderCompleteExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="itemOffSiteWorkOrderComplete"/>		
+		<ref bean="requestStageUpdateHistory"/>
+		<ref bean="workOrderCompleteUpdater"/>
+	</util:list>
+	
+	<util:list id="itemOffsiteRequestCompleteExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+
+	<!-- =============== -->
+	<!-- Item On site Executors -->
+	<!-- =============== -->
+	<util:list id="itemOnsiteRequestIssuedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+
+	<util:list id="itemOnsiteRequestUpdatedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="itemOnsiteRequestApprovedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="itemOnsiteWorkOrderIssueExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="workOrderIssueUpdater"/>
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="itemOnsiteWorkOrderCompleteExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="itemInstalledWorkOrderComplete"/>	
+		<ref bean="circuitPowerOnWorkOrderComplete"/>
+		<ref bean="requestStageUpdateHistory"/>
+		<ref bean="workOrderCompleteUpdater"/>
+	</util:list>
+	
+	<util:list id="itemOnsiteRequestCompleteExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+
+	<!-- =============== -->
+	<!-- Item to VM Executors -->
+	<!-- =============== -->
+	<util:list id="itemToVMRequestIssuedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+
+	<util:list id="itemToVMRequestUpdatedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="itemToVMRequestApprovedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="itemToVMWorkOrderIssueExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="workOrderIssueUpdater"/>
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="itemToVMWorkOrderCompleteExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="itemInstalledWorkOrderComplete"/>
+		<ref bean="circuitPowerOnWorkOrderComplete"/>
+		<ref bean="requestStageUpdateHistory"/>
+		<ref bean="workOrderCompleteUpdater"/>
+	</util:list>
+	
+	<util:list id="itemToVMRequestCompleteExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+
+	<!-- =============== -->
+	<!-- Item Power Off Executors -->
+	<!-- =============== -->
+	<util:list id="itemPoweroffRequestIssuedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+
+	<util:list id="itemPoweroffRequestUpdatedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="itemPoweroffRequestApprovedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="itemPoweroffWorkOrderIssueExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="workOrderIssueUpdater"/>
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="itemPoweroffWorkOrderCompleteExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="itemPowerOffWorkOrderComplete"/>
+		<ref bean="circuitPowerOffWorkOrderComplete"/>
+		<ref bean="requestStageUpdateHistory"/>
+		<ref bean="workOrderCompleteUpdater"/>
+	</util:list>
+	
+	<util:list id="itemPoweroffRequestCompleteExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+
+	<!-- =============== -->
+	<!-- Item Power On Executors -->
+	<!-- =============== -->
+	<util:list id="itemPoweronRequestIssuedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+
+	<util:list id="itemPoweronRequestUpdatedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="itemPoweronRequestApprovedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="itemPoweronWorkOrderIssueExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="workOrderIssueUpdater"/>
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="itemPoweronWorkOrderCompleteExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="itemInstalledWorkOrderComplete"/>
+		<ref bean="circuitPowerOnWorkOrderComplete"/>
+		<ref bean="requestStageUpdateHistory"/>
+		<ref bean="workOrderCompleteUpdater"/>
+	</util:list>
+	
+	<util:list id="itemPoweronRequestCompleteExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+
+	<!-- =============== -->
+	<!-- Item Remove Storage Executors -->
+	<!-- =============== -->
+	<util:list id="itemStorageRequestIssuedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+
+	<util:list id="itemStorageRequestUpdatedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="itemStorageRequestApprovedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="itemStorageWorkOrderIssueExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="workOrderIssueUpdater"/>
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="itemStorageWorkOrderCompleteExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestDeletePlannedCircuits"/>
+		<ref bean="requestDeleteIPAddressAndTeam"/>
+		<ref bean="itemStorageRequestStateContext"/>
+		<ref bean="requestStageUpdateHistory"/>
+		<ref bean="workOrderCompleteUpdater"/>
+	</util:list>
+	
+	<util:list id="itemStorageRequestCompleteExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<!-- =============== -->
+	<!-- Item Remove Archive Executors -->
+	<!-- =============== -->
+	<util:list id="itemArchiveRequestIssuedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+
+	<util:list id="itemArchiveRequestUpdatedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="itemArchiveRequestApprovedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="itemArchiveWorkOrderIssueExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="workOrderIssueUpdater"/>
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="itemArchiveWorkOrderCompleteExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestDeletePlannedCircuits"/>
+		<ref bean="requestDeleteIPAddressAndTeam"/>
+		<ref bean="itemArchiveRequestStateContext"/>
+		<ref bean="requestStageUpdateHistory"/>
+		<ref bean="workOrderCompleteUpdater"/>
+	</util:list>
+	
+	<util:list id="itemArchiveRequestCompleteExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+
+	<!-- =============== -->
+	<!-- Circuit Connect Executors -->
+	<!-- =============== -->
+	<util:list id="circuitConnectRequestIssuedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+
+	<util:list id="circuitConnectRequestUpdatedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="circuitConnectRequestApprovedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="circuitConnectWorkOrderIssueExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="workOrderIssueUpdater"/>
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="circuitConnectWorkOrderCompleteExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="circuitInstalledWorkOrderComplete"/>
+		<ref bean="requestStageUpdateHistory"/>
+		<ref bean="workOrderCompleteUpdater"/>
+	</util:list>
+	
+	<util:list id="circuitConnectRequestCompleteExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<!-- =============== -->
+	<!-- Circuit Disconnect Archive Executors -->
+	<!-- =============== -->
+	<util:list id="circuitDisconnectRequestIssuedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+
+	<util:list id="circuitDisconnectRequestUpdatedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="circuitDisconnectRequestApprovedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="circuitDisconnectWorkOrderIssueExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="workOrderIssueUpdater"/>
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="circuitDisconnectWorkOrderCompleteExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="disconnectWorkOrderComplete"/>
+		<ref bean="requestStageUpdateHistory"/>
+		<ref bean="workOrderCompleteUpdater"/>
+	</util:list>
+	
+	<util:list id="circuitDisconnectRequestCompleteExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>		
+	</util:list>
+		
+	<!-- =============== -->
+	<!-- Circuit Reconnect Archive Executors -->
+	<!-- =============== -->
+	<util:list id="circuitReconnectRequestIssuedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+
+	<util:list id="circuitReconnectRequestUpdatedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="circuitReconnectRequestApprovedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="circuitReconnectWorkOrderIssueExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="workOrderIssueUpdater"/>
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="circuitReconnectWorkOrderCompleteExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+		<ref bean="workOrderCompleteUpdater"/>
+		<!-- <ref bean="circuitReconnectWorkOrderComplete"/> TODO -->
+	</util:list>
+	
+	<util:list id="circuitReconnectRequestCompleteExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+
+	<!-- =============== -->
+	<!-- Circuit Disconnect-Reconnect Archive Executors : FIXME not used remove -->
+	<!-- =============== -->
+	<util:list id="circuitDisconnectMoveRequestIssuedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+
+	<util:list id="circuitDisconnectMoveRequestUpdatedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="circuitDisconnectMoveRequestApprovedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="circuitDisconnectMoveWorkOrderIssueExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="workOrderIssueUpdater"/>
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="circuitDisconnectMoveWorkOrderCompleteExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+		<ref bean="workOrderCompleteUpdater"/>
+	</util:list>
+	
+	<util:list id="circuitDisconnectMoveRequestCompleteExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<!-- =============== -->
+	<!-- Circuit Disconnect And Move Archive Executors -->
+	<!-- =============== -->
+	<util:list id="circuitDisconnectNMoveRequestIssuedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+
+	<util:list id="circuitDisconnectNMoveRequestUpdatedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="circuitDisconnectNMoveRequestApprovedExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="circuitDisconnectNMoveWorkOrderIssueExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="workOrderIssueUpdater"/>
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+	
+	<util:list id="circuitDisconnectNMoveWorkOrderCompleteExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+ 		<ref bean="requestStageUpdateHistory"/>
+		<ref bean="workOrderCompleteUpdater"/>
+	</util:list>
+	
+	<util:list id="circuitDisconnectNMoveRequestCompleteExecutors" value-type="com.raritan.tdz.request.home.RequestStageHelper">
+		<ref bean="requestStageUpdateHistory"/>
+	</util:list>
+		
+	
+</beans>

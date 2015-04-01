@@ -1,0 +1,23 @@
+﻿<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE hibernate-mapping
+   PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+   
+<hibernate-mapping>
+
+  <query name="LkuData.findClassCustomFieldsByClassLkp">
+  	<![CDATA[select lku from LkuData lku where lku.lkuTypeName='CUSTOM_FIELD' AND lku.lksData.lkpValueCode = ?]]>
+  </query>
+  
+  <query name="LkuData.findClassCustomFieldLabelsByClassLkpValue">
+  	<![CDATA[select lku.lkuValue from LkuData lku where lku.lkuTypeName='CUSTOM_FIELD' AND lku.lksData.lkpValue = ?]]>
+  </query>
+  
+   <query name="LkuData.findClassCustomFieldsByModelName">
+  	<![CDATA[select lku from LkuData lku where lku.lkuTypeName='CUSTOM_FIELD' AND lku.lksData = (select m.classLookup from ModelDetails m where m.modelName = ? )]]>
+  </query>
+  
+   <query name="LkuData.findClassCustomFieldLabelsByModelName">
+  	<![CDATA[select lku.lkuValue from LkuData lku where lku.lkuTypeName='CUSTOM_FIELD' AND lku.lksData = (select m.classLookup from ModelDetails m where m.modelName = ? )]]>
+  </query>
+</hibernate-mapping>

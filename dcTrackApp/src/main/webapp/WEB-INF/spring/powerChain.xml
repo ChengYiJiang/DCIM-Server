@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+    					http://www.springframework.org/schema/util
+    					http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+	<import resource="powerChainValidators.xml"/>
+	<import resource="powerChainLogger.xml"/>
+
+	<bean id="powerChainHome" class="com.raritan.tdz.powerchain.home.PowerChainHomeImpl" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="powerChainActionHandler">
+			<map>
+				<!-- When the power panel is created -->
+				<entry key="80000:PowerChainUpdateAllBreakerPortAndConnections" value-ref="powerChainUpdateAllActionHandler" />
+				
+				<!-- When the power panel is created -->
+				<entry key="80000:PowerPanelCreateBreakerPortAndConnections" value-ref="powerPanelBreakerPortActionHandler" />
+				
+				<!-- Update panel breaker value -->
+				<entry key="80001:PowerPanelUpdateBreakerPortValues" value-ref="powerPanelUpdateBreakerPortValueActionHandler" />
+				
+				<!-- update panel breaker connections when branch circuit breaker is added -->
+				<entry key="80001:PowerPanelUpdateNewBreakerConnections" value-ref="powerPanelUpdateBreakerPortConnectionsActionHandler" />
+				
+				<!-- floor pdu is created -->
+				<entry key="80000:FloorPDUCreateBreakerPort" value-ref="floorPduCreateBreakerPortActionHandler" />
+				
+				<!-- floor pdu is created -->
+				<entry key="80000:FloorPDUUpdateBreakerConnections" value-ref="floorPduBreakerPortToUpsUpdateConnectionActionHandler" />
+				
+				<!-- update floor pdu input breaker port values -->
+				<entry key="80001:FloorPDUUpdateBreakerPortValues" value-ref="floorPduBreakerPortUpdateValueActionHandler" />
+				
+				<!-- update the floor pdu input breaker connection to the ups bank output breaker port. 
+						TODO: change the key to be "80001:FloorPDUUpdateBreakerConnections:2450" - UPS Bank class lkp value code
+									change the key to be "80001:FloorPDUUpdateBreakerConnections:2300" - Floor PDU class lkp value code
+				-->
+				<entry key="80001:FloorPDUUpdateBreakerConnections" value-ref="floorPduBreakerPortToUpsUpdateConnectionActionHandler" />
+				
+				<entry key="80000:UPSBankCreateBreakerPort" value-ref="upsBankCreateBreakerPortActionHandler" />
+				
+				<entry key="80001:UPSBankUpdateBreakerPortValues" value-ref="upsBankBreakerPortUpdateValueActionHandler" />
+				
+				<!-- floor pdu deleted -->
+				<entry key="80002:FloorPDUDeleteBreakerPort" value-ref="floorPduDeleteBreakerPortActionHandler" />
+				
+				<!-- ups bank deleted -->
+				<!-- <entry key="80002:UPSBankDeleteBreakerPort" value-ref="upsBankDeleteBreakerPortActionHandler" /> -->
+				
+				
+			</map>
+		</constructor-arg>
+	</bean>
+
+	<bean id="powerChainUpdateAllActionHandler" class="com.raritan.tdz.powerchain.home.PowerChainUpdateAllPortsAndConnectionsPowerChainActionHandler" autowire-candidate="true" autowire="byName">
+		<!-- <property name="powerChainLogger" ref="powerChainEventLogger"/> -->
+	</bean>
+
+	<bean id="powerPanelBreakerPortActionHandler" class="com.raritan.tdz.powerchain.home.PowerPanelBreakerPortActionHandler" autowire-candidate="true" autowire="byName">
+	</bean>
+	
+	<bean id="powerPanelUpdateBreakerPortValueActionHandler" class="com.raritan.tdz.powerchain.home.PowerPanelBreakerPortUpdateValueActionHandler"  autowire-candidate="true" autowire="byName">
+	</bean>
+	
+	<bean id="powerPanelUpdateBreakerPortConnectionsActionHandler" class="com.raritan.tdz.powerchain.home.PowerPanelBreakerPortUpdateConnectionActionHandler"  autowire-candidate="true" autowire="byName">
+	</bean>
+
+	<bean id="floorPduCreateBreakerPortActionHandler" class="com.raritan.tdz.powerchain.home.FloorPduCreateBreakerPortActionHandler" autowire-candidate="true" autowire="byName">
+	</bean>
+	
+	<bean id="floorPduBreakerPortUpdateValueActionHandler" class="com.raritan.tdz.powerchain.home.FloorPduBreakerPortUpdateValueActionHandler" autowire-candidate="true" autowire="byName">
+	</bean>
+	
+	<!-- <bean id="floorPduBreakerPortToUpsUpdateConnectionActionHandler" class="com.raritan.tdz.powerchain.home.FloorPduBreakerPortToUPSBankUpdateConnectionActionHandler" autowire-candidate="true" autowire="byName">
+	</bean> -->
+	
+	<bean id="floorPduBreakerPortToUpsUpdateConnectionActionHandler" class="com.raritan.tdz.powerchain.home.FPDUBreakerToUPSBankBreakerUpdateActionHandler" autowire-candidate="true" autowire="byName">
+	</bean>
+	
+	<bean id="upsBankBreakerPortUpdateValueActionHandler" class="com.raritan.tdz.powerchain.home.UPSBankBreakerPortUpdateValueActionHandler" autowire-candidate="true" autowire="byName">
+	</bean>
+	
+	<bean id="upsBankCreateBreakerPortActionHandler" class="com.raritan.tdz.powerchain.home.UPSBankCreateBreakerPortActionHandler" autowire-candidate="true" autowire="byName">
+	</bean>
+	
+	<bean id="floorPduDeleteBreakerPortActionHandler" class="com.raritan.tdz.powerchain.home.FloorPduDeleteConnectionActionHandler" autowire-candidate="true" autowire="byName">
+	</bean>
+	
+	<bean id="whipOutletToBranchCircuitBreakerActionHandler" class="com.raritan.tdz.powerchain.home.WhipOutletToBranchCircuitBreakerActionHandler"  autowire-candidate="true" autowire="byName">
+	</bean>
+
+	<bean id="whipOutletPortFactory" class="com.raritan.tdz.powerchain.home.WhipOutletPortFactoryImpl" autowire-candidate="true" autowire="byName">
+	</bean>
+
+	<bean id="powerPanelPortFactory" class="com.raritan.tdz.powerchain.home.PowerPanelPortFactoryImpl" autowire-candidate="true" autowire="byName">
+	</bean>
+	
+	<bean id="floorPduPortFactory" class="com.raritan.tdz.powerchain.home.FloorPduPortFactoryImpl"  autowire-candidate="true" autowire="byName">
+	</bean>
+	
+	<bean id="upsBankPortFactory" class="com.raritan.tdz.powerchain.home.UpsBankPortFactoryImpl" autowire-candidate="true" autowire="byName">
+	</bean>
+	
+	<bean id="floorPduBreakerPortToPanelBreakerUpdateConnectionActionHandler" class="com.raritan.tdz.powerchain.home.FloorPduBreakerPortToPanelBreakerUpdateConnectionActionHandler" autowire-candidate="true" autowire="byName" />
+	
+	<bean id="portAdaptorFactory" class="com.raritan.tdz.powerchain.home.PortAdaptorFactoryImpl" autowire-candidate="true" autowire="byName">
+		<property name="portAdaptors">
+			<map>
+			
+				<!-- whip outlet breaker port adaptor -->
+				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).WHIP_OUTLET }" value-ref="whipOutletBreakerPortAdaptor"/>
+				
+				<!-- panel branch circuit breaker port adaptor -->
+				<entry key="20005" value-ref="branchCircuitBreakerPortAdaptor"/>
+			
+				<!-- panel breaker port adaptor -->
+				<entry key="20006" value-ref="powerPanelBreakerPortAdaptor"/>
+				
+				<!-- floor pdu input breaker port adaptor -->
+				<entry key="20007" value-ref="floorPduInputBreakerPortAdaptor"/>
+				
+				<!-- ups bank output breaker port adaptor -->
+				<entry key="20010" value-ref="upsBankOutputBreakerPortAdaptor"/>
+				
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="powerPanelBreakerPortAdaptor" class="com.raritan.tdz.powerchain.home.PowerPanelBreakerPortAdaptor" autowire-candidate="true" autowire="byName">
+	</bean>
+
+	<bean id="branchCircuitBreakerPortAdaptor" class="com.raritan.tdz.powerchain.home.BranchCircuitBreakerPortAdaptor" autowire-candidate="true" autowire="byName">
+	</bean>
+	
+	<bean id="floorPduInputBreakerPortAdaptor" class="com.raritan.tdz.powerchain.home.FloorPduInputBreakerPortAdaptor" autowire-candidate="true" autowire="byName">
+	</bean>
+	
+	<bean id="upsBankOutputBreakerPortAdaptor" class="com.raritan.tdz.powerchain.home.UpsBankOutputBreakerPortAdaptor" autowire-candidate="true" autowire="byName">
+	</bean>
+	
+	<bean id="whipOutletBreakerPortAdaptor" class="com.raritan.tdz.powerchain.home.WhipOutletBreakerPortAdaptor" autowire-candidate="true" autowire="byName">
+	</bean>
+	
+	<bean id="portAdaptorHelper" class="com.raritan.tdz.powerchain.home.PortAdaptorHelperImpl" autowire-candidate="true" autowire="byName">
+	</bean>
+	
+	<bean id="portConnectionFactory" class="com.raritan.tdz.powerchain.home.PortConnectionFactoryImpl" autowire-candidate="true" autowire="byName">
+		<property name="portConnections">
+			<map>
+			
+				<!-- whip outlet breaker to branch circuit breaker -->
+				<entry key="20008:20005" value-ref="powerConnection"/>
+			
+				<!-- power panel branch circuit breaker port to the panel breaker port -->
+				<entry key="20005:20006" value-ref="powerConnection"/>
+				
+				<!-- power panel breaker port to pdu input breaker port -->
+				<entry key="20006:20007" value-ref="powerConnection"/>
+				
+				<!-- pdu input breaker port to power panel branch circuit breaker port -->
+				<entry key="20007:20005" value-ref="powerConnection"/>
+				
+				<!-- pdu input breaker port to ups bank output breaker -->
+				<entry key="20007:20010" value-ref="powerConnection"/>
+
+				<!-- ups bank output breaker to terminate -->
+				<entry key="20010:" value-ref="powerConnection"/>
+				
+			</map>
+		</property>
+	</bean>
+
+	<bean id="powerConnection" class="com.raritan.tdz.powerchain.home.PortConnectionImpl"  autowire-candidate="true" autowire="byName">
+	</bean>
+	
+	<bean id="portConnectionAdaptorFactory" class="com.raritan.tdz.powerchain.home.PortConnectionAdaptorFactoryImpl" autowire-candidate="true" autowire="byName">
+		<property name="portConnectionAdaptors">
+			<map>
+			
+				<!-- power supply port to power outlet -->
+				<entry key="20001:20008" value-ref="powerConnectionAdaptor"/>
+				<entry key="20001:20009" value-ref="powerConnectionAdaptor"/>
+				
+				<!-- rack pdu input port to power outlet -->
+				<entry key="20002:20008" value-ref="powerConnectionAdaptor"/>
+				<entry key="20002:20009" value-ref="powerConnectionAdaptor"/>
+			
+				<!-- whip outlet breaker to branch circuit breaker -->
+				<entry key="20008:20005" value-ref="powerConnectionAdaptor"/>
+				
+				<!-- power panel branch circuit breaker port to the panel breaker port -->
+				<entry key="20005:20006" value-ref="powerConnectionAdaptor"/>
+				
+				<!-- power panel breaker port to pdu input breaker port -->
+				<entry key="20006:20007" value-ref="powerConnectionAdaptor"/>
+				
+				<!-- pdu input breaker port to power panel branch circuit breaker port -->
+				<entry key="20007:20005" value-ref="powerConnectionAdaptor"/>
+				
+				<!-- pdu input breaker port to ups bank output breaker -->
+				<entry key="20007:20010" value-ref="powerConnectionAdaptor"/>
+
+				<!-- terminate at ups bank output breaker-->
+				<entry key="20010:" value-ref="powerConnectionAdaptor"/>
+				
+			</map>
+		</property>
+	</bean>
+
+	<bean id="powerConnectionAdaptor" class="com.raritan.tdz.powerchain.home.PowerConnectionAdaptorImpl" autowire-candidate="true" autowire="byName">
+	</bean>
+	
+	<bean id="powerChainActionHandlerHelper" class="com.raritan.tdz.powerchain.home.PowerChainActionHandlerHelperImpl" autowire-candidate="true" autowire="byName">
+	</bean>
+	
+	<bean id="powerChainPowerCircuitHelper" class="com.raritan.tdz.powerchain.home.PowerCircuitHelperImpl" autowire-candidate="true" autowire="byName">
+	</bean>
+	
+	<bean id="powerCalc" class="com.raritan.tdz.circuit.util.PowerCalcImpl" autowire-candidate="true" autowire="byName">
+	</bean>
+
+	<!-- creates the poles for a given power panel -->
+	<bean id="powerPanelPole" class="com.raritan.tdz.powerchain.home.PowerPanelPoleImpl"/>
+	
+	<!-- creates the branch circuit breaker ports using the power panel poles -->
+	<bean id="branchCircuitBreaker" class="com.raritan.tdz.powerchain.home.BranchCircuitBreakerImpl"/>
+	
+</beans>

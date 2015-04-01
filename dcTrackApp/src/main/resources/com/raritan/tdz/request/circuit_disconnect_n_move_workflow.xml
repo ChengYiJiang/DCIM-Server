@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+	<!-- ==================================== -->
+	<!-- Circuit Disconnect And Move Request Issued 				-->
+	<!-- ==================================== -->
+	
+	<!-- Circuit Disconnect And Move Request Issued Validator -->
+	
+	<import resource="request_validators.xml"/>
+	<import resource="request_executors.xml"/>
+	
+	<!-- Channel for Circuit Disconnect And Move issued request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT_AND_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.validateChannel"/> -->
+    <int:channel id="710.501.validateChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Disconnect And Move request approved validator -->
+    <int:service-activator id="circuitDisconnectNMoveReqIssueValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT_AND_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.validateChannel" 
+    		ref="circuitDisconnectNMoveReqIssuedValidator" method="validate"/>
+
+	<!-- Circuit Disconnect And Move request issued validator bean -->
+    <bean id="circuitDisconnectNMoveReqIssuedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl"/>
+	
+	<!-- Circuit Disconnect And Move Request Issued Executor -->
+	
+	<!-- Channel for Circuit Disconnect And Move issue request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT_AND_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.executeChannel"/> -->
+	<int:channel id="710.501.executeChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Disconnect And Move request issued executor -->
+    <int:service-activator id="circuitDisconnectNMoveReqIssueExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT_AND_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.executeChannel" 
+    		ref="circuitDisconnectNMoveRequestStageIssued" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- Circuit Disconnect And Move request issued executor bean -->
+	<bean id="circuitDisconnectNMoveRequestStageIssued" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }"/>
+		<property name="requestStageHelpers" ref="circuitDisconnectNMoveRequestIssuedExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Circuit Disconnect And Move Request Updated -->
+	<!-- ==================================== -->
+	
+	<!-- Circuit Disconnect And Move Request Updated Validator -->
+	
+	<!-- Channel for Circuit Disconnect And Move updated request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT_AND_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.validateChannel"/> -->
+    <int:channel id="710.503.validateChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Disconnect And Move request updated validator -->
+    <int:service-activator id="circuitDisconnectNMoveReqUpdateValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT_AND_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.validateChannel" 
+    		ref="circuitDisconnectNMoveReqUpdatedValidator" method="validate"/>
+
+	<!-- Circuit Disconnect And Move request updated validator bean -->
+    <bean id="circuitDisconnectNMoveReqUpdatedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl"/>
+	
+	<!-- Circuit Disconnect And Move Request Updated Executor -->
+	
+	<!-- Channel for Circuit Disconnect And Move update request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT_AND_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.executeChannel"/> -->
+	<int:channel id="710.503.executeChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Disconnect And Move request updated executor -->
+    <int:service-activator id="circuitDisconnectNMoveReqUpdateExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT_AND_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.executeChannel" 
+    		ref="circuitDisconnectNMoveRequestStageUpdated" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- Circuit Disconnect And Move request updated executor bean -->
+	<bean id="circuitDisconnectNMoveRequestStageUpdated" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }"/>
+		<property name="requestStageHelpers" ref="circuitDisconnectNMoveRequestUpdatedExecutors"/>
+	</bean>
+
+
+	
+	<!-- ==================================== -->
+	<!-- Circuit Disconnect And Move Request Approved -->
+	<!-- ==================================== -->
+	
+	<!-- Circuit Disconnect And Move Request Approved Validator -->
+	
+	<!-- Channel for Circuit Disconnect And Move approve request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT_AND_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.validateChannel"/> -->
+    <int:channel id="710.504.validateChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Disconnect And Move request approved validator -->
+    <int:service-activator id="circuitDisconnectNMoveReqApproveValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT_AND_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.validateChannel" 
+    		ref="circuitDisconnectNMoveReqApprovedValidator" method="validate"/>
+
+	<!-- Circuit Disconnect And Move request approved validator bean -->
+    <bean id="circuitDisconnectNMoveReqApprovedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl"/>
+	
+	<!-- Circuit Disconnect And Move Request Approved Executor -->
+	
+	<!-- Channel for Circuit Disconnect And Move approve request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT_AND_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.executeChannel"/> -->
+	<int:channel id="710.504.executeChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Disconnect And Move request approved executor -->
+    <int:service-activator id="circuitDisconnectNMoveReqApproveExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT_AND_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.executeChannel" 
+    		ref="circuitDisconnectNMoveReqApprovedExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- Circuit Disconnect And Move request approved executor bean -->
+    <bean id="circuitDisconnectNMoveReqApprovedExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }"/>
+		<property name="requestStageHelpers" ref="circuitDisconnectNMoveRequestApprovedExecutors"/>
+	</bean>
+    
+
+	<!-- ==================================== -->
+	<!-- Circuit Disconnect And Move Work Order Issue -->
+	<!-- ==================================== -->
+	
+	<!-- Circuit Disconnect And Move Work order issue Validator -->
+	
+	<!-- Channel for Circuit Disconnect And Move Work Order Issue validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT_AND_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.validateChannel"/> -->
+	<int:channel id="710.505.validateChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Disconnect And Move request approved validator -->
+    <int:service-activator id="circuitDisconnectNMoveWorkorderIssueValidateActivator" requires-reply="false" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT_AND_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.validateChannel" 
+    		ref="circuitDisconnectNMoveWorkorderIssueValidator" method="validate"/>
+
+	<!-- Circuit Disconnect And Move request approved validator bean -->
+    <bean id="circuitDisconnectNMoveWorkorderIssueValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl"/>
+	
+	<!-- Circuit Disconnect And Move Request Approved Executor -->
+	
+	<!-- Channel for Circuit Disconnect And Move approve request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT_AND_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.executeChannel"/> -->
+    <int:channel id="710.505.executeChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Disconnect And Move request approved executor -->
+    <int:service-activator id="circuitDisconnectNMoveWorkorderIssueExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT_AND_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.executeChannel" 
+    		ref="circuitDisconnectNMoveWorkorderIssueExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- Circuit Disconnect And Move request approved executor bean -->
+    <bean id="circuitDisconnectNMoveWorkorderIssueExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }"/>
+		<property name="requestStageHelpers" ref="circuitDisconnectNMoveWorkOrderIssueExecutors"/>
+	</bean>
+    
+
+	<!-- ==================================== -->
+	<!-- Circuit Disconnect And Move Work Order Complete -->
+	<!-- ==================================== -->
+	
+	<!-- Circuit Disconnect And Move Work order complete Validator -->
+	
+	<!-- Channel for Circuit Disconnect And Move Work Order Complete validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT_AND_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.validateChannel"/> -->
+    <int:channel id="710.506.validateChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Disconnect And Move work order complete validator -->
+    <int:service-activator id="circuitDisconnectNMoveWorkorderCompleteValidateActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT_AND_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.validateChannel" 
+    		ref="circuitDisconnectNMoveWorkorderCompleteValidator" method="validate"/>
+
+	<!-- Circuit Disconnect And Move request complete validator bean -->
+    <bean id="circuitDisconnectNMoveWorkorderCompleteValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="circuitDisconnectNMoveWorkOrderCompleteValidators"/>
+    </bean>
+    
+	
+	<!-- Circuit Disconnect And Move Workorder complete Executor -->
+	
+	<!-- Channel for Circuit Disconnect And Move work order complete executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT_AND_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.executeChannel"/> -->
+    <int:channel id="710.506.executeChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Disconnect And Move request approved executor -->
+    <int:service-activator id="circuitDisconnectNMoveWorkorderCompleteExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT_AND_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.executeChannel" 
+    		ref="circuitDisconnectNMoveWorkorderCompleteExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- Circuit Disconnect And Move request approved executor bean -->
+    <bean id="circuitDisconnectNMoveWorkorderCompleteExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }"/>
+		<property name="requestStageHelpers" ref="circuitDisconnectNMoveWorkOrderCompleteExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Circuit Disconnect And Move Request Complete -->
+	<!-- ==================================== -->
+	
+	<!-- Circuit Disconnect And Move Request complete Validator -->
+	
+	<!-- Channel for Circuit Disconnect And Move Request Complete validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT_AND_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.validateChannel"/> -->
+    <int:channel id="710.507.validateChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Disconnect And Move request complete validator -->
+    <int:service-activator id="circuitDisconnectNMoveRequestCompleteValidateActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT_AND_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.validateChannel" 
+    		ref="circuitDisconnectNMoveRequestCompleteValidator" method="validate"/>
+
+	<!-- Circuit Disconnect And Move request complete validator bean -->
+    <bean id="circuitDisconnectNMoveRequestCompleteValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl"/>
+	
+	<!-- Circuit Disconnect And Move Request complete Executor -->
+	
+	<!-- Channel for Circuit Disconnect And Move request complete executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT_AND_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.executeChannel"/> -->
+    <int:channel id="710.507.executeChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Disconnect And Move request approved executor -->
+    <!-- output-channel="nullChannel" -->
+    <int:service-activator id="circuitDisconnectNMoveRequestCompleteExecuteActivator" requires-reply="false" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT_AND_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.executeChannel" 
+    		ref="circuitDisconnectNMoveRequestCompleteExecutor" method="process" output-channel="nullChannel"/>
+    		
+
+	<!-- Circuit Disconnect And Move request approved executor bean -->
+    <bean id="circuitDisconnectNMoveRequestCompleteExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }"/>
+		<property name="requestStageHelpers" ref="circuitDisconnectNMoveRequestCompleteExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Circuit Disconnect And Move Routers               				-->
+	<!-- ==================================== -->
+
+	<!-- Circuit Disconnect And Move validate router -->
+	<!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT_AND_MOVE }ValidateRouter"/> -->
+	<int:channel id="710.ValidateRouter"/>
+	<int:router input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT_AND_MOVE }.ValidateRouter" ref="requestStageRouter" method="validatorRouter"/>
+	
+	<!-- Circuit Disconnect And Move execute router -->
+	<!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT_AND_MOVE }ExecuteRouter"/> -->
+	<int:channel id="710.ExecuteRouter"/>
+	<int:router input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).DISCONNECT_AND_MOVE }.ExecuteRouter" ref="requestStageRouter" method="executorRouter"/>
+    
+
+
+</beans>

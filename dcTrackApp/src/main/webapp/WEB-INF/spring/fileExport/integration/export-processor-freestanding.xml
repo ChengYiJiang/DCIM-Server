@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd">
+
+	<!--  CABINET -->
+	<int:channel id="cabinetFreeStandingItemResultChannel">
+		<int:queue/>
+	</int:channel>
+	
+	<bean id="cabinetFreeStandingResultSplitDTOToItemImportDTOTranslator" class="com.raritan.tdz.dctexport.integration.transformers.ItemExportSplitDTOToItemImportDTOTransformer">
+		<constructor-arg name="objectType"  value="Cabinet"/>
+	</bean>
+	
+
+
+	<int:chain input-channel="cabinetFreeStandingItemResultChannel" output-channel="itemResultAggregatorChannel">
+		<int:transformer
+			ref="cabinetFreeStandingResultSplitDTOToItemImportDTOTranslator"
+			method="transform"/>
+		<int:transformer
+			ref="itemImportDTOToCSVTranslator"
+			method="transform"/>
+		<int:aggregator
+			correlation-strategy="itemResultAggregatorCorrelationStrategy"
+			correlation-strategy-method="correlatedBy"
+			release-strategy="individualItemResultAggregatorReleaseStrategy"
+			release-strategy-method="canRelease"
+			expire-groups-upon-completion="true"
+			ref="individualItemResultAggregatorBean" 
+			method="aggregate"/>
+		<int:poller fixed-delay="#{10 * 1000}" task-executor="exportResultHandlerPollerTaskExecutor"/>
+	</int:chain>
+	
+	<!--  DEVICE FREESTANDING-->
+	<int:channel id="deviceFreeStandingItemResultChannel">
+		<int:queue/>
+	</int:channel>
+	
+	<bean id="deviceFreeStandingResultSplitDTOToItemImportDTOTranslator" class="com.raritan.tdz.dctexport.integration.transformers.ItemExportSplitDTOToItemImportDTOTransformer">
+		<constructor-arg name="objectType"  value="Device-Free Standing"/>
+	</bean>
+	
+
+
+	<int:chain input-channel="deviceFreeStandingItemResultChannel" output-channel="itemResultAggregatorChannel">
+		<int:transformer
+			ref="deviceFreeStandingResultSplitDTOToItemImportDTOTranslator"
+			method="transform"/>
+		<int:transformer
+			ref="itemImportDTOToCSVTranslator"
+			method="transform"/>
+		<int:aggregator
+			correlation-strategy="itemResultAggregatorCorrelationStrategy"
+			correlation-strategy-method="correlatedBy"
+			release-strategy="individualItemResultAggregatorReleaseStrategy"
+			release-strategy-method="canRelease"
+			expire-groups-upon-completion="true"
+			ref="individualItemResultAggregatorBean" 
+			method="aggregate"/>
+		<int:poller fixed-delay="#{10 * 1000}" task-executor="exportResultHandlerPollerTaskExecutor"/>
+	</int:chain>
+	
+	<!--  NETWORK FREESTANDING -->
+	<int:channel id="networkFreeStandingItemResultChannel">
+		<int:queue/>
+	</int:channel>
+	
+	<bean id="networkFreeStandingResultSplitDTOToItemImportDTOTranslator" class="com.raritan.tdz.dctexport.integration.transformers.ItemExportSplitDTOToItemImportDTOTransformer">
+		<constructor-arg name="objectType"  value="Network-Free Standing"/>
+	</bean>
+	
+
+
+	<int:chain input-channel="networkFreeStandingItemResultChannel" output-channel="itemResultAggregatorChannel">
+		<int:transformer
+			ref="networkFreeStandingResultSplitDTOToItemImportDTOTranslator"
+			method="transform"/>
+		<int:transformer
+			ref="itemImportDTOToCSVTranslator"
+			method="transform"/>
+		<int:aggregator
+			correlation-strategy="itemResultAggregatorCorrelationStrategy"
+			correlation-strategy-method="correlatedBy"
+			release-strategy="individualItemResultAggregatorReleaseStrategy"
+			release-strategy-method="canRelease"
+			expire-groups-upon-completion="true"
+			ref="individualItemResultAggregatorBean" 
+			method="aggregate"/>
+		<int:poller fixed-delay="#{10 * 1000}" task-executor="exportResultHandlerPollerTaskExecutor"/>
+	</int:chain>
+	
+	
+	<!--  UPS FREESTANDING -->
+	<int:channel id="upsFreeStandingItemResultChannel">
+		<int:queue/>
+	</int:channel>
+	
+	<bean id="upsFreeStandingResultSplitDTOToItemImportDTOTranslator" class="com.raritan.tdz.dctexport.integration.transformers.ItemExportSplitDTOToItemImportDTOTransformer">
+		<constructor-arg name="objectType"  value="UPS"/>
+	</bean>
+	
+
+
+	<int:chain input-channel="upsFreeStandingItemResultChannel" output-channel="itemResultAggregatorChannel">
+		<int:transformer
+			ref="upsFreeStandingResultSplitDTOToItemImportDTOTranslator"
+			method="transform"/>
+		<int:transformer
+			ref="itemImportDTOToCSVTranslator"
+			method="transform"/>
+		<int:aggregator
+			correlation-strategy="itemResultAggregatorCorrelationStrategy"
+			correlation-strategy-method="correlatedBy"
+			release-strategy="individualItemResultAggregatorReleaseStrategy"
+			release-strategy-method="canRelease"
+			expire-groups-upon-completion="true"
+			ref="individualItemResultAggregatorBean" 
+			method="aggregate"/>
+		<int:poller fixed-delay="#{10 * 1000}" task-executor="exportResultHandlerPollerTaskExecutor"/>
+	</int:chain>
+	
+	<!--  FloorPDU FREESTANDING -->
+	<int:channel id="fpduFreeStandingItemResultChannel">
+		<int:queue/>
+	</int:channel>
+	
+	<bean id="fpduFreeStandingResultSplitDTOToItemImportDTOTranslator" class="com.raritan.tdz.dctexport.integration.transformers.ItemExportSplitDTOToItemImportDTOTransformer">
+		<constructor-arg name="objectType"  value="Floor PDU"/>
+	</bean>
+	
+
+
+	<int:chain input-channel="fpduFreeStandingItemResultChannel" output-channel="itemResultAggregatorChannel">
+		<int:transformer
+			ref="fpduFreeStandingResultSplitDTOToItemImportDTOTranslator"
+			method="transform"/>
+		<int:transformer
+			ref="itemImportDTOToCSVTranslator"
+			method="transform"/>
+		<int:aggregator
+			correlation-strategy="itemResultAggregatorCorrelationStrategy"
+			correlation-strategy-method="correlatedBy"
+			release-strategy="individualItemResultAggregatorReleaseStrategy"
+			release-strategy-method="canRelease"
+			expire-groups-upon-completion="true"
+			ref="individualItemResultAggregatorBean" 
+			method="aggregate"/>
+		<int:poller fixed-delay="#{10 * 1000}" task-executor="exportResultHandlerPollerTaskExecutor"/>
+	</int:chain>
+	
+	<!--  CRAC FREESTANDING -->
+	<int:channel id="cracFreeStandingItemResultChannel">
+		<int:queue/>
+	</int:channel>
+	
+	<bean id="cracFreeStandingResultSplitDTOToItemImportDTOTranslator" class="com.raritan.tdz.dctexport.integration.transformers.ItemExportSplitDTOToItemImportDTOTransformer">
+		<constructor-arg name="objectType"  value="CRAC"/>
+	</bean>
+	
+
+
+	<int:chain input-channel="cracFreeStandingItemResultChannel" output-channel="itemResultAggregatorChannel">
+		<int:transformer
+			ref="cracFreeStandingResultSplitDTOToItemImportDTOTranslator"
+			method="transform"/>
+		<int:transformer
+			ref="itemImportDTOToCSVTranslator"
+			method="transform"/>
+		<int:aggregator
+			correlation-strategy="itemResultAggregatorCorrelationStrategy"
+			correlation-strategy-method="correlatedBy"
+			release-strategy="individualItemResultAggregatorReleaseStrategy"
+			release-strategy-method="canRelease"
+			expire-groups-upon-completion="true"
+			ref="individualItemResultAggregatorBean" 
+			method="aggregate"/>
+		<int:poller fixed-delay="#{10 * 1000}" task-executor="exportResultHandlerPollerTaskExecutor"/>
+	</int:chain>
+	
+</beans>

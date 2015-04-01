@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<!-- ==================== -->
+	<!-- vpc item factory -->
+	<!-- ==================== -->
+	<util:list id="vpcItemList">
+		<value>vpcUPS</value>
+		<value>vpcUPSBank</value>
+		<value>vpcFloorPDU</value>
+	</util:list>
+	
+	<util:map id="lowToHighVoltages">
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$VoltClass).V_120 }" value="#{ T(com.raritan.tdz.lookup.SystemLookup$VoltClass).V_208 }"/>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$VoltClass).V_220 }" value="#{ T(com.raritan.tdz.lookup.SystemLookup$VoltClass).V_380 }"/>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$VoltClass).V_230 }" value="#{ T(com.raritan.tdz.lookup.SystemLookup$VoltClass).V_400 }"/>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$VoltClass).V_240 }" value="#{ T(com.raritan.tdz.lookup.SystemLookup$VoltClass).V_415 }"/>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$VoltClass).V_277 }" value="#{ T(com.raritan.tdz.lookup.SystemLookup$VoltClass).V_480 }"/>
+	</util:map>	
+	
+	<util:list id="vpcItemBehaviors">
+		<ref bean="upsVPCItemBehavior"/>
+		<ref bean="upsBankVPCItemBehavior"/>
+		<ref bean="floorPduVPCItemBehavior"/>
+		<ref bean="powerPanelVPCItemBehavior"/>
+		<ref bean="powerOutletVPCItemBehavior"/>
+	</util:list>
+	
+	<bean id="vpcAItemFactory" class="com.raritan.tdz.vpc.factory.VPCItemFactoryImpl">
+		<constructor-arg name="vpcPath" value="A"/>
+		<constructor-arg name="vpcItemBehaviors" ref="vpcItemBehaviors"/>
+	</bean>
+	
+	<bean id="vpcBItemFactory" class="com.raritan.tdz.vpc.factory.VPCItemFactoryImpl">
+		<constructor-arg name="vpcPath" value="B"/>
+		<constructor-arg name="vpcItemBehaviors" ref="vpcItemBehaviors"/>
+	</bean>
+	
+	<!-- ==================== -->
+	<!-- vpc connection factory -->
+	<!-- ==================== -->
+	
+	<bean id="fpduToUPSBankVPCConnection" class="com.raritan.tdz.vpc.factory.FPDUtoUPSBankVPCConnection"/>
+	
+	<bean id="powerPanelConnection" class="com.raritan.tdz.vpc.factory.PowerPanelConnection"/>
+	
+	<bean id="powerOutletConnection" class="com.raritan.tdz.vpc.factory.PowerOutletConnection"/>
+	
+	<util:list id="vpcConnections">
+		<ref bean="fpduToUPSBankVPCConnection"/>
+		<ref bean="powerPanelConnection"/>
+		<ref bean="powerOutletConnection"/>
+	</util:list>	
+	
+	<!-- ==================== -->
+	<!-- power chain factory -->
+	<!-- ==================== -->
+	<bean id="vpcAPowerChainFactory" class="com.raritan.tdz.vpc.factory.VPCPowerChainFactoryImpl">
+		<constructor-arg name="vpcItemFactory" ref="vpcAItemFactory"/>
+		<constructor-arg name="vpcConnections" ref="vpcConnections"/>
+		<constructor-arg name="powerChainLabel" value="A"/>
+	</bean>
+	
+	<bean id="vpcBPowerChainFactory" class="com.raritan.tdz.vpc.factory.VPCPowerChainFactoryImpl">
+		<constructor-arg name="vpcItemFactory" ref="vpcBItemFactory"/>
+		<constructor-arg name="vpcConnections" ref="vpcConnections"/>
+		<constructor-arg name="powerChainLabel" value="B"/>	
+	</bean>
+
+	<!-- ================= -->
+	<!-- Item Updaters -->
+	<!-- ================= -->
+	<bean id="upsVpcItemUpdateStaticData" class="com.raritan.tdz.vpc.factory.UpsVpcItemUpdateStaticData">
+		<property name="itemClassLkp" value="#{ T(com.raritan.tdz.lookup.SystemLookup$Class).UPS }"/>
+	</bean>
+	
+	<bean id="upsVpcItemUpdateDynamicData" class="com.raritan.tdz.vpc.factory.UpsVpcItemUpdateDynamicData"/>
+	
+	<bean id="upsBankVpcItemUpdate" class="com.raritan.tdz.vpc.factory.UpsBankVpcItemUpdate">
+		<property name="itemClassLkp" value="#{ T(com.raritan.tdz.lookup.SystemLookup$Class).UPS_BANK }"/>
+	</bean>
+	
+	<bean id="fpduVpcItemUpdate" class="com.raritan.tdz.vpc.factory.FPDUVpcItemUpdate">
+		<property name="itemClassLkp" value="#{ T(com.raritan.tdz.lookup.SystemLookup$Class).FLOOR_PDU }"/>
+	</bean>
+	
+	<!-- Note: Since the class name is the same for floor pdu and power panel, we need to set the power panel name to have 'Power Panel' -->
+	<bean id="powerPanelVpcItemUpdateName" class="com.raritan.tdz.vpc.factory.PowerPanelVpcItemUpdateName"/>
+	
+	<bean id="vpcItemUpdateNamePostFix" class="com.raritan.tdz.vpc.factory.VpcItemUpdateNamePostfix"/>
+	
+	<bean id="powerPanelVpcItemUpdateDynamicData" class="com.raritan.tdz.vpc.factory.PowerPanelVpcItemUpdateDynamicData"/>
+	
+	<bean id="powerPanelVpcItemUpdateStaticData" class="com.raritan.tdz.vpc.factory.PowerPanelVpcItemUpdateStaticData">
+		<property name="itemClassLkp" value="#{ T(com.raritan.tdz.lookup.SystemLookup$Class).FLOOR_PDU }"/>
+		<property name="itemSubClassLkp" value="#{ T(com.raritan.tdz.lookup.SystemLookup$SubClass).LOCAL }"/>
+	</bean>
+	
+	<bean id="powerPanelVpcItemCreatePoles" class="com.raritan.tdz.vpc.factory.PowerPanelVpcItemCreatePoles"/>
+	
+	<bean id="powerPanelVpcItemCreateBreakers" class="com.raritan.tdz.vpc.factory.PowerPanelVpcItemCreateBreakers"/>
+
+	<bean id="powerOutletVpcItemUpdate" class="com.raritan.tdz.vpc.factory.PowerOutletVpcItemUpdate">
+		<property name="itemClassLkp" value="#{ T(com.raritan.tdz.lookup.SystemLookup$Class).FLOOR_OUTLET }"/>
+		<property name="itemSubClassLkp" value="#{ T(com.raritan.tdz.lookup.SystemLookup$SubClass).WHIP_OUTLET }"/>
+	</bean>
+	
+	<bean id="vpcItemUpdateCommon" class="com.raritan.tdz.vpc.factory.VPCItemUpdateCommon"/>
+	
+	<bean id="vpcItemUpdateHelper" class="com.raritan.tdz.vpc.factory.VPCItemUpdateHelperImpl"/>
+	
+	<bean id="vpcItemUpdateStateHidden" class="com.raritan.tdz.vpc.factory.VPCItemUpdateState">
+		<constructor-arg name="status" value="#{ T(com.raritan.tdz.lookup.SystemLookup$ItemStatus).HIDDEN }"/>
+	</bean>
+	
+	<util:list id="upsVpcItemUpdaters">
+		<ref bean="upsVpcItemUpdateStaticData"/>
+		<ref bean="vpcItemUpdateCommon"/>
+		<ref bean="vpcItemUpdateStateHidden"/>
+	</util:list>
+
+	<util:list id="upsBankVpcItemUpdaters">
+		<ref bean="upsBankVpcItemUpdate"/>
+		<ref bean="vpcItemUpdateCommon"/>
+		<ref bean="vpcItemUpdateStateHidden"/>
+	</util:list>
+	
+	<util:list id="fpduVpcItemUpdaters">
+		<ref bean="fpduVpcItemUpdate"/>
+		<ref bean="vpcItemUpdateCommon"/>
+		<ref bean="vpcItemUpdateStateHidden"/>
+	</util:list>
+	
+	<util:list id="powerPanelVpcItemUpdaters">
+		<ref bean="powerPanelVpcItemUpdateStaticData"/>
+		<ref bean="powerPanelVpcItemUpdateDynamicData"/>
+		<ref bean="vpcItemUpdateCommon"/>
+		<ref bean="powerPanelVpcItemUpdateName"/>
+		<ref bean="powerPanelVpcItemCreatePoles"/>
+		<ref bean="powerPanelVpcItemCreateBreakers"/>
+		<ref bean="vpcItemUpdateStateHidden"/>
+	</util:list>
+	
+	<util:list id="powerOutletVpcItemUpdaters">
+		<ref bean="powerOutletVpcItemUpdate"/>
+		<ref bean="vpcItemUpdateCommon"/>
+		<ref bean="vpcItemUpdateNamePostFix"/>
+		<ref bean="vpcItemUpdateStateHidden"/>
+	</util:list>
+	
+	<util:map id="vpcItemUpdater">
+		<entry key="vpcUPS" value-ref="upsVpcItemUpdaters"/>
+		<entry key="vpcUPSBank" value-ref="upsBankVpcItemUpdaters"/>
+		<entry key="vpcFloorPDU" value-ref="fpduVpcItemUpdaters"/>
+		<entry key="vpcFloorPDUPanel" value-ref="powerPanelVpcItemUpdaters"/>
+		<entry key="vpcPowerOutlet" value-ref="powerOutletVpcItemUpdaters"/>
+	</util:map>
+	
+	
+	<!-- ================= -->
+	<!-- Item Linkers -->
+	<!-- ================= -->
+	<bean id="vpcItemLinkUPSBankAndUPS" class="com.raritan.tdz.vpc.factory.VPCItemLinkUPSBankAndUPS"/>
+	
+	<bean id="vpcItemLinkUPSBankAndFPDU" class="com.raritan.tdz.vpc.factory.VPCItemLinkUPSBankAndFPDU"/>
+	
+	<bean id="vpcItemLinkFPDUAndPowerPanel" class="com.raritan.tdz.vpc.factory.VPCItemLinkFPDUAndPowerPanel"/>
+	
+	<bean id="vpcItemLinkUPSBankAndPowerPanel" class="com.raritan.tdz.vpc.factory.VPCItemLinkUPSBankAndPowerPanel"/>
+
+	<bean id="vpcItemLinkPowerOutletAndPowerPanel" class="com.raritan.tdz.vpc.factory.VPCItemLinkPowerOutletAndPowerPanel"/>
+	
+	<bean id="vpcItemLinkPowerOutletAndUpsBank" class="com.raritan.tdz.vpc.factory.VPCItemLinkPowerOutletAndUpsBank"/>
+
+	<util:list id="upsLinkers">
+		<ref bean="vpcItemLinkUPSBankAndUPS"/>
+	</util:list>
+	
+	<util:list id="fpduLinkers">
+		<ref bean="vpcItemLinkUPSBankAndFPDU"/>
+	</util:list>
+	
+	<util:list id="powerPanelLinkers">
+		<ref bean="vpcItemLinkUPSBankAndPowerPanel"/>
+		<ref bean="vpcItemLinkFPDUAndPowerPanel"/>
+	</util:list>
+	
+	<util:list id="powerOutletLinkers">
+		<ref bean="vpcItemLinkPowerOutletAndUpsBank"/>
+	</util:list>
+	
+	<util:map id="vpcItemLinker">
+		<entry key="vpcUPS" value-ref="upsLinkers"/>
+		<entry key="vpcFloorPDU" value-ref="fpduLinkers"/>
+		<entry key="vpcFloorPDUPanel" value-ref="powerPanelLinkers"/>
+		<entry key="vpcPowerOutlet" value-ref="powerOutletLinkers"/>
+	</util:map>
+	
+	<!-- ================= -->
+	<!-- Home layer -->
+	<!-- ================= -->
+	<bean id="vpcHome" class="com.raritan.tdz.vpc.home.VPCHomeImpl"/>
+	
+	<!-- creates the items using its bean from spring factory implementation -->
+	<bean id="itemFactory" class="com.raritan.tdz.vpc.factory.ItemFactoryImpl"/>
+
+	<bean id="upsVPCItemBehavior" class="com.raritan.tdz.vpc.factory.VPCItemBehaviorImpl" autowire="byName" autowire-candidate="true">
+		<constructor-arg name="vpcItemReference" value="vpcUPS"/>
+		<constructor-arg name="updaters" ref="upsVpcItemUpdaters"/>
+		<constructor-arg name="linkers" ref="upsLinkers"/>
+	</bean>
+	
+	<bean id="upsBankVPCItemBehavior" class="com.raritan.tdz.vpc.factory.VPCItemBehaviorImpl" autowire="byName" autowire-candidate="true">
+		<constructor-arg name="vpcItemReference" value="vpcUPSBank"/>
+		<constructor-arg name="updaters" ref="upsBankVpcItemUpdaters"/>
+		<constructor-arg name="linkers"><null/></constructor-arg>
+	</bean>
+	
+	<bean id="floorPduVPCItemBehavior" class="com.raritan.tdz.vpc.factory.VPCItemBehaviorImpl" autowire="byName" autowire-candidate="true">
+		<constructor-arg name="vpcItemReference" value="vpcFloorPDU"/>
+		<constructor-arg name="updaters" ref="fpduVpcItemUpdaters"/>
+		<constructor-arg name="linkers" ref="fpduLinkers"/>
+	</bean>
+
+	<bean id="powerPanelVPCItemBehavior" class="com.raritan.tdz.vpc.factory.VPCItemPowerPanelBehavior" autowire="byName" autowire-candidate="true">
+		<constructor-arg name="vpcItemReference" value="vpcFloorPDUPanel"/>
+		<constructor-arg name="updaters" ref="powerPanelVpcItemUpdaters"/>
+		<constructor-arg name="linkers" ref="powerPanelLinkers"/>
+		<constructor-arg name="lowToHighVoltages" ref="lowToHighVoltages"/>
+	</bean>
+	
+	<bean id="powerOutletVPCItemBehavior" class="com.raritan.tdz.vpc.factory.VPCItemPowerOutletBehavior" autowire="byName" autowire-candidate="true">
+		<constructor-arg name="vpcItemReference" value="vpcPowerOutlet"/>
+		<constructor-arg name="updaters" ref="powerOutletVpcItemUpdaters"/>
+		<constructor-arg name="linkers" ref="powerOutletLinkers"/>
+	</bean>
+
+	<!-- Validators -->
+	
+	<bean id="vpcCircuitExist" class="com.raritan.tdz.vpc.validator.VPCCircuitExist" autowire-candidate="true" autowire="byName"/>
+	
+	<!-- VPC Circuit -->
+	<bean id="powerOutletVPCCircuit" class="com.raritan.tdz.vpc.factory.PowerOutletVPCCircuit"/>
+	
+</beans>

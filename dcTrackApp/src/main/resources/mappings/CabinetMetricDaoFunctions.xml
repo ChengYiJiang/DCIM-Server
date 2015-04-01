@@ -1,0 +1,58 @@
+﻿<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE hibernate-mapping
+    PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <sql-query name="getSumPSWattsBudgetForItemList" callable="false">
+        <return-scalar column="itemid" type="long" />
+        <return-scalar column="total" type="double" />
+            SELECT item_id as itemId, COALESCE(effective_power,0) as total 
+            FROM dct_items_it WHERE item_id in (:itemIds)
+    </sql-query>
+
+    <sql-query name="getSumPSWattsBudgetForCabinetId" callable="false">
+        <return-scalar column="total" type="double" />
+			SELECT  sum(COALESCE(dct_items_it.effective_power,0)) AS total
+			FROM dct_items item INNER JOIN dct_items cabinet ON item.parent_item_id = cabinet.item_id
+			INNER JOIN dct_items_it ON item.item_id = dct_items_it.item_id 
+			WHERE cabinet.item_id = :cabinetId           
+    </sql-query>
+ 
+    <sql-query name="getSumPSWattsBudgetByCabinetForLocation" callable="false">
+        <return-scalar column="itemId" type="long" />
+        <return-scalar column="cabinet" type="string" />
+        <return-scalar column="total" type="double" />
+        <![CDATA[        
+			SELECT cabinet.item_id as itemId, cabinet.item_name As cabinet, trunc(sum(COALESCE(dct_items_it.effective_power,0))/1000.0, 3) AS total
+			FROM dct_items item INNER JOIN dct_items cabinet ON item.parent_item_id = cabinet.item_id
+			INNER JOIN dct_locations ON item.location_id = dct_locations.location_id
+			INNER JOIN dct_items_it ON item.item_id = dct_items_it.item_id 
+			WHERE cabinet.class_lks_id = 6 
+			AND dct_locations.code = :locationCode
+			GROUP BY cabinet.item_id, cabinet.item_name 
+			ORDER BY 3 
+        ]]>
+    </sql-query>
+    
+
+    <sql-query name="getCabinetTotalWeight" callable="false">
+        <return-scalar column="SumOfWeight" type="double" />
+        <![CDATA[
+            SELECT Sum(dct_models.Weight) AS SumOfWeight FROM dct_models
+            INNER JOIN dct_items ON dct_models.model_id = dct_items.model_id 
+            WHERE dct_items.parent_item_id = :cabinetId OR dct_items.item_id = :cabinetId
+            AND dct_items.status_lks_id < 305
+        ]]>
+    </sql-query>
+
+    <sql-query name="getCabinetItemCount" callable="false">
+        <return-scalar column="recCount" type="long" />
+        <![CDATA[
+            SELECT COUNT(*) as recCount FROM dct_items
+            WHERE dct_items.parent_item_id = :cabinetId  AND dct_items.status_lks_id < 305
+        ]]>
+    </sql-query>
+
+</hibernate-mapping>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/util 
+						http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<bean id="meItemFactory" class="com.raritan.tdz.item.factory.MeItemFactory"/>
+	
+	<bean id="vpcUPS" factory-bean="meItemFactory" factory-method="createItem" scope="prototype">
+		<constructor-arg name="propertyMap">
+			<map>
+				<entry key="cmbMake" value="#{ 27L }"/>
+				<entry key="cmbModel" value="#{ 26197L }"/>
+				<entry key="tiClass" value="#{ T(com.raritan.tdz.lookup.SystemLookup$Class).UPS }"/>
+				<entry key="tiName" value=""/>
+				<entry key="cmbUPosition" value="#{ -9L }"/>
+				<entry key="cmbStatus" value="#{ T(com.raritan.tdz.lookup.SystemLookup$ItemStatus).HIDDEN }"/> 
+				<entry key="_tiOrigin" value="#{ T(com.raritan.tdz.lookup.SystemLookup$ItemOrigen).VPC }"/> 
+				<entry key="tiFPDURatingkVA" value="#{ 99999L }"/>
+				<entry key="tiFPDUInputVoltage" value="#{ 480L }"/>
+			</map>
+		</constructor-arg>
+		<constructor-arg name="unit" value="1"/>
+	</bean>
+	
+	<bean id="vpcUPSBank" factory-bean="meItemFactory" factory-method="createItem" scope="prototype">
+		<constructor-arg name="propertyMap">
+			<map>
+				<entry key="tiClass" value="#{ T(com.raritan.tdz.lookup.SystemLookup$Class).UPS_BANK }"/>
+				<entry key="tiName" value=""/>
+				<entry key="cmbUPosition" value="#{ -9L }"/>
+				<entry key="cmbStatus" value="#{ T(com.raritan.tdz.lookup.SystemLookup$ItemStatus).HIDDEN }"/> 
+				<entry key="_tiOrigin" value="#{ T(com.raritan.tdz.lookup.SystemLookup$ItemOrigen).VPC }"/> 
+				<entry key="tiFPDURatingkVA" value="#{ 99999L }"/>
+				<entry key="tiFPDUInputVoltage" value="#{ 480L }"/>
+			</map>
+		</constructor-arg>
+		<constructor-arg name="unit" value="1"/>
+	</bean>
+	
+	<bean id="vpcFloorPDU" factory-bean="meItemFactory" factory-method="createItem" scope="prototype">
+		<constructor-arg name="propertyMap">
+			<map>
+				<entry key="cmbModel" value="#{ 11933L }"/>
+				<entry key="tiClass" value="#{ T(com.raritan.tdz.lookup.SystemLookup$Class).FLOOR_PDU }"/>
+				<entry key="tiName" value=""/>
+				<entry key="cmbUPosition" value="#{ -9L }"/>
+				<entry key="cmbStatus" value="#{ T(com.raritan.tdz.lookup.SystemLookup$ItemStatus).HIDDEN }"/> 
+				<entry key="_tiOrigin" value="#{ T(com.raritan.tdz.lookup.SystemLookup$ItemOrigen).VPC }"/> 
+				<entry key="tiFPDURatingkVA" value="#{ 99999L }"/>
+				<entry key="tiFPDUInputVoltage" value="#{ 480L }"/>
+				<entry key="tiFPDUBrkrAmps" value="#{ 99999L }"/>
+			</map>
+		</constructor-arg>
+		<constructor-arg name="unit" value="1"/>
+	</bean>
+	
+	<bean id="vpcFloorPDUPanel" factory-bean="meItemFactory" factory-method="createItem" scope="prototype">
+		<constructor-arg name="propertyMap">
+			<map>
+				<entry key="cmbModel" value="#{ 11933L }"/>
+				<entry key="tiClass" value="#{ T(com.raritan.tdz.lookup.SystemLookup$Class).FLOOR_PDU }"/>
+				<entry key="tiSubClass" value="#{ T(com.raritan.tdz.lookup.SystemLookup$SubClass).LOCAL }"/>
+				<entry key="tiName" value=""/>
+				<entry key="cmbUPosition" value="#{ -9L }"/>
+				<entry key="cmbStatus" value="#{ T(com.raritan.tdz.lookup.SystemLookup$ItemStatus).HIDDEN }"/> 
+				<entry key="_tiOrigin" value="#{ T(com.raritan.tdz.lookup.SystemLookup$ItemOrigen).VPC }"/> 
+				<entry key="tiFPDUBrkrAmps" value="#{ 99999L }"/>
+			</map>
+		</constructor-arg>
+		<constructor-arg name="unit" value="1"/>
+	</bean>
+
+	<bean id="vpcPowerOutlet" factory-bean="meItemFactory" factory-method="createItem" scope="prototype">
+		<constructor-arg name="propertyMap">
+			<map>
+				<entry key="tiClass" value="#{ T(com.raritan.tdz.lookup.SystemLookup$Class).FLOOR_OUTLET }"/>
+				<entry key="tiName" value=""/>
+				<entry key="cmbUPosition" value="#{ -9L }"/>
+				<entry key="cmbSlotPosition" value="#{ -9L }"/>
+				<entry key="cmbStatus" value="#{ T(com.raritan.tdz.lookup.SystemLookup$ItemStatus).HIDDEN }"/> 
+				<entry key="_tiOrigin" value="#{ T(com.raritan.tdz.lookup.SystemLookup$ItemOrigen).VPC }"/> 
+			</map>
+		</constructor-arg>
+		<constructor-arg name="unit" value="1"/>
+	</bean>
+	
+	
+</beans>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<!-- 
+		First define Appenders
+	 -->
+	
+	<!--  
+		Console Logger - this goes to catalina.out in production.
+	-->
+	<appender name="console" class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.out" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-5p\(%d{ISO8601}\): %c - %m%n" />
+		</layout>
+	</appender>
+	
+	<!-- 
+		Log dcTrackApp server info to a separate log file.
+	 -->
+	 <!--
+	<appender name="serverLog" class="org.apache.log4j.RollingFileAppender">
+		<param name="file" value="/var/log/tomcat6/dcTrackServer.log" />
+		<param name="MaxFileSize" value="1MB" />
+		<param name="MaxBackupIndex" value="4"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-5p\(%d{ISO8601}\): %c - %m%n" />
+		</layout>
+	</appender>
+	-->
+	
+	<!-- 
+		Log client errors info to a separate log file.
+	 -->
+	<appender name="clientLog" class="org.apache.log4j.RollingFileAppender">
+		<param name="file" value="/var/log/tomcat6/dcTrackClient.log" />
+		<param name="MaxFileSize" value="10000KB" />
+		<param name="MaxBackupIndex" value="1"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-5p\(%d{ISO8601}\): %c - %m%n" />
+		</layout>
+	</appender>
+
+	<!-- 
+		Next define Application Loggers
+	 -->
+	<logger name="com.raritan.tdz">
+		<level value="warn" />
+	</logger>
+	
+	<!--  Spring loggers -->
+	<logger name="org.springframework.core">
+		<level value="warn" />
+	</logger>
+	<logger name="org.springframework.beans">
+		<level value="warn" />
+	</logger>
+	<logger name="org.springframework.context">
+		<level value="warn" />
+	</logger>
+	<logger name="org.springframework.web">
+		<level value="warn" />
+	</logger>
+	<logger name="org.springframework.batch">
+		<level value="warn" />
+	</logger>
+	
+	<!--  Bonita workflow engine logging -->
+	<logger name="org.ow2.bonita">
+		<level value="warn" />
+	</logger>
+	
+	<!-- Listen/Notify framework logging -->
+	<logger name="com.raritan.tdz.vbjavabridge">
+		<level value="warn"/>
+	</logger>
+	
+	<!-- START PIQ Integration Logging -->
+	
+	<!-- Logging for PIQ integration  -->
+	<logger name="com.raritan.tdz.piq">
+		<level value="warn"/>
+	</logger>
+	<logger name="com.raritan.tdz.piq.home">
+		<level value="warn" />
+	</logger>
+	<logger name="com.raritan.tdz.piq.home.PIQRestClient">
+		<level value="warn" />
+	</logger>
+	<!--  Logging specific to the PIQ Update function -->
+	<logger name="PIQSyncLogger">
+		<level value="warn" />
+	</logger>
+	<!-- PDU Job logging -->
+	<logger name="com.raritan.tdz.piq.jobs.PDUJobHandler">
+		<level value="warn" />
+	</logger>
+	
+	<!-- SSL client logging  -->
+	<logger name="com.raritan.tdz.sslclient.home.ClientSSLProtocolSocketFactory">
+		<level value="warn" />
+	</logger>
+	<logger name="com.raritan.tdz.sslclient.home.ClientSSLX509TrustManager">
+		<level value="warn" />
+	</logger>
+	
+	<!-- Set to debug for PIQ REST client logging -->
+	<logger name="httpclient.wire">
+		<level value="warn" />
+	</logger>
+	
+<!-- 	<logger name="org.apache.http.wire">
+		<level value="debug"/>
+	</logger> -->
+
+	
+	<!-- Session management logging -->
+	<logger name="com.raritan.tdz.session.UserSessionManager">
+		<level value="warn" />
+	</logger>
+	
+	<logger name="com.raritan.tdz.piq.integration.PIQChannelDebugLogger">
+		<level value="warn"/>
+	</logger>
+	 
+	<!-- Logger for information sent by the client  -->
+	<logger name="dcTrackClientLogger" additivity="false">
+		<level value="info" />
+		<appender-ref ref="clientLog" />	
+	</logger>
+	 
+        <logger name="com.raritan.tdz.item.home.ItemDTOAdapter">
+                <level value="warn" />
+        </logger>
+
+        <logger name="com.raritan.tdz.controllers.assetmgmt">
+                <level value="warn" />
+        </logger>
+	
+	<!-- Request Logging -->
+	<logger name="RequestProgress">
+		<level value="info"/>
+	</logger>
+	
+	<logger name="ValidateFieldEdit">
+		<level value="warn"/>
+	</logger>
+	
+	 <!-- Root Logger -->
+	<root>
+		<priority value="warn" />
+<!-- 		<appender-ref ref="serverLog" /> -->
+		<appender-ref ref="console" />
+	</root>
+</log4j:configuration>

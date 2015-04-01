@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:annotation-config />
+
+	<bean id="birtEngineConfig" class="org.eclipse.birt.report.engine.api.EngineConfig"/>
+	
+	<bean id="birtReportEngine" class="org.eclipse.birt.report.engine.api.ReportEngine">
+		<constructor-arg name="config" ref="birtEngineConfig"></constructor-arg>
+	</bean>
+
+	<bean id="birtGenerateReport" class="com.raritan.tdz.reports.generator.BirtGenerateReport" autowire-candidate="true" autowire="byName"/>
+	
+	<bean id="springContextProvider" class="com.raritan.tdz.reports.generator.SpringContextProvider"/> 
+	
+</beans>

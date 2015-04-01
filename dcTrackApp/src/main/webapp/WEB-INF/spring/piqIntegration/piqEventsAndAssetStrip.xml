@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+	<bean id="assetStripLEDControlHome"
+		class="com.raritan.tdz.assetstrip.home.AssetStripLEDControlImpl">
+		<constructor-arg index="0">
+			<ref bean="piqAssetStripClient" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="eventHandlerDelegate" class="com.raritan.tdz.events.home.EventHandlerDelegateImpl">
+	</bean>
+
+	<bean id="aaAssetTagHome"
+		class="com.raritan.tdz.assetstrip.home.AssetTagAutoAssociationImpl">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="itemHome" />
+		</constructor-arg>
+		<constructor-arg index="2">
+			<ref bean="portHome" />
+		</constructor-arg>
+		<constructor-arg index="3">
+			<ref bean="assetStripLEDControlHome" />
+		</constructor-arg>
+		<constructor-arg index="4">
+			<ref bean="eventHandlerDelegate" />
+		</constructor-arg>
+		<constructor-arg index="5">
+			<ref bean="piqProbeLookup" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="aaAssetStripHome"
+		class="com.raritan.tdz.assetstrip.home.AssetStripAutoAssociationImpl">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="itemHome" />
+		</constructor-arg>
+		<constructor-arg index="2">
+			<ref bean="portHome" />
+		</constructor-arg>
+		<constructor-arg index="3">
+			<ref bean="eventHandlerDelegate" />
+		</constructor-arg>
+		<constructor-arg index="4">
+			<ref bean="piqProbeLookup" />
+		</constructor-arg>
+		<constructor-arg index="5">
+			<ref bean="piqAssetStripClient" />
+		</constructor-arg>
+		<constructor-arg index="6">
+			<ref bean="eventHome" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="autoClearAssetEventHome" class="com.raritan.tdz.assetstrip.home.AssetAutoClearImpl">
+		<constructor-arg index="0">
+			<ref bean="eventHome" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="eventHandlerDelegate" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="assetEventBuilder" class="com.raritan.tdz.assetstrip.home.AssetEventBuilderImpl">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+	</bean>
+	
+	<bean id="assetStripHandler" class="com.raritan.tdz.piq.home.PIQAssetStripHandler" />
+    <bean id="assetStripProcessor" class="com.raritan.tdz.piq.home.PIQSensorProcessorImpl" >
+    	<property name="sensorHandler" ref="assetStripHandler"/>
+    </bean>
+
+	<bean id="piqEventClient" class="com.raritan.tdz.piq.home.PIQEventClientImpl">
+		<constructor-arg index="0">
+			<ref bean="contextAppSettings" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="eventHome" />
+		</constructor-arg>
+		<property name="service" value="v2/events" />
+		<property name="restTemplate" ref="restTemplate" />
+		<property name="eventHome" ref="eventHome" />
+		<property name="messageSource" ref="messageSource" />
+	</bean>
+
+	<bean id="piqAssetStripClient" class="com.raritan.tdz.piq.home.PIQAssetStripClientImpl">
+		<constructor-arg index="0">
+			<ref bean="contextAppSettings" />
+		</constructor-arg>
+		<property name="service" value="v2/rack_units" />
+		<property name="restTemplate" ref="restTemplate" />
+		<property name="eventHome" ref="eventHome" />
+		<property name="messageSource" ref="messageSource" />
+		<property name="assetStripProcessor" ref="assetStripProcessor" />
+	</bean>
+
+</beans>

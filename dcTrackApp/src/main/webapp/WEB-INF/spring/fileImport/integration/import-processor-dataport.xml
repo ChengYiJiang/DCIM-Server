@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<int:channel id="importDataPortChannel"/>
+	<int:channel id="importDataPortAddChannel"/>
+	<int:channel id="importDataPortUpdateChannel"/>
+	<int:channel id="importDataPortDeleteChannel"/>
+	
+	<bean id="dataPortImportProcessor" class="com.raritan.tdz.dctimport.processors.ImportProcessorImpl">
+		<constructor-arg name="messageChannelMap">
+			<map>
+				<entry key="#{T(com.raritan.tdz.dctimport.processors.ImportProcessorImpl).ADD_OPERATION}" value-ref="importDataPortAddChannel"/>
+				<entry key="#{T(com.raritan.tdz.dctimport.processors.ImportProcessorImpl).EDIT_OPERATION}" value-ref="importDataPortUpdateChannel"/>
+				<entry key="#{T(com.raritan.tdz.dctimport.processors.ImportProcessorImpl).DELETE_OPERATION}" value-ref="importDataPortDeleteChannel"/>
+			</map>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="beanToDataPortDtoAddConverter" class="com.raritan.tdz.dctimport.integration.transformers.BeanToDataPortDtoConverterImpl">
+		<constructor-arg name="operation" value="#{T(com.raritan.tdz.dctimport.processors.ImportProcessorImpl).ADD_OPERATION}"/>
+	</bean>
+	
+	<bean id="beanToDataPortDtoUpdateConverter" class="com.raritan.tdz.dctimport.integration.transformers.BeanToDataPortDtoConverterImpl">
+		<constructor-arg name="operation" value="#{T(com.raritan.tdz.dctimport.processors.ImportProcessorImpl).EDIT_OPERATION}"/>
+	</bean>
+	
+	<bean id="beanToDataPortDtoDeleteConverter" class="com.raritan.tdz.dctimport.integration.transformers.BeanToDataPortDtoConverterImpl">
+		<constructor-arg name="operation" value="#{T(com.raritan.tdz.dctimport.processors.ImportProcessorImpl).DELETE_OPERATION}"/>
+	</bean>
+	
+	<bean id="dataPortBeanToDtoAddTranslator" class="com.raritan.tdz.dctimport.integration.transformers.DataPortTransformer">
+		<constructor-arg name="uuid" value="${UserUUIDProperty}"/>
+		<constructor-arg name="beanToDataPortDtoConverter" ref="beanToDataPortDtoAddConverter"/>
+		<property name="importErrorHandler" ref="importErrorHandlerGateway"/>
+	</bean>
+
+	<bean id="dataPortBeanToDtoUpdateTranslator" class="com.raritan.tdz.dctimport.integration.transformers.DataPortTransformer">
+		<constructor-arg name="uuid" value="${UserUUIDProperty}"/>
+		<constructor-arg name="beanToDataPortDtoConverter" ref="beanToDataPortDtoUpdateConverter"/>
+		<property name="importErrorHandler" ref="importErrorHandlerGateway"/>
+	</bean>
+
+	<bean id="dataPortBeanToDtoDeleteTranslator" class="com.raritan.tdz.dctimport.integration.transformers.DataPortTransformer">
+		<constructor-arg name="uuid" value="${UserUUIDProperty}"/>
+		<constructor-arg name="beanToDataPortDtoConverter" ref="beanToDataPortDtoDeleteConverter"/>
+		<property name="importErrorHandler" ref="importErrorHandlerGateway"/>
+	</bean>
+	
+	<bean id="importDataPortHome" parent="abstractImportProcessor">
+		<property name="proxyInterfaces">
+    		<list>
+	    		<value>com.raritan.tdz.item.home.ItemHome</value>
+    		</list>
+    		
+    	</property>
+    	<property name="target" ref="itemHome"/>
+	</bean>
+	
+	<int:chain input-channel="importDataPortAddChannel">
+		<int:transformer id="dataPortBeanToDtoAddTransformer" ref="dataPortBeanToDtoAddTranslator" method="transform"/>
+		<int:service-activator id="dataPortHomeActivator" expression="@importDataPortHome.createItemDataPortExtAPI(payload.get(0).getItemId(),payload.get(0),payload.get(1))"
+			requires-reply="false"/>
+	</int:chain>
+	
+	<int:chain input-channel="importDataPortUpdateChannel">
+		<int:transformer id="dataPortBeanToDtoUpdateTransformer" ref="dataPortBeanToDtoUpdateTranslator" method="transform"/>
+		<int:service-activator id="dataPortHomeActivator" expression="@importDataPortHome.updateItemDataPortExtAPI(payload.get(0).getItemId(),payload.get(0).getPortId(),payload.get(0),payload.get(1))"
+			requires-reply="false"/>
+	</int:chain>
+	
+	<int:chain input-channel="importDataPortDeleteChannel">
+		<int:transformer id="dataPortBeanToDtoDeleteTransformer" ref="dataPortBeanToDtoDeleteTranslator" method="transform"/>
+		<int:service-activator id="dataPortHomeActivator" expression="@importDataPortHome.deleteItemDataPortExtAPI(payload.get(0).getItemId(),payload.get(0).getPortId(),true,payload.get(1))"/>
+	</int:chain>
+	
+	<int:service-activator id="dataPortProcessor" input-channel="importDataPortChannel" ref="dataPortImportProcessor" method="process"/>
+</beans>

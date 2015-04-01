@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/integration
+	http://www.springframework.org/schema/integration/spring-integration.xsd">
+
+	<bean id="reportGenArgValidator" class="com.raritan.tdz.reports.generate.ReportGeneratorArgumentValidator"/>
+	
+	<bean id="reportContextAwareKey" class="java.lang.String">
+		<constructor-arg type="java.lang.String" value="reportContextAwareKey"/>
+	</bean>
+	<bean id="reportUserContextRouterResolver" class="com.raritan.tdz.reports.generate.ReportGeneratorUserContextRouter">
+		<constructor-arg name="channelName" value="reportGeneratorUserChannel"/>
+		<constructor-arg name="springContextPath" value="${reportContextPathPrefix}/birtReportContext.xml"/>
+	</bean>
+	
+	<bean id="reportUserContextPollerTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="25"/>
+		<!-- <property name="maxPoolSize" value="10"/>
+		<property name="queueCapacity" value="1"/> -->
+	</bean>
+	
+	<int:channel id="reportUserContextRouterChannel">
+		<int:queue/>
+	</int:channel>
+
+	<int:router input-channel="reportUserContextRouterChannel" 
+		expression="@reportUserContextRouterResolver.resolve(payload[0])">
+		<int:poller fixed-delay="#{1000}" task-executor="reportUserContextPollerTaskExecutor"/>	
+	</int:router>
+	
+	<int:gateway id="reportGeneratorGateway" 
+		service-interface="com.raritan.tdz.reports.generate.ReportGenerator">
+		<int:method name="generateReport" request-channel="generateReportUserContextCmdEnhancer" payload-expression="T(java.util.Arrays).asList(#args[0],#args[1])"/>
+		<int:method name="getReportStatus" request-channel="statusReportUserContextCmdEnhancer" payload-expression="T(java.util.Arrays).asList(#args[0],#args[1])"/>
+		<int:method name="cancelReportGeneration" request-channel="cancelReportUserContextCmdEnhancer" payload-expression="T(java.util.Arrays).asList(#args[0],#args[1])"/>
+	</int:gateway>
+	
+	<!-- Header enhancers -->
+	<int:channel id="generateReportUserContextCmdEnhancer"/>
+	<int:channel id="statusReportUserContextCmdEnhancer"/>
+	<int:channel id="cancelReportUserContextCmdEnhancer"/>
+	
+	<int:header-enricher input-channel="generateReportUserContextCmdEnhancer" output-channel="reportUserContextRouterChannel">
+		<int:header name="command" value="generateReport"/>
+	</int:header-enricher>
+	
+	<int:header-enricher input-channel="statusReportUserContextCmdEnhancer" output-channel="reportUserContextRouterChannel">
+		<int:header name="command" value="getStatus"/>
+	</int:header-enricher>
+	
+	<int:header-enricher input-channel="cancelReportUserContextCmdEnhancer" output-channel="reportUserContextRouterChannel">
+		<int:header name="command" value="cancel"/>
+	</int:header-enricher>
+	
+
+
+</beans>

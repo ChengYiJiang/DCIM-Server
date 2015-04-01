@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:int-jdbc="http://www.springframework.org/schema/integration/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/integration 
+						http://www.springframework.org/schema/integration/spring-integration.xsd
+						http://www.springframework.org/schema/integration/jdbc 
+						http://www.springframework.org/schema/integration/jdbc/spring-integration-jdbc.xsd">
+	
+	<bean id="queueDataSource" 
+		  class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="org.postgresql.Driver"/>
+		<property name="url" value="jdbc:postgresql://localhost:5432/raritan?autoReconnect=true"/>
+		<property name="username" value="dctrack"/>
+		<property name="password" value="(ManageMyStuff)!"/>	  
+	</bean>
+	
+	<!-- <int-jdbc:message-store id="queueDataStore" data-source="queueDataSource"/>  -->
+	
+<!-- 	<bean id="queueQueryProvider" class="org.springframework.integration.jdbc.store.channel.PostgresChannelMessageStoreQueryProvider"/>
+	
+	<bean id="queueDataStore" class="org.springframework.integration.jdbc.store.JdbcChannelMessageStore">
+		<property name="dataSource" ref="queueDataSource"/>
+		<property name="channelMessageStoreQueryProvider" ref="queueQueryProvider"/>
+		<property name="region" value="TX_TIMEOUT"/>
+		<property name="usingIdCache" value="true"/>
+	</bean> -->
+	
+	<bean id="piqOngoingUpdateRouterResolver" class="com.raritan.tdz.piq.integration.PowerIQRouterImpl" init-method="preCreateContexts">
+	<!-- <bean id="piqOngoingUpdateRouterResolver" class="com.raritan.tdz.piq.integration.PowerIQRouterImpl"> -->
+		<constructor-arg name="channelName" value="piqChannel"/>
+		<constructor-arg name="springContextPath" value="${piqContextPathPrefix}/piqOngoingUpdatesContext.xml"/>
+ 		<property name="endPointsToStart">
+			<list>
+				<value>piqOngoingUpdateActivator</value>
+			</list>
+		</property>
+	</bean>
+	
+	<int:channel id="piqOngoingUpdateRouterChannel"/>
+		<!-- <int:queue message-store="queueDataStore"/>
+	</int:channel> -->
+	
+	
+	<int:router input-channel="piqOngoingUpdateRouterChannel" 
+		expression="@piqOngoingUpdateRouterResolver.resolve(payload.customField3)"/>
+	<!-- 	<int:poller fixed-delay="#{15 * 1000}" />	
+	</int:router> -->
+		
+		
+	<int:gateway id="lnHomeGateway" 
+				default-request-channel="piqOngoingUpdateRouterChannel" 
+				service-interface="com.raritan.tdz.vbjavabridge.home.LNHome"/>
+	
+	<!-- ========================================================== -->
+	<!-- service activator for reloadingCommunicationSettings       -->
+	<!-- ========================================================== -->
+	
+	<int:service-activator id="onGoingUpdateReloadCommunicatioinSettingsActivator"
+						input-channel="piqReconfigurationChannel"
+						ref="piqOngoingUpdateRouterResolver"
+						method="reloadCommunicationSettings"/>	
+
+	
+	<!-- ========================================================== -->
+	<!-- service activator for removing context                     -->
+	<!-- ========================================================== -->					
+	<int:service-activator id="piqOnGoingUpdateRemoveContext"
+			input-channel="piqRemoveContextChannel"
+			ref="piqOngoingUpdateRouterResolver"
+			method="remove"/>
+</beans>

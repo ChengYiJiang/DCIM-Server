@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-3.0.xsd">
+
+	<!-- ======================================= -->					
+	<!--  beans definition                       -->
+	<!-- ======================================= -->					
+	
+	<bean id="piqFloorMapUpdateRouterResolver" class="com.raritan.tdz.piq.integration.PowerIQRouterImpl">
+		<constructor-arg name="channelName" value="piqFloorMapChannel"/>
+		<constructor-arg name="springContextPath" value="${piqContextPathPrefix}/piqFloorMapUpdateContext.xml"/>
+		<property name="endPointsToStart">
+			<list>
+				<value>piqFloorMapHeaderRouter</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- =========================================================== -->					
+	<!-- The router picks up the data from 'piqFloorMapUpdateRouterChannel' --> 
+	<!-- input-channel and makes service call which is excecuted in  -->
+	<!-- in a separate application context.                          -->
+	<!-- =========================================================== -->					
+	
+	<int:channel id="piqFloorMapUpdateRouterChannel"/>
+	
+	<int:router input-channel="piqFloorMapUpdateRouterChannel" 
+		expression="@piqFloorMapUpdateRouterResolver.resolve(payload.get(0))"/>
+
+	<!-- =========================================================== -->
+	<!-- Enrichers -->
+	<!-- =========================================================== -->
+	
+	<!-- enrich the update call with the command and --> 
+	<!-- send message to the bulk update router that sends the message to the context for bulk update -->
+	
+	<int:channel id="floorMapPIQUploadDataEnricherChannel"/>
+	
+	<int:header-enricher input-channel="floorMapPIQUploadDataEnricherChannel" output-channel="piqFloorMapUpdateRouterChannel">
+		<int:header name="command" value="uploadFloorMap"/>
+	</int:header-enricher>
+	
+
+	<!-- 1. ========================================== -->					
+	<!--  Gateway defining the service interface       -->
+	<!--  called from ApplicationSettingServiceImpl and PowerIQ ln event subscriber     -->
+	<!--  #### THIS IS ENTRY POINT ####                -->
+	<!--  send the message to the enricher that adds power iq ip address and the command      -->
+	<!-- ============================================+ -->					
+
+	<int:gateway id="piqFloorMapGateway" service-interface="com.raritan.tdz.piq.home.PIQSyncFloorMap">
+		<int:method name="uploadFloorMap" request-channel="floorMapPIQUploadDataEnricherChannel" 
+						payload-expression="T(java.util.Arrays).asList(#args[0],#args[1],#args[2],#args[3],#args[4])"/>
+	</int:gateway>
+
+	<!-- ========================================================== -->
+	<!-- service activator for reloadingCommunicationSettings       -->
+	<!-- ========================================================== -->
+	
+	<int:service-activator id="piqFloorMapUpdateReloadCommunicatioinSettingsActivator"
+						input-channel="piqReconfigurationChannel"
+						ref="piqFloorMapUpdateRouterResolver"
+						method="reloadCommunicationSettings"/>
+						
+	<!-- ========================================================== -->
+	<!-- service activator for removing context                     -->
+	<!-- ========================================================== -->			
+	<int:service-activator id="piqFloorMapUpdateRemoveContext"
+			input-channel="piqRemoveContextChannel"
+			ref="piqFloorMapUpdateRouterResolver"
+			method="remove"/>
+</beans>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd">
+	<bean id="itemColumnCriteriaDTOTraslator" class="com.raritan.tdz.dctexport.integration.transformers.ItemColumnCriteriaDTOTransformer">
+		<constructor-arg name="columnFieldNames">
+			<list>
+				<value>Location</value>
+				<value>Cabinet</value>
+				<value>Chassis</value>
+				<value>Class</value>
+				<value>Subclass</value>
+				<value>Name</value>
+			</list>
+		</constructor-arg>
+	</bean>
+	
+	<int:channel id="itemListPaginatedHomeChannel"/>
+	<int:channel id="itemColumnCriteriaDTOTranslatorChannel"/>
+	
+	<int:gateway id="itemListPaginatedHomeGateway" service-interface="com.raritan.tdz.page.home.PaginatedHome">
+		<int:method name="getPageList" payload-expression="T(java.util.Arrays).asList(#args[0],#args[1])"
+			request-channel="itemColumnCriteriaDTOTranslatorChannel"/>
+	</int:gateway>
+	
+	<int:transformer id="itemColumnCriteriaDTOTransformer" 
+		input-channel="itemColumnCriteriaDTOTranslatorChannel"
+		output-channel="itemListPaginatedHomeChannel"
+		ref="itemColumnCriteriaDTOTraslator" method="transform"/>
+		
+	<int:service-activator input-channel="itemListPaginatedHomeChannel" expression="@itemListPaginatedHome.getPageList(payload.get(0),payload.get(1))"/>
+</beans>

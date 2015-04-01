@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:flex="http://www.springframework.org/schema/flex"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xsi:schemaLocation="http://www.springframework.org/schema/flex http://www.springframework.org/schema/flex/spring-flex-1.5.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+    					
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	
+	<context:annotation-config/>
+	<aop:aspectj-autoproxy/>
+	
+	<context:property-placeholder ignore-unresolvable="true"/>
+	
+	<bean id="exceptionTranslator" class="com.raritan.tdz.exception.FlexExceptionTranslator" />
+	<bean id="exceptionLogger" class="com.raritan.tdz.exception.ExceptionLogger" />
+	
+	<flex:message-broker exception-logger="exceptionLogger">
+		<flex:message-interceptor ref="flexMessageInterceptor" position="LAST"/>
+		<flex:message-interceptor ref="sessionTimeoutCheckInterceptor" position="LAST"/>
+		<flex:exception-translator ref="exceptionTranslator" />
+		<flex:secured>
+			<!-- FIXME: We should eventually use the pattern below to secure ALL channels, 
+				 but we need to check that the client is sending the credentials if the session
+				 times out on the server.
+			 -->
+			<!--<flex:secured-endpoint-path pattern="**/messagebroker/**" access="ROLE_USER" />-->
+		</flex:secured>
+	</flex:message-broker>
+	
+	<!-- Listener for application initialized/refreshed evnts -->
+	<bean id="appListener" class="com.raritan.tdz.listener.DcTrackAppListener" />
+	
+	<!-- Bean used for "pushing" messages -->
+	<bean id="messageTemplate" class="org.springframework.flex.messaging.MessageTemplate" />
+	
+	<!-- Define a destination for notification of new dcTrack events -->
+	<flex:message-destination id="eventUpdates" channels="my-polling-amf" />  
+	
+	<!--  Enable thread scope for beans -->
+	<bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+      <property name="scopes">
+          <map>
+              <entry key="thread">
+                  <bean class="org.springframework.context.support.SimpleThreadScope"/>
+              </entry>
+          </map>
+      </property>
+  	</bean>
+  	
+  	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="properties">
+			<props>
+				<prop key="piqContextPathPrefix">../spring/piqIntegration</prop>
+				<prop key="reportContextPathPrefix">../spring/reports</prop>
+				<prop key="importContextPathPrefix">../spring/fileImport/integration</prop>
+				<prop key="requestContextPathPrefix">../../../../../spring</prop>
+			</props>
+		</property>
+	</bean>
+  
+	<import resource="messageSources.xml" />
+	<import resource="hibernate.cfg.xml" />
+	<import resource="daos.xml" />
+	<import resource="services.xml" />
+<!-- 		<import resource="piqIntegration/piqSync.xml" />
+	<import resource="piqIntegration/jobs.xml" />
+	<import resource="piqIntegration/piqEventsAndAssetStrip.xml"/>
+	<import resource="piqIntegration/piqSyncClient.xml"/>
+	<import resource="piqIntegration/piqSubscribers.xml"/> -->
+	<import resource="piqIntegration/piqOngoingUpdatesConfig.xml"/>
+	<import resource="piqIntegration/piqGetDataConfig.xml"/>
+	<import resource="piqIntegration/piqBulkUpdateConfig.xml"/>
+	<import resource="piqIntegration/piqAssetStripEventsAndSettingsConfig.xml"/>
+	<import resource="piqIntegration/piqFloorMapUpdateConfig.xml"/>
+	
+	<import resource="rulesengine.xml"/>
+	<import resource="ItemStateChart.xml"/>
+	<import resource="ChangeModel.xml"/>
+	<import resource="ports.xml"/>
+	<import resource="itemfactory.xml"/>
+	<import resource="powerChain.xml"/>
+	<import resource="vpc.xml"/>
+	<import resource="diagnostics.xml"/>
+	<import resource="units.xml"/>
+	<import resource="cache.xml"/>
+	<import resource="modelFactory.xml"/>
+	
+	<import resource="reports/reportConfig.xml"/>
+	<import resource="reports/birt.xml"/>
+	
+	<import resource="fileImport/dct-import.xml"/>
+	<import resource="fileExport/dct-export.xml"/>
+	
+	<!-- The PIQ Settings home and service are defined here because
+		 the home bean is dependent beans defined in jobs.xml. 
+	 
+	<bean id="piqSettingsHome" class="com.raritan.tdz.piq.home.PIQSettingsHomeImpl">
+		<constructor-arg index="0">
+			<ref bean="assetStripJobTrigger" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="assetStripScheduler" />
+		</constructor-arg>
+		<constructor-arg index="2">
+			<ref bean="restTemplate" />
+		</constructor-arg>
+	</bean>  -->
+
+	<bean id="authHome" class="com.raritan.tdz.home.auth.PIQSessionCookieValidator">
+		<flex:remoting-destination />
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+	</bean>
+	
+	<bean id="authService" class="com.raritan.tdz.service.auth.AuthServiceImpl">
+		<flex:remoting-destination />
+		<constructor-arg index="0">
+			<ref bean="authHome" />
+		</constructor-arg>
+	</bean>
+	
+	<bean id="dzMapper" class="org.dozer.DozerBeanMapper">
+		<property name="mappingFiles">
+			<list>
+				<value>com/raritan/tdz/item/dto/dozer/mapping/ItemSearchResultDTOMapping.xml</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="flexMessageInterceptor" class="com.raritan.tdz.interceptor.FlexRequestInterceptor" />
+	
+	<!-- <import resource="classpath:com/raritan/tdz/request/request_context.xml"/> -->
+	<import resource="dataCircuitValidators.xml"/>
+	
+	<bean id="springBatchDataSource"
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="org.postgresql.Driver"/>
+        <property name="url" value="jdbc:postgresql://localhost:5432/raritan?autoReconnect=true"/>
+        <property name="username" value="dctrack"/>
+        <property name="password" value="(ManageMyStuff)!"/>
+	</bean>
+	
+</beans>

@@ -1,0 +1,1539 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:flex="http://www.springframework.org/schema/flex"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+						http://www.springframework.org/schema/flex 
+    					http://www.springframework.org/schema/flex/spring-flex-1.5.xsd
+    					http://www.springframework.org/schema/task
+    					http://www.springframework.org/schema/task/spring-task.xsd
+    					http://www.springframework.org/schema/util
+    					http://www.springframework.org/schema/util/spring-util-3.2.xsd
+    					http://www.springframework.org/schema/aop
+    					http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
+						
+	<!-- For column attribute configurations -->
+	<import resource="columns.xml" />
+	
+	<import resource="floormaps-reports.xml" />
+	
+	<import resource="itemobjects.xml"/>
+	
+	<!-- <import resource="workflow.xml"/> -->
+	<import resource="classpath:com/raritan/tdz/request/request_context.xml"/>
+	
+	<!-- For com.raritan.tdz.component -->
+	<import resource="component.xml" />
+	<import resource="passiveItem.xml" />
+	
+	<import resource="unmap-piq.xml"/>
+	
+	<bean id="auditTrailistener" class="com.raritan.tdz.listener.AuditTrailListener"/>
+
+	<bean id="hibernateEvtRegistration" class="com.raritan.tdz.listener.HibernateEventRegistration" init-method="registerListeners"/>
+
+	<bean id="appSettings" class="com.raritan.tdz.settings.home.ApplicationSettingsImpl">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="dataCenterLocationHome" class="com.raritan.tdz.home.DataCenterLocationHomeImpl">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="userSessionContext" class="com.raritan.tdz.session.FlexUserSessionContext" />
+
+	<bean id="utilHome" class="com.raritan.tdz.home.UtilHomeImpl">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="userSessionContext" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="modelHome" class="com.raritan.tdz.model.home.ModelHomeImpl" autowire-candidate="true" autowire="byName" >
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+		<property name="rulesProcessor" ref="itemModelPanelRulesProcessor"/>
+	</bean>
+
+	<bean id="intTicketFieldsAddBehavior" class="com.raritan.tdz.util.IntTicketFieldsAddBehaviorImpl">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="intTicketFieldsUpdateBehavior" class="com.raritan.tdz.util.IntTicketFieldsUpdateBehaviorImpl">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="ticketHome" class="com.raritan.tdz.home.TicketHomeImpl">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="intTicketFieldsAddBehavior" />
+		</constructor-arg>
+		<constructor-arg index="2">
+			<ref bean="intTicketFieldsUpdateBehavior" />
+		</constructor-arg>
+	</bean>
+
+	<!-- <bean id="reportHome" class="com.raritan.tdz.managereports.home.ReportHomeImpl"> 
+		<constructor-arg index="0"> <ref bean="sessionFactory" /> </constructor-arg> 
+		</bean> -->
+		
+	<bean id="reportHome" class="com.raritan.tdz.reports.home.ReportsHomeImpl"/> 
+
+	<bean id="cadHome" class="com.raritan.tdz.floormaps.home.CadHomeImpl">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+		<property name="eventHome" ref="eventHome"/>
+		<property name="piqSyncFloorMap" ref="piqFloorMapGateway"/>
+	</bean>
+
+
+	<bean id="uniqueValidator" class="com.raritan.tdz.util.UniqueValidatorBase">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+	</bean>
+	
+	<bean id="itemNameUniqueValidator" class="com.raritan.tdz.item.home.ItemNameUniqueValidator">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="parentRestrictionMap">
+			<map>
+				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$ModelUniqueValue).FloorPDUFreeStanding }" value-ref="powerPanelUniqueValidatorRestriction"/>
+			</map>
+		</constructor-arg>
+	</bean>
+
+	<bean id="powerPanelUniqueValidatorRestriction" class="com.raritan.tdz.item.home.PowerPanelUniqueValidatorParentRestriction"/>
+	
+	<bean id="itemModifyRoleValidator" class="com.raritan.tdz.item.itemState.ItemModifyRoleValidator" autowire-candidate="true"/>
+
+	<bean id="locationFieldValidator" class="com.raritan.tdz.validator.FieldValidatorImpl">
+		<property name="remoteRef" ref="locationRemoteRefItemScreen"/>
+	</bean>
+
+    <bean id="locationDomainAdaptor" class="com.raritan.tdz.location.home.LocationDomainAdaptor" scope="prototype">
+        <constructor-arg name="processor" ref="locationRulesProcessor"/>
+        <constructor-arg name="remoteRef" ref="locationRemoteRefItemScreen"/>
+        <constructor-arg name="messageSource" ref="messageSource"/>
+        <property name="fieldValidator" ref="locationFieldValidator"/>
+        <property name="genericDAOLoader" ref="genericDAOLoader"/>
+    </bean>
+
+	<bean id="locationHome" class="com.raritan.tdz.location.home.LocationHomeImpl">
+		<property name="rulesProcessor" ref="locationRulesProcessor"/>
+		<property name="dao" ref="locationDAO"/>
+		<property name="remoteRef" ref="locationRemoteRefItemScreen"/>
+		<property name="locationDomainAdaptor" ref="locationDomainAdaptor"/>
+		<property name="messageSource" ref="messageSource"/>
+		<property name="appSettings" ref="appSettings"/>
+	</bean>
+
+    <bean id="cabinetContainerItem" class="com.raritan.tdz.item.home.CabinetContainerItem"/>
+    <bean id="chassisContainerItem" class="com.raritan.tdz.item.home.ChassisContainerItem"/>
+
+    <bean id="containerItemHome" class="com.raritan.tdz.item.home.ContainerItemHomeImpl">
+        <property name="supportedContainers">
+            <map>
+                <!-- key is item's unique item id, value is a bean -->
+                <entry key="603" value-ref="cabinetContainerItem"/>
+                <entry key="613" value-ref="cabinetContainerItem"/>
+                <entry key="104" value-ref="chassisContainerItem"/>
+                <entry key="204" value-ref="chassisContainerItem"/>
+            </map>
+        </property> 
+    </bean>
+
+	<bean id="itemHome" class="com.raritan.tdz.item.home.ItemHomeImpl">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="dataCenterLocationHome" />
+		</constructor-arg>
+		<constructor-arg index="2">
+			<ref bean="modelHome" />
+		</constructor-arg>
+		<constructor-arg index="3">
+			<ref bean="ticketHome" />
+		</constructor-arg>
+		<constructor-arg index="4">
+			<ref bean="itemObjectFactory" />
+		</constructor-arg>
+        <property name="containerItemHome" ref="containerItemHome"/>
+		<property name="itemObjectTemplateFactory" ref="itemObjectTemplateFactory"/>
+		<property name="messageSource" ref="messageSource"/>
+		<property name="itemSearch" ref="itemSearch"/>
+		<property name="rulesProcessor" ref="itemRulesProcessor"/>
+		<property name="remoteReference" ref="remoteRefItemScreen"/>
+		<property name="systemPropertyValidator" ref="uniqueValidator"/>
+		<property name="uniqueValidators">
+			<map>
+				<!--  item name validator -->
+				<entry key="tiName" value-ref="itemNameUniqueValidator"/>
+				<!--  item serial number validator -->
+				<entry key="tiSerialNumber" value-ref="uniqueValidator"/>
+				<!--  item asset tag validator -->
+				<entry key="tieAssetTag" value-ref="uniqueValidator"/>
+				<!--  item asset number validator -->
+				<entry key="tiAssetTag" value-ref="uniqueValidator"/>
+				
+			</map>
+		</property>
+		<property name="itemDomainAdaptor" ref="itemDomainAdaptor"/>
+		<property name="itemValidator" ref="itemValidator"/>
+		<property name="fieldHome" ref="fieldHome"/>
+		<property name="itemStateContext" ref="itemStateContext"/>
+		<property name="paginatedHome" ref="itemListPaginatedHome"/>
+		<property name="itemRequest" ref="itemRequest" />
+		<!-- DeleteItemRoleValidator bean is defined in itemStateChart.xml -->
+		<property name="itemModifyRoleValidator" ref="itemModifyRoleValidator" />
+		<property name="piqSyncpduClient" ref="piqSyncGateway" />
+		<property name="requestHome" ref="requestHomeGateway"/>
+	</bean>
+	
+	<bean id="itemPlacementHome" class="com.raritan.tdz.item.home.placement.ItemPlacementHomeImpl">
+		<property name="itemHome" ref="itemHome" />
+		<property name="cabinetHome" ref="cabinetHome" />
+	</bean>
+	
+	<bean id="cabinetHome" class="com.raritan.tdz.cabinet.home.CabinetHomeImpl">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+	</bean>
+	
+	<!-- 		ITEM SEARCH BEANS       									 -->
+	<bean id="itemSearch" class="com.raritan.tdz.item.home.search.ItemSearchImpl" scope="session">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<property name="messageSource" ref="messageSource"/>
+		<property name="dzMapper" ref="dzMapper"/>
+		<property name="helpers">
+			<map>
+				<!-- Cabinet -->
+				<entry key="1100" value-ref="itemSearchHelperCabinet"/>
+				<!--  Device  -->
+				<entry key="1200" value-ref="itemSearchHelperIt"/>
+				<!--  Network  -->
+				<entry key="1300" value-ref="itemSearchHelperIt"/>
+				<!--  Probe  -->
+				<entry key="1400" value-ref="itemSearchHelperIt"/>
+				<!--  Data Panel  -->
+				<entry key="1500" value-ref="itemSearchHelperIt"/>
+				<!--  Rack PDU  -->
+				<entry key="2100" value-ref="itemSearchHelperIt"/>
+				<!--  Floor Outlet  -->
+				<entry key="2200" value-ref="itemSearchHelperIt"/>
+				<!--  Floor PDU  -->
+				<entry key="2300" value-ref="itemSearchHelperFloorPDU"/>
+				<!--  UPS  -->
+				<entry key="2400" value-ref="itemSearchHelperUPS"/>
+				<!--  CRAC  -->
+				<entry key="3000" value-ref="itemSearchHelperCRAC"/>
+				<!--  All In Cabinet  -->
+				<entry key="1999" value-ref="itemSearchHelperAllInCabinet"/>
+				<!--  All  -->
+				<entry key="0" value-ref="itemSearchHelperAll"/>		
+			</map>
+		</property>
+		<property name="compositeTrace" ref="itemSearchResultDTOToDomainComposite"/>
+		<aop:scoped-proxy/>
+	</bean>
+	
+	<bean id="itemSearchResultDTOToItem" class="com.raritan.tdz.item.home.search.ItemSearchResultDTOToDomainTrace" init-method="init">
+		<constructor-arg name="rootClassStr" value="com.raritan.tdz.domain.Item"/>
+	</bean>
+	
+	<bean id="itemSearchResultDTOToItItem" class="com.raritan.tdz.item.home.search.ItemSearchResultDTOToDomainTraceIT" init-method="init">
+		<constructor-arg name="rootClassStr" value="com.raritan.tdz.domain.ItItem"/>
+	</bean>
+	
+	<bean id="itemSearchResultDTOToCabinetItem" class="com.raritan.tdz.item.home.search.ItemSearchResultDTOToDomainTrace" init-method="init">
+		<constructor-arg name="rootClassStr" value="com.raritan.tdz.domain.CabinetItem"/>
+	</bean>
+	
+	<bean id="itemSearchResultDTOToMeItem" class="com.raritan.tdz.item.home.search.ItemSearchResultDTOToDomainTrace" init-method="init">
+		<constructor-arg name="rootClassStr" value="com.raritan.tdz.domain.MeItem"/>
+	</bean>
+	
+	<bean id="itemSearchResultDTOToDomainComposite" class="com.raritan.tdz.item.home.search.ItemSearchResultToDomainCompositeTrace">
+		<constructor-arg name="traceList">
+			<list>
+				<ref bean="itemSearchResultDTOToItem"/>
+				<ref bean="itemSearchResultDTOToItItem"/>
+				<ref bean="itemSearchResultDTOToCabinetItem"/>
+				<ref bean="itemSearchResultDTOToMeItem"/>
+			</list>
+		</constructor-arg>
+	</bean>
+	
+	<util:map id="itemSearchTypeRestrictionMap" map-class="java.util.HashMap">
+		<entry key="double" value-ref="itemSearchNumericRestriction"/>
+		<entry key="int" value-ref="itemSearchNumericRestriction"/>
+		<entry key="long" value-ref="itemSearchNumericRestriction"/>
+		<entry key="java.lang.Double" value-ref="itemSearchNumericRestriction"/>
+		<entry key="java.lang.Integer" value-ref="itemSearchNumericRestriction"/>
+		<entry key="java.lang.Long" value-ref="itemSearchNumericRestriction"/>
+		<entry key="java.lang.String" value-ref="itemSearchStringRestriction"/>
+		<entry key="java.util.Date" value-ref="itemSearchDateRestriction"/>
+		<!--  The handling of lkp and lku in this way is not elegent but works! -->
+		<entry key="lkpValue" value-ref="itemSearchStringRestriction"/>
+		<entry key="lkuValue" value-ref="itemSearchStringRestriction"/>
+		<entry key="userId" value-ref="itemSearchStringRestriction"/>
+	</util:map>
+	
+	<bean id="itemSearchNumericRestriction" class="com.raritan.tdz.item.home.search.ItemSearchNumericRestriction">
+		<property name="messageSource" ref="messageSource"/>
+	</bean>
+	
+	<bean id="itemSearchDateRestriction" class="com.raritan.tdz.item.home.search.ItemSearchDateRestriction">
+		<property name="messageSource" ref="messageSource"/>
+	</bean>
+	
+	<bean id="itemSearchStringRestriction" class="com.raritan.tdz.item.home.search.ItemSearchStringRestriction">
+		<property name="messageSource" ref="messageSource"/>
+	</bean>
+
+	
+	<bean id="itemSearchHelperBase" class="com.raritan.tdz.item.home.search.ItemSearchHelperBase">
+		<constructor-arg name="dzMapper" ref="dzMapper"/>
+		<constructor-arg name="messageSource" ref="messageSource"/>
+		<constructor-arg name="itemSearchTypeRestriction" ref="itemSearchTypeRestrictionMap"/>
+		<constructor-arg name="commonItemSearchDtoToDomainTrace" ref="itemSearchResultDTOToItem"/>
+	</bean>
+	
+		
+	<bean id="itemSearchHelperIt" class="com.raritan.tdz.item.home.search.ItemSearchHelperIT">
+		<constructor-arg name="dzMapper" ref="dzMapper"/>
+		<constructor-arg name="messageSource" ref="messageSource"/>
+		<constructor-arg name="itemSearchTypeRestriction" ref="itemSearchTypeRestrictionMap"/>
+		<constructor-arg name="commonDtoToDomainTrace" ref="itemSearchResultDTOToItem"/>
+		<property name="itItemSearchDtoToDomainTrace" ref="itemSearchResultDTOToItItem"/>
+	</bean>
+	
+	
+	<bean id="itemSearchHelperFloorPDU" class="com.raritan.tdz.item.home.search.ItemSearchHelperFloorPDU">
+		<constructor-arg name="dzMapper" ref="dzMapper"/>
+		<constructor-arg name="messageSource" ref="messageSource"/>
+		<constructor-arg name="itemSearchTypeRestriction" ref="itemSearchTypeRestrictionMap"/>
+		<constructor-arg name="commonItemSearchDtoToDomainTrace" ref="itemSearchResultDTOToItem"/>
+		<property name="meItemSearchResultDTOToDomainTrace" ref="itemSearchResultDTOToMeItem"/>
+	</bean>
+	
+	<bean id="itemSearchHelperUPS" class="com.raritan.tdz.item.home.search.ItemSearchHelperUPS">
+		<constructor-arg name="dzMapper" ref="dzMapper"/>
+		<constructor-arg name="messageSource" ref="messageSource"/>
+		<constructor-arg name="itemSearchTypeRestriction" ref="itemSearchTypeRestrictionMap"/>
+		<constructor-arg name="commonItemSearchDtoToDomainTrace" ref="itemSearchResultDTOToItem"/>
+		<property name="meItemSearchResultDTOToDomainTrace" ref="itemSearchResultDTOToMeItem"/>
+	</bean>
+	
+	<bean id="itemSearchHelperCRAC" class="com.raritan.tdz.item.home.search.ItemSearchHelperCRAC">
+		<constructor-arg name="dzMapper" ref="dzMapper"/>
+		<constructor-arg name="messageSource" ref="messageSource"/>
+		<constructor-arg name="itemSearchTypeRestriction" ref="itemSearchTypeRestrictionMap"/>
+		<constructor-arg name="commonItemSearchDtoToDomainTrace" ref="itemSearchResultDTOToItem"/>
+		<property name="meItemSearchResultDTOToDomainTrace" ref="itemSearchResultDTOToMeItem"/>
+	</bean>
+	
+	<bean id="itemSearchHelperCabinet" class="com.raritan.tdz.item.home.search.ItemSearchHelperCabinet">
+		<constructor-arg name="dzMapper" ref="dzMapper"/>
+		<constructor-arg name="messageSource" ref="messageSource"/>
+		<constructor-arg name="itemSearchTypeRestriction" ref="itemSearchTypeRestrictionMap"/>
+		<constructor-arg name="commonItemSearchDtoToDomainTrace" ref="itemSearchResultDTOToItem"/>
+		<property name="cabinetItemSearchDtoToDomainTrace" ref="itemSearchResultDTOToCabinetItem"/>
+	</bean>
+	
+	<bean id="itemSearchHelperAllInCabinet" class="com.raritan.tdz.item.home.search.ItemSearchHelperAllInCabinet">
+		<constructor-arg name="dzMapper" ref="dzMapper"/>
+		<constructor-arg name="messageSource" ref="messageSource"/>
+		<constructor-arg name="itemSearchTypeRestriction" ref="itemSearchTypeRestrictionMap"/>
+		<constructor-arg name="commonItemSearchDtoToDomainTrace" ref="itemSearchResultDTOToItem"/>
+		<property name="itemSearchHelperIT" ref="itemSearchHelperIt"/>
+	</bean>
+	
+	<bean id="itemSearchHelperAll" class="com.raritan.tdz.item.home.search.ItemSearchHelperAll">
+		<constructor-arg name="dzMapper" ref="dzMapper"/>
+		<constructor-arg name="messageSource" ref="messageSource"/>
+		<constructor-arg name="itemSearchTypeRestriction" ref="itemSearchTypeRestrictionMap"/>
+		<constructor-arg name="commonItemSearchDtoToDomainTrace" ref="itemSearchResultDTOToItem"/>
+	</bean>
+	<!-- 		ITEM SEARCH BEANS       									 -->
+	
+	<bean id="chassisItemObject" class="com.raritan.tdz.chassis.home.ChassisItemImpl" scope="prototype">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<property name="itemNameUniqueValidator" ref="itemNameUniqueValidator"/>
+		<property name="uniqueValidator" ref="uniqueValidator"/>
+		<property name="itemHome" ref="itemHome"/>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.invalidDefinitionModelChassis</value>
+				<value>ItemValidator.invalidPortConnector</value>
+			</list>
+		</property>
+
+		<!--  Add the following for every itemObject bean. -->
+		<property name="fieldHome" ref="fieldHome"/>
+		<property name="itemDomainAdaptor" ref="itemDomainAdaptor"/>
+		<property name="itemStateContext" ref="itemStateContext"/>
+		<property name="rulesProcessor" ref="itemRulesProcessor"/>
+		<property name="messageSource" ref="messageSource"/>
+		<property name="itemValidator" ref="itemValidator"/>
+		<property name="chassisHome" ref="chassisHome"/>
+		<!-- <property name="placementHome" ref="itemPlacementHome" /> -->
+		<property name="remoteRef" ref="remoteRefItemScreen" />
+		<property name="itemRequest" ref="itemRequest" />
+	</bean>
+
+	<bean id="networkChassisItemObject" class="com.raritan.tdz.chassis.home.NetworkChassisItemImpl" scope="prototype">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<property name="itemNameUniqueValidator" ref="itemNameUniqueValidator"/>
+		<property name="uniqueValidator" ref="uniqueValidator"/>
+		<property name="itemHome" ref="itemHome"/>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.invalidDefinitionModelChassis</value>
+				<value>ItemValidator.invalidPortConnector</value>
+			</list>
+		</property>
+
+		<!--  Add the following for every itemObject bean. -->
+		<property name="fieldHome" ref="fieldHome"/>
+		<property name="itemDomainAdaptor" ref="itemDomainAdaptor"/>
+		<property name="itemStateContext" ref="itemStateContext"/>
+		<property name="rulesProcessor" ref="itemRulesProcessor"/>
+		<property name="messageSource" ref="messageSource"/>
+		<property name="itemValidator" ref="itemValidator"/>
+		<property name="chassisHome" ref="chassisHome"/>
+		<!-- <property name="placementHome" ref="itemPlacementHome" /> -->
+		<property name="remoteRef" ref="remoteRefItemScreen" />
+		<property name="itemRequest" ref="itemRequest" />
+	</bean>
+	
+	<bean id="bladeItemObject" class="com.raritan.tdz.chassis.home.BladeItemImpl" scope="prototype">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<property name="itemNameUniqueValidator" ref="itemNameUniqueValidator"/>
+		<property name="uniqueValidator" ref="uniqueValidator"/>
+		<property name="itemHome" ref="itemHome"/>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.invalidModelChassis</value>
+				<value>ItemValidator.invalidPortConnector</value>
+			</list>
+		</property>
+		
+		<!--  Add the following for every itemObject bean. -->
+		<property name="fieldHome" ref="fieldHome"/>
+		<property name="itemDomainAdaptor" ref="itemDomainAdaptor"/>
+		<property name="itemStateContext" ref="itemStateContext"/>
+		<property name="rulesProcessor" ref="itemRulesProcessor"/>
+		<property name="messageSource" ref="messageSource"/>
+		<property name="itemValidator" ref="itemValidator"/>
+		<property name="chassisHome" ref="chassisHome"/>
+		<!-- <property name="placementHome" ref="itemPlacementHome" /> -->
+		<property name="remoteRef" ref="remoteRefItemScreen" />
+		<property name="itemRequest" ref="itemRequest" />
+	</bean>
+
+	<bean id="networkBladeItemObject" class="com.raritan.tdz.chassis.home.NetworkBladeItemImpl" scope="prototype">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<property name="itemNameUniqueValidator" ref="itemNameUniqueValidator"/>
+		<property name="uniqueValidator" ref="uniqueValidator"/>
+		<property name="itemHome" ref="itemHome"/>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.invalidModelChassis</value>
+				<value>ItemValidator.invalidPortConnector</value>
+			</list>
+		</property>
+		
+		<!--  Add the following for every itemObject bean. -->
+		<property name="fieldHome" ref="fieldHome"/>
+		<property name="itemDomainAdaptor" ref="itemDomainAdaptor"/>
+		<property name="itemStateContext" ref="itemStateContext"/>
+		<property name="rulesProcessor" ref="itemRulesProcessor"/>
+		<property name="messageSource" ref="messageSource"/>
+		<property name="itemValidator" ref="itemValidator"/>
+		<property name="chassisHome" ref="chassisHome"/>
+		<!-- <property name="placementHome" ref="itemPlacementHome" /> -->
+		<property name="remoteRef" ref="remoteRefItemScreen" />
+		<property name="itemRequest" ref="itemRequest" />
+	</bean>
+	
+	<bean id="networkStackItemObject" class="com.raritan.tdz.item.home.NetworkStackImpl" scope="prototype">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<property name="itemNameUniqueValidator" ref="itemNameUniqueValidator"/>
+		<property name="uniqueValidator" ref="uniqueValidator"/>
+		<property name="itemHome" ref="itemHome"/>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.invalidPortConnector</value>
+			</list>
+		</property>
+		
+		<!--  Add the following for every itemObject bean. -->
+		<property name="fieldHome" ref="fieldHome"/>
+		<property name="itemDomainAdaptor" ref="itemDomainAdaptor"/>
+		<property name="itemStateContext" ref="itemStateContext"/>
+		<property name="rulesProcessor" ref="itemRulesProcessor"/>
+		<property name="messageSource" ref="messageSource"/>
+		<property name="itemValidator" ref="itemValidator"/>
+		<!-- <property name="placementHome" ref="itemPlacementHome" /> -->
+		<property name="remoteRef" ref="remoteRefItemScreen" />
+		<property name="itemRequest" ref="itemRequest" />
+	</bean>
+	
+	<bean id="upsBankItemObject" class="com.raritan.tdz.item.home.UPSBankImpl" scope="prototype">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<property name="itemNameUniqueValidator" ref="itemNameUniqueValidator"/>
+		<property name="uniqueValidator" ref="uniqueValidator"/>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.invalidPortConnector</value>
+			</list>
+		</property>
+		
+				<!--  Add the following for every itemObject bean. -->
+		<property name="fieldHome" ref="fieldHome"/>
+		<property name="itemDomainAdaptor" ref="itemDomainAdaptor"/>
+		<property name="itemStateContext" ref="itemStateContext"/>
+		<property name="rulesProcessor" ref="itemRulesProcessor"/>
+		<property name="messageSource" ref="messageSource"/>
+		<property name="itemValidator" ref="itemValidator"/>
+		<!-- <property name="placementHome" ref="itemPlacementHome" /> -->
+		<property name="remoteRef" ref="remoteRefItemScreen" />
+		<property name="itemRequest" ref="itemRequest" />
+	</bean>
+	
+	<bean id="itItemObject" class="com.raritan.tdz.item.home.ItItemObject" scope="prototype">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<property name="itemNameUniqueValidator" ref="itemNameUniqueValidator"/>
+		<property name="uniqueValidator" ref="uniqueValidator"/>
+		<property name="itemHome" ref="itemHome"/>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.invalidPortConnector</value>
+			</list>
+		</property>
+		
+				<!--  Add the following for every itemObject bean. -->
+		<property name="fieldHome" ref="fieldHome"/>
+		<property name="itemDomainAdaptor" ref="itemDomainAdaptor"/>
+		<property name="itemStateContext" ref="itemStateContext"/>
+		<property name="rulesProcessor" ref="itemRulesProcessor"/>
+		<property name="messageSource" ref="messageSource"/>
+		<property name="itemValidator" ref="itemValidator"/>
+		<!-- <property name="placementHome" ref="itemPlacementHome" /> -->
+		<property name="remoteRef" ref="remoteRefItemScreen" />
+		<property name="itemRequest" ref="itemRequest" />
+	</bean>
+
+	
+	<bean id="meItemObject" class="com.raritan.tdz.item.home.MeItemObject" scope="prototype">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<property name="itemNameUniqueValidator" ref="itemNameUniqueValidator"/>
+		<property name="uniqueValidator" ref="uniqueValidator"/>
+		<property name="itemHome" ref="itemHome"/>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.invalidPortConnector</value>
+			</list>
+		</property>
+		
+				<!--  Add the following for every itemObject bean. -->
+		<property name="fieldHome" ref="fieldHome"/>
+		<property name="itemDomainAdaptor" ref="itemDomainAdaptor"/>
+		<property name="itemStateContext" ref="itemStateContext"/>
+		<property name="rulesProcessor" ref="itemRulesProcessor"/>
+		<property name="messageSource" ref="messageSource"/>
+		<property name="itemValidator" ref="itemValidator"/>
+		<!-- <property name="placementHome" ref="itemPlacementHome" /> -->
+		<property name="remoteRef" ref="remoteRefItemScreen" />
+		<property name="itemRequest" ref="itemRequest" />
+	</bean>
+
+	<bean id="dataPanelItemObject" class="com.raritan.tdz.item.home.DataPanelItemObject" scope="prototype">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<property name="itemNameUniqueValidator" ref="itemNameUniqueValidator"/>
+		<property name="uniqueValidator" ref="uniqueValidator"/>
+		<property name="itemHome" ref="itemHome"/>
+		<property name="circuitPDHome" ref="circuitPDHome"/>		
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.invalidPortConnector</value>
+			</list>
+		</property>
+		
+				<!--  Add the following for every itemObject bean. -->
+		<property name="fieldHome" ref="fieldHome"/>
+		<property name="itemDomainAdaptor" ref="itemDomainAdaptor"/>
+		<property name="itemStateContext" ref="itemStateContext"/>
+		<property name="rulesProcessor" ref="itemRulesProcessor"/>
+		<property name="messageSource" ref="messageSource"/>
+		<property name="itemValidator" ref="itemValidator"/>
+		<!-- <property name="placementHome" ref="itemPlacementHome" /> -->
+		<property name="remoteRef" ref="remoteRefItemScreen" />
+		<property name="itemRequest" ref="itemRequest" />
+	</bean>
+	
+	<bean id="powerPanelItemObject" class="com.raritan.tdz.item.home.PowerPanelItemObject" scope="prototype">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<property name="itemNameUniqueValidator" ref="itemNameUniqueValidator"/>
+		<property name="uniqueValidator" ref="uniqueValidator"/>
+		<property name="itemHome" ref="itemHome"/>
+		<property name="powerCircuitHome" ref="powerCircuitHome"/>		
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.invalidPortConnector</value>
+			</list>
+		</property>
+		
+				<!--  Add the following for every itemObject bean. -->
+		<property name="fieldHome" ref="fieldHome"/>
+		<property name="itemDomainAdaptor" ref="itemDomainAdaptor"/>
+		<property name="itemStateContext" ref="itemStateContext"/>
+		<property name="rulesProcessor" ref="itemRulesProcessor"/>
+		<property name="messageSource" ref="messageSource"/>
+		<property name="itemValidator" ref="itemValidator"/>
+		<!-- <property name="placementHome" ref="itemPlacementHome" /> -->
+		<property name="remoteRef" ref="remoteRefItemScreen" />
+		<property name="itemRequest" ref="itemRequest" />
+	</bean>	
+	
+	<bean id="outletItemObject" class="com.raritan.tdz.item.home.OutletItemObject" scope="prototype">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<property name="itemNameUniqueValidator" ref="itemNameUniqueValidator"/>
+		<property name="uniqueValidator" ref="uniqueValidator"/>
+		<property name="itemHome" ref="itemHome"/>
+		<property name="powerCircuitHome" ref="powerCircuitHome"/>		
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.invalidPortConnector</value>
+			</list>
+		</property>
+		
+				<!--  Add the following for every itemObject bean. -->
+		<property name="fieldHome" ref="fieldHome"/>
+		<property name="itemDomainAdaptor" ref="itemDomainAdaptor"/>
+		<property name="itemStateContext" ref="itemStateContext"/>
+		<property name="rulesProcessor" ref="itemRulesProcessor"/>
+		<property name="messageSource" ref="messageSource"/>
+		<property name="itemValidator" ref="itemValidator"/>
+		<!-- <property name="placementHome" ref="itemPlacementHome" /> -->
+		<property name="remoteRef" ref="remoteRefItemScreen" />
+		<property name="itemRequest" ref="itemRequest" />
+	</bean>
+	
+	
+	<bean id="freeStandingItemObject" class="com.raritan.tdz.item.home.FreeStandingItemObject" scope="prototype">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<property name="itemNameUniqueValidator" ref="itemNameUniqueValidator"/>
+		<property name="uniqueValidator" ref="uniqueValidator"/>
+		<property name="itemHome" ref="itemHome"/>
+		<property name="itemObjectFactory" ref="itemObjectFactory"/>
+		<property name="modelHome" ref="modelHome"/>
+		<property name="cabinetValidator" ref="freeStandingCabinetItemValidator"/>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.invalidPortConnector</value>
+			</list>
+		</property>
+	
+				<!--  Add the following for every itemObject bean. -->
+		<property name="fieldHome" ref="fieldHome"/>
+		<property name="itemDomainAdaptor" ref="itemDomainAdaptor"/>
+		<property name="itemStateContext" ref="itemStateContext"/>
+		<property name="rulesProcessor" ref="itemRulesProcessor"/>
+		<property name="messageSource" ref="messageSource"/>
+		<property name="itemValidator" ref="itemValidator"/>
+		<!-- <property name="placementHome" ref="itemPlacementHome" /> -->
+		<property name="remoteRef" ref="remoteRefItemScreen"/>
+		<property name="itemRequest" ref="itemRequest" />
+	</bean>
+	
+	<bean id="cabinetItemObject" class="com.raritan.tdz.item.home.CabinetItemObject" scope="prototype">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<property name="itemNameUniqueValidator" ref="itemNameUniqueValidator"/>
+		<property name="uniqueValidator" ref="uniqueValidator"/>
+		<property name="itemHome" ref="itemHome"/>
+		<property name="cabinetHome" ref="cabinetHome"/>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.invalidPortConnector</value>
+			</list>
+		</property>
+		
+				<!--  Add the following for every itemObject bean. -->
+		<property name="fieldHome" ref="fieldHome"/>
+		<property name="itemDomainAdaptor" ref="itemDomainAdaptor"/>
+		<property name="itemStateContext" ref="itemStateContext"/>
+		<property name="rulesProcessor" ref="itemRulesProcessor"/>
+		<property name="messageSource" ref="messageSource"/>
+		<property name="itemValidator" ref="itemValidator"/>
+		<!-- <property name="placementHome" ref="itemPlacementHome" /> -->
+		<property name="remoteRef" ref="remoteRefItemScreen" />
+		<property name="itemRequest" ref="itemRequest" />
+	</bean>
+	
+	<bean id="nonRackableItemObject" class="com.raritan.tdz.item.home.NonRackableItemObject" scope="prototype">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<property name="itemNameUniqueValidator" ref="itemNameUniqueValidator"/>
+		<property name="uniqueValidator" ref="uniqueValidator"/>
+		<property name="itemHome" ref="itemHome"/>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.invalidPortConnector</value>
+			</list>
+		</property>
+		
+				<!--  Add the following for every itemObject bean. -->
+		<property name="fieldHome" ref="fieldHome"/>
+		<property name="itemDomainAdaptor" ref="itemDomainAdaptor"/>
+		<property name="itemStateContext" ref="itemStateContext"/>
+		<property name="rulesProcessor" ref="itemRulesProcessor"/>
+		<property name="messageSource" ref="messageSource"/>
+		<property name="itemValidator" ref="itemValidator"/>
+		<!-- <property name="placementHome" ref="itemPlacementHome" /> -->
+		<property name="remoteRef" ref="remoteRefItemScreen" />
+		<property name="itemRequest" ref="itemRequest" />
+	</bean>
+
+	<bean id="floorPDUItemObject" class="com.raritan.tdz.item.home.FloorPDUItemObject" scope="prototype">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<property name="itemNameUniqueValidator" ref="itemNameUniqueValidator"/>
+		<property name="uniqueValidator" ref="uniqueValidator"/>
+		<property name="itemHome" ref="itemHome"/>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.invalidPortConnector</value>
+			</list>
+		</property>
+		
+				<!--  Add the following for every itemObject bean. -->
+		<property name="fieldHome" ref="fieldHome"/>
+		<property name="itemDomainAdaptor" ref="itemDomainAdaptor"/>
+		<property name="itemStateContext" ref="itemStateContext"/>
+		<property name="rulesProcessor" ref="itemRulesProcessor"/>
+		<property name="messageSource" ref="messageSource"/>
+		<property name="itemValidator" ref="itemValidator"/>
+		<!-- <property name="placementHome" ref="itemPlacementHome" /> -->
+		<property name="remoteRef" ref="remoteRefItemScreen" />
+		<property name="itemRequest" ref="itemRequest" />
+	</bean>
+
+	<bean id="powerpanelItemObject" class="com.raritan.tdz.item.home.PowerPanelItemObject" scope="prototype">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<property name="itemNameUniqueValidator" ref="itemNameUniqueValidator"/>
+		<property name="uniqueValidator" ref="uniqueValidator"/>
+		<property name="itemHome" ref="itemHome"/>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.invalidPortConnector</value>
+			</list>
+		</property>
+		
+				<!--  Add the following for every itemObject bean. -->
+		<property name="fieldHome" ref="fieldHome"/>
+		<property name="itemDomainAdaptor" ref="itemDomainAdaptor"/>
+		<property name="itemStateContext" ref="itemStateContext"/>
+		<property name="rulesProcessor" ref="itemRulesProcessor"/>
+		<property name="messageSource" ref="messageSource"/>
+		<property name="itemValidator" ref="itemValidator"/>
+		<!-- <property name="placementHome" ref="itemPlacementHome" /> -->
+		<property name="remoteRef" ref="remoteRefItemScreen" />
+		<property name="itemRequest" ref="itemRequest" />
+	</bean>
+	
+	
+	<bean id="rackPduItemObject" class="com.raritan.tdz.item.home.RackPduItemObject" scope="prototype">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<property name="itemNameUniqueValidator" ref="itemNameUniqueValidator"/>
+		<property name="uniqueValidator" ref="uniqueValidator"/>
+		<property name="itemHome" ref="itemHome"/>
+		<property name="circuitPDHome" ref="circuitPDHome"/>		
+		<property name="nonRackableItemObject" ref="nonRackableItemObject"/>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.invalidPowerPortVolt</value>
+				<value>ItemValidator.invalidPortConnector</value>
+			</list>
+		</property>
+		
+		<!--  Add the following for every itemObject bean. -->
+		<property name="fieldHome" ref="fieldHome"/>
+		<property name="itemDomainAdaptor" ref="itemDomainAdaptor"/>
+		<property name="itemStateContext" ref="itemStateContext"/>
+		<property name="rulesProcessor" ref="itemRulesProcessor"/>
+		<property name="messageSource" ref="messageSource"/>
+		<property name="itemValidator" ref="itemValidator"/>
+		<!-- <property name="placementHome" ref="itemPlacementHome" /> -->
+		<property name="remoteRef" ref="remoteRefItemScreen" />
+		<property name="itemRequest" ref="itemRequest" />
+	</bean>
+	
+	<bean id="itemObjectFactory" class="com.raritan.tdz.item.home.ItemObjectFactoryImpl">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+		<property name="itemClasses">
+			<map>
+				<!-- Network Chassis -->
+				<entry key="1301.Rackable" value="networkChassisItemObject" />
+				<!-- Network BLADE_SERVER -->
+				<entry key="1302.Blade" value="networkBladeItemObject" />
+				<!-- Network stack -->
+				<entry key="1303.Rackable" value="networkStackItemObject" />
+				<!-- UPS bank -->
+				<entry key="2450" value="upsBankItemObject" />
+				<!-- BLADE_CHASSIS -->
+				<entry key="1202.Rackable" value="chassisItemObject" />
+				<!-- BLADE_SERVER -->
+				<entry key="1203.Blade" value="bladeItemObject" />
+							
+																
+				<!-- Free Standing Device/Network Item -->				
+				<entry key="1300.Free-Standing" value="freeStandingItemObject"/>
+				<entry key="1200.Free-Standing" value="freeStandingItemObject"/>
+				
+				<!-- Add Non-Rackable item mapping here to 'nonRackableItemObject' -->
+				<entry key="1200.Non-Rackable" value="nonRackableItemObject"/>
+				<entry key="1201.Non-Rackable" value="nonRackableItemObject"/>
+				<entry key="1500.Non-Rackable" value="nonRackableItemObject"/>
+				<entry key="2100.Non-Rackable" value="rackPduItemObject"/>				
+				<entry key="1400.Non-Rackable" value="nonRackableItemObject"/>
+				<entry key="1300.Non-Rackable" value="nonRackableItemObject"/>
+				<entry key="1303.Non-Rackable" value="nonRackableItemObject"/>
+				
+				<!-- DEFAULT CLASSES FOR ITEMS WITH NO MODEL OR MOUNTING -->
+				
+				<!-- Local Panel -->
+				<entry key="2301" value="powerPanelItemObject"/>
+				<!-- Remote Panel -->
+				<entry key="2302" value="powerPanelItemObject"/>
+				<!-- Busway Panel -->
+				<entry key="2303" value="powerPanelItemObject"/>
+				
+				<!-- VM Subclass -->
+				<entry key="1204" value="itItemObject" />
+				
+				<!-- Whip Floor Outlet -->
+				<entry key="2201" value="outletItemObject"/>
+				
+				<!-- Busway Floor Outlet -->
+				<entry key="2202" value="outletItemObject"/>
+				
+				<!-- Floor Outlet -->
+				<entry key="2200" value="outletItemObject"/>
+				
+				<!-- Device -->
+				<entry key="1200" value="itItemObject"/>
+				<!-- Network -->
+				<entry key="1300" value="itItemObject"/>
+				<!-- Data Panel -->
+				<entry key="1500" value="dataPanelItemObject"/>
+				<!-- Floor Outlet -->
+				<entry key="2200" value="outletItemObject"/>
+				<!-- Rack PDU -->
+				<entry key="2100" value="rackPduItemObject"/>
+				<!-- Cabinet -->
+				<entry key="1100" value="cabinetItemObject"/>
+				<!-- Probe -->
+				<entry key="1400" value="itItemObject"/>
+				<!-- Floor PDU -->
+				<entry key="2300" value="floorPDUItemObject"/>
+				<!-- UPS -->
+				<entry key="2400" value="meItemObject"/>
+				<!-- CRAC -->
+				<entry key="3000" value="meItemObject"/>
+				<!-- UPS Bank -->
+				<entry key="2450" value="upsBankItemObject"/>
+				<!-- CRAC Group -->
+				<entry key="3050" value="meItemObject"/>
+				<!-- Passive -->
+				<entry key="4100" value="itItemObject"/>
+				<!-- Blanking Plate -->
+				<entry key="4200" value="itItemObject"/>
+				<!-- Perforated Tiles -->
+				<entry key="3100" value="meItemObject"/>				
+								
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="itemObjectTemplateFactory" class="com.raritan.tdz.item.home.ItemObjectFactoryImpl">
+		<constructor-arg name="itemObjectTemplateBeans">
+			<map>
+				<!-- VM -->
+				<entry key="100" value="vmItemObject"/>
+				
+				<!-- Device -->
+				<entry key="1" value="standardDeviceItemObject"/>
+				<entry key="105" value="bladeServerItemObject"/>
+				<entry key="104" value="chassisDeviceItemObject"/>
+				<entry key="101" value="standardDeviceItemObject"/>
+				<entry key="103" value="fsDeviceItemObject"/>
+				<entry key="102" value="nrDeviceItemObject"/>
+				<entry key="106" value="zerouDeviceItemObject"/>
+				
+				<!-- Network -->
+				<entry key="2" value="standardNetworkStackItemObject"/>
+				<entry key="205" value="bladeNetworkItemObject"/>
+				<entry key="204" value="chassisNetworkObject"/>
+				<entry key="203" value="fsNetworkStackItemObject"/>
+				<entry key="201" value="standardNetworkStackItemObject"/>
+				<entry key="202" value="nrNetworkStackItemObject"/>
+				<entry key="206" value="zerouNetworkStackItemObject"/>
+				
+				<!-- Data Panel -->
+				<entry key="3" value="standardDpItemObject"/>
+				<entry key="301" value="standardDpItemObject"/>
+				<entry key="302" value="nrDpItemObject"/>
+				<entry key="306" value="zerouDpItemObject"/>
+				
+				<!-- Power Outlet -->
+				<entry key="4" value="nrOutletItemObject"/>
+				<entry key="402" value="nrOutletItemObject"/>
+				<entry key="412" value="buswayOutletItemObject"/>
+				<entry key="411" value="nrOutletItemObject"/>
+				
+				<!-- Rack PDU -->
+				<entry key="5" value="rackableRpduItemObject"/>
+				<entry key="506" value="zerouRpduItemObject"/>
+				<entry key="501" value="rackableRpduItemObject"/>
+				<entry key="502" value="nrRpduItemObject"/>
+				
+				<!-- Cabinet -->
+				<entry key="6" value="cabinentItemObject"/>
+				<entry key="603" value="cabinentItemObject"/>
+				<entry key="613" value="containerCabinetItemObject"/>
+				
+				<!-- Probe -->
+				<entry key="7" value="rackableProbeItemObject"/>
+				<entry key="701" value="rackableProbeItemObject"/>
+				<entry key="706" value="zerouProbeItemObject"/>
+				<entry key="702" value="nrProbeItemObject"/>
+				
+				<!-- Floor PDU -->
+				<entry key="11" value="floorPduItemObject"/>
+				<entry key="1103" value="floorPduItemObject"/>
+				<entry key="1114" value="pPanelItemObject"/>
+				<entry key="1115" value="pPanelItemObject"/>
+				<entry key="1116" value="pPanelItemObject"/>
+				
+				<!-- UPS -->
+				<entry key="12" value="upsItemObject"/>
+				<entry key="1203" value="upsItemObject"/>
+				
+				<!-- CRAC -->
+				<entry key="13" value="cracItemObject"/>
+				<entry key="1303" value="cracItemObject"/>
+				
+				<!-- Passive Rackable -->
+				<entry key="3001" value="passiveRackableItemObject"/>
+				
+				<!-- Passive Blanking Plate -->
+				<entry key="3007" value="blankingPlateItemObject"/>
+				
+				<!-- Passive Shelf -->
+				<entry key="3008" value="passiveShelfPlateItemObject"/>
+				
+				<entry key="30" value="passiveItItemObject"/>
+				<entry key="33" value="passiveMeItemObject"/>
+			</map>
+		
+		</constructor-arg>
+	</bean>
+		
+	<bean id="itemGroupHome" class="com.raritan.tdz.home.ItemGroupHomeImpl">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="connectionHome" class="com.raritan.tdz.home.ConnectionHomeImpl">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="circuitHome" class="com.raritan.tdz.home.CircuitHomeImpl">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="portHome" class="com.raritan.tdz.port.home.PortHomeImpl">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="reservationHome" class="com.raritan.tdz.home.ReservationHomeImpl">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="circuitPDHome" class="com.raritan.tdz.circuit.home.CircuitPDHomeImpl">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+		<property name="itemHome" ref="itemHome" />
+		<property name="itemObjectFactory" ref="itemObjectFactory" />
+		<property name="messageSource" ref="messageSource" />
+		<property name="powerProc" ref="powerProc"/>
+		<property name="portHome" ref="portHome" />
+		<property name="changeMgmt" ref="changeMgmtHome26"/>
+		<property name="dcHome" ref="dataCenterLocationHome" />
+		<property name="circuitSearch" ref="circuitSearch" />
+		<property name="paginatedHome" ref="circuitListPaginatedHome"/>
+	</bean>
+	
+	<bean id="circuitSearch" class="com.raritan.tdz.circuit.home.CircuitSearchImpl">
+		<constructor-arg name="itemObjectFactory" ref="itemObjectFactory" />
+		<constructor-arg name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="powerProc" class="com.raritan.tdz.circuit.home.PowerProc">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<property name="messageSource" ref="messageSource"/>
+	</bean>
+
+	<bean id="changeMgmtHome" class="com.raritan.tdz.changemgmt.home.ChangeMgmtHomeImpl">
+		<constructor-arg name="workflow" ref="changeMgmtWorkflow" />
+		<constructor-arg name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="changeMgmtWorkflow" class="com.raritan.tdz.changemgmt.home.workflow.BonitaWorkflow">
+		<constructor-arg name="settings" ref="appSettings" />
+	</bean>
+	
+	<bean id="changeMgmtCallback" class="com.raritan.tdz.changemgmt.home.ChangeMgmtCallbackImpl">
+		<constructor-arg name="sessionFactory" ref="sessionFactory" />
+		<constructor-arg name="itemHome" ref="itemHome" />
+		<constructor-arg name="utilHome" ref="utilHome" />
+	</bean>
+
+	<!-- TODO : Remove when 3.0 change management is ready -->
+	<bean id="changeMgmtHome26" class="com.raritan.tdz.changemgmt.home.ChangeMgmtHome26Impl">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+	</bean>
+
+
+
+	<bean id="listenNotifyHome" class="com.raritan.tdz.vbjavabridge.home.LNHomeImpl">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+	</bean>
+
+
+	<bean id="powerIQProxySubscriber" class="com.raritan.tdz.vbjavabridge.subscribers.PowerIQProxySubscriber" init-method="subscribe">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="lnHome" ref="listenNotifyHome"/>
+		<constructor-arg name="lnHomeGateway" ref="lnHomeGateway"/>
+	</bean>
+	
+
+
+	<bean id="sslClientHome" class="com.raritan.tdz.sslclient.home.SSLClientHomeImpl">
+		<constructor-arg index="0">
+			<ref bean="appSettings" />
+		</constructor-arg>
+	</bean>
+
+	<task:annotation-driven executor="dcTExecutor" scheduler="lnHomeScheduler" />
+	<task:scheduler id="lnHomeScheduler" pool-size="2" />
+	<task:executor id="dcTExecutor" pool-size="10"/>
+	
+	<bean id="snmpSettingsHome" class="com.raritan.tdz.snmp.home.SnmpSettingsHomeImpl" />
+	
+	<bean id="loginInterceptor" class="com.raritan.tdz.interceptor.LoginInterceptor" factory-method="aspectOf" />
+	
+	<bean id="itemListPaginatedHome" class="com.raritan.tdz.page.home.PaginatedHomeItemListImpl">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+		<property name="itemHome" ref="itemHome" />
+		<property name="columnGroupMap" ref="itemListColumnGroupMap" />
+		<property name="columnAttributes" ref="itemColumnAttributes" />
+		<property name="rulesProcessor" ref="itemRulesProcessor"/>
+		<property name="remoteReference" ref="remoteRefItemScreen"/>
+		<property name="itemClone" ref="itemClone"/>		
+	</bean>
+	
+	<bean id="circuitListPaginatedHome" class="com.raritan.tdz.page.home.PaginatedHomeCircuitListImpl">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+		<property name="circuitPDHome" ref="circuitPDHome" />
+		<property name="columnGroupMap" ref="circuitListColumnGroupMap" />
+		<property name="columnAttributes" ref="circuitColumnAttributes" />
+		<property name="rulesProcessor" ref="itemRulesProcessor"/>
+		<property name="remoteReference" ref="remoteRefItemScreen"/>
+
+	</bean>
+	
+	<bean id="itemListExportHome" class="com.raritan.tdz.page.home.ExportHomeItemListImpl" init-method="init">
+		<property name="paginatedHome" ref="itemListPaginatedHome" />
+		<property name="paginatedHomeGateway" ref="itemListPaginatedHomeGateway"/>
+	</bean>
+	
+	<bean id="circuitListExportHome" class="com.raritan.tdz.page.home.ExportHomeItemListImpl">
+		<property name="paginatedHome" ref="circuitListPaginatedHome" />
+	</bean>
+	
+	<bean id="paginatedHomes" class="java.util.HashMap" >
+		<constructor-arg>
+			<map>
+				<entry key="itemList" value-ref="itemListExportHome" />
+				<entry key="circuitList" value-ref="circuitListExportHome" />
+			</map>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="columnsSchema" class="com.raritan.tdz.util.DCTColumnsSchemaBase">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+		<property name="rulesProcessors">
+                        <set>
+                                <ref bean="itemRulesProcessor"/>
+                                <ref bean="locationRulesProcessor"/>
+                        </set>
+                </property>
+	</bean>
+
+	<bean id="itemDomainAdaptor" class="com.raritan.tdz.item.home.ItemDomainAdaptor" scope="prototype">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="processor" ref="itemRulesProcessor"/>
+		<constructor-arg name="remoteRef" ref="remoteRefItemScreen"/>
+		<constructor-arg name="messageSource" ref="messageSource"/>
+		<property name="supportingAdaptors">
+			<map>
+				<!-- Power Port Adaptor  -->
+				<entry key="tabPowerPorts" value-ref="powerPortDomainAdaptor" />
+
+				<!-- Data Port Adaptor  -->
+				<entry key="tabDataPorts" value-ref="dataPortDomainAdaptor" />
+				
+				<!-- Sensor Port Adaptor  -->
+				<entry key="tabSensorPorts" value-ref="sensorPortDomainAdaptor" />
+				
+				<!-- Ticket Adaptor -->  
+				<entry key="tiTicketNumber" value-ref="ticketDomainAdaptor"/>
+				
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="itemDomainFactory" class="com.raritan.tdz.item.home.itemObject.ItemDomainFactory"/>
+	
+	<bean id="powerPortDomainAdaptor" class="com.raritan.tdz.port.home.PowerPortDomainAdaptor" scope="prototype">
+		<property name="messageSource" ref="messageSource"/>
+	</bean>
+
+	<bean id="dataPortDomainAdaptor" class="com.raritan.tdz.port.home.DataPortDomainAdaptor" scope="prototype">
+		<property name="messageSource" ref="messageSource"/>
+    </bean>
+
+	<bean id="sensorPortDomainAdaptor" class="com.raritan.tdz.port.home.SensorPortDomainAdaptor" scope="prototype">
+	</bean>
+	
+	<bean id="ticketDomainAdaptor" class="com.raritan.tdz.port.home.TicketDomainAdaptor" scope="prototype"/> 
+	
+	<bean id="fieldHome" class="com.raritan.tdz.field.home.FieldHomeImpl">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+	</bean>
+	
+	<bean id="beanValidationHome" class="com.raritan.tdz.beanvalidation.home.BeanValidationHomeImpl">
+		<constructor-arg name="messageSource" ref="messageSource"/>
+		<constructor-arg name="springValidator" ref="springValidator"/>
+	</bean>
+		
+	<bean id="chassisLayoutSubscriber"
+		class="com.raritan.tdz.vbjavabridge.subscribers.ChassisLayoutSubscriber" init-method="subscribe">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="listenNotifyHome" />
+		</constructor-arg>
+		<constructor-arg index="2">
+			<ref bean="chassisHome" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="powerChainSubscriber"
+		class="com.raritan.tdz.vbjavabridge.subscribers.PowerChainSubscriber" init-method="subscribe">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="listenNotifyHome" />
+		</constructor-arg>
+		<constructor-arg index="2">
+			<ref bean="powerChainHome" />
+		</constructor-arg>
+	</bean>
+	
+	<bean id="vpcPowerChainCreateSubscriber" 
+		class="com.raritan.tdz.vpc.subscribers.VPCPowerChainCreateSubscriber" init-method="subscribe">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="lnHome" ref="listenNotifyHome"/>
+	</bean>
+
+	<bean id="externalTicketSubscriber"
+		class="com.raritan.tdz.vbjavabridge.subscribers.ExternalTicketsSubscriber" init-method="subscribe">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="listenNotifyHome" />
+		</constructor-arg>
+		<constructor-arg index="2">
+			<ref bean="itemHome" />
+		</constructor-arg>
+	</bean>
+	
+	<bean id="modelSubscriber"
+		class="com.raritan.tdz.vbjavabridge.subscribers.ModelSubscriber" init-method="subscribe">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="listenNotifyHome" />
+		</constructor-arg>
+		<constructor-arg index="2">
+			<ref bean="chassisHome" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="chassisHome" class="com.raritan.tdz.chassis.home.ChassisHomeImpl">
+		<constructor-arg name="sessionFactory" ref="sessionFactory" />
+		<constructor-arg name="messageSource" ref="messageSource"/>
+	</bean>
+	 
+    <bean id="dataPortDTOAdapter" class="com.raritan.tdz.item.home.DataPortDTOAdapter"
+        autowire-candidate="true" autowire="byName"/>
+        
+	<bean id="powerPortDTOAdapter" class="com.raritan.tdz.item.home.PowerPortDTOAdapter" autowire-candidate="true" autowire="byName"/>      
+
+    <bean id="basicItemInfo" class="com.raritan.tdz.item.json.BasicItemInfo" scope="prototype"/>
+    <bean id="basicCabinetItemInfo" class="com.raritan.tdz.item.json.BasicCabinetItemInfo" parent="basicItemInfo" scope="prototype"/>
+    <bean id="basicZeroUItemInfo" class="com.raritan.tdz.item.json.BasicZeroUItemInfo" parent="basicItemInfo" scope="prototype"/>
+    <bean id="basicNonRackableItemInfo" class="com.raritan.tdz.item.json.BasicNonRackableItemInfo" parent="basicItemInfo" scope="prototype"/>
+    <bean id="basicRackablesItemInfo" class="com.raritan.tdz.item.json.BasicRackablesItemInfo" parent="basicItemInfo" scope="prototype"/>
+    <bean id="basicBladeItemInfo" class="com.raritan.tdz.item.json.BasicBladeItemInfo" parent="basicItemInfo" scope="prototype"/>
+    <bean id="basicNonRackablePowerOutletItemInfo" class="com.raritan.tdz.item.json.BasicNonRackablePowerOutletItemInfo" parent="basicItemInfo" scope="prototype"/>
+    <bean id="mobileSearchItemInfo" class="com.raritan.tdz.item.json.MobileSearchItemInfo" scope="prototype"/>    
+        
+	<bean id="itemDTOAdapter"
+		class="com.raritan.tdz.item.home.ItemDTOAdapter"
+		autowire-candidate="true" autowire="byName">
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="rulesProcessor" ref="restAPIItemRulesProcessor"/>
+		<property name="remoteReference" ref="restAPIRemoteRefItemScreen"/>
+		<property name="messageSource" ref="messageSource"/>
+		<property name="modelHome" ref="modelHome"/>
+		<property name="disabledSetUiIds">
+		    <set>
+			<value>tabPowerPorts</value>
+			<value>tabSensorPorts</value>
+			<value>cmbPSRedundancy</value>
+			<value>_isItemEditable</value>
+			<value>tiEffectivePower</value>
+			<value>cmbFPDUOutputWiring</value>
+			<value>tiFPDUBrkrAmps</value>
+			<value>tiFPDUInputWiring</value>
+			<value>cmbFromFPDUBreaker</value>
+			<value>tiFPDUInputVoltage</value>
+			<value>tiFPDURatingkVA</value>
+			<value>cmbFromUPSBank</value>
+			<value>_piqId</value>
+		    </set>
+		</property>
+		<property name="disabledGetUiIds">
+		    <set>
+		    <value>tabDataPorts</value>
+			<value>tabPowerPorts</value>
+			<value>tabSensorPorts</value>
+			<value>cmbPSRedundancy</value>
+			<value>_isItemEditable</value>
+			<value>tiEffectivePower</value>
+			<value>cmbFPDUOutputWiring</value>
+			<value>tiFPDUBrkrAmps</value>
+			<value>tiFPDUInputWiring</value>
+			<value>cmbFromFPDUBreaker</value>
+			<value>tiFPDUInputVoltage</value>
+			<value>tiFPDURatingkVA</value>
+			<value>cmbFromUPSBank</value>
+			<value>_piqId</value>
+		    </set>
+		</property>
+		<property name="propsRemoteNameMap">
+			<map>
+				<entry key="itemId" value="id"/>
+				<entry key="classLkpValue" value="tiClass"/>
+				<entry key="code" value="cmbLocation"/>
+				<entry key="statusLkpValue" value="cmbStatus"/>
+				<entry key="itemName" value="tiName"/>
+				<entry key="itemAlias" value="tiAlias"/>
+				<entry key="parentItem" value="cmbCabinet"/>
+				<entry key="uPosition" value="cmbUPosition"/>
+				<entry key="mountedRailLkpValue" value="radioRailsUsed"/>
+				<entry key="facingLkpValue" value="radioDepthPosition"/>
+				<entry key="mfrName" value="cmbMake"/>
+				<entry key="modelName" value="cmbModel"/>
+				<entry key="ruHeight" value="tiRackUnits"/>
+				<entry key="$HWD" value="tiDimension"/>
+				<entry key="weight" value="tiWeight"/>
+				<entry key="mounting" value="tiMounting"/>
+				<entry key="formFactor" value="tiFormFactor"/>
+				<entry key="bladeChassis" value="cmbChassis"/>
+				<entry key="slotPosition" value="cmbSlotPosition"/>
+				<entry key="purposeLkuValue" value="cmbType"/>
+				<entry key="functionLkuValue" value="cmbFunction"/>
+				<entry key="itemAdminUser" value="cmbSystemAdmin"/>
+				<entry key="itemAdminTeamLkuValue" value="cmbSystemAdminTeam"/>
+				<entry key="departmentLkuValue" value="cmbCustomer"/>
+				<entry key="serialNumber" value="tiSerialNumber"/>
+				<entry key="assetNumber" value="tiAssetTag"/>
+				<entry key="raritanAssetTag" value="tieAssetTag"/>
+				<entry key="purchasePrice" value="tiPurchasePrice"/>
+				<entry key="purchaseDate" value="dtPurchaseDate"/>
+				<entry key="installDate" value="dtInstallationDate"/>
+				<entry key="slaProfileLkuValue" value="cmbSLAProfile"/>
+				<entry key="contractNumber" value="cmbContractNumber"/>
+				<entry key="contractAmount" value="tiContractAmount"/>
+				<entry key="contractBeginDate" value="dtContractStartDate"/>
+				<entry key="contractExpireDate" value="dtcontractEndDate"/>
+				<entry key="description" value="tiNotes"/>
+			</map>
+		</property>
+
+        <property name="shortItemInfoClassMap">
+            <map>
+                <!-- key is item's unique item id, value name of the class to create an obj from -->
+                <entry key="0" value="basicItemInfo"/>
+                <entry key="1" value="mobileSearchItemInfo"/>
+                <entry key="103" value="basicCabinetItemInfo"/>
+                <entry key="203" value="basicCabinetItemInfo"/>
+                <entry key="603" value="basicCabinetItemInfo"/>
+                <entry key="613" value="basicCabinetItemInfo"/>
+
+                <entry key="106" value="basicZeroUItemInfo"/>
+                <entry key="206" value="basicZeroUItemInfo"/>
+                <entry key="306" value="basicZeroUItemInfo"/>
+                <entry key="506" value="basicZeroUItemInfo"/>
+                <entry key="706" value="basicZeroUItemInfo"/>
+                
+                <entry key="102" value="basicNonRackableItemInfo"/>
+                <entry key="202" value="basicNonRackableItemInfo"/>
+                <entry key="302" value="basicNonRackableItemInfo"/>
+                <entry key="502" value="basicNonRackableItemInfo"/>
+                <entry key="702" value="basicNonRackableItemInfo"/>
+
+                <entry key="411" value="basicNonRackablePowerOutletItemInfo"/>
+                <entry key="412" value="basicRackablesItemInfo"/>
+
+                <entry key="101" value="basicRackablesItemInfo"/>
+                <entry key="104" value="basicRackablesItemInfo"/>
+                <entry key="204" value="basicRackablesItemInfo"/>
+                <entry key="201" value="basicRackablesItemInfo"/>
+                <entry key="301" value="basicRackablesItemInfo"/>
+                <entry key="501" value="basicRackablesItemInfo"/>
+                <entry key="701" value="basicRackablesItemInfo"/>
+                <entry key="3001" value="basicRackablesItemInfo"/>
+                <entry key="3007" value="basicRackablesItemInfo"/>
+                <entry key="3008" value="basicRackablesItemInfo"/>
+
+                <entry key="105" value="basicBladeItemInfo"/>
+                <entry key="205" value="basicBladeItemInfo"/>
+            </map>
+        </property>
+	</bean>
+	
+	<bean id="locationDTOAdapter"
+		class="com.raritan.tdz.location.home.LocationDTOAdapter"
+		autowire-candidate="true" autowire="byName">
+        <property name="genericDAOLoader" ref="genericDAOLoader"/>
+		<property name="rulesProcessor" ref="locationRulesProcessor"/>
+		<property name="remoteReference" ref="locationRemoteRefItemScreen"/>
+		<property name="messageSource" ref="messageSource"/>	
+		<property name="ignoredUiIds">
+		    <set>
+		    <value>id</value>
+			<value>units</value>
+			<value>enableVPC</value>
+			<value>piqMappingName</value>
+			<value>piqObjectType</value>
+			<value>piqObjectName</value>
+		    </set>
+		</property>
+	</bean>
+	
+	<bean id="itemDeleteHelper" class="com.raritan.tdz.item.home.ItemDeleteHelper">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+
+	<bean id="piqProbeLookup" class="com.raritan.tdz.piq.home.PIQProbeLookupImpl">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+	</bean>
+	
+	
+	<bean id="itemRequest" class="com.raritan.tdz.item.request.ItemRequestImpl">
+		<constructor-arg name="requestDAO" ref="itemRequestDAO"/>
+		<constructor-arg name="validatePermission" ref="validatePermission"/>
+	</bean>
+	
+	<bean id="itemRequestValidationAspect" class="com.raritan.tdz.item.request.ItemRequestValidationAspect" 
+				factory-method="aspectOf" autowire="byName">
+	</bean>
+		 	
+	<bean id="loadPortSPSubscriber"
+		class="com.raritan.tdz.vbjavabridge.subscribers.LoadPortSPSubscriber" init-method="subscribe">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="listenNotifyHome" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="itemClone" class="com.raritan.tdz.item.home.ItemCloneImpl" 
+			autowire-candidate="true" autowire="byName">
+		<constructor-arg name="itemObjectFactory" ref="itemObjectFactory" />
+		<constructor-arg name="itemDAO" ref="itemDAO" />
+		<constructor-arg name="messageSource" ref="messageSource"/>
+	</bean>
+<!--   
+	<bean id="profiler" class="com.raritan.tdz.util.Profiler"/>	
+-->
+	
+<!--
+	<bean id="objectDumper" class="com.raritan.tdz.util.ObjectDumper"/>
+	<aop:config>
+		<aop:pointcut id="saveItemPointCut" expression="execution(* com.raritan.tdz.item.home.ItemHomeImpl.saveItem(..))"/>
+		<aop:pointcut id="saveItemExtPointCut" expression="execution(* com.raritan.tdz.item.home.ItemHomeImpl.saveItemExt(..))"/>
+		<aop:pointcut id="convertRESTToDTOPointCut" expression="execution(* com.raritan.tdz.item.home.ItemDTOAdapter.convertToDTOList(..))"/>
+		<aop:aspect ref="objectDumper">
+			<aop:around method="dumpValueIdDTOList" pointcut-ref="saveItemPointCut"/>
+			<aop:around method="dumpValueIdDTOList" pointcut-ref="convertRESTToDTOPointCut"/>
+		</aop:aspect>
+	</aop:config>
+-->
+
+	<bean id="eventHome" class="com.raritan.tdz.events.home.EventHomeImpl">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+		<property name="messageSource" ref="messageSource" />
+		<property name="itemHome" ref="itemHome" />
+		<property name="dctExecutor" ref="dcTExecutor"/>
+	</bean>
+	
+
+   <bean id="sensorPortHelper" class="com.raritan.tdz.port.home.SensorPortHelper" autowire-candidate="true" autowire="byName">
+    </bean>
+    
+ 	<bean id="circuitDelete" class="com.raritan.tdz.circuit.home.CircuitDeleteImpl" autowire-candidate="true">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+	</bean>   
+	
+
+
+    <bean id="circuitRequest" class="com.raritan.tdz.circuit.request.CircuitRequestImpl" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<bean id="businessExceptionHelper" class="com.raritan.tdz.util.BusinessExceptionHelper" autowire-candidate="true" autowire="byName">
+		<property name="messageSource" ref="messageSource"/>
+	</bean>
+
+	<bean id="lookupAdapter" class="com.raritan.tdz.lookup.json.LookupAdapterImpl" autowire-candidate="true" autowire="byName">
+	    <property name="messageSource" ref="messageSource"/>
+	</bean>
+
+	<bean id="jsonNetworkAdapter" class="com.raritan.tdz.ip.home.JSONIPAdapterImpl" autowire-candidate="true" autowire="byName" scope="prototype"/>
+
+	<bean id="ipServiceRESTAPI" class="com.raritan.tdz.ip.home.IPServiceImpl" autowire-candidate="true" autowire="byName"/>
+	<bean id="ipUtils" class="com.raritan.tdz.ip.home.IPUtils" autowire-candidate="true" autowire="byName"/>
+
+	<bean id="ipHome" class="com.raritan.tdz.ip.home.IPHomeImpl" autowire-candidate="true" autowire="byName" scope="prototype">
+	    <property name="messageSource" ref="messageSource"/>
+	    <property name="validationWarningCodes">
+		<list>
+		    <value>IpAddressValidator.ipAddressIsGW</value>
+		    <value>IpAddressValidator.duplicate</value>
+		    <value>IpAddressValidator.teamed</value>
+		</list>
+	    </property>
+
+	</bean>
+
+	
+	<bean id="userHome" class="com.raritan.tdz.user.home.UserHomeImpl" autowire-candidate="true" autowire="byName"/>
+
+	<bean id="reportsHome" class="com.raritan.tdz.reports.home.ReportsHomeImpl" autowire-candidate="true" autowire="byName"/>
+    <bean id="jsonReportsAdapter" class="com.raritan.tdz.reports.home.JSONReportsAdapterImpl" autowire-candidate="true" autowire="byName"/>
+    <bean id="jsonPaginatedListAdapter" class="com.raritan.tdz.page.home.JSONPaginatedListAdapterImpl" autowire-candidate="true" autowire="byName"/>
+    
+    <bean id="uPositionResolver" class="com.raritan.tdz.item.home.UPositionResolver"/>
+    <bean id="cabinetSideResolver" class="com.raritan.tdz.item.home.CabinetSideResolver"/>
+    <bean id="shelfPositionResolver" class="com.raritan.tdz.item.home.ShelfPositionResolver"/>
+   	<bean id="chassisFaceResolver" class="com.raritan.tdz.item.home.ChassisFaceResolver"/>
+   	<bean id="chassisSlotPositionResolver" class="com.raritan.tdz.item.home.ChassisSlotPositionResolver"/>
+    
+    <util:list id="itemDataResolverList" value-type="com.raritan.tdz.item.home.ItemDataResolver" >
+    	<ref bean="uPositionResolver"/>
+    	<ref bean="cabinetSideResolver"/>
+    	<ref bean="shelfPositionResolver"/>
+    	<ref bean="chassisFaceResolver"/>
+    	<ref bean="chassisSlotPositionResolver"/>
+    </util:list>
+    
+    <bean id="dataPortDTOHelper" class="com.raritan.tdz.dto.DataPortDTOHelper"/>
+    
+	<bean id="dataCircuitHome" class="com.raritan.tdz.circuit.home.DataCircuitHomeImpl">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="messageSource" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="powerCircuitHome" class="com.raritan.tdz.circuit.home.PowerCircuitHomeImpl">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="messageSource" />
+		</constructor-arg>
+	</bean>
+ </beans>

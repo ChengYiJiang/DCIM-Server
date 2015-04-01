@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration
+		http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop.xsd
+		">
+	
+	<import resource="reportContext.xml"/>
+	<!-- ========== Initialize the BIRT Report Generator ================== -->
+	<bean id="birtReportProgressManager" class="com.raritan.tdz.reports.generate.BIRTReportTaskProgressManager" destroy-method="destroy">
+		<constructor-arg name="userSessionId" value="${reportUserUUID}"/>
+	</bean>
+	
+	<bean id="birtReportSetup" class="com.raritan.tdz.reports.generate.BIRTReportTaskSetup" scope="prototype">
+		<constructor-arg name="renderOption" ref="pdfRenderOption"/>
+		<constructor-arg name="userSessionId" value="${reportUserUUID}"/>
+		<property name="reportContextAwareKey" ref="reportContextAwareKey"/>
+		<aop:scoped-proxy/>
+	</bean>
+	
+	<bean id="birtReportRenderer" class="com.raritan.tdz.reports.generate.BIRTReportRenderer" scope="prototype"/>
+
+	<!-- Define the BIRT service activators -->
+	<!--  Note that the channels are defined in reportContext.xml -->
+	
+	<int:service-activator id="birtReportSetupActivator"
+		input-channel="reportSetupChannel"
+		ref="birtReportSetup"
+		method="createAndSetup"/>
+		
+
+	
+	<bean id="birtReportRendererPollerTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="25"/>
+		<!-- <property name="maxPoolSize" value="40"/> 
+		<property name="queueCapacity" value="1"/> -->
+	</bean>
+	
+	<int:channel id="reportProgressManagerGetPercent"/>
+	
+	<int:channel id="reportProgressManagerGetURL"/>
+
+	<int:channel id="reportProgressManagerCancel"/>
+	
+	<int:channel id="reportProgressManagerGetErrors"/>
+	
+	<int:channel id="reportProgressManagerIsReportRunning"/>
+	
+	<int:service-activator id="birtReportRendererActivator"
+		input-channel="reportRendererChannel"
+		ref="birtReportRenderer"
+		method="run">
+		<int:poller fixed-delay="#{1000}" task-executor="birtReportRendererPollerTaskExecutor"/>	
+	</int:service-activator>
+	
+	<int:service-activator id="birtReportProgressManagerPercentActivator"
+		input-channel="reportProgressManagerGetPercent"
+		ref="birtReportProgressManager"
+		method="getPercentComplete"/>
+	
+	<int:service-activator id="birtReportProgressManagerURLActivator"
+		input-channel="reportProgressManagerGetURL"
+		ref="birtReportProgressManager"
+		method="getURL"/>
+	
+	<int:service-activator id="birtReportProgressManagerCancelActivator"
+		input-channel="reportProgressManagerCancel"
+		ref="birtReportProgressManager"
+		method="cancel"/>
+	
+	<int:service-activator id="birtReportProgressManagerGetErrorsActivator"
+		input-channel="reportProgressManagerGetErrors"
+		ref="birtReportProgressManager"
+		method="getErrors"/>
+	
+	<int:service-activator id="birtReportProgressManagerIsReportRunningActivator"
+		input-channel="reportProgressManagerIsReportRunning"
+		ref="birtReportProgressManager"
+		method="isTaskRunning"/>
+	
+</beans>

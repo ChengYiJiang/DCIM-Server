@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<int:channel id="importItemChannel"/>
+	<int:channel id="importItemAddChannel"/>
+	<int:channel id="importItemUpdateChannel"/>
+	<int:channel id="importItemDeleteChannel"/>
+	<int:channel id="importItemUnmapChannel"/>
+	
+	<bean id="itemImportProcessor" class="com.raritan.tdz.dctimport.processors.ImportProcessorImpl">
+		<constructor-arg name="messageChannelMap">
+			<map>
+				<entry key="#{T(com.raritan.tdz.dctimport.processors.ImportProcessorImpl).ADD_OPERATION}" value-ref="importItemAddChannel"/>
+				<entry key="#{T(com.raritan.tdz.dctimport.processors.ImportProcessorImpl).EDIT_OPERATION}" value-ref="importItemUpdateChannel"/>
+				<entry key="#{T(com.raritan.tdz.dctimport.processors.ImportProcessorImpl).DELETE_OPERATION}" value-ref="importItemDeleteChannel"/>
+				<entry key="#{T(com.raritan.tdz.dctimport.processors.ImportProcessorImpl).UNMAP_OPERATION}" value-ref="importItemUnmapChannel"/>
+			</map>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="itemBeanToMapTranslator" class="com.raritan.tdz.dctimport.integration.transformers.BeanToMapTransformer">
+		<constructor-arg name="uuid" value="${UserUUIDProperty}"/>
+	</bean>
+	
+	<bean id="customFieldTransformer" class="com.raritan.tdz.dctimport.integration.transformers.CustomFieldTransformer">
+		<property name="importErrorHandler" ref="importErrorHandlerGateway"/>
+	</bean>
+	
+	<bean id="snmpCredentialsTransformer" class="com.raritan.tdz.dctimport.integration.transformers.SNMPCredentialsTransformer">
+		<property name="importErrorHandler" ref="importErrorHandlerGateway"/>
+	</bean>
+	
+	<bean id="importItemHome" parent="abstractImportProcessor">
+		<property name="proxyInterfaces">
+    		<list>
+	    		<value>com.raritan.tdz.item.home.ItemHome</value>
+    		</list>
+    		
+    	</property>
+    	<property name="target" ref="itemHome"/>
+	</bean>
+	
+	<bean id="itemApplicableFieldsTranslator" class="com.raritan.tdz.dctimport.integration.transformers.ApplicableFieldsTransformer">
+		<constructor-arg name="fields">
+			<!--  fields not applicable -->
+			<list>
+				<value>newName</value>
+			</list>
+		</constructor-arg>
+	</bean>
+	
+	
+	<bean id="itemNameToIdTranslator" class="com.raritan.tdz.dctimport.integration.transformers.ItemNameToIdTransformer">
+		<constructor-arg name="importErrorHandlerGateway"  ref="importErrorHandlerGateway"/>
+	</bean>
+	
+	<bean id="newLocationNameTranslator" class="com.raritan.tdz.dctimport.integration.transformers.NewLocationNameTransformer"/>
+	
+	<int:chain input-channel="importItemAddChannel">
+		<int:transformer id="itemBeanToMapTransformer" ref="itemBeanToMapTranslator" method="transform"/>
+		<int:transformer id="customFieldTransformerId" ref="customFieldTransformer" method="transform"/>
+		<int:transformer id="itemApplicableFieldsTransformer" ref="itemApplicableFieldsTranslator" method="transform"/>
+		<int:service-activator id="itemHomeActivator" expression="@importItemHome.saveItemImportExtAPI(payload.get(0), payload.get(1), payload.get(2))"
+			requires-reply="false"/>
+	</int:chain>	
+		
+	<int:chain input-channel="importItemUpdateChannel">
+		<int:transformer id="ItemBeanToMapTransformer" ref="itemBeanToMapTranslator" method="transform"/>
+		<int:transformer id="customFieldTransformerId" ref="customFieldTransformer" method="transform"/>
+		<int:transformer id="snmpCredentialsTransformerId" ref="snmpCredentialsTransformer" method="transform"/>
+		<int:transformer id="itemNameToIdTransformer" ref="itemNameToIdTranslator" method="transform"/>
+		<int:transformer id="newLocationNameTransformer" ref="newLocationNameTranslator" method="transform"/>
+		<int:service-activator id="itemHomeActivator" expression="@importItemHome.updateItemImportExtAPI(payload.get(0), payload.get(1), payload.get(2))"
+			requires-reply="false"/>
+	</int:chain>
+
+	<int:chain input-channel="importItemDeleteChannel">
+		<int:transformer id="ItemBeanToMapTransformer" ref="itemBeanToMapTranslator" method="transform"/>
+		<int:transformer id="itemNameToIdTransformer" ref="itemNameToIdTranslator" method="transform"/>
+		<int:service-activator id="itemHomeActivator" expression="@importItemHome.deleteItemsImportExtAPI(T(java.util.Arrays).asList(payload.get(0)), payload.get(1), payload.get(2))"
+			requires-reply="false"/>
+	</int:chain>
+	
+	<int:chain input-channel="importItemUnmapChannel">
+		<int:transformer id="ItemBeanToMapTransformer" ref="itemBeanToMapTranslator" method="transform"/>
+		<int:service-activator id="itemHomeActivator" expression="@importItemHome.unmapItem(payload.get(0).get('cmbLocation'), payload.get(0).get('tiName'), payload.get(1))"
+			requires-reply="false"/>
+	</int:chain>
+	
+	<int:service-activator id="itemProcessor" input-channel="importItemChannel" ref="itemImportProcessor" method="process"/>
+</beans>

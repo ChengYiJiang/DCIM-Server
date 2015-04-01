@@ -1,0 +1,907 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 4.2.2.v201301221637 Build &lt;4.2.2.v20130206-1509></property>
+    <simple-property-list name="includeResource">
+        <value>../locale/report_en_US</value>
+    </simple-property-list>
+    <property name="units">in</property>
+    <property name="theme">three_dot_0.defaultTheme</property>
+    <text-property name="displayName">3dot0 Look and Feel</text-property>
+    <property name="eventHandlerClass">com.raritan.tdz.reports.eventhandler.ReportEH</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <list-property name="libraries">
+        <structure>
+            <property name="fileName">three_dot_0.rptlibrary</property>
+            <property name="namespace">three_dot_0</property>
+        </structure>
+    </list-property>
+    <parameters>
+        <scalar-parameter name="SiteCode" id="216" extends="three_dot_0.SiteCode"/>
+        <scalar-parameter name="Orientation" id="217" extends="three_dot_0.Orientation"/>
+        <scalar-parameter name="ModelList" id="888" extends="three_dot_0.ModelList"/>
+        <scalar-parameter name="Location" id="898" extends="three_dot_0.Location"/>
+    </parameters>
+    <data-sources>
+        <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="raritan" id="220"
+ extends="three_dot_0.raritan">
+            <list-property name="privateDriverProperties">
+                <ex-property>
+                    <name>contentBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>metadataBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>disabledMetadataBidiFormatStr</name>
+                </ex-property>
+                <ex-property>
+                    <name>disabledContentBidiFormatStr</name>
+                </ex-property>
+            </list-property>
+            <property name="odaDriverClass">org.postgresql.Driver</property>
+            <property name="odaURL">jdbc:postgresql://localhost:5432/raritan</property>
+            <property name="odaUser">dctrack</property>
+            <encrypted-property name="odaPassword" encryptionID="base64">KE1hbmFnZU15U3R1ZmYpIQ==</encrypted-property>
+        </oda-data-source>
+    </data-sources>
+    <data-sets>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="PowerSupplies" id="221">
+            <list-property name="computedColumns">
+                <structure>
+                    <property name="name">watts_nameplate_sys</property>
+                    <expression name="expression">getRedunCapacity(row["ps_qty"], row["redunancy"],  row["watts_nameplate"] )</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">watts_budget_sys</property>
+                    <expression name="expression">getRedunCapacity(row["ps_qty"] , row["redunancy"],  row["watts_budget"])</expression>
+                    <property name="dataType">float</property>
+                </structure>
+            </list-property>
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">item_id</property>
+                    <text-property name="displayName">item_id</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">item_name</property>
+                    <text-property name="displayName">item_name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">model_id</property>
+                    <text-property name="displayName">model_id</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">model_name</property>
+                    <text-property name="displayName">model_name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">psredundancy</property>
+                    <text-property name="displayName">psredundancy</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">mfr_id</property>
+                    <text-property name="displayName">mfr_id</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">mfr_name</property>
+                    <text-property name="displayName">mfr_name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">ps_qty</property>
+                    <text-property name="displayName">ps_qty</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">watts_budget</property>
+                    <text-property name="displayName">watts_budget</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">watts_nameplate</property>
+                    <text-property name="displayName">watts_nameplate</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">derated</property>
+                    <text-property name="displayName">derated</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">redunancy</property>
+                    <text-property name="displayName">redunancy</text-property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">item_id</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">item_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">model_id</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">model_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">psredundancy</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">mfr_id</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">mfr_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">ps_qty</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">watts_budget</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">watts_nameplate</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">11</property>
+                        <property name="name">derated</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">12</property>
+                        <property name="name">redunancy</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">13</property>
+                        <property name="name">watts_nameplate_sys</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">14</property>
+                        <property name="name">watts_budget_sys</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <method name="beforeOpen"><![CDATA[importPackage(Packages.com.raritan.tdz.reports.eventhandler);
+
+var condition = "";
+//attach where clause to filter certain ids
+models = reportContext.getParameterValue(ReportConstants.MODEL_LIST_PARAM_ID);
+if (models) {
+	modellist = "";
+	for (var i = 0; i < models.length; i++) {
+		if (i > 0) modellist += ",";
+		modellist += models[i];
+	}
+	condition += " AND dct_models.model_id IN (" + modellist + ")";
+}
+location = reportContext.getParameterValue(ReportConstants.LOCATION_PARAM_ID);
+if (location) {
+	condition += " AND dct_items.location_id = " + location + " ";
+}
+
+if (condition.length > 0) {
+	/*
+		replace well know tag by additional condition for the where clause
+		NOTE: this is really dirty, however otherwise the entire query would have been replaced here, 
+		which would raise synchronization issues
+	*/
+	this.queryText = this.queryText.replace("/*MY_WELL_KNOWN_REF_TAG*/", condition);
+}
+]]></method>
+            <property name="dataSource">raritan</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">item_id</property>
+                    <property name="nativeName">item_id</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">item_name</property>
+                    <property name="nativeName">item_name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">model_id</property>
+                    <property name="nativeName">model_id</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">model_name</property>
+                    <property name="nativeName">model_name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">psredundancy</property>
+                    <property name="nativeName">psredundancy</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">mfr_id</property>
+                    <property name="nativeName">mfr_id</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">mfr_name</property>
+                    <property name="nativeName">mfr_name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">ps_qty</property>
+                    <property name="nativeName">ps_qty</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">watts_budget</property>
+                    <property name="nativeName">watts_budget</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">10</property>
+                    <property name="name">watts_nameplate</property>
+                    <property name="nativeName">watts_nameplate</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">11</property>
+                    <property name="name">derated</property>
+                    <property name="nativeName">derated</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">12</property>
+                    <property name="name">redunancy</property>
+                    <property name="nativeName">redunancy</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[SELECT 	dct_items.item_id,
+ 		dct_items.item_name,
+ 		dct_models.model_id,
+ 		dct_models.model_name,
+ 		dct_items_it.psredundancy as psredundancy,
+ 		dct_mfrs.mfr_id,
+ 		dct_mfrs.mfr_name,
+ 		 		
+ 		Count(dct_ports_power.port_power_id) AS ps_qty,
+ 		CASE WHEN dct_ports_power.watts_budget < 0 THEN 0 ELSE dct_ports_power.watts_budget END,
+ 		CASE WHEN dct_ports_power.watts_nameplate < 0 THEN 0 ELSE dct_ports_power.watts_nameplate END,
+
+ 		CASE WHEN dct_ports_power.watts_nameplate > 0 THEN 
+ 			(dct_ports_power.watts_budget::float / dct_ports_power.watts_nameplate::float) ELSE 0 END AS derated,
+ 		substring(dct_items_it.psredundancy from '(\\d+)') as redunancy
+FROM dct_ports_power
+INNER JOIN dct_items ON dct_ports_power.item_id = dct_items.item_id
+INNER JOIN dct_lks_data on dct_items.class_lks_id = dct_lks_data.lks_id
+INNER JOIN dct_models ON dct_items.model_id = dct_models.model_id
+INNER JOIN dct_mfrs ON dct_models.mfr_id = dct_mfrs.mfr_id
+INNER JOIN dct_items_it ON dct_items.item_id = dct_items_it.item_id
+
+/*
+	note in script callback the following comment (MY_WELL_KNOWN_REF_TAG) will be replaced in case we filter by model,
+	I know - its hacky...
+*/ 
+WHERE dct_lks_data.lkp_value_code IN (1200, 1300) /*MY_WELL_KNOWN_REF_TAG*/
+GROUP BY 	dct_items.item_id, dct_items.item_name, dct_models.model_id, dct_models.model_name, dct_mfrs.mfr_name,
+ 			dct_ports_power.watts_budget, dct_ports_power.watts_nameplate, dct_mfrs.mfr_id, dct_items_it.psredundancy
+ORDER BY dct_items.item_name ASC
+
+]]></xml-property>
+        </oda-data-set>
+    </data-sets>
+    <styles>
+        <style name="crosstab-cell" id="218">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+        <style name="crosstab" id="219">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+    </styles>
+    <page-setup>
+        <simple-master-page name="dcTrackMaster" id="215" extends="three_dot_0.dcTrackMaster">
+            <overridden-values>
+                <ref-entry baseId="136" name="NewGrid" id="136"/>
+                <ref-entry baseId="137" id="137"/>
+                <ref-entry baseId="138" id="138"/>
+                <ref-entry baseId="139" id="139"/>
+                <ref-entry baseId="140" id="140"/>
+                <ref-entry baseId="141" id="141"/>
+                <ref-entry baseId="148" name="NewLabel" id="148">
+                    <property name="textID">PowerSuppliesList</property>
+                </ref-entry>
+                <ref-entry baseId="142" id="142"/>
+                <ref-entry baseId="146" name="NewImage" id="146"/>
+                <ref-entry baseId="143" id="143"/>
+                <ref-entry baseId="147" name="NewImage1" id="147"/>
+                <ref-entry baseId="149" name="NewGrid1" id="149"/>
+                <ref-entry baseId="150" id="150"/>
+                <ref-entry baseId="151" id="151"/>
+                <ref-entry baseId="152" id="152"/>
+                <ref-entry baseId="153" id="153"/>
+                <ref-entry baseId="154" id="154"/>
+                <ref-entry baseId="175" name="NewGrid3" id="175"/>
+                <ref-entry baseId="176" id="176"/>
+                <ref-entry baseId="177" id="177"/>
+                <ref-entry baseId="178" id="178"/>
+                <ref-entry baseId="181" name="NewText2" id="181"/>
+                <ref-entry baseId="179" id="179"/>
+                <ref-entry baseId="180" id="180"/>
+                <ref-entry baseId="183" name="NewText21" id="183"/>
+                <ref-entry baseId="155" id="155"/>
+                <ref-entry baseId="157" name="NewGrid2" id="157"/>
+                <ref-entry baseId="158" id="158"/>
+                <ref-entry baseId="159" id="159"/>
+                <ref-entry baseId="160" id="160"/>
+                <ref-entry baseId="161" id="161"/>
+                <ref-entry baseId="162" id="162"/>
+                <ref-entry baseId="163" name="NewAutoText" id="163"/>
+                <ref-entry baseId="164" id="164"/>
+                <ref-entry baseId="165" name="NewText" id="165"/>
+                <ref-entry baseId="166" id="166"/>
+                <ref-entry baseId="167" name="NewAutoText1" id="167"/>
+                <ref-entry baseId="156" id="156"/>
+                <ref-entry baseId="168" name="NewText1" id="168"/>
+            </overridden-values>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <table id="375">
+            <property name="pageBreakAfter">auto</property>
+            <property name="pageBreakBefore">auto</property>
+            <property name="pageBreakInside">auto</property>
+            <property name="canShrink">false</property>
+            <property name="width">100%</property>
+            <property name="dataSet">PowerSupplies</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">item_id</property>
+                    <expression name="expression">dataSetRow["item_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">item_name</property>
+                    <expression name="expression">dataSetRow["item_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">model_id</property>
+                    <expression name="expression">dataSetRow["model_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">model_name</property>
+                    <expression name="expression">dataSetRow["model_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">mfr_id</property>
+                    <expression name="expression">dataSetRow["mfr_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">mfr_name</property>
+                    <expression name="expression">dataSetRow["mfr_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ps_qty</property>
+                    <expression name="expression">dataSetRow["ps_qty"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">watts_budget</property>
+                    <expression name="expression">dataSetRow["watts_budget"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">derated</property>
+                    <expression name="expression">dataSetRow["derated"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">Aggregation</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Model</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">AVE</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["watts_nameplate"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">Aggregation_1</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Model</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">AVE</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["watts_budget"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">Aggregation_2</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Model</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">AVE</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["derated"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">psredundancy</property>
+                    <expression name="expression">dataSetRow["psredundancy"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">watts_budget_sys</property>
+                    <expression name="expression">dataSetRow["watts_budget_sys"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">Aggregation_3</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Model</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">AVE</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["watts_nameplate_sys"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">Aggregation_4</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Model</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">AVE</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["watts_budget_sys"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">watts_nameplate</property>
+                    <text-property name="displayName">watts_nameplate</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["watts_nameplate"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">watts_nameplate_sys</property>
+                    <text-property name="displayName">watts_nameplate_sys</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["watts_nameplate_sys"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+            </list-property>
+            <property name="pageBreakInterval">0</property>
+            <column id="382"/>
+            <column id="828">
+                <property name="textAlign">center</property>
+            </column>
+            <column id="876">
+                <property name="textAlign">center</property>
+            </column>
+            <column id="502">
+                <property name="textAlign">center</property>
+            </column>
+            <column id="884">
+                <property name="textAlign">center</property>
+            </column>
+            <column id="518">
+                <property name="textAlign">center</property>
+            </column>
+            <column id="836">
+                <property name="textAlign">center</property>
+            </column>
+            <column id="526">
+                <property name="textAlign">center</property>
+            </column>
+            <column id="844">
+                <property name="textAlign">center</property>
+            </column>
+            <column id="534">
+                <property name="textAlign">center</property>
+            </column>
+            <column id="852">
+                <property name="textAlign">center</property>
+            </column>
+            <column id="784">
+                <property name="width">15px</property>
+                <property name="textAlign">center</property>
+            </column>
+            <column id="542">
+                <property name="textAlign">center</property>
+            </column>
+            <column id="860">
+                <property name="textAlign">center</property>
+            </column>
+            <column id="558">
+                <property name="textAlign">center</property>
+            </column>
+            <column id="868">
+                <property name="textAlign">center</property>
+            </column>
+            <group id="383">
+                <property name="groupName">Manufacturer</property>
+                <property name="interval">none</property>
+                <property name="sortDirection">asc</property>
+                <expression name="keyExpr" type="javascript">row["mfr_id"]</expression>
+                <structure name="toc">
+                    <expression name="expressionValue" type="javascript">row["mfr_name"]</expression>
+                </structure>
+                <property name="repeatHeader">true</property>
+                <property name="hideDetail">false</property>
+                <property name="pageBreakAfter">avoid</property>
+                <property name="pageBreakBefore">auto</property>
+                <property name="pageBreakInside">auto</property>
+                <list-property name="sort">
+                    <structure>
+                        <expression name="key" type="javascript">row["mfr_name"]</expression>
+                        <property name="direction">asc</property>
+                    </structure>
+                </list-property>
+                <header>
+                    <row id="384">
+                        <property name="style">mainGroupHeaderBG</property>
+                        <property name="borderBottomColor">#000000</property>
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <cell id="385">
+                            <property name="colSpan">16</property>
+                            <property name="rowSpan">1</property>
+                            <text id="740">
+                                <property name="style">groupFont1</property>
+                                <property name="contentType">html</property>
+                                <text-property name="content"><![CDATA[<VALUE-OF>reportContext.getMessage("Manufacturer", reportContext.getLocale())</VALUE-OF><span style="color: #009dff;"> <VALUE-OF>row["mfr_name"]</VALUE-OF></span>
+]]></text-property>
+                            </text>
+                        </cell>
+                    </row>
+                </header>
+            </group>
+            <group id="389">
+                <property name="groupName">Model</property>
+                <property name="interval">none</property>
+                <property name="sortDirection">asc</property>
+                <expression name="keyExpr" type="javascript">row["model_id"]</expression>
+                <structure name="toc">
+                    <expression name="expressionValue" type="javascript">row["model_name"]</expression>
+                </structure>
+                <property name="repeatHeader">true</property>
+                <property name="hideDetail">false</property>
+                <property name="pageBreakAfter">avoid</property>
+                <property name="pageBreakBefore">avoid</property>
+                <property name="pageBreakInside">auto</property>
+                <list-property name="sort">
+                    <structure>
+                        <expression name="key" type="javascript">row["model_name"]</expression>
+                        <property name="direction">asc</property>
+                    </structure>
+                </list-property>
+                <header>
+                    <row id="390">
+                        <cell id="391">
+                            <property name="colSpan">16</property>
+                            <property name="rowSpan">1</property>
+                            <data id="754">
+                                <property name="style">groupFont2</property>
+                                <property name="resultSetColumn">model_name</property>
+                            </data>
+                        </cell>
+                    </row>
+                    <row id="767">
+                        <property name="style">subTableHeaderTop</property>
+                        <property name="fontWeight">bold</property>
+                        <property name="borderRightStyle">none</property>
+                        <property name="borderTopColor">black</property>
+                        <property name="borderTopWidth">1px</property>
+                        <cell id="768"/>
+                        <cell id="823"/>
+                        <cell id="871"/>
+                        <cell id="769"/>
+                        <cell id="879"/>
+                        <cell id="770">
+                            <property name="colSpan">6</property>
+                            <property name="rowSpan">1</property>
+                            <property name="borderBottomColor">#000000</property>
+                            <property name="borderBottomStyle">dashed</property>
+                            <property name="borderBottomWidth">1px</property>
+                            <label id="775">
+                                <text-property name="text" key="PerPowerSupplyWatts"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="779"/>
+                        <cell id="773">
+                            <property name="colSpan">4</property>
+                            <property name="rowSpan">1</property>
+                            <property name="borderBottomColor">#000000</property>
+                            <property name="borderBottomStyle">dashed</property>
+                            <property name="borderBottomWidth">1px</property>
+                            <property name="borderLeftColor">black</property>
+                            <label id="776">
+                                <text-property name="text" key="PerSystemWatts"></text-property>
+                            </label>
+                        </cell>
+                    </row>
+                    <row id="601">
+                        <property name="style">subTableHeaderBottom</property>
+                        <property name="fontWeight">bold</property>
+                        <property name="borderRightColor">black</property>
+                        <cell id="602">
+                            <property name="colSpan">3</property>
+                            <property name="rowSpan">1</property>
+                            <label id="612">
+                                <text-property name="text" key="ItemName">Model</text-property>
+                            </label>
+                        </cell>
+                        <cell id="603">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <label id="630">
+                                <property name="textAlign">center</property>
+                                <text-property name="text" key="PowerSupplies">Front</text-property>
+                            </label>
+                        </cell>
+                        <cell id="604">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <label id="631">
+                                <property name="textAlign">center</property>
+                                <text-property name="text" key="Nameplate">Rear</text-property>
+                            </label>
+                        </cell>
+                        <cell id="605">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <label id="626">
+                                <text-property name="text" key="Budget">Mounting</text-property>
+                            </label>
+                        </cell>
+                        <cell id="606">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <label id="624">
+                                <property name="textAlign">center</property>
+                                <text-property name="text" key="Derated">RU</text-property>
+                            </label>
+                        </cell>
+                        <cell id="780"/>
+                        <cell id="607">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <label id="755">
+                                <property name="textAlign">center</property>
+                                <text-property name="text" key="Nameplate">Rear</text-property>
+                            </label>
+                        </cell>
+                        <cell id="610">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <label id="756">
+                                <text-property name="text" key="Budget">Mounting</text-property>
+                            </label>
+                        </cell>
+                    </row>
+                </header>
+                <footer>
+                    <row id="392">
+                        <property name="fontWeight">bold</property>
+                        <cell id="393">
+                            <property name="colSpan">3</property>
+                            <property name="rowSpan">1</property>
+                            <label id="762">
+                                <text-property name="text" key="Average"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="499"/>
+                        <cell id="882"/>
+                        <cell id="515">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <data id="764">
+                                <structure name="numberFormat">
+                                    <property name="category">Fixed</property>
+                                    <property name="pattern">Fixed</property>
+                                </structure>
+                                <property name="resultSetColumn">Aggregation</property>
+                            </data>
+                        </cell>
+                        <cell id="523">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <data id="765">
+                                <structure name="numberFormat">
+                                    <property name="category">Fixed</property>
+                                    <property name="pattern">Fixed</property>
+                                </structure>
+                                <property name="resultSetColumn">Aggregation_1</property>
+                            </data>
+                        </cell>
+                        <cell id="531">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <data id="766">
+                                <structure name="numberFormat">
+                                    <property name="category">Percent</property>
+                                    <property name="pattern">###0%</property>
+                                </structure>
+                                <property name="resultSetColumn">Aggregation_2</property>
+                            </data>
+                        </cell>
+                        <cell id="782"/>
+                        <cell id="539">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <data id="894">
+                                <structure name="numberFormat">
+                                    <property name="category">Fixed</property>
+                                    <property name="pattern">Fixed</property>
+                                </structure>
+                                <property name="resultSetColumn">Aggregation_3</property>
+                            </data>
+                        </cell>
+                        <cell id="555">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <data id="895">
+                                <structure name="numberFormat">
+                                    <property name="category">Fixed</property>
+                                    <property name="pattern">Fixed</property>
+                                </structure>
+                                <property name="resultSetColumn">Aggregation_4</property>
+                            </data>
+                        </cell>
+                    </row>
+                </footer>
+            </group>
+            <detail>
+                <row id="378">
+                    <cell id="379">
+                        <property name="colSpan">3</property>
+                        <property name="rowSpan">1</property>
+                        <data id="757">
+                            <property name="resultSetColumn">item_name</property>
+                        </data>
+                    </cell>
+                    <cell id="498">
+                        <property name="colSpan">2</property>
+                        <property name="rowSpan">1</property>
+                        <property name="textAlign">center</property>
+                        <property name="verticalAlign">middle</property>
+                        <text-data id="889">
+                            <expression name="valueExpr">qty = row["ps_qty"];&#13;
+if (row["psredundancy"]) {&#13;
+	qty += " " + reportContext.getMessage("PowerSuppliesAT", reportContext.getLocale()) + " " + row["psredundancy"]&#13;
+}</expression>
+                            <property name="contentType">html</property>
+                        </text-data>
+                    </cell>
+                    <cell id="514">
+                        <property name="colSpan">2</property>
+                        <property name="rowSpan">1</property>
+                        <property name="textAlign">center</property>
+                        <data id="896">
+                            <property name="resultSetColumn">watts_nameplate</property>
+                        </data>
+                    </cell>
+                    <cell id="522">
+                        <property name="colSpan">2</property>
+                        <property name="rowSpan">1</property>
+                        <data id="758">
+                            <property name="resultSetColumn">watts_budget</property>
+                        </data>
+                    </cell>
+                    <cell id="530">
+                        <property name="colSpan">2</property>
+                        <property name="rowSpan">1</property>
+                        <data id="761">
+                            <structure name="numberFormat">
+                                <property name="category">Percent</property>
+                                <property name="pattern">###0%</property>
+                            </structure>
+                            <property name="resultSetColumn">derated</property>
+                        </data>
+                    </cell>
+                    <cell id="781"/>
+                    <cell id="538">
+                        <property name="colSpan">2</property>
+                        <property name="rowSpan">1</property>
+                        <data id="897">
+                            <property name="resultSetColumn">watts_nameplate_sys</property>
+                        </data>
+                    </cell>
+                    <cell id="554">
+                        <property name="colSpan">2</property>
+                        <property name="rowSpan">1</property>
+                        <data id="893">
+                            <property name="resultSetColumn">watts_budget_sys</property>
+                        </data>
+                    </cell>
+                </row>
+            </detail>
+        </table>
+    </body>
+</report>

@@ -1,0 +1,953 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 4.2.2.v201301221637 Build &lt;4.2.2.v20130206-1509></property>
+    <simple-property-list name="includeResource">
+        <value>../locale/report_en_US</value>
+    </simple-property-list>
+    <property name="units">in</property>
+    <property name="theme">three_dot_0.defaultTheme</property>
+    <text-property name="displayName">3dot0 Look and Feel</text-property>
+    <property name="eventHandlerClass">com.raritan.tdz.reports.eventhandler.ReportEH</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <list-property name="libraries">
+        <structure>
+            <property name="fileName">three_dot_0.rptlibrary</property>
+            <property name="namespace">three_dot_0</property>
+        </structure>
+    </list-property>
+    <parameters>
+        <scalar-parameter name="SiteCode" id="216" extends="three_dot_0.SiteCode"/>
+        <scalar-parameter name="ShowPorts" id="385" extends="three_dot_0.ShowPorts"/>
+        <scalar-parameter name="Orientation" id="386" extends="three_dot_0.Orientation"/>
+        <scalar-parameter name="itemIdList" id="387" extends="three_dot_0.itemIdList"/>
+        <scalar-parameter name="ConnectionType" id="388" extends="three_dot_0.ConnectionType"/>
+    </parameters>
+    <data-sources>
+        <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="raritan" id="410"
+ extends="three_dot_0.raritan">
+            <list-property name="privateDriverProperties">
+                <ex-property>
+                    <name>contentBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>metadataBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>disabledMetadataBidiFormatStr</name>
+                </ex-property>
+                <ex-property>
+                    <name>disabledContentBidiFormatStr</name>
+                </ex-property>
+            </list-property>
+            <property name="odaDriverClass">org.postgresql.Driver</property>
+            <property name="odaURL">jdbc:postgresql://localhost:5432/raritan</property>
+            <property name="odaUser">dctrack</property>
+            <encrypted-property name="odaPassword" encryptionID="base64">KE1hbmFnZU15U3R1ZmYpIQ==</encrypted-property>
+        </oda-data-source>
+    </data-sources>
+    <data-sets>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="LogicConnections" id="411">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">src_item_id</property>
+                    <text-property name="displayName">src_item_id</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">src_item_name</property>
+                    <text-property name="displayName">src_item_name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">src_parent_item_id</property>
+                    <text-property name="displayName">src_parent_item_id</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">src_parent_name</property>
+                    <text-property name="displayName">src_parent_name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">src_parent_class_code</property>
+                    <text-property name="displayName">src_parent_class_code</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">src_port_name</property>
+                    <text-property name="displayName">src_port_name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">src_port_is_data</property>
+                    <text-property name="displayName">src_port_is_data</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">src_port_group</property>
+                    <text-property name="displayName">src_port_group</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">src_class</property>
+                    <text-property name="displayName">src_class</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">src_class_code</property>
+                    <text-property name="displayName">src_class_code</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">src_color</property>
+                    <text-property name="displayName">src_color</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">dest_item_id</property>
+                    <text-property name="displayName">dest_item_id</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">dest_item_name</property>
+                    <text-property name="displayName">dest_item_name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">dest_dc_name</property>
+                    <text-property name="displayName">dest_dc_name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">dest_port_name</property>
+                    <text-property name="displayName">dest_port_name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">dest_class</property>
+                    <text-property name="displayName">dest_class</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">dest_parent_name</property>
+                    <text-property name="displayName">dest_parent_name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">cord</property>
+                    <text-property name="displayName">cord</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">cord_color</property>
+                    <text-property name="displayName">cord_color</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">enable_dataconnection0</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">boolean</property>
+                    <property name="nativeDataType">-7</property>
+                    <property name="position">1</property>
+                    <expression name="defaultValue" type="javascript">true</expression>
+                    <property name="isOptional">false</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">enable_powerconnection0</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">boolean</property>
+                    <property name="nativeDataType">-7</property>
+                    <property name="position">2</property>
+                    <expression name="defaultValue" type="javascript">true</expression>
+                    <property name="isOptional">false</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">enable_powerconnection1</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">boolean</property>
+                    <property name="nativeDataType">-7</property>
+                    <property name="position">3</property>
+                    <expression name="defaultValue" type="javascript">true</expression>
+                    <property name="isOptional">false</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">src_item_id</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">src_item_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">src_parent_item_id</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">src_parent_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">src_parent_class_code</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">src_port_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">src_port_is_data</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">src_port_group</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">src_class</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">src_class_code</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">11</property>
+                        <property name="name">src_color</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">12</property>
+                        <property name="name">dest_item_id</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">13</property>
+                        <property name="name">dest_item_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">14</property>
+                        <property name="name">dest_dc_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">15</property>
+                        <property name="name">dest_port_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">16</property>
+                        <property name="name">dest_class</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">17</property>
+                        <property name="name">dest_parent_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">18</property>
+                        <property name="name">cord</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">19</property>
+                        <property name="name">cord_color</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <method name="beforeOpen"><![CDATA[importPackage(Packages.com.raritan.tdz.reports.eventhandler);
+
+//attach where clause to filter certain ITEM ids
+items = reportContext.getParameterValue(ReportConstants.ITEM_LIST_PARAM_ID);
+if (items) {
+	info("Append Item List to Query");
+	itemlist = "";
+	for (var i = 0; i < items.length; i++) {
+		if (i > 0) itemlist += ",";
+		itemlist += String(items[i]);
+	}
+	
+	this.queryText += " WHERE ports.src_item_id IN (" + itemlist + ")";
+	debug("Resulting Query " + this.queryText);
+}
+/*
+this.queryText += " GROUP BY \
+					ports.src_item_id, ports.src_item_name, src_parent_items.item_id,\
+					src_parent_items.item_name, src_parent_class.lkp_value_code, \
+					ports.src_port_name, grp.lku_value, ports.src_class, ports.src_class_code, \
+					color.lku_value, dest_items.item_id, dest_items.item_name, dest_dc_location_details.dc_name, \
+					ports.dest_port_name, dest_class.lkp_value, dest_parent_items.item_name, \
+					cord.lku_value, cord.lku_attribute ";
+*/					
+
+this.queryText += " ORDER BY ports.src_port_name ASC ";
+//set connection type
+type = reportContext.getParameterValue(ReportConstants.CONNECTION_TYPE_PARAM_ID);
+/*
+	null means all -> default is true on the data set input parameter
+*/
+if (type != null) {
+	type = type.toLowerCase();
+	if (type != ReportConstants.CONNECTION_TYPE_ALL) {
+		info("Evaluating Parameter Connection type :'" + type + "'");
+	
+		this.setInputParameterValue("enable_dataconnection0", type == ReportConstants.CONNECTION_TYPE_DATA);
+		this.setInputParameterValue("enable_powerconnection0", type == ReportConstants.CONNECTION_TYPE_POWER);
+		this.setInputParameterValue("enable_powerconnection1", type == ReportConstants.CONNECTION_TYPE_POWER);
+
+	}
+}
+
+]]></method>
+            <property name="dataSource">raritan</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">src_item_id</property>
+                    <property name="nativeName">src_item_id</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">src_item_name</property>
+                    <property name="nativeName">src_item_name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">src_parent_item_id</property>
+                    <property name="nativeName">src_parent_item_id</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">src_parent_name</property>
+                    <property name="nativeName">src_parent_name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">src_parent_class_code</property>
+                    <property name="nativeName">src_parent_class_code</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">src_port_name</property>
+                    <property name="nativeName">src_port_name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">src_port_is_data</property>
+                    <property name="nativeName">src_port_is_data</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">-7</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">src_port_group</property>
+                    <property name="nativeName">src_port_group</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">src_class</property>
+                    <property name="nativeName">src_class</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">10</property>
+                    <property name="name">src_class_code</property>
+                    <property name="nativeName">src_class_code</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">11</property>
+                    <property name="name">src_color</property>
+                    <property name="nativeName">src_color</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">12</property>
+                    <property name="name">dest_item_id</property>
+                    <property name="nativeName">dest_item_id</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">13</property>
+                    <property name="name">dest_item_name</property>
+                    <property name="nativeName">dest_item_name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">14</property>
+                    <property name="name">dest_dc_name</property>
+                    <property name="nativeName">dest_dc_name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">15</property>
+                    <property name="name">dest_port_name</property>
+                    <property name="nativeName">dest_port_name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">16</property>
+                    <property name="name">dest_class</property>
+                    <property name="nativeName">dest_class</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">17</property>
+                    <property name="name">dest_parent_name</property>
+                    <property name="nativeName">dest_parent_name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">18</property>
+                    <property name="name">cord</property>
+                    <property name="nativeName">cord</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">19</property>
+                    <property name="name">cord_color</property>
+                    <property name="nativeName">cord_color</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[SELECT 	ports.src_item_id AS src_item_id,
+	ports.src_item_name AS src_item_name,
+	src_parent_items.item_id AS src_parent_item_id,
+	src_parent_items.item_name AS src_parent_name,
+	src_parent_class.lkp_value_code AS src_parent_class_code,
+	ports.src_port_name AS src_port_name,
+	ports.isData AS src_port_is_data,
+	grp.lku_value AS src_port_group,
+	ports.src_class AS src_class,
+	ports.src_class_code AS src_class_code,
+	color.lku_value AS src_color,
+	dest_items.item_id AS dest_item_id,
+	dest_items.item_name AS dest_item_name,
+	dest_dc_location_details.dc_name AS dest_dc_name,
+	ports.dest_port_name AS dest_port_name,
+	dest_class.lkp_value AS dest_class,
+	dest_parent_items.item_name AS dest_parent_name,
+	cord.lku_value AS cord,
+	cord.lku_attribute AS cord_color
+FROM 
+	( 	
+	/*
+	 Data
+	*/
+	select 	src_ports.port_name AS src_port_name,
+			src_ports.port_data_id AS src_port_id,
+			src_ports.vlan_lku_id AS src_port_group,
+			src_ports.color_lku_id AS src_color_lku_id,
+			src_items.item_id AS src_item_id,
+			src_items.item_name AS src_item_name,
+			src_items.parent_item_id AS src_parent_id,
+			src_class.lkp_value AS src_class,
+			src_class.lkp_value_code AS src_class_code,
+			dest_ports.port_name AS dest_port_name,
+			dest_ports.item_id AS dest_item_id,
+			dest_ports.port_data_id AS dest_port_id,
+			src_con.cord_id,
+			true as isData
+	FROM dct_connections_data as src_con
+
+	inner join dct_ports_data as src_ports on src_con.source_port_id = src_ports.port_data_id
+	inner join dct_items as src_items on src_ports.item_id = src_items.item_id
+	inner join dct_lks_data as src_class on src_items.class_lks_id = src_class.lks_id
+
+	inner join dct_circuits_data on position((',' || src_con.connection_data_id  || ',') in circuit_trace) > 0
+	inner join dct_connections_data as dest_con on 
+		(dct_circuits_data.start_conn_id = dest_con.connection_data_id OR 
+		 dct_circuits_data.end_conn_id = dest_con.connection_data_id) AND 
+		 src_con.connection_data_id <> dest_con.connection_data_id
+	inner join dct_ports_data as dest_ports on dest_con.source_port_id = dest_ports.port_data_id
+
+	WHERE ? 
+	
+	union
+	
+	/*
+		Power -> device + network + probe 
+	*/
+	select 	src_ports.port_name AS src_port_name,
+			src_ports.port_power_id AS src_port_id,
+			src_ports.fuse_lku_id AS src_port_group,
+			src_ports.color_lku_id AS src_color_lku_id,
+			src_items.item_id AS src_item_id,
+			src_items.item_name AS src_item_name,
+			src_items.parent_item_id AS src_parent_id,
+			src_class.lkp_value AS src_class,
+			src_class.lkp_value_code AS src_class_code,
+			dest_ports.port_name AS dest_port_name,
+			dest_ports.item_id AS dest_item_id,
+			dest_ports.port_power_id AS dest_port_id,
+			src_con.cord_id,
+			false as isData
+	FROM dct_connections_power as src_con
+
+	inner join dct_ports_power as src_ports on src_con.source_port_id = src_ports.port_power_id
+	inner join dct_items as src_items on src_ports.item_id = src_items.item_id
+	inner join dct_lks_data as src_class on src_items.class_lks_id = src_class.lks_id
+
+	inner join dct_circuits_power on position((',' || src_con.connection_power_id  || ',') in circuit_trace) > 0
+	inner join dct_connections_power as dest_con on 
+		(dct_circuits_power.end_conn_id = dest_con.connection_power_id) AND 
+		 src_con.connection_power_id <> dest_con.connection_power_id
+	inner join dct_ports_power as dest_ports on dest_con.source_port_id = dest_ports.port_power_id
+
+	WHERE 	src_class.lkp_value_code in (1200, 1300, 1400) /* device + network + probe  */ and ?
+
+	union
+
+	/*
+		Power -> no device + network + probe 
+	*/
+	select 	src_ports.port_name AS src_port_name,
+			src_ports.port_power_id AS src_port_id,
+			src_ports.fuse_lku_id AS src_port_group,
+			src_ports.color_lku_id AS src_color_lku_id,
+			src_items.item_id AS src_item_id,
+			src_items.item_name AS src_item_name,
+			src_items.parent_item_id AS src_parent_id,
+			src_class.lkp_value AS src_class,
+			src_class.lkp_value_code AS src_class_code,
+			dest_ports.port_name AS dest_port_name,
+			dest_ports.item_id AS dest_item_id,
+			dest_ports.port_power_id AS dest_port_id,
+			src_con.cord_id,
+			false as isData
+	FROM dct_connections_power as src_con
+
+	inner join dct_ports_power as src_ports on src_con.source_port_id = src_ports.port_power_id
+	inner join dct_lks_data as src_ports_class on src_ports.subclass_lks_id = src_ports_class.lks_id
+	inner join dct_items as src_items on src_ports.item_id = src_items.item_id
+	inner join dct_lks_data as src_class on src_items.class_lks_id = src_class.lks_id
+
+	inner join dct_circuits_power on position((',' || src_con.connection_power_id  || ',') in circuit_trace) > 0
+	inner join dct_connections_power as dest_con on 
+		(dct_circuits_power.start_conn_id = dest_con.connection_power_id) AND 
+		 src_con.connection_power_id <> dest_con.connection_power_id
+	inner join dct_ports_power as dest_ports on dest_con.source_port_id = dest_ports.port_power_id
+
+	WHERE 	src_ports_class.lkp_value_code <> 20002 /* input */ and
+			src_class.lkp_value_code not in (1200, 1300, 1400) /* device + network + probe  */ and ?
+			
+) AS ports
+INNER JOIN dct_items AS dest_items ON ports.dest_item_id = dest_items.item_id
+INNER JOIN dct_lks_data AS dest_class ON dest_items.class_lks_id = dest_class.lks_id
+
+INNER JOIN dct_items AS src_parent_items ON ports.src_parent_id = src_parent_items.item_id
+INNER JOIN dct_lks_data AS src_parent_class ON src_parent_items.class_lks_id = src_parent_class.lks_id
+
+INNER JOIN dct_items AS dest_parent_items ON dest_items.parent_item_id = dest_parent_items.item_id
+INNER JOIN dct_locations AS dest_dc_location_details ON dest_items.location_id = dest_dc_location_details.location_id
+
+LEFT JOIN dct_lku_data AS color ON ports.src_color_lku_id = color.lku_id
+
+LEFT JOIN dct_cords ON ports.cord_id = dct_cords.cord_id
+LEFT JOIN dct_lku_data AS cord ON dct_cords.cord_lku_id = cord.lku_id
+LEFT JOIN dct_lku_data AS grp ON ports.src_port_group = grp.lku_id
+
+/* see script hook for additional clauses */
+]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>1.0</Version>
+  <design:DataSetParameters>
+    <design:parameterDefinitions>
+      <design:inOutMode>In</design:inOutMode>
+      <design:attributes>
+        <design:name></design:name>
+        <design:position>1</design:position>
+        <design:nativeDataTypeCode>-7</design:nativeDataTypeCode>
+        <design:precision>0</design:precision>
+        <design:scale>0</design:scale>
+        <design:nullability>Unknown</design:nullability>
+      </design:attributes>
+    </design:parameterDefinitions>
+    <design:parameterDefinitions>
+      <design:inOutMode>In</design:inOutMode>
+      <design:attributes>
+        <design:name></design:name>
+        <design:position>2</design:position>
+        <design:nativeDataTypeCode>-7</design:nativeDataTypeCode>
+        <design:precision>0</design:precision>
+        <design:scale>0</design:scale>
+        <design:nullability>Unknown</design:nullability>
+      </design:attributes>
+    </design:parameterDefinitions>
+    <design:parameterDefinitions>
+      <design:inOutMode>In</design:inOutMode>
+      <design:attributes>
+        <design:name></design:name>
+        <design:position>3</design:position>
+        <design:nativeDataTypeCode>-7</design:nativeDataTypeCode>
+        <design:precision>0</design:precision>
+        <design:scale>0</design:scale>
+        <design:nullability>Unknown</design:nullability>
+      </design:attributes>
+    </design:parameterDefinitions>
+  </design:DataSetParameters>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+    </data-sets>
+    <page-setup>
+        <simple-master-page name="dcTrackMaster" id="215" extends="three_dot_0.dcTrackMaster">
+            <property name="orientation">landscape</property>
+            <overridden-values>
+                <ref-entry baseId="136" name="NewGrid" id="136"/>
+                <ref-entry baseId="137" id="137"/>
+                <ref-entry baseId="138" id="138"/>
+                <ref-entry baseId="139" id="139"/>
+                <ref-entry baseId="140" id="140"/>
+                <ref-entry baseId="141" id="141"/>
+                <ref-entry baseId="148" name="NewLabel" id="148">
+                    <property name="textID">WhatConnectsTo</property>
+                </ref-entry>
+                <ref-entry baseId="142" id="142"/>
+                <ref-entry baseId="146" name="NewImage" id="146"/>
+                <ref-entry baseId="143" id="143"/>
+                <ref-entry baseId="147" name="NewImage1" id="147"/>
+                <ref-entry baseId="149" name="NewGrid1" id="149"/>
+                <ref-entry baseId="150" id="150"/>
+                <ref-entry baseId="151" id="151"/>
+                <ref-entry baseId="152" id="152"/>
+                <ref-entry baseId="153" id="153"/>
+                <ref-entry baseId="154" id="154"/>
+                <ref-entry baseId="175" name="NewGrid3" id="175"/>
+                <ref-entry baseId="176" id="176"/>
+                <ref-entry baseId="177" id="177"/>
+                <ref-entry baseId="178" id="178"/>
+                <ref-entry baseId="181" name="NewText2" id="181"/>
+                <ref-entry baseId="179" id="179"/>
+                <ref-entry baseId="180" id="180"/>
+                <ref-entry baseId="183" name="NewText21" id="183"/>
+                <ref-entry baseId="155" id="155"/>
+                <ref-entry baseId="157" name="NewGrid2" id="157"/>
+                <ref-entry baseId="158" id="158"/>
+                <ref-entry baseId="159" id="159"/>
+                <ref-entry baseId="160" id="160"/>
+                <ref-entry baseId="161" id="161"/>
+                <ref-entry baseId="162" id="162"/>
+                <ref-entry baseId="163" name="NewAutoText" id="163"/>
+                <ref-entry baseId="164" id="164"/>
+                <ref-entry baseId="165" name="NewText" id="165"/>
+                <ref-entry baseId="166" id="166"/>
+                <ref-entry baseId="167" name="NewAutoText1" id="167"/>
+                <ref-entry baseId="156" id="156"/>
+                <ref-entry baseId="168" name="NewText1" id="168"/>
+            </overridden-values>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <table id="220">
+            <property name="dataSet">LogicConnections</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">src_item_id</property>
+                    <expression name="expression">dataSetRow["src_item_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">src_item_name</property>
+                    <expression name="expression">dataSetRow["src_item_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">src_parent_item_id</property>
+                    <expression name="expression">dataSetRow["src_parent_item_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">src_parent_name</property>
+                    <expression name="expression">dataSetRow["src_parent_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">src_parent_class_code</property>
+                    <expression name="expression">dataSetRow["src_parent_class_code"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">src_port_name</property>
+                    <expression name="expression">dataSetRow["src_port_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">src_port_group</property>
+                    <expression name="expression">dataSetRow["src_port_group"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">src_class</property>
+                    <expression name="expression">dataSetRow["src_class"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">src_color</property>
+                    <expression name="expression">dataSetRow["src_color"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">dest_item_id</property>
+                    <expression name="expression">dataSetRow["dest_item_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">dest_item_name</property>
+                    <expression name="expression">dataSetRow["dest_item_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">dest_dc_name</property>
+                    <expression name="expression">dataSetRow["dest_dc_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">dest_port_name</property>
+                    <expression name="expression">dataSetRow["dest_port_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">dest_class</property>
+                    <expression name="expression">dataSetRow["dest_class"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">dest_parent_name</property>
+                    <expression name="expression">dataSetRow["dest_parent_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cord</property>
+                    <expression name="expression">dataSetRow["cord"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cord_color</property>
+                    <expression name="expression">dataSetRow["cord_color"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">src_class_code</property>
+                    <expression name="expression">dataSetRow["src_class_code"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">src_port_is_data</property>
+                    <expression name="expression">dataSetRow["src_port_is_data"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+            </list-property>
+            <property name="pageBreakInterval">0</property>
+            <column id="248"/>
+            <column id="249"/>
+            <column id="250"/>
+            <column id="375">
+                <property name="width">32px</property>
+            </column>
+            <column id="253"/>
+            <column id="254"/>
+            <column id="255"/>
+            <column id="402"/>
+            <group id="294">
+                <property name="groupName">SRC</property>
+                <property name="interval">none</property>
+                <property name="sortDirection">asc</property>
+                <expression name="keyExpr" type="javascript">row["src_item_id"]</expression>
+                <structure name="toc">
+                    <expression name="expressionValue" type="javascript">row["src_item_name"]</expression>
+                </structure>
+                <property name="repeatHeader">true</property>
+                <property name="hideDetail">false</property>
+                <property name="pageBreakAfter">auto</property>
+                <property name="pageBreakBefore">auto</property>
+                <property name="pageBreakInside">auto</property>
+                <list-property name="sort">
+                    <structure>
+                        <expression name="key" type="javascript">row["src_item_name"]</expression>
+                        <property name="direction">asc</property>
+                    </structure>
+                </list-property>
+                <header>
+                    <row id="295">
+                        <property name="style">mainGroupHeaderBG</property>
+                        <property name="fontWeight">normal</property>
+                        <property name="verticalAlign">bottom</property>
+                        <cell id="296">
+                            <property name="colSpan">4</property>
+                            <property name="rowSpan">1</property>
+                            <text id="334">
+                                <property name="style">groupFont4</property>
+                                <property name="contentType">html</property>
+                                <text-property name="content"><![CDATA[<VALUE-OF>reportContext.getMessage(row["src_class"], reportContext.getLocale())</VALUE-OF>
+<span style="color: #009dff;"> <VALUE-OF>row["src_item_name"]</VALUE-OF> </span>
+<VALUE-OF>reportContext.getMessage("ConnectsTo", reportContext.getLocale())</VALUE-OF>:
+]]></text-property>
+                            </text>
+                        </cell>
+                        <cell id="379">
+                            <label id="337">
+                                <property name="style">groupFont4</property>
+                                <text-property name="text" key="Item"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="380">
+                            <label id="338">
+                                <property name="style">groupFont4</property>
+                                <text-property name="text" key="Class"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="381">
+                            <label id="339">
+                                <property name="style">groupFont4</property>
+                                <text-property name="text" key="Cabinet"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="396">
+                            <property name="style">groupFont4</property>
+                            <label id="403">
+                                <text-property name="text" key="Room"></text-property>
+                            </label>
+                        </cell>
+                    </row>
+                </header>
+            </group>
+            <group id="314">
+                <property name="groupName">DEST</property>
+                <property name="interval">none</property>
+                <property name="sortDirection">asc</property>
+                <expression name="keyExpr" type="javascript">row["dest_item_id"]</expression>
+                <structure name="toc"/>
+                <property name="repeatHeader">true</property>
+                <property name="hideDetail">false</property>
+                <property name="pageBreakAfter">auto</property>
+                <property name="pageBreakBefore">auto</property>
+                <property name="pageBreakInside">auto</property>
+                <list-property name="sort">
+                    <structure>
+                        <expression name="key" type="javascript">row["dest_item_name"]</expression>
+                        <property name="direction">asc</property>
+                    </structure>
+                </list-property>
+                <header>
+                    <row id="315">
+                        <property name="textAlign">left</property>
+                        <cell id="316"/>
+                        <cell id="317"/>
+                        <cell id="318"/>
+                        <cell id="370"/>
+                        <cell id="321">
+                            <data id="341">
+                                <property name="resultSetColumn">dest_item_name</property>
+                            </data>
+                        </cell>
+                        <cell id="322">
+                            <text-data id="408">
+                                <expression name="valueExpr">reportContext.getMessage(row["dest_class"], reportContext.getLocale())</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                        <cell id="323">
+                            <data id="345">
+                                <property name="resultSetColumn">dest_parent_name</property>
+                            </data>
+                        </cell>
+                        <cell id="397">
+                            <data id="404">
+                                <property name="resultSetColumn">dest_dc_name</property>
+                            </data>
+                        </cell>
+                    </row>
+                </header>
+            </group>
+            <detail>
+                <row id="230">
+                    <property name="verticalAlign">middle</property>
+                    <list-property name="visibility">
+                        <structure>
+                            <property name="format">all</property>
+                            <expression name="valueExpr" type="javascript">!params["ShowPorts"].value</expression>
+                        </structure>
+                    </list-property>
+                    <cell id="231">
+                        <text id="361">
+                            <property name="contentType">html</property>
+                            <text-property name="content"><![CDATA[<B><VALUE-OF>reportContext.getMessage("Port", reportContext.getLocale())</VALUE-OF></B><span>: </span>
+<VALUE-OF>row["src_port_name"]</VALUE-OF>]]></text-property>
+                        </text>
+                    </cell>
+                    <cell id="232">
+                        <text id="362">
+                            <property name="contentType">html</property>
+                            <text-property name="content"><![CDATA[<B><VALUE-OF>reportContext.getMessage("Color", reportContext.getLocale())</VALUE-OF></B><span>: </span>
+<VALUE-OF>row["src_color"]</VALUE-OF>]]></text-property>
+                        </text>
+                    </cell>
+                    <cell id="233">
+                        <text id="364">
+                            <property name="contentType">html</property>
+                            <text-property name="content"><![CDATA[<B><VALUE-OF>reportContext.getMessage(row["src_port_is_data"]  ?  "Group" :  "Breaker", reportContext.getLocale())</VALUE-OF></B><span>: </span>
+<VALUE-OF>row["src_port_group"]</VALUE-OF>]]></text-property>
+                        </text>
+                    </cell>
+                    <cell id="371">
+                        <property name="textAlign">center</property>
+                        <property name="verticalAlign">middle</property>
+                        <image id="384">
+                            <property name="height">8px</property>
+                            <property name="source">embed</property>
+                            <property name="imageName">doublearrow.png</property>
+                        </image>
+                    </cell>
+                    <cell id="236">
+                        <property name="colSpan">4</property>
+                        <property name="rowSpan">1</property>
+                        <text id="367">
+                            <property name="contentType">html</property>
+                            <text-property name="content"><![CDATA[<B><VALUE-OF>reportContext.getMessage("Port", reportContext.getLocale())</VALUE-OF></B><span>: </span>
+<VALUE-OF>row["dest_port_name"]</VALUE-OF>]]></text-property>
+                        </text>
+                    </cell>
+                </row>
+            </detail>
+        </table>
+    </body>
+    <list-property name="images">
+        <structure>
+            <property name="name">doublearrow.png</property>
+            <property name="type">image/png</property>
+            <property name="libReference">three_dot_0.doublearrow.png</property>
+        </structure>
+    </list-property>
+</report>

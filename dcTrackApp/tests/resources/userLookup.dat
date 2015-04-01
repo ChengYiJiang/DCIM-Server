@@ -1,0 +1,866 @@
+lku_id|lku_type_name|lku_attribute|lku_value|lks_id|sort_order|old_id
+1|TYPE||Server|1|0|1
+2|TYPE||Virtual Server|1|0|2
+3|TYPE||Blade Server|1|0|3
+4|TYPE||Blade Chassis|1|0|4
+5|TYPE||Console|2|0|5
+6|TYPE||Disk|1|0|6
+7|TYPE||Monitor|1|0|7
+8|TYPE||Network Switch|2|0|8
+9|TYPE||Other|1|0|9
+10|TYPE||Single|5|0|10
+11|TYPE||Dual|5|0|11
+12|TYPE||Network Router|2|0|12
+13|TYPE||SAN Switch|2|0|13
+14|TYPE||Tape|1|0|14
+18|TYPE||Cabinet|6|0|18
+19|TYPE||Rack|6|0|19
+20|TYPE||ATS|5|0|20
+21|TYPE||Panel Board|11|0|21
+22|TYPE||Busway|11|0|22
+23|TYPE||RPP|11|0|23
+25|TYPE||Wire Manager|30|0|25
+30|TYPE||Wall Field|6|0|30
+31|TYPE||Security DVR|1|0|31
+32|TYPE||Copper PP|3|0|32
+33|TYPE||Fiber PP|3|0|33
+34|TYPE||Multiplexer|2|0|34
+35|TYPE||Modem|1|0|35
+36|TYPE||Console Serial Switch|2|0|36
+37|TYPE||Router|2|0|37
+38|TYPE||Blanking Plate|30|0|38
+39|TYPE||Ext. Bar|5|0|39
+40|TYPE||KVM Switch|1|0|40
+515|DC_LOCATION_USE||Main||0|
+516|DC_LOCATION_USE||Regional||0|
+517|DC_LOCATION_USE||Local||0|
+518|DC_LOCATION_USE||Disaster Recovery||0|
+530|DATA_TYPE||STRING||0|
+531|DATA_TYPE||NUMERIC||0|
+532|DATA_TYPE||DATETIME||0|
+533|DATA_TYPE||LOOKUP||0|
+551|CABLE_PATHWAY||Overhead||0|
+552|CABLE_PATHWAY||Under Raised-Floor||0|
+553|CABLE_PATHWAY||Both||0|
+554|TEAM|Data Center Staff|DC Staff||0|1
+555|TEAM||dcTrack Support||0|2
+556|TEAM|IT Software Development|Software IT||0|3
+557|TEAM|Raritan IT Team|Raritan IT||0|4
+558|TEAM|Raritan Windows Systems|Raritan Windows||0|5
+559|TEAM|Raritan UNIX Systems|Raritan UNIX||0|6
+560|TEAM|Research|Research||0|7
+561|TEAM|Raritan Software Development|Raritan Software Dev||0|8
+562|TEAM|RAM IT|RAM IT||0|9
+563|TEAM|Software Support|Software Support||0|11
+564|TEAM|Technical Writers Team|Technical Writers||0|12
+565|TEAM|Raritan Facilities|Raritan Facilities||0|13
+566|DEPARTMENT|1001||HR||0|1
+567|DEPARTMENT|1002||Accounting||0|2
+568|DEPARTMENT|1003||Engineering||0|3
+570|DEPARTMENT|1005||IS||0|5
+571|DEPARTMENT|1006||Sales||0|6
+579|DEPARTMENT|1014||Information Technology||0|14
+581|DEPARTMENT|1016||GTM||0|16
+582|DEPARTMENT|1017||Research||0|17
+586|DEPARTMENT|1021||Production||0|21
+587|DEPARTMENT|1022||Manufacturing||0|22
+591|DEPARTMENT|1026||Technical Writing||0|26
+593|DEPARTMENT|1028||Technical Support||0|28
+595|DEPARTMENT|0|Tom DelDuca|Communication Services||0|30
+596|DEPARTMENT|19322|Dominic Ramsden|Computer Applications||0|31
+597|DEPARTMENT|19323|Allan Jones|Project Management||0|32
+598|DEPARTMENT|19324|David Borges|Finance||0|33
+599|DEPARTMENT|19325|John King|Administration||0|34
+600|DEPARTMENT|19326|Ed Yoshida|Legal||0|35
+601|DEPARTMENT|19327|Doug Bassett|Biosoftware||0|36
+602|DEPARTMENT|19328|Roland Stoughton|Informatics||0|37
+603|DEPARTMENT|19333|Myra Ozaeta|Marketing||0|38
+604|DEPARTMENT|19334|John Phillips|GRM||0|39
+605|DEPARTMENT|19335|Peter Linsley|Biology||0|40
+606|DEPARTMENT|19337|Kurt Kirstein|Customer Services||0|41
+607|DEPARTMENT|19338|Deborah Kessler|Operations||0|42
+608|DEPARTMENT|19340|Tom Fare|Process Engineering||0|43
+609|DEPARTMENT|19341|Matt Marton|ABE Production||0|44
+610|DEPARTMENT|19342|Ernie Coffey|Array Production||0|45
+611|DEPARTMENT|19343|Jon Williams|Materials & Planning||0|46
+612|DEPARTMENT|19344|Diane Gary|Human Resources||0|47
+613|DEPARTMENT|19345|Mike Malboro|Facilities||0|48
+614|DEPARTMENT|19346|Chris Roberts|Molecular Profiling||0|49
+615|DEPARTMENT|19347|Jack Harper|Information Services||0|50
+616|DEPARTMENT|19372|Roger Urlich|Molecular Profiling - Pre Clinical||0|51
+617|DEPARTMENT|19373|Frank Kuzan|Quality Assuarance||0|52
+618|DEPARTMENT|||dep1||0|53
+619|APP_NAME||dcTrack||0|1
+620|APP_NAME||Email||0|2
+621|APP_NAME||Web||0|3
+622|APP_NAME||Adobe Reader 7.0.9||0|4
+623|APP_NAME||Advanced IP Scanner v1.4||0|5
+624|APP_NAME||Advanced LAN Scanner v1.0 BETA 1||0|6
+625|APP_NAME||Advanced Port Scanner v1.2||0|7
+626|APP_NAME||Broadcom Management Programs||0|8
+627|APP_NAME||Intel(R) Extreme Graphics Driver||0|9
+628|APP_NAME||LiveUpdate 3.3 (Symantec Corporation)||0|10
+629|APP_NAME||Microsoft .NET Framework 1.1 -- Device Update 4.0||0|11
+630|APP_NAME||Microsoft .NET Framework 2.0 Service Pack 1||0|12
+631|APP_NAME||Microsoft .NET Framework 3.0 Service Pack 1||0|13
+632|APP_NAME||Microsoft .NET Framework 3.5||0|14
+633|APP_NAME||Microsoft Application Error Reporting||0|15
+634|APP_NAME||Microsoft ASP.NET 2.0 AJAX Extensions 1.0||0|16
+635|APP_NAME||Microsoft Connector for POP3 Mailboxes||0|17
+636|APP_NAME||Microsoft Data Access Components KB870669||0|18
+637|APP_NAME||Microsoft Exchange Intelligent Message Filter||0|19
+638|APP_NAME||Microsoft Group Policy Management Console||0|20
+639|APP_NAME||Microsoft Health Monitor 2.1||0|21
+640|APP_NAME||Microsoft Internationalized Domain Names Mitigation APIs||0|22
+641|APP_NAME||Microsoft National Language Support Downlevel APIs||0|23
+642|APP_NAME||Microsoft SQL Server Desktop Engine (BKUPEXEC)||0|24
+643|APP_NAME||Microsoft SQL Server Desktop Engine (SBSMONITORING)||0|25
+644|APP_NAME||Microsoft XML Parser||0|26
+645|APP_NAME||MSXML 4.0 SP2 (KB927978)||0|27
+646|APP_NAME||MSXML 4.0 SP2 (KB936181)||0|28
+647|APP_NAME||MSXML 6.0 Parser (KB933579)||0|29
+648|APP_NAME||Remote Administrator v2.0||0|30
+649|APP_NAME||Security Update for Windows Internet Explorer 7 (KB928090)||0|31
+650|APP_NAME||Security Update for Windows Internet Explorer 7 (KB929969)||0|32
+651|APP_NAME||Security Update for Windows Internet Explorer 7 (KB931768)||0|33
+652|APP_NAME||Security Update for Windows Internet Explorer 7 (KB937143)||0|34
+653|APP_NAME||Security Update for Windows Internet Explorer 7 (KB938127)||0|35
+654|APP_NAME||Security Update for Windows Internet Explorer 7 (KB939653)||0|36
+655|APP_NAME||Security Update for Windows Internet Explorer 7 (KB942615)||0|37
+656|APP_NAME||Security Update for Windows Internet Explorer 7 (KB944533)||0|38
+657|APP_NAME||Security Update for Windows Internet Explorer 7 (KB947864)||0|39
+658|APP_NAME||Security Update for Windows Internet Explorer 7 (KB950759)||0|40
+659|APP_NAME||Security Update for Windows Internet Explorer 7 (KB953838)||0|41
+660|APP_NAME||Security Update for Windows Media Player (KB911564)||0|42
+661|APP_NAME||Security Update for Windows Media Player 6.4 (KB925398)||0|43
+662|APP_NAME||Security Update for Windows Server 2003 (KB921503)||0|44
+663|APP_NAME||Security Update for Windows Server 2003 (KB925902)||0|45
+664|APP_NAME||Security Update for Windows Server 2003 (KB926122)||0|46
+665|APP_NAME||Security Update for Windows Server 2003 (KB929123)||0|47
+666|APP_NAME||Security Update for Windows Server 2003 (KB930178)||0|48
+667|APP_NAME||Security Update for Windows Server 2003 (KB931784)||0|49
+668|APP_NAME||Security Update for Windows Server 2003 (KB932168)||0|50
+669|APP_NAME||Security Update for Windows Server 2003 (KB933729)||0|51
+670|APP_NAME||Security Update for Windows Server 2003 (KB933854)||0|52
+671|APP_NAME||Security Update for Windows Server 2003 (KB935839)||0|53
+672|APP_NAME||Security Update for Windows Server 2003 (KB935840)||0|54
+673|APP_NAME||Security Update for Windows Server 2003 (KB935966)||0|55
+674|APP_NAME||Security Update for Windows Server 2003 (KB936021)||0|56
+675|APP_NAME||Security Update for Windows Server 2003 (KB936782)||0|57
+676|APP_NAME||Security Update for Windows Server 2003 (KB938464)||0|58
+677|APP_NAME||Security Update for Windows Server 2003 (KB941202)||0|59
+678|APP_NAME||Security Update for Windows Server 2003 (KB941568)||0|60
+679|APP_NAME||Security Update for Windows Server 2003 (KB941569)||0|61
+680|APP_NAME||Security Update for Windows Server 2003 (KB941644)||0|62
+681|APP_NAME||Security Update for Windows Server 2003 (KB941672)||0|63
+682|APP_NAME||Security Update for Windows Server 2003 (KB941693)||0|64
+683|APP_NAME||Security Update for Windows Server 2003 (KB942830)||0|65
+684|APP_NAME||Security Update for Windows Server 2003 (KB942831)||0|66
+685|APP_NAME||Security Update for Windows Server 2003 (KB943055)||0|67
+686|APP_NAME||Security Update for Windows Server 2003 (KB943460)||0|68
+687|APP_NAME||Security Update for Windows Server 2003 (KB943484)||0|69
+688|APP_NAME||Security Update for Windows Server 2003 (KB943485)||0|70
+689|APP_NAME||Security Update for Windows Server 2003 (KB944653)||0|71
+690|APP_NAME||Security Update for Windows Server 2003 (KB945553)||0|72
+691|APP_NAME||Security Update for Windows Server 2003 (KB946026)||0|73
+692|APP_NAME||Security Update for Windows Server 2003 (KB948590)||0|74
+693|APP_NAME||Security Update for Windows Server 2003 (KB948745)||0|75
+694|APP_NAME||Security Update for Windows Server 2003 (KB948881)||0|76
+695|APP_NAME||Security Update for Windows Server 2003 (KB949014)||0|77
+696|APP_NAME||Security Update for Windows Server 2003 (KB950760)||0|78
+697|APP_NAME||Security Update for Windows Server 2003 (KB950762)||0|79
+698|APP_NAME||Security Update for Windows Server 2003 (KB950974)||0|80
+699|APP_NAME||Security Update for Windows Server 2003 (KB951698)||0|81
+700|APP_NAME||Security Update for Windows Server 2003 (KB951746)||0|82
+701|APP_NAME||Security Update for Windows Server 2003 (KB951748)||0|83
+702|APP_NAME||Security Update for Windows Server 2003 (KB952954)||0|84
+703|APP_NAME||Security Update for Windows Server 2003 (KB953839)||0|85
+704|APP_NAME||Symantec Endpoint Protection||0|86
+705|APP_NAME||Symantec Endpoint Protection Manager||0|87
+706|APP_NAME||Symantec Mail Security for Microsoft Exchange||0|88
+707|APP_NAME||TreeSize Free V2.1||0|89
+708|APP_NAME||Update for the Intelligent Message Filter on Exchange 2003 (KB88||0|90
+709|APP_NAME||Update for Windows Server 2003 (KB925876)||0|91
+710|APP_NAME||Update for Windows Server 2003 (KB927891)||0|92
+711|APP_NAME||Update for Windows Server 2003 (KB931836)||0|93
+712|APP_NAME||Update for Windows Server 2003 (KB933360)||0|94
+713|APP_NAME||Update for Windows Server 2003 (KB936357)||0|95
+714|APP_NAME||Update for Windows Server 2003 (KB942763)||0|96
+715|APP_NAME||Update for Windows Server 2003 (KB948496)||0|97
+716|APP_NAME||Update for Windows Server 2003 (KB951072-v2)||0|98
+717|APP_NAME||VERITAS Backup Exec for Windows Servers||0|99
+718|APP_NAME||VERITAS Update||0|100
+719|APP_NAME||Windows Imaging Component||0|101
+720|APP_NAME||Windows Internet Explorer 7||0|102
+721|APP_NAME||Windows Media Player 9 Hotfix [See KB885492 for more information||0|103
+722|APP_NAME||Windows Presentation Foundation||0|104
+723|APP_NAME||Windows Server 2003 Service Pack 2||0|105
+724|APP_NAME||Windows Small Business Server 2003||0|106
+725|APP_NAME||Windows Small Business Server 2003 Hotfix - KB 872769||0|107
+726|APP_NAME||Windows Small Business Server ActiveSync||0|108
+727|APP_NAME||Windows Small Business Server Admin||0|109
+728|APP_NAME||Windows Small Business Server Backup||0|110
+729|APP_NAME||Windows Small Business Server Client Experience||0|111
+730|APP_NAME||Windows Small Business Server Client Setup||0|112
+731|APP_NAME||Windows Small Business Server Connectivity||0|113
+732|APP_NAME||Windows Small Business Server Documents||0|114
+733|APP_NAME||Windows Small Business Server Fax||0|115
+734|APP_NAME||Windows Small Business Server Fax Cfg||0|116
+735|APP_NAME||Windows Small Business Server IE Client App||0|117
+736|APP_NAME||Windows Small Business Server Licensing||0|118
+737|APP_NAME||Windows Small Business Server Monitoring||0|119
+738|APP_NAME||Windows Small Business Server Remote Portal||0|120
+739|APP_NAME||Windows Support Tools||0|121
+740|APP_NAME||XML Paper Specification Shared Components Pack 1.0||0|122
+741|APP_NAME||Security Update for Windows Internet Explorer 7 (KB956390)||0|123
+742|APP_NAME||Security Update for Windows Server 2003 (KB954211)||0|124
+743|APP_NAME||Security Update for Windows Server 2003 (KB956391)||0|125
+744|APP_NAME||Security Update for Windows Server 2003 (KB956803)||0|126
+745|APP_NAME||Security Update for Windows Server 2003 (KB956841)||0|127
+746|APP_NAME||Security Update for Windows Server 2003 (KB957095)||0|128
+747|APP_NAME||AD Domain Controller||0|129
+748|APP_NAME||Agile||0|130
+749|APP_NAME||Agile Bea Web||0|131
+750|APP_NAME||Agilent FTP server||0|132
+751|APP_NAME||AGRA||0|133
+752|APP_NAME||Archive||0|134
+753|APP_NAME||Backup||0|135
+754|APP_NAME||Command Center||0|136
+755|APP_NAME||BDC||0|137
+756|APP_NAME||DNS/Domain Controller||0|138
+757|APP_NAME||FTP Server(Serv-U)||0|139
+758|APP_NAME||Intranet||0|140
+759|APP_NAME||Blue Mountain Clibration Manager||0|141
+760|APP_NAME||Build||0|142
+761|APP_NAME||Building Automation Server||0|143
+762|APP_NAME||Caliber||0|144
+763|APP_NAME||Caliber RM||0|145
+764|APP_NAME||CheckPoint Firewall logging and MGMT||0|146
+765|APP_NAME||Checkpoint FW-1||0|147
+766|APP_NAME||ClearQuest||0|148
+767|APP_NAME||DataFabric Manager||0|149
+768|APP_NAME||DECODE||0|150
+769|APP_NAME||Distributed SnifferPro||0|151
+770|APP_NAME||DNS1||0|152
+771|APP_NAME||Dough's Syslog Sever||0|153
+772|APP_NAME||DR / Test||0|154
+773|APP_NAME||DR for RAMMX01||0|155
+774|APP_NAME||DR for RAMMX02||0|156
+775|APP_NAME||DTAP||0|157
+776|APP_NAME||EMC||0|158
+777|APP_NAME||EMC Management Console||0|159
+778|APP_NAME||Equitiy Edge||0|160
+779|APP_NAME||Event Alarm||0|161
+780|APP_NAME||Event Analyst||0|162
+781|APP_NAME||Event Archive Enterprise||0|163
+782|APP_NAME||Exchange||0|164
+783|APP_NAME||Exchange 5.5||0|165
+784|APP_NAME||Exchange Admin||0|166
+785|APP_NAME||EXTTEST||0|167
+786|APP_NAME||Facilities Security Software||0|168
+787|APP_NAME||File Server||0|169
+788|APP_NAME||Filer Server||0|170
+789|APP_NAME||Firewall Log server||0|171
+790|APP_NAME||GENEWARE||0|172
+791|APP_NAME||GENOMIC WARE HOUSE WEB||0|173
+792|APP_NAME||Great Plains Dynamics||0|174
+793|APP_NAME||HEAT||0|175
+794|APP_NAME||HFNetChkPro||0|176
+795|APP_NAME||IBM Trellisoft SRM||0|177
+796|APP_NAME||Internet Information Services||0|178
+797|APP_NAME||ipMonitor 6.1||0|179
+798|APP_NAME||JDE Deployment||0|180
+799|APP_NAME||JDE ONEWORLD||0|181
+800|APP_NAME||Lab Vantage||0|182
+801|APP_NAME||Lab Vantage, Oracle||0|183
+802|APP_NAME||Lims||0|184
+803|APP_NAME||LIMSDB||0|185
+804|APP_NAME||MatLab License Server||0|186
+805|APP_NAME||MRLPROD||0|187
+806|APP_NAME||NetBackup Administration||0|188
+807|APP_NAME||NIS||0|189
+808|APP_NAME||North America Active Directory||0|190
+809|APP_NAME||North Creek Print Server||0|191
+810|APP_NAME||NorthAmerica BDC||0|192
+811|APP_NAME||Norton Antivirus Corporate Edition||0|193
+812|APP_NAME||pcAnywhere||0|194
+813|APP_NAME||PGP||0|195
+814|APP_NAME||PGP Key Server||0|196
+815|APP_NAME||Print Server||0|197
+816|APP_NAME||Project Server 2002||0|198
+817|APP_NAME||Prospector, Trellisoft||0|199
+818|APP_NAME||RESOLVER||0|200
+819|APP_NAME||RPM Prod||0|201
+820|APP_NAME||RPM WEB Development||0|202
+821|APP_NAME||SalesLogix||0|203
+822|APP_NAME||Seagull License Server||0|204
+823|APP_NAME||Second DNS for Biosoft||0|205
+824|APP_NAME||Secondary NIS||0|206
+825|APP_NAME||Serv-U FTP Server||0|207
+826|APP_NAME||SMS||0|208
+827|APP_NAME||Sniffer Reporter||0|209
+828|APP_NAME||SolarWinds||0|210
+829|APP_NAME||SQL Server 2000||0|211
+830|APP_NAME||SQL Server 7.0||0|212
+831|APP_NAME||StarTeam||0|213
+832|APP_NAME||Sun Management Console||0|214
+833|APP_NAME||Terminal Service Licence Manager||0|215
+834|APP_NAME||Terminal Services||0|216
+835|APP_NAME||Terminal Services (Citrix)||0|217
+836|APP_NAME||TestDirector||0|218
+837|APP_NAME||Training Server||0|219
+838|APP_NAME||Tumbleweed (email gateway)||0|220
+839|APP_NAME||Veritas NetBackup||0|221
+840|APP_NAME||WebinstallXP||0|222
+841|APP_NAME||eServ Distribution Pt.||0|223
+842|APP_NAME||EnterpriseOne||0|224
+843|APP_NAME||Share Data Access||0|225
+844|APP_NAME||Rain Storage||0|226
+845|APP_NAME||FLM||0|227
+846|APP_NAME||HP Systems Insight Manager||0|228
+847|APP_NAME||Peoplesoft CRM||0|229
+848|APP_NAME||Matlab||0|230
+849|APP_NAME||Print Server Service||0|231
+850|APP_NAME||X1||0|232
+851|APP_NAME||Elucidator||0|233
+852|APP_NAME||Resolver LINUX||0|234
+853|APP_NAME||WebTrends||0|235
+854|APP_NAME||SQL Server 2005||0|236
+855|APP_NAME||RedSky Technologies, Inc - Cielo Series||0|237
+856|APP_NAME||Doors||0|238
+857|APP_NAME||EMC Control Center||0|239
+858|APP_NAME||EMC Control Center Console||0|240
+859|APP_NAME||GCOS||0|241
+860|APP_NAME||TGI||0|242
+861|APP_NAME||Blade Logic||0|243
+862|APP_NAME||Team Manager||0|244
+863|APP_NAME||VMware ESX||0|245
+864|APP_NAME||Agilent Feature Extractor||0|246
+865|APP_NAME||Symantec LiveState||0|247
+866|APP_NAME||Affymetrix Power Tools||0|248
+867|APP_NAME||Syllego||0|249
+868|APP_NAME||test||0|250
+869|APP_NAME||Commander||0|251
+870|APP_NAME||Biosoft DNS/Domain Controller||0|252
+871|APP_NAME||Biosoft FTP Server(Serv-U)||0|253
+872|APP_NAME||Biosoft Intranet||0|254
+873|APP_NAME||DR for USSEMX01||0|255
+874|APP_NAME||DR for USSEMX02||0|256
+875|APP_SITE|New York City|NYC||0|1
+876|APP_SITE|Jersey City|JC||0|2
+877|APP_SITE|New Jersey|Somerset||0|3
+878|APP_SITE||Tokyo||0|4
+879|APP_SITE||Bothell||0|5
+880|APP_SITE||London||0|6
+881|APP_SITE||Harvard||0|7
+882|APP_SITE||Seattle||0|8
+883|APP_SITE||Montreal||0|9
+884|APP_SITE||Newark||0|10
+885|APP_SITE||Boston||0|11
+886|APP_SITE||San Diego||0|12
+887|APP_SITE||Paris||0|13
+888|APP_SITE||San Francisco||0|14
+889|APP_SITE|New Jersey|Warren||0|15
+890|APP_SITE||Denver||0|16
+891|APP_SITE||Agilent||0|17
+892|APP_SITE||Banyu||0|18
+893|APP_SITE||deCODE Iceland||0|19
+894|APP_SITE||Rahway||0|20
+895|APP_SITE||Resolver Customers (multiple)||0|21
+896|APP_SITE||Terlings Park||0|22
+897|APP_SITE||West Point||0|23
+898|APP_SITE||Whitehouse Station||0|24
+899|APP_SITE||Kirkland||0|25
+900|BREAKER_OR_FUSE||Fuse A1||0|1
+901|BREAKER_OR_FUSE||Fuse A2||0|2
+902|BREAKER_OR_FUSE||Fuse A3||0|3
+903|BREAKER_OR_FUSE||Fuse A4||0|4
+904|BREAKER_OR_FUSE||Fuse B1||0|5
+905|BREAKER_OR_FUSE||Fuse B2||0|6
+906|BREAKER_OR_FUSE||Fuse B3||0|7
+907|BREAKER_OR_FUSE||Fuse B4||0|8
+908|CABINET||Storage||0|51
+909|CABINET||Network||0|52
+910|CABINET||Mail||0|53
+911|CABINET||File||0|54
+912|CABINET||Database||0|55
+913|CABINET||VMs||0|56
+914|DNSSUFFIX||-adm||0|57
+915|DNSSUFFIX||-sto||0|58
+916|DNSSUFFIX||r||0|70
+917|DNSSUFFIX||ilo||0|71
+918|VLAN||PROD||0|9
+919|VLAN||STOR||0|10
+920|VLAN||ADMN||0|11
+921|VLAN||Biosoft||0|61
+922|VLAN||Linux||0|62
+923|VLAN||Windows||0|63
+924|VLAN||Cluster||0|64
+925|VLAN||NONE||0|65
+926|VLAN||ClusterData||0|66
+927|VLAN||ClusterService||0|67
+928|VLAN||iSCSI||0|68
+929|VLAN||Mgmt||0|69
+930|VLAN||ClusterSurvive||0|72
+931|VLAN||Data||0|74
+932|VM_CLUSTER||Cluster01||0|44
+933|VM_CLUSTER||Cluster02||0|59
+934|VM_CLUSTER||Cluster03||0|60
+941|COLOR|0|Black||0|0
+942|COLOR|255|Red||0|255
+943|COLOR|4194432|Brown||0|4194432
+944|COLOR|4227327|Orange||0|4227327
+945|COLOR|8454016|Green||0|8454016
+946|COLOR|8454143|Yellow||0|8454143
+947|COLOR|11141290|Purple||0|11141290
+948|COLOR|12632256|Gray||0|12632256
+949|COLOR|16739436|Blue||0|16739436
+950|COLOR|16777215|White||0|16777215
+951|CORD||CORD||0|1
+952|CORD|Red|Patch Cord|401|0|2
+953|CORD|Blue|Patch Cord|401|0|3
+954|CORD|Orange|Patch Cord|401|0|4
+955|CORD|Green|Patch Cord|401|0|5
+956|CORD|Gray|Patch Cord|401|0|6
+957|CORD|White|Patch Cord|401|0|7
+958|CORD|Yellow|Patch Cord|401|0|8
+959|CORD||Serial Cable|401|0|9
+960|CORD||Power Cord|400|0|10
+961|CORD|Black|IEC-320-C13/C14 Cord|400|0|11
+962|CORD||RS232/UTP Adapter|401|0|12
+963|CORD|Gray|SCSI Cable|401|0|13
+964|CORD|Black|Patch Cord|401|0|14
+965|CORD|Orange|MTRJ - Fiber LC Cable||0|15
+966|CORD|Orange|LC/SC Fiber Jumper|401|0|16
+970|FUNCTION||Production|1|0|1
+971|FUNCTION||Development|1|0|2
+972|FUNCTION||Disaster Recovery|1|0|3
+973|FUNCTION||Test Machine|1|0|4
+974|FUNCTION||xxxxxx|1|0|5
+975|FUNCTION||Network|2|0|6
+976|FUNCTION||Management Subnet|2|0|7
+977|FUNCTION||Consolidation Subnet|2|0|8
+978|FUNCTION||Console|2|0|9
+979|FUNCTION||SAN|2|0|10
+980|FUNCTION||WAN|2|0|11
+981|FUNCTION||Isolated Subnet|2|0|12
+982|FUNCTION||Routine|1|0|13
+983|FUNCTION||Test|1|0|14
+984|FUNCTION||Access Network|2|0|15
+985|FUNCTION||Distribution Network|2|0|16
+986|FUNCTION||Core Network|2|0|17
+987|CABLE_GRADE||MM 50|62|0|1
+988|CABLE_GRADE||MM 62.5|62|0|2
+989|CABLE_GRADE||SM|63|0|3
+990|CABLE_GRADE||UTP|61|0|4
+991|CABLE_GRADE||FTP|61|0|5
+992|CABLE_GRADE||STP|61|0|6
+993|CABLE_GRADE||ScTP|61|0|7
+994|CABLE_GRADE||RG59|64|0|8
+995|CABLE_GRADE||Cat5e|61|0|9
+996|CABLE_GRADE||Cat6|61|0|10
+997|CABLE_GRADE||Cat6e|61|0|12
+998|CABLE_GRADE||Cat6A|61|0|13
+999|CABLE_GRADE||734 DS3|64|0|15
+1000|OS||N/A||0|1
+1001|OS||Microsoft Windows NT 4||0|15
+1002|OS||Microsoft Windows 2000 Server||0|16
+1003|OS||Microsoft Windows 2000 Advanced Server||0|17
+1004|OS||Microsoft Windows Server 2003, Standard||0|18
+1005|OS||Microsoft Windows Server 2003, Enterprise||0|19
+1006|OS||Microsoft Windows XP Professional||0|20
+1007|OS||Suse Linux Enterprise Server||0|21
+1008|OS||Other Linux||0|22
+1009|OS||Microsoft Windows 2000 Professional||0|23
+1010|OS||Data ONTAP||0|24
+1011|OS||Linux||0|25
+1012|OS||SLES 8 Linux 2.4.19||0|26
+1013|OS||Solaris 8||0|27
+1014|OS||SLES 9||0|28
+1015|OS||W2K3||0|29
+1016|OS||Solaris 9||0|30
+1017|OS||Solaris||0|31
+1018|OS||Windows 2000||0|32
+1019|OS||Windows 2003 Standard||0|33
+1020|OS||Windows NT||0|34
+1021|OS||W2K3E/64||0|35
+1022|OS||W2K3 Enterprise||0|36
+1023|OS||W2k3/x64||0|37
+1024|SPEED|0|n/a||0|1
+1025|SPEED|10000000|10 Base-T||0|2
+1026|SPEED|100000000|100 Base-T||0|3
+1027|SPEED|1000000000|1G Base-T||0|4
+1028|SPEED|10000000000|10G Base-T||0|5
+1029|SPEED|100000000|10/100 Base-T||0|6
+1030|SPEED|1000000000|10/100/1G Base-T||0|7
+1031|SPEED|10000000000|100/1000/10G Base-T||0|8
+1032|SPEED|10000000|10 Base-Fx||0|9
+1033|SPEED|100000000|100 Base-Fx||0|10
+1034|SPEED|1000000000|1000 Base-Sx||0|11
+1035|SPEED|1000000000|1000 Base-Lx||0|12
+1036|SPEED|1000000000|1000 Base-Zx||0|13
+1037|SPEED|10000000000|10G Base-Sx||0|14
+1038|SPEED|10000000000|10G Base-Lx||0|15
+1039|SPEED|10000000000|10G Base-Zx||0|16
+1040|SPEED|45000000|45 Mbps||0|17
+1041|PROTOCOL||n/a||0|1
+1042|PROTOCOL||Ethernet/IP||0|2
+1043|PROTOCOL||Serial RS232||0|3
+1044|PROTOCOL||FibreChannel||0|4
+1045|PROTOCOL||HSSI||0|5
+1046|PROTOCOL||SCSI-1||0|6
+1047|PROTOCOL||SCSI-2||0|7
+1048|PROTOCOL||KVM||0|8
+1049|DOMAIN||nta.com||0|1
+1050|DOMAIN||ny.corp.nta.com||0|2
+1051|DOMAIN||pa.corp.nta.com||0|3
+1052|DOMAIN||MESSAGING||0|4
+1053|DOMAIN||SOFTWARE||0|5
+1054|DOMAIN||RAM||0|6
+1055|DOMAIN||RAP||0|7
+1056|DOMAIN||Raritan.com||0|8
+1057|DOMAIN||N/A||0|9
+1058|DOMAIN||North America||0|10
+1059|DOMAIN||BIO-MESSAGING||0|11
+1060|DOMAIN||BIOSOFT||0|12
+1061|DOMAIN||CRSE0||0|13
+1062|DOMAIN||CRSE1||0|14
+1063|DOMAIN||MSD-MESSAGING||0|15
+1064|CUSTOM_FIELD||OS Version|1|0|1
+1065|CUSTOM_FIELD||Firmware|2|0|2
+1066|CUSTOM_FIELD||Patch Level|1|0|3
+1067|CUSTOM_FIELD||Warranty Period|1|0|4
+1068|CUSTOM_FIELD||Face Color|1|0|5
+1069|CUSTOM_FIELD||Test Field Name|1|0|6
+2000|SYSTEM_REPORT_CATEGORY||Cabinet Reports||0|
+2001|SYSTEM_REPORT_CATEGORY||Item Reports||0|
+2002|SYSTEM_REPORT_CATEGORY||Connection Reports||0|
+2003|USER_REPORT_CATEGORY||Cabinet Reports||0|
+2004|USER_REPORT_CATEGORY||Item Reports||0|
+2006|USER_REPORT_CATEGORY||Connection Reports||0|
+2007|SYSTEM_REPORT_CATEGORY||Power Reports||0|
+2008|USER_REPORT_CATEGORY||Power Reports||0|
+2009|SYSTEM_REPORT_CATEGORY||Model Reports||0|
+2010|USER_REPORT_CATEGORY||Model Reports||0|
+2011|CUSTOM_FIELD||KVM Gateway|1|1|
+2012|CUSTOM_FIELD||Maintenance Docs||1|
+2013|CUSTOM_FIELD||Quick Launch|1|2|
+2014|SPEED|2000000000|2 Gbps||0|
+2015|TYPE||Desk|6|0|
+2016|TYPE||IP Phone|1|0|
+2017|PROTOCOL||FCoE||0|
+2018|SPEED|100000000000|100G Base-T||0|
+2019|SPEED|4000000000|4 Gbps||0|
+2020|SPEED|40000000000|40G Base-T||0|
+2021|SPEED|8000000000|8 Gbps||0|
+2022|SPEED|9600|9600 Baud||0|
+2023|BREAKER_OR_FUSE||B1||0|
+2024|BREAKER_OR_FUSE||B2||0|
+2025|BREAKER_OR_FUSE||B3||0|
+2026|BREAKER_OR_FUSE||CB1||0|
+2027|BREAKER_OR_FUSE||CB2||0|
+2028|BREAKER_OR_FUSE||CB3||0|
+2029|BREAKER_OR_FUSE||CB4||0|
+2030|BREAKER_OR_FUSE||CB5||0|
+2031|BREAKER_OR_FUSE||CB6||0|
+2032|BREAKER_OR_FUSE||CB7||0|
+2033|BREAKER_OR_FUSE||CB8||0|
+2034|BREAKER_OR_FUSE||Fuse XY||0|
+2035|BREAKER_OR_FUSE||Fuse XZ||0|
+2036|BREAKER_OR_FUSE||Fuse YZ||0|
+2037|FUNCTION||dcT 3.0 Demo|6|0|
+2038|DEPARTMENT||Valued||0|
+2039|OS||VMware ESXi 5x||0|
+2040|OS||VMware ESX 5x||0|
+2041|OS||Microsoft Windows Server 2010||0|
+2042|COUNTRY||Afghanistan||0|
+2043|COUNTRY||Albania||1|
+2044|COUNTRY||Algeria||2|
+2045|COUNTRY||American Samoa||3|
+2046|COUNTRY||Andorra||4|
+2047|COUNTRY||Angola||5|
+2048|COUNTRY||Anguilla||6|
+2049|COUNTRY||Antigua and Barbuda||7|
+2050|COUNTRY||Argentina||8|
+2051|COUNTRY||Armenia||9|
+2052|COUNTRY||Aruba||10|
+2053|COUNTRY||Australia||11|
+2054|COUNTRY||Austria||12|
+2055|COUNTRY||Azerbaijan||13|
+2056|COUNTRY||Bahamas||14|
+2057|COUNTRY||Bahrain||15|
+2058|COUNTRY||Bangladesh||16|
+2059|COUNTRY||Barbados||17|
+2060|COUNTRY||Belarus||18|
+2061|COUNTRY||Belgium||19|
+2062|COUNTRY||Belize||20|
+2063|COUNTRY||Benin||21|
+2064|COUNTRY||Bermuda||22|
+2065|COUNTRY||Bhutan||23|
+2066|COUNTRY||Bolivia||24|
+2067|COUNTRY||Bosnia and Herzegovina||25|
+2068|COUNTRY||Botswana||26|
+2069|COUNTRY||Brazil||27|
+2070|COUNTRY||British Virgin Islands||28|
+2071|COUNTRY||Brunei||29|
+2072|COUNTRY||Bulgaria||30|
+2073|COUNTRY||Burkina Faso||31|
+2074|COUNTRY||Burundi||32|
+2075|COUNTRY||Cambodia||33|
+2076|COUNTRY||Cameroon||34|
+2077|COUNTRY||Canada||35|
+2078|COUNTRY||Cape Verde||36|
+2079|COUNTRY||Cayman Islands||37|
+2080|COUNTRY||Central African Republic||38|
+2081|COUNTRY||Chad||39|
+2082|COUNTRY||Chile||40|
+2083|COUNTRY||China||41|
+2084|COUNTRY||Colombia||42|
+2085|COUNTRY||Comoros||43|
+2086|COUNTRY||Cook Islands||44|
+2087|COUNTRY||Costa Rica||45|
+2088|COUNTRY||Croatia||46|
+2089|COUNTRY||Cuba||47|
+2090|COUNTRY||Cyprus||48|
+2091|COUNTRY||Czech Republic||49|
+2092|COUNTRY||CÙte d'Ivoire||50|
+2093|COUNTRY||Dem. Rep. of Congo||51|
+2094|COUNTRY||Denmark||52|
+2095|COUNTRY||Djibouti||53|
+2096|COUNTRY||Dominica||54|
+2097|COUNTRY||Dominican Republic||55|
+2098|COUNTRY||East Timor||56|
+2099|COUNTRY||Ecuador||57|
+2100|COUNTRY||Egypt||58|
+2101|COUNTRY||El Salvador||59|
+2102|COUNTRY||Equatorial Guinea||60|
+2103|COUNTRY||Eritrea||61|
+2104|COUNTRY||Estonia||62|
+2105|COUNTRY||Ethiopia||63|
+2106|COUNTRY||Falkland Islands||64|
+2107|COUNTRY||Faroe Islands||65|
+2108|COUNTRY||Federated States of Micronesia||66|
+2109|COUNTRY||Fiji||67|
+2110|COUNTRY||Finland||68|
+2111|COUNTRY||France||69|
+2112|COUNTRY||Gabon||70|
+2113|COUNTRY||Gambia||71|
+2114|COUNTRY||Georgia||72|
+2115|COUNTRY||Germany||73|
+2116|COUNTRY||Ghana||74|
+2117|COUNTRY||Gibraltar||75|
+2118|COUNTRY||Greece||76|
+2119|COUNTRY||Greenland||77|
+2120|COUNTRY||Grenada||78|
+2121|COUNTRY||Guam||79|
+2122|COUNTRY||Guatemala||80|
+2123|COUNTRY||Guernsey||81|
+2124|COUNTRY||Guinea||82|
+2125|COUNTRY||Guinea-Bissau||83|
+2126|COUNTRY||Guyana||84|
+2127|COUNTRY||Haiti||85|
+2128|COUNTRY||Honduras||86|
+2129|COUNTRY||Hong Kong||87|
+2130|COUNTRY||Hungary||88|
+2131|COUNTRY||Iceland||89|
+2132|COUNTRY||India||90|
+2133|COUNTRY||Indonesia||91|
+2134|COUNTRY||Iran||92|
+2135|COUNTRY||Iraq||93|
+2136|COUNTRY||Ireland||94|
+2137|COUNTRY||Isle of Man||95|
+2138|COUNTRY||Israel||96|
+2139|COUNTRY||Italy||97|
+2140|COUNTRY||Jamaica||98|
+2141|COUNTRY||Japan||99|
+2142|COUNTRY||Jersey||100|
+2143|COUNTRY||Jordan||101|
+2144|COUNTRY||Kazakhstan||102|
+2145|COUNTRY||Kenya||103|
+2146|COUNTRY||Kiribati||104|
+2147|COUNTRY||Kuwait||105|
+2148|COUNTRY||Kyrgyzstan||106|
+2149|COUNTRY||Laos||107|
+2150|COUNTRY||Latvia||108|
+2151|COUNTRY||Lebanon||109|
+2152|COUNTRY||Lesotho||110|
+2153|COUNTRY||Liberia||111|
+2154|COUNTRY||Libya||112|
+2155|COUNTRY||Liechtenstein||113|
+2156|COUNTRY||Lithuania||114|
+2157|COUNTRY||Luxembourg||115|
+2158|COUNTRY||Macau||116|
+2159|COUNTRY||Madagascar||117|
+2160|COUNTRY||Malawi||118|
+2161|COUNTRY||Malaysia||119|
+2162|COUNTRY||Maldives||120|
+2163|COUNTRY||Mali||121|
+2164|COUNTRY||Malta||122|
+2165|COUNTRY||Marshall Islands||123|
+2166|COUNTRY||Mauritania||124|
+2167|COUNTRY||Mauritius||125|
+2168|COUNTRY||Mexico||126|
+2169|COUNTRY||Moldova||127|
+2170|COUNTRY||Monaco||128|
+2171|COUNTRY||Mongolia||129|
+2172|COUNTRY||Montenegro||130|
+2173|COUNTRY||Montserrat||131|
+2174|COUNTRY||Morocco||132|
+2175|COUNTRY||Mozambique||133|
+2176|COUNTRY||Myanmar (Burma)||134|
+2177|COUNTRY||Namibia||135|
+2178|COUNTRY||Nauru||136|
+2179|COUNTRY||Nepal||137|
+2180|COUNTRY||Netherlands Antilles||138|
+2181|COUNTRY||Netherlands||139|
+2182|COUNTRY||New Zealand||140|
+2183|COUNTRY||Nicaragua||141|
+2184|COUNTRY||Niger||142|
+2185|COUNTRY||Nigeria||143|
+2186|COUNTRY||Niue||144|
+2187|COUNTRY||North Korea||145|
+2188|COUNTRY||Northern Mariana Islands||146|
+2189|COUNTRY||Norway||147|
+2190|COUNTRY||Oman||148|
+2191|COUNTRY||Pakistan||149|
+2192|COUNTRY||Palau||150|
+2193|COUNTRY||Palestine||151|
+2194|COUNTRY||Panama||152|
+2195|COUNTRY||Papua New Guinea||153|
+2196|COUNTRY||Paraguay||154|
+2197|COUNTRY||Peru||155|
+2198|COUNTRY||Philippines||156|
+2199|COUNTRY||Pitcairn Islands||157|
+2200|COUNTRY||Poland||158|
+2201|COUNTRY||Portugal||159|
+2202|COUNTRY||Puerto Rico||160|
+2203|COUNTRY||Qatar||161|
+2204|COUNTRY||Republic of Macedonia||162|
+2205|COUNTRY||Republic of the Congo||163|
+2206|COUNTRY||Romania||164|
+2207|COUNTRY||Russia||165|
+2208|COUNTRY||Rwanda||166|
+2209|COUNTRY||Saint Helena||167|
+2210|COUNTRY||Saint Kitts and Nevis||168|
+2211|COUNTRY||Saint Lucia||169|
+2212|COUNTRY||Saint Vincent and the Grenadines||170|
+2213|COUNTRY||Samoa||171|
+2214|COUNTRY||San Marino||172|
+2215|COUNTRY||Saudi Arabia||173|
+2216|COUNTRY||Senegal||174|
+2217|COUNTRY||Serbia||175|
+2218|COUNTRY||Seychelles||176|
+2219|COUNTRY||Sierra Leone||177|
+2220|COUNTRY||Singapore||178|
+2221|COUNTRY||Slovakia||179|
+2222|COUNTRY||Slovenia||180|
+2223|COUNTRY||Solomon Islands||181|
+2224|COUNTRY||Somalia||182|
+2225|COUNTRY||South Africa||183|
+2226|COUNTRY||South Korea||184|
+2227|COUNTRY||Spain||185|
+2228|COUNTRY||Sri Lanka||186|
+2229|COUNTRY||Sudan||187|
+2230|COUNTRY||Suriname||188|
+2231|COUNTRY||Swaziland||189|
+2232|COUNTRY||Sweden||190|
+2233|COUNTRY||Switzerland||191|
+2234|COUNTRY||Syria||192|
+2235|COUNTRY||S„o TomÈ and PrÌncipe||193|
+2236|COUNTRY||Taiwan||194|
+2237|COUNTRY||Tajikistan||195|
+2238|COUNTRY||Tanzania||196|
+2239|COUNTRY||Thailand||197|
+2240|COUNTRY||Togo||198|
+2241|COUNTRY||Tokelau||199|
+2242|COUNTRY||Tonga||200|
+2243|COUNTRY||Trinidad and Tobago||201|
+2244|COUNTRY||Tunisia||202|
+2245|COUNTRY||Turkey||203|
+2246|COUNTRY||Turkmenistan||204|
+2247|COUNTRY||Turks and Caicos Islands||205|
+2248|COUNTRY||Tuvalu||206|
+2249|COUNTRY||U.S. Virgin Islands||207|
+2250|COUNTRY||Uganda||208|
+2251|COUNTRY||Ukraine||209|
+2252|COUNTRY||United Arab Emirates||210|
+2253|COUNTRY||United Kingdom||211|
+2254|COUNTRY||United States||212|
+2255|COUNTRY||Uruguay||213|
+2256|COUNTRY||Uzbekistan||214|
+2257|COUNTRY||Vanuatu||215|
+2258|COUNTRY||Vatican City||216|
+2259|COUNTRY||Venezuela||217|
+2260|COUNTRY||Vietnam||218|
+2261|COUNTRY||Western Sahara||219|
+2262|COUNTRY||Yemen||220|
+2263|COUNTRY||Zambia||221|
+2264|COUNTRY||Zimbabwe||222|
+2265|USA_STATE|AL|Alabama||0|
+2266|USA_STATE|AK|Alaska||1|
+2267|USA_STATE|AS|American Samoa||2|
+2268|USA_STATE|AZ|Arizona||3|
+2269|USA_STATE|AR|Arkansas||4|
+2270|USA_STATE|CA|California||5|
+2271|USA_STATE|CO|Colorado||6|
+2272|USA_STATE|CT|Connecticut||7|
+2273|USA_STATE|DE|Delaware||8|
+2274|USA_STATE|DC|District of Columbia||9|
+2275|USA_STATE|TT|Federated States of Micronesia||10|
+2276|USA_STATE|FL|Florida||11|
+2277|USA_STATE|GA|Georgia||12|
+2278|USA_STATE|GU|Guam||13|
+2279|USA_STATE|HI|Hawaii||14|
+2280|USA_STATE|ID|Idaho||15|
+2281|USA_STATE|IL|Illinois||16|
+2282|USA_STATE|IN|Indiana||17|
+2283|USA_STATE|IA|Iowa||18|
+2284|USA_STATE|KS|Kansas||19|
+2285|USA_STATE|KY|Kentucky||20|
+2286|USA_STATE|LA|Louisiana||21|
+2287|USA_STATE|ME|Maine||22|
+2288|USA_STATE|MD|Maryland||23|
+2289|USA_STATE|MA|Massachusetts||24|
+2290|USA_STATE|MI|Michigan||25|
+2291|USA_STATE|MN|Minnesota||26|
+2292|USA_STATE|MS|Mississippi||27|
+2293|USA_STATE|MO|Missouri||28|
+2294|USA_STATE|MT|Montana||29|
+2295|USA_STATE|NE|Nebraska||30|
+2296|USA_STATE|NV|Nevada||31|
+2297|USA_STATE|NH|New Hampshire||32|
+2298|USA_STATE|NJ|New Jersey||33|
+2299|USA_STATE|NM|New Mexico||34|
+2300|USA_STATE|NY|New York||35|
+2301|USA_STATE|NC|North Carolina||36|
+2302|USA_STATE|ND|North Dakota||37|
+2303|USA_STATE|OH|Ohio||38|
+2304|USA_STATE|OK|Oklahoma||39|
+2305|USA_STATE|OR|Oregon||40|
+2306|USA_STATE|PA|Pennsylvania||41|
+2307|USA_STATE|PR|Puerto Rico||42|
+2308|USA_STATE|RI|Rhode Island||43|
+2309|USA_STATE|SC|South Carolina||44|
+2310|USA_STATE|SD|South Dakota||45|
+2311|USA_STATE|TN|Tennessee||46|
+2312|USA_STATE|TX|Texas||47|
+2313|USA_STATE|UT|Utah||48|
+2314|USA_STATE|VT|Vermont||49|
+2315|USA_STATE|VI|Virgin Islands||50|
+2316|USA_STATE|VA|Virginia||51|
+2317|USA_STATE|WA|Washington||52|
+2318|USA_STATE|WV|West Virginia||53|
+2319|USA_STATE|WI|Wisconsin||54|
+2320|USA_STATE|WY|Wyoming||55|
+2321|FLOORMAPS_REPORT|1010|Used RUs per Cabinet||10|
+2322|FLOORMAPS_REPORT|1020|Available RUs per Cabinet||20|
+2323|FLOORMAPS_REPORT|1050|Max Temperature per Cabinet Fronts||30|
+2324|FLOORMAPS_REPORT|1060|Max Temperature per Cabinet Rears||35|
+2325|FLOORMAPS_REPORT|1030|Measured Amps per Cabinet||50|
+2326|FLOORMAPS_REPORT|1040|Budgeted Power per Cabinet||60|
+2327|FLOORMAPS_REPORT|UPS_BANK|Budgeted Amps per Cabinet||70|
+2328|PROTOCOL||iSCSI||0|
+2329|PROTOCOL||SAS||0|
+2330|SPEED|3000000000|3 Gbps||0|
+2331|SPEED|6000000000|6 Gbps||0|
+2332|SPEED|80000000|80 Mbps||0|

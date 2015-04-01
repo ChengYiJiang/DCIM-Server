@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<bean id="dctImportHeaderTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer"/>
+	
+	<bean id="dctItemTokenizer" class="com.raritan.tdz.dctimport.job.DCTImportTokenizer">
+		<property name="dctImportDomainClass" value="com.raritan.tdz.dctimport.dto.ItemImport"/>
+	</bean>
+	
+	<bean id="dctLocationTokenizer" class="com.raritan.tdz.dctimport.job.DCTImportTokenizer">
+		<property name="dctImportDomainClass" value="com.raritan.tdz.dctimport.dto.LocationImport"/>
+	</bean>
+	
+	<bean id="dctDataPortTokenizer" class="com.raritan.tdz.dctimport.job.DCTImportTokenizer">
+		<property name="dctImportDomainClass" value="com.raritan.tdz.dctimport.dto.DataPortImport"/>
+	</bean>
+	
+	<bean id="dctPowerPortTokenizer" class="com.raritan.tdz.dctimport.job.DCTImportTokenizer">
+		<property name="dctImportDomainClass" value="com.raritan.tdz.dctimport.dto.PowerPortImport"/>
+	</bean>
+	
+	<bean id="dctDataConnTokenizer" class="com.raritan.tdz.dctimport.job.DCTImportTokenizer">
+		<property name="dctImportDomainClass" value="com.raritan.tdz.dctimport.dto.DataConnImport"/>
+	</bean>
+	
+	<bean id="dctPowerConnTokenizer" class="com.raritan.tdz.dctimport.job.DCTImportTokenizer">
+		<property name="dctImportDomainClass" value="com.raritan.tdz.dctimport.dto.PowerConnImport"/>
+	</bean>
+
+	<bean id="dctStructuredCablingConnTokenizer" class="com.raritan.tdz.dctimport.job.DCTImportTokenizer">
+		<property name="dctImportDomainClass" value="com.raritan.tdz.dctimport.dto.StructuredCablingConnImport"/>
+	</bean>
+	
+	<util:map id="importTokenizers">
+		<entry key="operation*" value-ref="dctImportHeaderTokenizer"/>
+
+		<entry key="add,location*" value-ref="dctLocationTokenizer"/>
+		<entry key="edit,location*" value-ref="dctLocationTokenizer"/>
+		<entry key="delete,location*" value-ref="dctLocationTokenizer"/>
+		<entry key="unmap,location*" value-ref="dctLocationTokenizer"/>
+
+		<entry key="add,cabinet*" value-ref="dctItemTokenizer"/>
+
+		<entry key="add,device-freestanding*" value-ref="dctItemTokenizer"/>
+		<entry key="add,network-freestanding*" value-ref="dctItemTokenizer"/>
+		
+		<entry key="add,data-port*" value-ref="dctDataPortTokenizer"/>
+		<entry key="edit,data-port*" value-ref="dctDataPortTokenizer"/>
+		<entry key="delete,data-port*" value-ref="dctDataPortTokenizer"/>
+		
+		<entry key="add,ups*" value-ref="dctItemTokenizer"/>
+		<entry key="add,crac*" value-ref="dctItemTokenizer"/>
+		<entry key="add,floorpdu*" value-ref="dctItemTokenizer"/>
+		<entry key="add,powerpanel*" value-ref="dctItemTokenizer"/>
+		<entry key="add,device-rackable*" value-ref="dctItemTokenizer"/>
+		<entry key="add,device-bladechassis-rackable*" value-ref="dctItemTokenizer"/>
+		<entry key="add,network-chassis-rackable*" value-ref="dctItemTokenizer"/>
+		<entry key="add,network-rackable*" value-ref="dctItemTokenizer"/>
+		<entry key="add,datapanel-rackable*" value-ref="dctItemTokenizer"/>
+		<entry key="add,rackpdu-rackable*" value-ref="dctItemTokenizer"/>
+		<entry key="add,probe-rackable*" value-ref="dctItemTokenizer"/>
+		<entry key="add,device-nonrackable*" value-ref="dctItemTokenizer"/>
+		<entry key="add,network-nonrackable*" value-ref="dctItemTokenizer"/>
+		<entry key="add,datapanel-nonrackable*" value-ref="dctItemTokenizer"/>
+		<entry key="add,rackpdu-nonrackable*" value-ref="dctItemTokenizer"/>
+		<entry key="add,probe-nonrackable*" value-ref="dctItemTokenizer"/>
+		<entry key="add,device-zerou*" value-ref="dctItemTokenizer"/>
+		<entry key="add,rackpdu-zerou*" value-ref="dctItemTokenizer"/>
+		<entry key="add,probe-zerou*" value-ref="dctItemTokenizer"/>
+		<entry key="add,datapanel-zerou*" value-ref="dctItemTokenizer"/>
+		<entry key="add,device-blade*" value-ref="dctItemTokenizer"/>
+		<entry key="add,network-blade*" value-ref="dctItemTokenizer"/>
+		<entry key="add,poweroutlet*" value-ref="dctItemTokenizer"/>
+		<entry key="add,passive*" value-ref="dctItemTokenizer"/>
+
+		<entry key="edit,cabinet*" value-ref="dctItemTokenizer"/>
+		<entry key="edit,device-freestanding*" value-ref="dctItemTokenizer"/>
+		<entry key="edit,network-freestanding*" value-ref="dctItemTokenizer"/>
+		<entry key="edit,ups*" value-ref="dctItemTokenizer"/>
+		<entry key="edit,crac*" value-ref="dctItemTokenizer"/>
+		<entry key="edit,floorpdu*" value-ref="dctItemTokenizer"/>
+		<entry key="edit,powerpanel*" value-ref="dctItemTokenizer"/>
+		<entry key="edit,device-rackable*" value-ref="dctItemTokenizer"/>
+		<entry key="edit,device-bladechassis-rackable*" value-ref="dctItemTokenizer"/>
+		<entry key="edit,network-chassis-rackable*" value-ref="dctItemTokenizer"/>
+		<entry key="edit,network-rackable*" value-ref="dctItemTokenizer"/>
+		<entry key="edit,datapanel-rackable*" value-ref="dctItemTokenizer"/>
+		<entry key="edit,rackpdu-rackable*" value-ref="dctItemTokenizer"/>
+		<entry key="edit,probe-rackable*" value-ref="dctItemTokenizer"/>
+		<entry key="edit,device-nonrackable*" value-ref="dctItemTokenizer"/>
+		<entry key="edit,network-nonrackable*" value-ref="dctItemTokenizer"/>
+		<entry key="edit,datapanel-nonrackable*" value-ref="dctItemTokenizer"/>
+		<entry key="edit,rackpdu-nonrackable*" value-ref="dctItemTokenizer"/>
+		<entry key="edit,probe-nonrackable*" value-ref="dctItemTokenizer"/>
+		<entry key="edit,device-zerou*" value-ref="dctItemTokenizer"/>
+		<entry key="edit,rackpdu-zerou*" value-ref="dctItemTokenizer"/>
+		<entry key="edit,probe-zerou*" value-ref="dctItemTokenizer"/>
+		<entry key="edit,datapanel-zerou*" value-ref="dctItemTokenizer"/>
+		<entry key="edit,device-blade*" value-ref="dctItemTokenizer"/>
+		<entry key="edit,network-blade*" value-ref="dctItemTokenizer"/>
+		<entry key="edit,poweroutlet*" value-ref="dctItemTokenizer"/>
+
+		<entry key="delete,cabinet*" value-ref="dctItemTokenizer"/>
+		<entry key="delete,device-freestanding*" value-ref="dctItemTokenizer"/>
+		<entry key="delete,network-freestanding*" value-ref="dctItemTokenizer"/>
+		<entry key="delete,ups*" value-ref="dctItemTokenizer"/>
+		<entry key="delete,crac*" value-ref="dctItemTokenizer"/>
+		<entry key="delete,floorpdu*" value-ref="dctItemTokenizer"/>
+		<entry key="delete,powerpanel*" value-ref="dctItemTokenizer"/>
+		<entry key="delete,device-rackable*" value-ref="dctItemTokenizer"/>
+		<entry key="delete,device-bladechassis-rackable*" value-ref="dctItemTokenizer"/>
+		<entry key="delete,network-chassis-rackable*" value-ref="dctItemTokenizer"/>
+		<entry key="delete,network-rackable*" value-ref="dctItemTokenizer"/>
+		<entry key="delete,datapanel-rackable*" value-ref="dctItemTokenizer"/>
+		<entry key="delete,rackpdu-rackable*" value-ref="dctItemTokenizer"/>
+		<entry key="delete,probe-rackable*" value-ref="dctItemTokenizer"/>
+		<entry key="delete,device-nonrackable*" value-ref="dctItemTokenizer"/>
+		<entry key="delete,network-nonrackable*" value-ref="dctItemTokenizer"/>
+		<entry key="delete,datapanel-nonrackable*" value-ref="dctItemTokenizer"/>
+		<entry key="delete,rackpdu-nonrackable*" value-ref="dctItemTokenizer"/>
+		<entry key="delete,probe-nonrackable*" value-ref="dctItemTokenizer"/>
+		<entry key="delete,device-zerou*" value-ref="dctItemTokenizer"/>
+		<entry key="delete,rackpdu-zerou*" value-ref="dctItemTokenizer"/>
+		<entry key="delete,probe-zerou*" value-ref="dctItemTokenizer"/>
+		<entry key="delete,datapanel-zerou*" value-ref="dctItemTokenizer"/>
+		<entry key="delete,device-blade*" value-ref="dctItemTokenizer"/>
+		<entry key="delete,network-blade*" value-ref="dctItemTokenizer"/>
+		<entry key="delete,poweroutlet*" value-ref="dctItemTokenizer"/>
+		<entry key="delete,passive*" value-ref="dctItemTokenizer"/>
+		
+		<entry key="unmap,item*" value-ref="dctItemTokenizer"/>
+
+		<entry key="add,power-port*" value-ref="dctPowerPortTokenizer"/>
+		<entry key="edit,power-port*" value-ref="dctPowerPortTokenizer"/>
+		<entry key="delete,power-port*" value-ref="dctPowerPortTokenizer"/>
+
+		<entry key="add,data-connection*" value-ref="dctDataConnTokenizer"/>
+		<entry key="edit,data-connection*" value-ref="dctDataConnTokenizer"/>
+		<entry key="delete,data-connection*" value-ref="dctDataConnTokenizer"/>
+
+		<entry key="add,power-connection*" value-ref="dctPowerConnTokenizer"/>
+		<entry key="edit,power-connection*" value-ref="dctPowerConnTokenizer"/>
+		<entry key="delete,power-connection*" value-ref="dctPowerConnTokenizer"/>
+		
+		<entry key="delete,structured-cabling*" value-ref="dctStructuredCablingConnTokenizer"/>
+	</util:map>
+
+</beans>

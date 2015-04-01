@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+	RestTemplate configuration for REST clients.
+ -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:oxm="http://www.springframework.org/schema/oxm"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+					http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-3.2.xsd">
+   	
+   	 <!-- 	This is obsolete. Kept for reference purpose. Will eventually remove it
+  <bean id="httpClientParams" class="org.apache.commons.httpclient.params.HttpClientParams">
+        <property name="authenticationPreemptive" value="true" />
+        <property name="connectionManagerClass" value="org.apache.commons.httpclient.MultiThreadedHttpConnectionManager" />
+        <property name="soTimeout" value="120000" />
+    </bean>
+    
+   	<bean id="httpClient" class="org.apache.commons.httpclient.HttpClient">
+        <constructor-arg ref="httpClientParams" />
+    </bean>  -->
+    
+   <!--  <bean id="httpClientFactory" class="org.springframework.http.client.CommonsClientHttpRequestFactory">
+        <constructor-arg ref="httpClient" />
+    </bean> 
+    
+    <bean id="httpClient" class="org.apache.http.impl.client.DefaultHttpClient"/>
+    
+    <bean id="httpClientFactory" class="com.raritan.tdz.piq.home.HttpComponentsClientHttpRequestFactoryBasicAuth">
+    	<constructor-arg name="httpClient" ref="httpClient"/>
+    	<constructor-arg name="settings" ref="appSettings"/>
+    </bean>
+ 
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+        <constructor-arg ref="httpClientFactory"/>
+    </bean>  -->
+    
+    <bean id="piqSSLHostVerifier" class="com.raritan.tdz.sslclient.home.PIQSSLHostnameVerifier">
+    	<constructor-arg name="hostname" value="${powerIQHost}"/>
+    </bean>
+    
+    <bean id="restTemplate" class="com.raritan.tdz.util.dcTrackRestTemplate" init-method="init">
+    	<property name="soTimeout" value="120000"/>
+    	<property name="piqSSLHostVerifier" ref="piqSSLHostVerifier"/>
+    </bean>
+</beans>

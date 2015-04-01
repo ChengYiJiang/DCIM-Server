@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd">
+
+	<import resource="../../fileImport/import-header-cache.xml"/>
+	
+	<int:channel id="itemResultSplitterInputChannel"/>
+	<int:channel id="itemResultRouterChannel"/>
+	
+	
+	
+	
+	<int:channel id="itemResultAggregatorChannel"/>
+	
+	<bean id="exportListDTOToMapTranslator" class="com.raritan.tdz.dctexport.integration.transformers.ItemExportListDTOToMapTransformer"/>
+	
+	<int:transformer id="exportListDTOToMapTransformer"
+		input-channel="exportItemInputProcessorChannel"
+		output-channel="itemResultSplitterInputChannel"
+		ref="exportListDTOToMapTranslator"
+		method="transform"/>
+	
+	
+	<bean id="itemResultSplitterBean" class="com.raritan.tdz.dctexport.integration.splitters.ItemExportSplitter">
+		<constructor-arg name="ignoreUniqueValues">
+			<list>
+				<value>100</value>
+				<value>613</value>
+			</list>
+		</constructor-arg>
+	</bean>
+	
+	<int:splitter id="itemResultSplitter" 
+		input-channel="itemResultSplitterInputChannel"
+		output-channel="itemResultRouterChannel"
+		ref="itemResultSplitterBean" method="split"/> 
+		
+	<bean id="exportResultHandlerPollerTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="25"/>
+		<property name="maxPoolSize" value="50"/>
+		<property name="queueCapacity" value="25"/>
+	</bean>
+		
+	<int:header-value-router id="inputResultHeaderRouter" input-channel="itemResultRouterChannel" 
+		header-name="#{T(com.raritan.tdz.dctexport.integration.splitters.DCTExportSplitter).EXPORT_SPLITTER_HEADER}" 
+		ignore-send-failures="true">
+		<!-- FREESTANDING -->
+		<int:mapping value="603" channel="cabinetFreeStandingItemResultChannel"/>
+		<int:mapping value="103" channel="deviceFreeStandingItemResultChannel"/>
+		<int:mapping value="203" channel="networkFreeStandingItemResultChannel"/>
+		<int:mapping value="1103" channel="fpduFreeStandingItemResultChannel"/>
+		<int:mapping value="1114" channel="fpduFreeStandingItemResultChannel"/>
+		<int:mapping value="1115" channel="fpduFreeStandingItemResultChannel"/>
+		<int:mapping value="1116" channel="fpduFreeStandingItemResultChannel"/>
+		<int:mapping value="1203" channel="upsFreeStandingItemResultChannel"/>
+		<int:mapping value="1303" channel="cracFreeStandingItemResultChannel"/>
+		
+		<!-- RACKABLE -->
+		<int:mapping value="101" channel="deviceRackableItemResultChannel"/>
+		<int:mapping value="104" channel="deviceChassisRackableItemResultChannel"/>
+		<int:mapping value="204" channel="networkChassisRackableItemResultChannel"/>
+		<int:mapping value="201" channel="networkRackableItemResultChannel"/>
+		<int:mapping value="301" channel="dataPanelRackableItemResultChannel"/>
+		<int:mapping value="501" channel="rackPDURackableItemResultChannel"/>
+		<int:mapping value="701" channel="probeRackableItemResultChannel"/>
+		
+		<!-- NON-RACKABLE -->
+		<int:mapping value="102" channel="deviceNonRackableItemResultChannel"/>
+		<int:mapping value="202" channel="networkNonRackableItemResultChannel"/>
+		<int:mapping value="302" channel="dataPanelNonRackableItemResultChannel"/>
+		<int:mapping value="502" channel="rackPDUNonRackableItemResultChannel"/>
+		<int:mapping value="702" channel="probeNonRackableItemResultChannel"/>
+		
+		<!-- ZERO U -->
+		<int:mapping value="306" channel="dataPanelZeroUItemResultChannel"/>
+		<int:mapping value="506" channel="rackPDUZeroUItemResultChannel"/>
+		<int:mapping value="706" channel="probeZeroUItemResultChannel"/>
+		
+		<!-- BLADE -->
+		<int:mapping value="105" channel="deviceBladeItemResultChannel"/>
+		<int:mapping value="205" channel="networkBladeItemResultChannel"/>
+		
+		<!-- POWER OUTLET -->
+		<int:mapping value="412" channel="powerOutletItemResultChannel"/>
+		<int:mapping value="411" channel="powerOutletItemResultChannel"/>
+		
+		<!--  PASSIVE -->
+		<int:mapping value="3001" channel="passiveItemResultChannel"/>
+		<int:mapping value="3007" channel="passiveItemResultChannel"/>
+		<int:mapping value="3008" channel="passiveItemResultChannel"/>
+	</int:header-value-router>
+	
+	<bean id="itemImportDTOToCSVTranslator" class="com.raritan.tdz.dctexport.integration.transformers.ItemExportImportDTOToCSVTransformer"/>
+
+
+	<bean id="itemImportBean" class="com.raritan.tdz.dctimport.dto.ItemImport" scope="prototype">
+		<constructor-arg name="headerMapCache" ref="itemImportHeaderMapCache"/>
+	</bean>
+	
+	<bean id="itemMapToObjectTransformer" class="org.springframework.integration.transformer.MapToObjectTransformer" scope="prototype">
+		<constructor-arg name="beanName" value="itemImportBean"/>
+	</bean>
+	
+	<bean id="individualItemResultAggregatorBean" class="com.raritan.tdz.dctexport.integration.aggregators.ItemObjectTypeExportAggregator"/>
+	<bean id="itemResultAggregatorBean" class="com.raritan.tdz.dctexport.integration.aggregators.ItemExportAggregator"/>
+	<bean id="itemResultAggregatorCorrelationStrategy" class="com.raritan.tdz.dctexport.integration.aggregators.ExportAggregatorCorrelationStrategy"/>
+	<bean id="individualItemResultAggregatorReleaseStrategy" class="com.raritan.tdz.dctexport.integration.aggregators.ExportObjectTypeAggregatorReleaseStrategy"/>
+	<bean id="itemOverallResultAggregatorReleaseStrategy" class="com.raritan.tdz.dctexport.integration.aggregators.ExportAggregatorReleaseStrategy"/>
+	
+	<int:aggregator id="itemResultAggregator" 
+		input-channel="itemResultAggregatorChannel" 
+		output-channel="exportItemOutputProcessorChannel"
+		release-strategy="itemOverallResultAggregatorReleaseStrategy"
+		release-strategy-method="canRelease"
+		expire-groups-upon-completion="true"
+		ref="itemResultAggregatorBean" 
+		method="aggregate"/>
+
+</beans>

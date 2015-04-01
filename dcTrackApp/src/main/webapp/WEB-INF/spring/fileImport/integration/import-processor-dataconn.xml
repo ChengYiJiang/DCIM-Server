@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<int:channel id="importDataConnChannel"/>
+	<int:channel id="importDataConnAddChannel"/>
+	<int:channel id="importDataConnUpdateChannel"/>
+	<int:channel id="importDataConnDeleteChannel"/>
+	
+	<bean id="dataConnImportProcessor" class="com.raritan.tdz.dctimport.processors.ImportProcessorImpl">
+		<constructor-arg name="messageChannelMap">
+			<map>
+				<entry key="#{T(com.raritan.tdz.dctimport.processors.ImportProcessorImpl).ADD_OPERATION}" value-ref="importDataConnAddChannel"/>
+				<entry key="#{T(com.raritan.tdz.dctimport.processors.ImportProcessorImpl).EDIT_OPERATION}" value-ref="importDataConnUpdateChannel"/>
+				<entry key="#{T(com.raritan.tdz.dctimport.processors.ImportProcessorImpl).DELETE_OPERATION}" value-ref="importDataConnDeleteChannel"/>
+			</map>
+		</constructor-arg>
+	</bean>
+	
+ 	<bean id="dataConnBeanTransformer" class="com.raritan.tdz.dctimport.integration.transformers.DataConnBeanTransformer">
+		<constructor-arg name="uuid" value="${UserUUIDProperty}"/>
+	</bean>
+ 
+	<bean id="dataConnBeanDeleteTransformer" class="com.raritan.tdz.dctimport.integration.transformers.DataConnBeanDeleteTransformer">
+		<constructor-arg name="uuid" value="${UserUUIDProperty}"/>
+	</bean>
+	
+	<bean id="dataConnBeanAddTransformer" class="com.raritan.tdz.dctimport.integration.transformers.DataConnBeanAddTransformer">
+		<constructor-arg name="uuid" value="${UserUUIDProperty}"/>
+	</bean>
+	
+	<bean id="dataConnBeanEditTransformer" class="com.raritan.tdz.dctimport.integration.transformers.DataConnBeanEditTransformer">
+		<constructor-arg name="uuid" value="${UserUUIDProperty}"/>
+	</bean>
+	
+	<bean id="dataConnBeanAddTranslator" class="com.raritan.tdz.dctimport.integration.transformers.ImportBeanTransformer">
+		<constructor-arg name="beanConverter" ref="dataConnBeanAddTransformer"/>
+		<property name="importErrorHandler" ref="importErrorHandlerGateway"/>
+	</bean>
+
+	<bean id="dataConnBeanUpdateTranslator" class="com.raritan.tdz.dctimport.integration.transformers.ImportBeanTransformer">
+		<constructor-arg name="beanConverter" ref="dataConnBeanEditTransformer"/>
+		<property name="importErrorHandler" ref="importErrorHandlerGateway"/>
+	</bean>
+
+	<bean id="dataConnBeanDeleteTranslator" class="com.raritan.tdz.dctimport.integration.transformers.ImportBeanTransformer">
+		<constructor-arg name="beanConverter" ref="dataConnBeanDeleteTransformer"/>
+		<property name="importErrorHandler" ref="importErrorHandlerGateway"/>
+	</bean>
+	
+	<bean id="importCircuitService" parent="abstractImportProcessor">
+		<property name="proxyInterfaces">
+    		<list>
+	    		<value>com.raritan.tdz.circuit.service.CircuitPDService</value>
+    		</list>
+    		
+    	</property>
+    	<property name="target" ref="circuitPDService"/>
+	</bean>
+	
+	<int:chain input-channel="importDataConnAddChannel">
+		<int:transformer id="dataConnBeanToDtoAddTransformer" ref="dataConnBeanAddTranslator" method="transform"/>
+		<int:service-activator id="dataConnHomeActivator" expression="@importCircuitService.saveCircuit(payload.get(0))"
+			requires-reply="false"/>
+	</int:chain>
+	
+	<int:chain input-channel="importDataConnUpdateChannel">
+		<int:transformer id="dataConnBeanToDtoUpdateTransformer" ref="dataConnBeanUpdateTranslator" method="transform"/>
+		<int:service-activator id="dataConnHomeActivator" expression="@importCircuitService.saveCircuit(payload.get(0))"
+			requires-reply="false"/>
+	</int:chain>
+	
+	<int:chain input-channel="importDataConnDeleteChannel">
+		<int:transformer id="dataConnBeanToDtoDeleteTransformer" ref="dataConnBeanDeleteTranslator" method="transform"/>
+		<int:service-activator id="dataConnHomeActivator" expression="@importCircuitService.deleteCircuitByIds(payload.get(0))"
+			requires-reply="false"/>
+	</int:chain>
+	
+	<int:service-activator id="dataConnProcessor" input-channel="importDataConnChannel" ref="dataConnImportProcessor" method="process"/>
+	
+</beans>

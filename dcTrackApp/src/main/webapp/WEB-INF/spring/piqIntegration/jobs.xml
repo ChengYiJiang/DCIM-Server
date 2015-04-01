@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:flex="http://www.springframework.org/schema/flex"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+						http://www.springframework.org/schema/flex 
+    					http://www.springframework.org/schema/flex/spring-flex-1.5.xsd">
+    
+    <!-- A job that periodically polls for and processes asset strip events  -->
+	<bean name="assetStripEventsJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+	  <property name="jobClass" value="com.raritan.tdz.assetstrip.jobs.PIQAssetEventPoller" />
+	  <property name="jobDataAsMap">
+	  	<map>
+			<entry key="timeout" value="5" />
+			<entry key="assetEventBuilder" value-ref="assetEventBuilder" />
+			<entry key="eventHandlerDelegate" value-ref="eventHandlerDelegate" />
+			<entry key="piqEventClient" value-ref="piqEventClient" /> 
+			<entry key="messageSource" value-ref="messageSource" />
+			<entry key="piqSyncPDUClient" value-ref="piqSyncPDUClient" />
+			<entry key="piqSyncPiqVersion" value-ref="piqSyncPiqVersion" />
+			<entry key="appSettings" value-ref="appSettings" />
+			<!--  Uncomment the line below to enable PUSHING of events -->
+			<!-- <entry key="messageTemplate" value-ref="messageTemplate" /> -->
+		</map>
+	  </property>
+	</bean>
+	
+	<!-- Periodically runs the asset strip events poller -->
+	<bean id="assetStripJobTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+	    <!-- see the example of method invoking job above -->
+	    <property name="jobDetail" ref="assetStripEventsJob" />
+	    <!-- Wait 10 seconds before starting -->
+	    <property name="startDelay" value="10000" />
+	    <!-- Polling interval is obtained from application settings -->
+	    <property name="repeatInterval" value="#{ appSettings.getIntProperty('PIQ_POLLING_INTERVAL') != null ? appSettings.getIntProperty('PIQ_POLLING_INTERVAL') * 60000: 60000 }" />
+	</bean>
+	
+	<!-- Specify ALL scheduled jobs here -->
+	<bean id="assetStripScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		 <!-- Enable only if a valid polling interval is set -->
+	    <property name="autoStartup" value="#{ appSettings.getBooleanProperty('PIQ_POLLING_ENABLED') }" />
+	    <property name="triggers">
+	        <list>
+	            <ref bean="assetStripJobTrigger" />
+	        </list>
+	    </property>
+	</bean>
+
+</beans>

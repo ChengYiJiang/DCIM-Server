@@ -1,0 +1,30 @@
+﻿<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE hibernate-mapping
+   PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+   
+<hibernate-mapping>
+
+  <query name="Reports.getAllReports">
+  	<![CDATA[select r from Report r]]>
+  </query>
+  
+  <query name="Reports.getReport">
+  	<![CDATA[select r from Report r where r.reportId = :reportId]]>
+  </query>
+
+  <query name="Reports.getReportForUser">
+  	<![CDATA[select r from Report r
+	    inner join r.reportConfig as g
+	    where g.userId = :userId and  
+	    r.reportId = :reportId
+	]]>
+  </query>
+  <query name="Reports.getAllReportsForUser">
+  	<![CDATA[select r from Report r
+	    inner join r.reportConfig as g
+	    where g.userId = :userId 
+	]]>
+  </query>
+
+</hibernate-mapping>

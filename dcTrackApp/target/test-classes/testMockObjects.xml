@@ -1,0 +1,31 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean id="itemExpectations" class="com.raritan.tdz.unit.item.ItemExpectationsImpl" autowire-candidate="true" autowire="byName"/>
+	<bean id="requestExpectations" class="com.raritan.tdz.unit.item.request.RequestExpectationsImpl" autowire-candidate="true" autowire="byName"/>
+	<bean id="dataCircuitExpectations" class="com.raritan.tdz.unit.circuit.DataCircuitExpectationsImpl" autowire-candidate="true" autowire="byName"/>
+
+	<bean id="genericObjectSaveMock" class="com.raritan.tdz.data.GenericObjectSaveImplMock" />
+    <bean id="itemFactMock" class="com.raritan.tdz.data.ItemFactoryImpl" autowire-candidate="true" autowire="byName">
+    	<property name="itemSave" ref="genericObjectSaveMock"/>
+    </bean> 		
+
+	<bean id="dataPortFact" class="com.raritan.tdz.data.DataPortFactoryImpl" autowire-candidate="true" autowire="byName"/>
+	<bean id="dataConnFact" class="com.raritan.tdz.data.DataConnFactoryImpl" autowire-candidate="true" autowire="byName"/>
+		
+    <bean id="dataCircuitFactMock" class="com.raritan.tdz.data.DataCircuitFactoryImpl" autowire-candidate="true" autowire="byName">
+    	<property name="circuitSave" ref="genericObjectSaveMock"/>
+    </bean>
+
+    <bean id="requestFactMock" class="com.raritan.tdz.data.RequestFactoryImpl" autowire-candidate="true" autowire="byName">
+    	<constructor-arg name="dataPortMoveDAO" ref="dataPortMoveDAO"/>
+    	<constructor-arg name="powerPortMoveDAO" ref="powerPortMoveDAO"/>
+    	<property name="requestSave" ref="genericObjectSaveMock"/>
+    </bean>
+
+	<bean id="itemMock" class="com.raritan.tdz.unit.item.ItemMockImpl" autowire-candidate="true" autowire="byName"/>
+	<bean id="itemMoveMock" class="com.raritan.tdz.unit.item.request.ItemMoveMockImpl" autowire-candidate="true" autowire="byName"/>
+	<bean id="itemRequestMock" class="com.raritan.tdz.unit.item.request.ItemRequestMockImpl" autowire-candidate="true" autowire="byName"/>
+     	
+</beans>

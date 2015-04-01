@@ -1,0 +1,41 @@
+﻿<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE hibernate-mapping
+   PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+   
+<hibernate-mapping>
+
+  <query name="PowerPort.findAssociatedPIQOutlets">
+  	<![CDATA[select pp from PowerPort pp where pp.piqId is not null]]>
+  </query>
+
+  <query name="PowerPort.findPowerPortByPiqIdAndSortOrder">
+  	<![CDATA[select pp from PowerPort pp where pp.item.itemId= ? and pp.piqId = ? and pp.sortOrder = ? and pp.portSubClassLookup.lkpValueCode = ? ]]>
+  </query>
+
+  <query name="PowerPort.findPowerPortBySortOrder">
+  	<![CDATA[select pp from PowerPort pp where pp.item.itemId = ? and pp.sortOrder = ? and pp.portSubClassLookup.lkpValueCode = ? ]]>
+  </query>
+
+  <query name="PowerPort.findPiqId">
+  	<![CDATA[select pp.piqId from PowerPort pp where pp.piqId is not null and pp.item.dataCenterLocation.dataCenterLocationId = ?]]>
+  </query>
+
+  <query name="PowerPort.updateOutletReading">
+  	<![CDATA[update PowerPort pp set pp.ampsActual = ? where pp.piqId = ? and pp.item.dataCenterLocation.dataCenterLocationId = ?]]>
+  </query>
+  
+  <query name="PowerPort.findUsedPorts">
+  	<![CDATA[select pp.portId from PowerPort pp where pp.item.itemId = ? and pp.used = 'true']]>
+  </query>
+  
+  <query name="PowerPort.findPowerPortByPiqId">
+  	<![CDATA[select pp from PowerPort pp where pp.piqId = ? and pp.sortOrder = ? and pp.portSubClassLookup.lkpValueCode = ? and pp.item.dataCenterLocation.dataCenterLocationId = ?]]>
+  </query>
+  
+    <query name="PowerPort.findPowerPortByItemIdAndSortOrder">
+
+  	<![CDATA[select pp from PowerPort pp where pp.item.piqId = ? and pp.item.dataCenterLocation.dataCenterLocationId = ? and pp.sortOrder = ? and pp.portSubClassLookup.lkpValueCode = ? ]]>
+  </query>
+                
+</hibernate-mapping>

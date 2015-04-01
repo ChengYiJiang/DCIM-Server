@@ -1,0 +1,1420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<import resource="tickets.xml"/>
+	
+	<import resource="itemmove.xml"/>
+
+	<util:list id="validationInformationCodes">
+		<value>PortValidator.duplicateIndex</value>
+		<value>PortValidator.invalidIndex</value>
+	</util:list>
+
+	<bean id="powerPortObjectTemplate" class="com.raritan.tdz.port.home.PortObjectTemplateImpl" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="messageSource" ref="messageSource"/>
+        <constructor-arg name="portValidator" ref="powerPortValidator"/>
+        <constructor-arg name="portType" value="PowerPorts"/>
+        <constructor-arg name="adaptor" ref="powerPortDomainAdaptor"/>
+        <constructor-arg name="portDAO" ref="powerPortDAO"/>
+        <property name="deletePortValidator"><null/></property>
+	</bean>
+	
+	<bean id="dataPortObjectTemplate" class="com.raritan.tdz.port.home.PortObjectTemplateImpl" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="messageSource" ref="messageSource"/>
+        <constructor-arg name="portValidator" ref="dataPortValidator"/>
+        <constructor-arg name="portType" value="DataPorts"/>
+        <constructor-arg name="adaptor" ref="dataPortDomainAdaptor"/>
+        <constructor-arg name="portDAO" ref="dataPortDAO"/>
+        <property name="deletePortValidator" ref="dataPortDeleteItemPortValidator"/>
+	</bean>
+
+    <bean id="dataPortObjectHome" class="com.raritan.tdz.item.home.itemObject.PortObjectHomeImpl" 
+            autowire-candidate="true" autowire="byName">
+        <constructor-arg name="messageSource" ref="messageSource"/>
+        <constructor-arg name="portValidator" ref="dataPortValidator"/>
+        <constructor-arg name="portType" value="DataPorts"/>
+        <property name="adaptor" ref="dataPortDomainAdaptor"/>
+    </bean>
+
+    <bean id="powerPortObjectHome" class="com.raritan.tdz.item.home.itemObject.PortObjectHomeImpl" 
+            autowire-candidate="true" autowire="byName">
+        <constructor-arg name="messageSource" ref="messageSource"/>
+        <constructor-arg name="portValidator" ref="powerPortValidator"/>
+        <constructor-arg name="portType" value="PowerPorts"/>
+        <property name="adaptor" ref="powerPortDomainAdaptor"/>
+    </bean>
+
+
+	<!--  Base Template bean (abstract) -->
+	<bean id="itemObjectTemplateBase" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateBase" abstract="true" scope="prototype">
+		<property name="remoteRef" ref="remoteRefItemScreen"/>
+		<property name="rulesProcessor" ref="itemRulesProcessor"/>
+		<property name="placementHome" ref="itemPlacementHome"/>
+	</bean>
+	
+	<!--  Virtual Machine -->
+	<bean id="vmItemObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateSingle" parent="itemObjectTemplateBase" scope="prototype">
+		<property name="itemValidator" ref="itemValidatorVM"/>
+		<property name="itemDeleteValidator" ref="itemDeleteValidatorVM"/>
+		<property name="portObjectsList">
+			<list>
+				<value>DataPorts</value>
+			</list>
+		</property>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.LocationChangeIPAddressDelete</value>
+			</list>
+		</property>
+		<property name="itemSaveBehaviors">
+			<list>
+				<ref bean="itemSaveCommonBehavior"/>
+				<ref bean="piqIntegratedItemsLocationChangeSaveBehavior"/>
+				<ref bean="itemSNMPSaveBehavior"/>
+			</list>
+		</property>
+		<property name="itemDeleteBehaviors">
+			<list>
+				<ref bean="itItemDeleteBehavior"/>
+				<ref bean="itemDeleteTicketBehavior"/>
+				<ref bean="moveItemDeleteBehavior"/>
+				<ref bean="itemDeleteCommonBehavior"/>
+			</list>
+		</property>
+		<property name="itemFinalBehaviors">
+			<list>
+				<ref bean="itemSaveTicketBehavior"/>
+				<ref bean="itemSaveItemMoveBehavior"/>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- Device -->
+	<bean id="bladeServerItemObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateSingle" parent="itemObjectTemplateBase" scope="prototype">
+		<property name="itemValidator" ref="itemValidatorBlade"/>
+		<property name="itemDeleteValidator" ref="itemDeleteValidatorBlade"/>
+		<property name="portObjectsList">
+			<list>
+				<value>DataPorts</value>
+			</list>
+		</property>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.invalidModelChassis</value>
+				<value>ItemValidator.LocationChangeIPAddressDelete</value>
+				<value>ItemMoveValidator.parentHasPendingRequest</value>
+				<value>ItemMoveValidator.MoveItemEditedDevice</value>
+			</list>
+		</property>
+		<property name="itemSaveBehaviors">
+			<list>
+				<ref bean="itemSaveCommonBehavior"/>
+				<ref bean="bladeSaveBehavior"/>
+				<ref bean="piqIntegratedItemsLocationChangeSaveBehavior"/>
+				<ref bean="itemSNMPSaveBehavior"/>
+				<ref bean="itemLocationChangeSaveBehavior"/>
+				<ref bean="itemsCabinetChangeSaveBehavior"/>
+				<ref bean="bladesCabinetChangeSaveBehavior"/>	<!--  clears uPosition, chassis, slotPosition -->
+				<ref bean="bladeLocationChangeSaveBehavior"/>    <!--  clears cabinet, uPosition, chassis, slotposition -->
+			</list>
+		</property>
+		<property name="itemDeleteBehaviors">
+			<list>
+				<ref bean="itItemDeleteBehavior"/>
+				<ref bean="itemDeleteTicketBehavior"/>
+				<ref bean="moveItemDeleteBehavior"/>
+				<ref bean="itemDeleteCommonBehavior"/>
+			</list>
+		</property>
+		<property name="itemFinalBehaviors">
+			<list>
+				<ref bean="itemSaveTicketBehavior"/>
+				<ref bean="bladeItemSaveItemMoveBehavior"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="chassisDeviceItemObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateSingle" parent="itemObjectTemplateBase" scope="prototype">
+		<property name="itemValidator" ref="itemValidatorChassis"/>
+		<property name="itemDeleteValidator" ref="itemDeleteValidatorChassis"/>
+		<property name="portObjectsList">
+			<list>
+				<value>DataPorts</value>
+				<value>PowerPorts</value>
+			</list>
+		</property>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.invalidDefinitionModelChassis</value>
+				<value>ItemMoveValidator.MoveItemEditedDevice</value>
+				<value>ItemMoveValidator.MoveItemCabinetChanged</value>
+				<value>ItemMoveValidator.PortsModificationOnMovingItem</value>
+				<value>ItemValidator.LocationChangeIPAddressDelete</value>
+				<value>ItemMoveValidator.childrenHasPendingRequest</value>
+				<value>ItemMoveValidator.parentHasPendingRequest</value>
+			</list>
+		</property>
+		<property name="itemSaveBehaviors">
+			<list>
+				<ref bean="itemSaveCommonBehavior"/>
+				<ref bean="chassisSaveBehavior"/>
+				<ref bean="piqIntegratedItemsLocationChangeSaveBehavior"/>
+				<ref bean="itemSNMPSaveBehavior"/>
+				<ref bean="itemsCabinetChangeSaveBehavior"/> 	<!-- clears uPosition -->
+				<ref bean="itemLocationChangeSaveBehavior"/>	<!-- clears cabinet, uPosition, orientation -->
+			</list>
+		</property>
+		<property name="itemDeleteBehaviors">
+			<list>
+				<ref bean="chassisDeleteBehavior"/>
+				<ref bean="itItemDeleteBehavior"/>
+				<ref bean="itemDeleteTicketBehavior"/>
+				<ref bean="moveItemDeleteBehavior"/>
+				<ref bean="itemDeleteCommonBehavior"/>
+			</list>
+		</property>
+		<property name="itemFinalBehaviors">
+			<list>
+				<ref bean="itemSaveTicketBehavior"/>
+				<ref bean="itemSaveItemMoveBehavior"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="standardDeviceItemObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateSingle" parent="itemObjectTemplateBase" scope="prototype">
+		<property name="itemValidator" ref="itemValidatorStandard"/>
+		<property name="itemDeleteValidator" ref="itemDeleteValidatorStandard"/>
+		<property name="portObjectsList">
+			<list>
+				<value>DataPorts</value>
+				<value>PowerPorts</value>
+			</list>
+		</property>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemMoveValidator.MoveItemEditedDevice</value>
+				<value>ItemMoveValidator.MoveItemCabinetChanged</value>
+				<value>ItemMoveValidator.PortsModificationOnMovingItem</value>
+				<value>ItemValidator.LocationChangeIPAddressDelete</value>
+				<value>ItemMoveValidator.parentHasPendingRequest</value>
+			</list>
+		</property>
+		<property name="itemSaveBehaviors">
+			<list>
+				<ref bean="itemSaveCommonBehavior"/>
+				<ref bean="piqIntegratedItemsLocationChangeSaveBehavior"/>
+				<ref bean="itemSNMPSaveBehavior"/>
+				<ref bean="itemsCabinetChangeSaveBehavior"/>	<!-- clears uPostiion -->
+				<ref bean="itemLocationChangeSaveBehavior"/>	<!-- clears cabinet, uPosition, orientation -->
+			</list>
+		</property>
+		<property name="itemDeleteBehaviors">
+			<list>
+				<ref bean="itItemDeleteBehavior"/>
+				<ref bean="itemDeleteTicketBehavior"/>
+				<ref bean="moveItemDeleteBehavior"/>
+				<ref bean="itemDeleteCommonBehavior"/>
+			</list>
+		</property>
+		<property name="itemFinalBehaviors">
+			<list>
+				<ref bean="itemSaveTicketBehavior"/>
+				<ref bean="itemSaveItemMoveBehavior"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="fsDeviceItemObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateMultiple" parent="itemObjectTemplateBase" scope="prototype">
+		<constructor-arg name="saveDTOHelper" ref="fsSaveDTOHelper"/>
+		<constructor-arg name="itemObjectTemplateMap">
+			<map>
+				<entry key="com.raritan.tdz.domain.CabinetItem" value-ref="containerCabinetItemObject"/>
+				<entry key="com.raritan.tdz.domain.ItItem" value-ref="standardDeviceItemObject"/>
+			</map>
+		</constructor-arg>
+		<property name="modelChangeItemObjectTemplate" ref="standardDeviceItemObject"/>
+		<property name="deleteItemDomainOrderList">
+			<list>
+				<value>com.raritan.tdz.domain.ItItem</value>
+				<value>com.raritan.tdz.domain.CabinetItem</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="nrDeviceItemObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateSingle" parent="itemObjectTemplateBase" scope="prototype">
+		<property name="itemValidator" ref="itemValidatorNR"/>
+		<property name="itemDeleteValidator" ref="itemDeleteValidatorNR"/>
+		<property name="portObjectsList">
+			<list>
+				<value>DataPorts</value>
+				<value>PowerPorts</value>
+			</list>
+		</property>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemMoveValidator.MoveItemEditedDevice</value>
+				<value>ItemMoveValidator.MoveItemCabinetChanged</value>
+				<value>ItemMoveValidator.PortsModificationOnMovingItem</value>
+				<value>ItemValidator.LocationChangeIPAddressDelete</value>
+				<value>ItemMoveValidator.parentHasPendingRequest</value>
+			</list>
+		</property>
+		<property name="itemSaveBehaviors">
+			<list>
+				<ref bean="itemSaveCommonBehavior"/>
+				<ref bean="nonRackableSaveBehavior"/>
+				<ref bean="piqIntegratedItemsLocationChangeSaveBehavior"/>
+				<ref bean="itemSNMPSaveBehavior"/>
+				<ref bean="itemLocationChangeSaveBehavior"/>
+				<ref bean="itemsCabinetChangeSaveBehavior"/>
+				<ref bean="nrItemCabinetChangeSaveBehavior"/>
+				<ref bean="nrItemLocationChangeSaveBehavior"/>
+			</list>
+		</property>
+		<property name="itemDeleteBehaviors">
+			<list>
+				<ref bean="itItemDeleteBehavior"/>
+				<ref bean="itemDeleteTicketBehavior"/>
+				<ref bean="moveItemDeleteBehavior"/>
+				<ref bean="itemDeleteCommonBehavior"/>
+				<ref bean="nrItemDeleteBehavior"/>
+			</list>
+		</property>
+		<property name="itemFinalBehaviors">
+			<list>
+				<ref bean="itemSaveTicketBehavior"/>
+				<ref bean="itemSaveItemMoveBehavior"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="zerouDeviceItemObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateSingle" parent="itemObjectTemplateBase" scope="prototype">
+		<property name="itemValidator" ref="itemValidatorZeroU"/>
+		<property name="itemDeleteValidator" ref="itemDeleteValidatorZeroU"/>
+		<property name="portObjectsList">
+			<list>
+				<value>DataPorts</value>
+				<value>PowerPorts</value>
+			</list>
+		</property>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.LocationChangeIPAddressDelete</value>
+				<value>ItemMoveValidator.parentHasPendingRequest</value>
+			</list>
+		</property>
+		<property name="itemSaveBehaviors">
+			<list>
+				<ref bean="itemSaveCommonBehavior"/>
+				<ref bean="piqIntegratedItemsLocationChangeSaveBehavior"/>
+				<ref bean="itemSNMPSaveBehavior"/>
+				<ref bean="itemsCabinetChangeSaveBehavior"/>
+				<ref bean="itemLocationChangeSaveBehavior"/>
+			</list>
+		</property>
+		<property name="itemDeleteBehaviors">
+			<list>
+				<ref bean="itItemDeleteBehavior"/>
+				<ref bean="itemDeleteTicketBehavior"/>
+				<ref bean="moveItemDeleteBehavior"/>
+				<ref bean="itemDeleteCommonBehavior"/>
+			</list>
+		</property>
+		<property name="itemFinalBehaviors">
+			<list>
+				<ref bean="itemSaveTicketBehavior"/>
+				<ref bean="itemSaveItemMoveBehavior"/>
+			</list>
+		</property>
+	</bean>
+	
+	
+	<!-- Network -->
+	<bean id="bladeNetworkItemObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateSingle"  parent="itemObjectTemplateBase" scope="prototype">
+		<property name="itemValidator" ref="itemValidatorBlade"/>
+		<property name="itemDeleteValidator" ref="itemDeleteValidatorBlade"/>
+		<property name="portObjectsList">
+			<list>
+				<value>DataPorts</value>
+			</list>
+		</property>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.invalidModelChassis</value>
+				<value>ItemValidator.LocationChangeIPAddressDelete</value>
+				<value>ItemMoveValidator.parentHasPendingRequest</value>
+				<value>ItemMoveValidator.MoveItemEditedNetwork</value>
+			</list>
+		</property>
+		<property name="itemSaveBehaviors">
+			<list>
+				<ref bean="itemSaveCommonBehavior"/>
+				<ref bean="networkBladeSaveBehavior"/>
+				<ref bean="piqIntegratedItemsLocationChangeSaveBehavior"/>
+				<ref bean="itemSNMPSaveBehavior"/>
+				<ref bean="itemLocationChangeSaveBehavior"/>
+				<ref bean="itemsCabinetChangeSaveBehavior"/>
+				<ref bean="bladesCabinetChangeSaveBehavior"/>
+				<ref bean="bladeLocationChangeSaveBehavior"/>
+			</list>
+		</property>
+		<property name="itemDeleteBehaviors">
+			<list>
+				<ref bean="itItemDeleteBehavior"/>
+				<ref bean="itemDeleteTicketBehavior"/>
+				<ref bean="moveItemDeleteBehavior"/>
+				<ref bean="itemDeleteCommonBehavior"/>
+			</list>
+		</property>
+		<property name="itemFinalBehaviors">
+			<list>
+				<ref bean="itemSaveTicketBehavior"/>
+				<ref bean="bladeItemSaveItemMoveBehavior"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="chassisNetworkObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateSingle"  parent="itemObjectTemplateBase" scope="prototype">
+		<property name="itemValidator" ref="itemValidatorChassis"/>
+		<property name="itemDeleteValidator" ref="itemDeleteValidatorChassis"/>
+		<property name="portObjectsList">
+			<list>
+				<value>DataPorts</value>
+				<value>PowerPorts</value>
+			</list>
+		</property>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.invalidDefinitionModelChassis</value>
+				<value>ItemMoveValidator.MoveItemEditedNetwork</value>
+				<value>ItemMoveValidator.MoveItemCabinetChanged</value>
+				<value>ItemMoveValidator.PortsModificationOnMovingItem</value>
+				<value>ItemValidator.LocationChangeIPAddressDelete</value>
+				<value>ItemMoveValidator.childrenHasPendingRequest</value>
+				<value>ItemMoveValidator.parentHasPendingRequest</value>
+			</list>
+		</property>
+		<property name="itemSaveBehaviors">
+			<list>
+				<ref bean="itemSaveCommonBehavior"/>
+				<ref bean="networkChassisSaveBehavior"/>
+				<ref bean="itemSNMPSaveBehavior"/>
+				<ref bean="itemsCabinetChangeSaveBehavior"/>
+				<ref bean="itemLocationChangeSaveBehavior"/>
+			</list>
+		</property>		
+		<property name="itemDeleteBehaviors">
+			<list>
+				<ref bean="chassisDeleteBehavior"/>
+				<ref bean="itItemDeleteBehavior"/>
+				<ref bean="itemDeleteTicketBehavior"/>
+				<ref bean="moveItemDeleteBehavior"/>
+				<ref bean="itemDeleteCommonBehavior"/>
+			</list>
+		</property>
+		<property name="itemFinalBehaviors">
+			<list>
+				<ref bean="itemSaveTicketBehavior"/>
+				<ref bean="itemSaveItemMoveBehavior"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="fsNetworkStackItemObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateMultiple"  parent="itemObjectTemplateBase" scope="prototype">
+		<constructor-arg name="saveDTOHelper" ref="fsSaveDTOHelper"/>
+			<constructor-arg name="itemObjectTemplateMap">
+			<map>
+				<entry key="com.raritan.tdz.domain.CabinetItem" value-ref="containerCabinetItemObject"/>
+				<entry key="com.raritan.tdz.domain.ItItem" value-ref="standardNetworkStackItemObject"/>
+			</map>
+		</constructor-arg>
+		<property name="modelChangeItemObjectTemplate" ref="standardNetworkStackItemObject"/>
+		<property name="deleteItemDomainOrderList">
+			<list>
+				<value>com.raritan.tdz.domain.ItItem</value>
+				<value>com.raritan.tdz.domain.CabinetItem</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="standardNetworkStackItemObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateSingle"  parent="itemObjectTemplateBase" scope="prototype">
+		<property name="itemValidator" ref="itemValidatorStandard"/>
+		<property name="itemDeleteValidator" ref="itemDeleteValidatorStandard"/>
+		<property name="portObjectsList">
+			<list>
+				<value>DataPorts</value>
+				<value>PowerPorts</value>
+			</list>
+		</property>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemMoveValidator.MoveItemEditedNetwork</value>
+				<value>ItemMoveValidator.MoveItemCabinetChanged</value>
+				<value>ItemMoveValidator.PortsModificationOnMovingItem</value>
+				<value>ItemValidator.LocationChangeIPAddressDelete</value>
+				<value>ItemMoveValidator.parentHasPendingRequest</value>
+			</list>
+		</property>
+		<property name="itemSaveBehaviors">
+			<list>
+				<ref bean="itemSaveCommonBehavior"/>
+				<ref bean="networkStackSaveBehavior"/>
+				<ref bean="piqIntegratedItemsLocationChangeSaveBehavior"/>
+				<ref bean="itemSNMPSaveBehavior"/>
+				<ref bean="itemLocationChangeSaveBehavior"/>
+				<ref bean="itemsCabinetChangeSaveBehavior"/>
+				<ref bean="nrItemCabinetChangeSaveBehavior"/>
+				<ref bean="nrItemLocationChangeSaveBehavior"/>
+			</list>
+		</property>
+		<property name="itemDeleteBehaviors">
+			<list>
+				<ref bean="networkStackDeleteBehavior"/>
+				<ref bean="itItemDeleteBehavior"/>
+				<ref bean="itemDeleteTicketBehavior"/>
+				<ref bean="moveItemDeleteBehavior"/>
+				<ref bean="itemDeleteCommonBehavior"/>
+			</list>
+		</property>
+		<property name="itemFinalBehaviors">
+			<list>
+				<ref bean="itemSaveTicketBehavior"/>
+				<ref bean="itemSaveItemMoveBehavior"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="nrNetworkStackItemObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateSingle"  parent="itemObjectTemplateBase" scope="prototype">
+		<property name="itemValidator" ref="itemValidatorNR"/>
+		<property name="itemDeleteValidator" ref="itemDeleteValidatorNR"/>
+		<property name="portObjectsList">
+			<list>
+				<value>DataPorts</value>
+				<value>PowerPorts</value>
+			</list>
+		</property>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemMoveValidator.MoveItemEditedNetwork</value>
+				<value>ItemMoveValidator.MoveItemCabinetChanged</value>
+				<value>ItemMoveValidator.PortsModificationOnMovingItem</value>
+				<value>ItemValidator.LocationChangeIPAddressDelete</value>
+				<value>ItemMoveValidator.parentHasPendingRequest</value>
+				
+			</list>
+		</property>
+		<property name="itemSaveBehaviors">
+			<list>
+				<ref bean="itemSaveCommonBehavior"/>
+				<ref bean="networkStackSaveBehavior"/>
+				<ref bean="nonRackableSaveBehavior"/>
+				<ref bean="piqIntegratedItemsLocationChangeSaveBehavior"/>
+				<ref bean="itemSNMPSaveBehavior"/>
+				<ref bean="itemLocationChangeSaveBehavior"/>
+				<ref bean="itemsCabinetChangeSaveBehavior"/>
+				<ref bean="nrItemCabinetChangeSaveBehavior"/>
+				<ref bean="nrItemLocationChangeSaveBehavior"/>
+			</list>
+		</property>
+		<property name="itemDeleteBehaviors">
+			<list>
+				<ref bean="networkStackDeleteBehavior"/>
+				<ref bean="itItemDeleteBehavior"/>
+				<ref bean="itemDeleteTicketBehavior"/>
+				<ref bean="moveItemDeleteBehavior"/>			
+				<ref bean="itemDeleteCommonBehavior"/>
+				<ref bean="nrItemDeleteBehavior"/>
+			</list>
+		</property>
+		<property name="itemFinalBehaviors">
+			<list>
+				<ref bean="itemSaveTicketBehavior"/>
+				<ref bean="itemSaveItemMoveBehavior"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="zerouNetworkStackItemObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateSingle"  parent="itemObjectTemplateBase" scope="prototype">
+		<property name="itemValidator" ref="itemValidatorZeroU"/>
+		<property name="itemDeleteValidator" ref="itemDeleteValidatorZeroU"/>
+		<property name="portObjectsList">
+			<list>
+				<value>DataPorts</value>
+				<value>PowerPorts</value>
+			</list>
+		</property>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.LocationChangeIPAddressDelete</value>
+				<value>ItemMoveValidator.parentHasPendingRequest</value>
+			</list>
+		</property>	
+		<property name="itemSaveBehaviors">
+			<list>
+				<ref bean="itemSaveCommonBehavior"/>
+				<ref bean="piqIntegratedItemsLocationChangeSaveBehavior"/>
+				<ref bean="itemSNMPSaveBehavior"/>
+				<ref bean="itemLocationChangeSaveBehavior"/>
+				<ref bean="itemsCabinetChangeSaveBehavior"/>
+				<ref bean="nrItemCabinetChangeSaveBehavior"/>
+				<ref bean="nrItemLocationChangeSaveBehavior"/>
+				</list>
+		</property>
+		<property name="itemDeleteBehaviors">
+			<list>
+				<ref bean="networkStackDeleteBehavior"/>
+				<ref bean="itItemDeleteBehavior"/>
+				<ref bean="itemDeleteTicketBehavior"/>
+				<ref bean="moveItemDeleteBehavior"/>	
+				<ref bean="itemDeleteCommonBehavior"/>
+			</list>
+		</property>
+		<property name="itemFinalBehaviors">
+			<list>
+				<ref bean="itemSaveTicketBehavior"/>
+				<ref bean="itemSaveItemMoveBehavior"/>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- Data Panel -->
+	<bean id="standardDpItemObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateSingle"  parent="itemObjectTemplateBase" scope="prototype">
+		<property name="itemValidator" ref="itemValidatorStandardDP"/>
+		<property name="itemDeleteValidator" ref="itemDeleteValidatorStandardDP"/>
+		<property name="portObjectsList">
+			<list>
+				<value>DataPorts</value>
+			</list>
+		</property>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.LocationChangeIPAddressDelete</value>
+				<value>ItemMoveValidator.parentHasPendingRequest</value>
+			</list>
+		</property>
+		<property name="itemSaveBehaviors">
+			<list>
+				<ref bean="itemSaveCommonBehavior"/>
+				<ref bean="piqIntegratedItemsLocationChangeSaveBehavior"/>
+				<ref bean="itemSNMPSaveBehavior"/>
+				<ref bean="itemLocationChangeSaveBehavior"/>
+				<ref bean="itemsCabinetChangeSaveBehavior"/>
+			</list>
+		</property>
+		<property name="itemDeleteBehaviors">
+			<list>
+				<ref bean="dpDeleteBehavior"/>
+				<ref bean="itItemDeleteBehavior"/>
+				<ref bean="itemDeleteTicketBehavior"/>
+				<ref bean="moveItemDeleteBehavior"/>
+				<ref bean="itemDeleteCommonBehavior"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="nrDpItemObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateSingle"  parent="itemObjectTemplateBase" scope="prototype">
+		<property name="itemValidator" ref="itemValidatorNRDP"/>
+		<property name="itemDeleteValidator" ref="itemDeleteValidatorNRDP"/>
+		<property name="portObjectsList">
+			<list>
+				<value>DataPorts</value>
+			</list>
+		</property>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.LocationChangeIPAddressDelete</value>
+				<value>ItemMoveValidator.parentHasPendingRequest</value>
+			</list>
+		</property>
+		<property name="itemSaveBehaviors">
+			<list>
+				<ref bean="itemSaveCommonBehavior"/>
+				<ref bean="nonRackableSaveBehavior"/>
+				<ref bean="piqIntegratedItemsLocationChangeSaveBehavior"/>
+				<ref bean="itemSNMPSaveBehavior"/>
+				<ref bean="itemsCabinetChangeSaveBehavior"/>
+				<ref bean="itemLocationChangeSaveBehavior"/>
+				<ref bean="nrItemCabinetChangeSaveBehavior"/>
+				<ref bean="nrItemLocationChangeSaveBehavior"/>
+			</list>
+		</property>
+		<property name="itemDeleteBehaviors">
+			<list>
+				<ref bean="dpDeleteBehavior"/>
+				<ref bean="itItemDeleteBehavior"/>
+				<ref bean="itemDeleteTicketBehavior"/>
+				<ref bean="moveItemDeleteBehavior"/>
+				<ref bean="itemDeleteCommonBehavior"/>
+				<ref bean="nrItemDeleteBehavior"/>
+
+			</list>
+		</property>
+	</bean>
+	<bean id="zerouDpItemObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateSingle"  parent="itemObjectTemplateBase" scope="prototype">
+		<property name="itemValidator" ref="itemValidatorZeroDP"/>
+		<property name="itemDeleteValidator" ref="itemDeleteValidatorZeroDP"/>
+		<property name="portObjectsList">
+			<list>
+				<value>DataPorts</value>
+			</list>
+		</property>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.LocationChangeIPAddressDelete</value>
+				<value>ItemMoveValidator.parentHasPendingRequest</value>
+			</list>
+		</property>
+		<property name="itemSaveBehaviors">
+			<list>
+				<ref bean="itemSaveCommonBehavior"/>
+				<ref bean="piqIntegratedItemsLocationChangeSaveBehavior"/>
+				<ref bean="itemSNMPSaveBehavior"/>
+				<ref bean="itemLocationChangeSaveBehavior"/>
+				<ref bean="itemsCabinetChangeSaveBehavior"/>
+			</list>
+		</property>
+		<property name="itemDeleteBehaviors">
+			<list>
+				<ref bean="dpDeleteBehavior"/>			
+				<ref bean="itItemDeleteBehavior"/>
+				<ref bean="itemDeleteTicketBehavior"/>
+				<ref bean="moveItemDeleteBehavior"/>
+				<ref bean="itemDeleteCommonBehavior"/>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Outlet -->
+	<bean id="buswayOutletItemObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateSingle"  parent="itemObjectTemplateBase" scope="prototype">
+		<property name="itemValidator" ref="itemValidatorOutlet"/>
+		<property name="itemDeleteValidator" ref="itemDeleteValidatorOutlet"/>
+		<property name="itemSaveBehaviors">
+			<list>
+				<ref bean="itemSaveCommonBehavior"/>
+				<ref bean="piqIntegratedItemsLocationChangeSaveBehavior"/>
+				<ref bean="itemSNMPSaveBehavior"/>
+				<ref bean="itemsCabinetChangeSaveBehavior"/>
+				<ref bean="itemLocationChangeSaveBehavior"/>
+			</list>
+		</property>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemMoveValidator.parentHasPendingRequest</value>
+			</list>
+		</property>
+		<property name="itemDeleteBehaviors">
+			<list>
+				<ref bean="outletItemDeleteBehavior"/>
+				<ref bean="meItemDeleteBehavior"/>
+				<ref bean="itemDeleteTicketBehavior"/>
+				<ref bean="moveItemDeleteBehavior"/>
+				<ref bean="itemDeleteCommonBehavior"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="nrOutletItemObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateSingle"  parent="itemObjectTemplateBase" scope="prototype">
+		<property name="itemValidator" ref="itemValidatorNROutlet"/>
+		<property name="itemDeleteValidator" ref="itemDeleteValidatorNROutlet"/>
+		<property name="itemSaveBehaviors">
+			<list>
+				<ref bean="itemSaveCommonBehavior"/>
+				<ref bean="piqIntegratedItemsLocationChangeSaveBehavior"/>
+				<ref bean="itemSNMPSaveBehavior"/>
+				<ref bean="itemsCabinetChangeSaveBehavior"/>
+				<ref bean="itemLocationChangeSaveBehavior"/>
+				<ref bean="nrItemCabinetChangeSaveBehavior"/>
+				<ref bean="nrItemLocationChangeSaveBehavior"/>
+			</list>
+		</property>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemMoveValidator.parentHasPendingRequest</value>
+			</list>
+		</property>
+		
+		<property name="itemDeleteBehaviors">
+			<list>
+				<ref bean="outletItemDeleteBehavior"/>
+				<ref bean="meItemDeleteBehavior"/>
+				<ref bean="itemDeleteTicketBehavior"/>
+				<ref bean="moveItemDeleteBehavior"/>
+				<ref bean="itemDeleteCommonBehavior"/>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- Rack PDU -->
+	<bean id="zerouRpduItemObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateSingle"  parent="itemObjectTemplateBase" scope="prototype">
+		<property name="itemValidator" ref="itemValidatorZeroURPDU"/>
+		<property name="itemDeleteValidator" ref="itemDeleteValidatorZeroURPDU"/>
+		<property name="portObjectsList">
+			<list>
+				<value>DataPorts</value>
+				<value>PowerPorts</value>
+			</list>
+		</property>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.invalidPowerPortVolt</value>
+				<value>ItemValidator.LocationChangeIPAddressDelete</value>
+				<value>ItemMoveValidator.parentHasPendingRequest</value>
+			</list>
+		</property>
+		<property name="itemSaveBehaviors">
+			<list>
+				<ref bean="itemSaveCommonBehavior"/>
+				<ref bean="rackPduSaveBehavior"/>
+				<ref bean="itemSNMPSaveBehavior"/>
+				<ref bean="piqIntegratedItemsLocationChangeSaveBehavior"/>
+				<ref bean="itemsCabinetChangeSaveBehavior"/>
+				<ref bean="itemLocationChangeSaveBehavior"/>
+			</list>
+		</property>
+		<property name="itemDeleteBehaviors">
+			<list>
+				<ref bean="rpduItemDeleteBehavior"/>
+				<ref bean="meItemDeleteBehavior"/>
+				<ref bean="itemDeleteTicketBehavior"/>
+				<ref bean="moveItemDeleteBehavior"/>
+				<ref bean="itemDeleteCommonBehavior"/>
+			</list>
+		</property>
+		<property name="itemFinalBehaviors">
+			<list>
+				<ref bean="itemSaveTicketBehavior"/>
+				<ref bean="itemSaveItemMoveBehavior"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="rackableRpduItemObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateSingle"  parent="itemObjectTemplateBase" scope="prototype">
+		<property name="itemValidator" ref="itemValidatorRackableRPDU"/>
+		<property name="itemDeleteValidator" ref="itemDeleteValidatorRackableRPDU"/>
+		<property name="portObjectsList">
+			<list>
+				<value>DataPorts</value>
+				<value>PowerPorts</value>
+			</list>
+		</property>	
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.invalidPowerPortVolt</value>
+				<value>ItemValidator.LocationChangeIPAddressDelete</value>
+				<value>ItemMoveValidator.parentHasPendingRequest</value>
+			</list>
+		</property>
+		<property name="itemSaveBehaviors">
+			<list>
+				<ref bean="itemSaveCommonBehavior"/>
+				<ref bean="rackPduSaveBehavior"/>
+				<ref bean="itemSNMPSaveBehavior"/>
+				<ref bean="piqIntegratedItemsLocationChangeSaveBehavior"/>
+				<ref bean="itemsCabinetChangeSaveBehavior"/>
+				<ref bean="itemLocationChangeSaveBehavior"/>
+			</list>
+		</property>
+		<property name="itemDeleteBehaviors">
+			<list>
+				<ref bean="rpduItemDeleteBehavior"/>
+				<ref bean="meItemDeleteBehavior"/>
+				<ref bean="itemDeleteTicketBehavior"/>
+				<ref bean="moveItemDeleteBehavior"/>
+				<ref bean="itemDeleteCommonBehavior"/>
+			</list>
+		</property>
+		<property name="itemFinalBehaviors">
+			<list>
+				<ref bean="itemSaveTicketBehavior"/>
+				<ref bean="itemSaveItemMoveBehavior"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="nrRpduItemObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateSingle"  parent="itemObjectTemplateBase" scope="prototype">
+		<property name="itemValidator" ref="itemValidatorNRRPDU"/>
+		<property name="itemDeleteValidator" ref="itemDeleteValidatorNRRPDU"/>
+		<property name="portObjectsList">
+			<list>
+				<value>DataPorts</value>
+			</list>
+		</property>	
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.invalidPowerPortVolt</value>
+				<value>ItemValidator.LocationChangeIPAddressDelete</value>
+				<value>ItemMoveValidator.parentHasPendingRequest</value>
+			</list>
+		</property>
+		<property name="itemSaveBehaviors">
+			<list>
+				<ref bean="itemSaveCommonBehavior"/>
+				<ref bean="rackPduSaveBehavior"/>
+				<ref bean="itemSNMPSaveBehavior"/>
+				<ref bean="nonRackableSaveBehavior"/>
+				<ref bean="piqIntegratedItemsLocationChangeSaveBehavior"/>
+				<ref bean="itemsCabinetChangeSaveBehavior"/>
+				<ref bean="itemLocationChangeSaveBehavior"/>
+				<ref bean="nrItemCabinetChangeSaveBehavior"/>
+				<ref bean="nrItemLocationChangeSaveBehavior"/>
+			</list>
+		</property>
+		<property name="itemDeleteBehaviors">
+			<list>
+				<ref bean="rpduItemDeleteBehavior"/>
+				<ref bean="meItemDeleteBehavior"/>
+				<ref bean="itemDeleteTicketBehavior"/>
+				<ref bean="moveItemDeleteBehavior"/>
+				<ref bean="itemDeleteCommonBehavior"/>
+				<ref bean="nrItemDeleteBehavior"/>
+			</list>
+		</property>
+		<property name="itemFinalBehaviors">
+			<list>
+				<ref bean="itemSaveTicketBehavior"/>
+				<ref bean="itemSaveItemMoveBehavior"/>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- Cabinet -->
+	<bean id="cabinentItemObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateSingle"  parent="itemObjectTemplateBase" scope="prototype">
+		<property name="itemValidator" ref="itemValidatorCabinet"/>
+		<property name="itemDeleteValidator" ref="itemDeleteValidatorCabinet"/>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemMoveValidator.MoveItemEditedCabinet</value>
+				<value>ItemMoveValidator.childrenHasPendingRequest</value>
+				<value>ItemMoveValidator.hasReservations</value>
+			</list>
+		</property>
+		<property name="itemSaveBehaviors">
+			<list>
+				<ref bean="itemSaveCommonBehavior"/>
+				<ref bean="cabinetSaveBehavior"/>
+                <ref bean="freeStandingSaveBehavior"/>
+				<ref bean="piqIntegratedItemsLocationChangeSaveBehavior"/>
+				<ref bean="cabinetPassiveChildrenSaveBehavior"/>
+				<ref bean="itemSNMPSaveBehavior"/>
+				<ref bean="cabinetLocationChangeSaveBehavior"/>
+			</list>
+		</property>
+		<property name="itemDeleteBehaviors">
+			<list>
+				<ref bean="cabinetDeleteBehavior"/>
+				<ref bean="itemDeleteTicketBehavior"/>
+				<ref bean="moveItemDeleteBehavior"/>
+				<ref bean="itemDeleteCommonBehavior"/>
+			</list>
+		</property>
+		<property name="itemFinalBehaviors">
+			<list>
+				<ref bean="itemSaveTicketBehavior"/>
+				<ref bean="cabinetItemSaveItemMoveBehavior"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="containerCabinetItemObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateSingle"  parent="itemObjectTemplateBase" scope="prototype">
+		<property name="itemValidator" ref="itemValidatorCabinetContainer"/>
+		<property name="itemDeleteValidator" ref="itemDeleteValidatorCabinetContainer"/>
+		<property name="itemSaveBehaviors">
+			<list>
+				<ref bean="containerCabinetSaveBehavior"/>
+				<ref bean="cabinetSaveBehavior"/>
+                <ref bean="freeStandingSaveBehavior"/>
+                <ref bean="piqIntegratedItemsLocationChangeSaveBehavior"/>
+                <ref bean="itemSNMPSaveBehavior"/>
+                <ref bean="cabinetLocationChangeSaveBehavior"/>
+			</list>
+		</property>
+		<property name="itemDeleteBehaviors">
+			<list>
+				<ref bean="cabinetDeleteBehavior"/>
+				<ref bean="itemDeleteTicketBehavior"/>
+				<ref bean="moveItemDeleteBehavior"/>
+				<ref bean="itemDeleteCommonBehavior"/>
+				
+			</list>
+		</property>
+		<property name="itemFinalBehaviors">
+			<list>
+				<ref bean="itemSaveTicketBehavior"/>
+				<ref bean="cabinetItemSaveItemMoveBehavior"/>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- Probe -->
+	<bean id="rackableProbeItemObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateSingle"  parent="itemObjectTemplateBase" scope="prototype">
+		<property name="itemValidator" ref="itemValidatorProbe"/>
+		<property name="itemDeleteValidator" ref="itemDeleteValidatorProbe"/>
+		<property name="portObjectsList">
+			<list>
+				<value>DataPorts</value>
+				<value>PowerPorts</value>
+				<!--  <value>SensorPorts</value> -->
+			</list>
+		</property>			
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.LocationChangeIPAddressDelete</value>
+				<value>ItemMoveValidator.parentHasPendingRequest</value>
+			</list>
+		</property>
+		<property name="itemSaveBehaviors">
+			<list>
+				<ref bean="itemSaveCommonBehavior"/>
+				<ref bean="piqIntegratedItemsLocationChangeSaveBehavior"/>
+				<ref bean="itemSNMPSaveBehavior"/>
+				<ref bean="itemsCabinetChangeSaveBehavior"/>
+				<ref bean="itemLocationChangeSaveBehavior"/>
+			</list>
+		</property>
+		<property name="itemDeleteBehaviors">
+			<list>
+				<ref bean="itItemDeleteBehavior"/>
+				<ref bean="itemDeleteTicketBehavior"/>
+				<ref bean="moveItemDeleteBehavior"/>
+				<ref bean="itemDeleteCommonBehavior"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="zerouProbeItemObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateSingle"  parent="itemObjectTemplateBase" scope="prototype">
+		<property name="itemValidator" ref="itemValidatorZeroUProbe"/>
+		<property name="itemDeleteValidator" ref="itemDeleteValidatorZeroUProbe"/>
+		<property name="portObjectsList">
+			<list>
+				<value>DataPorts</value>
+				<value>PowerPorts</value>
+				<!--  <value>SensorPorts</value> -->
+			</list>
+		</property>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.LocationChangeIPAddressDelete</value>
+				<value>ItemMoveValidator.parentHasPendingRequest</value>
+			</list>
+		</property>
+			<property name="itemSaveBehaviors">
+			<list>
+				<ref bean="itemSaveCommonBehavior"/>
+				<ref bean="piqIntegratedItemsLocationChangeSaveBehavior"/>
+				<ref bean="itemSNMPSaveBehavior"/>
+				<ref bean="itemsCabinetChangeSaveBehavior"/>
+				<ref bean="itemLocationChangeSaveBehavior"/>
+			</list>
+		</property>
+		<property name="itemDeleteBehaviors">
+			<list>
+				<ref bean="itItemDeleteBehavior"/>
+				<ref bean="itemDeleteTicketBehavior"/>
+				<ref bean="moveItemDeleteBehavior"/>
+				<ref bean="itemDeleteCommonBehavior"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="nrProbeItemObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateSingle"  parent="itemObjectTemplateBase" scope="prototype">
+		<property name="itemValidator" ref="itemValidatorNRProbe"/>
+		<property name="itemDeleteValidator" ref="itemDeleteValidatorNRProbe"/>
+		<property name="portObjectsList">
+			<list>
+				<value>DataPorts</value>
+				<value>PowerPorts</value>
+				<!--  <value>SensorPorts</value> -->
+			</list>
+		</property>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.LocationChangeIPAddressDelete</value>
+				<value>ItemMoveValidator.parentHasPendingRequest</value>
+			</list>
+		</property>
+		<property name="itemSaveBehaviors">
+			<list>
+				<ref bean="itemSaveCommonBehavior"/>
+				<ref bean="nonRackableSaveBehavior"/>
+				<ref bean="piqIntegratedItemsLocationChangeSaveBehavior"/>
+				<ref bean="itemSNMPSaveBehavior"/>
+				<ref bean="itemsCabinetChangeSaveBehavior"/>
+				<ref bean="itemLocationChangeSaveBehavior"/>
+				<ref bean="nrItemCabinetChangeSaveBehavior"/>
+				<ref bean="nrItemLocationChangeSaveBehavior"/>
+			</list>
+		</property>
+		<property name="itemDeleteBehaviors">
+			<list>
+				<ref bean="itItemDeleteBehavior"/>
+				<ref bean="itemDeleteTicketBehavior"/>
+				<ref bean="moveItemDeleteBehavior"/>
+				<ref bean="itemDeleteCommonBehavior"/>
+				<ref bean="nrItemDeleteBehavior"/>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- FloorPDU -->
+	<bean id="floorPduItemObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateSingle"  parent="itemObjectTemplateBase" scope="prototype">
+		<property name="itemValidator" ref="itemValidatorFloorPDU"/>
+		<property name="itemDeleteValidator" ref="itemDeleteValidatorFloorPDU"/>
+		<property name="portObjectsList">
+			<list>
+				<value>DataPorts</value>
+			</list>
+		</property>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.deletePowerPanelWithPowerOutlet</value>
+				<value>ItemValidator.floorPduKvaVsCalculatedWatt</value>
+				<value>ItemValidator.LocationChangeIPAddressDelete</value>
+			</list>
+		</property>
+		<property name="itemSaveBehaviors">
+			<list>
+				<ref bean="itemSaveCommonBehavior"/>
+				<ref bean="floorPDUSaveBehavior"/>
+                <ref bean="freeStandingSaveBehavior"/>
+				<ref bean="piqIntegratedItemsLocationChangeSaveBehavior"/>
+				<ref bean="itemSNMPSaveBehavior"/>
+			</list>
+		</property>
+		<property name="itemDeleteBehaviors">
+			<list>
+				<ref bean="floorPduDeleteBehavior"/>
+				<ref bean="meItemDeleteBehavior"/>
+				<ref bean="itemDeleteTicketBehavior"/>
+				<ref bean="moveItemDeleteBehavior"/>
+				<ref bean="itemDeleteCommonBehavior"/>
+			</list>
+		</property>		
+	</bean>
+
+	<!-- Power Panel -->
+	<bean id="pPanelItemObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateSingle"  parent="itemObjectTemplateBase" scope="prototype">
+		<property name="itemValidator" ref="itemValidatorPowerPanel"/>
+		<property name="itemDeleteValidator" ref="itemDeleteValidatorPowerPanel"/>
+		<property name="portObjectsList">
+			<list>
+				<value>DataPorts</value>
+			</list>
+		</property>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.deletePowerPanelWithPowerOutlet</value>
+				<value>ItemValidator.LocationChangeIPAddressDelete</value>
+			</list>
+		</property>
+		<property name="itemSaveBehaviors">
+			<list>
+				<ref bean="itemSaveCommonBehavior"/>
+				<ref bean="piqIntegratedItemsLocationChangeSaveBehavior"/>
+				<ref bean="itemSNMPSaveBehavior"/>
+			</list>
+		</property>
+		<!-- <property name="itemSaveBehaviors">
+			<list>
+				<ref bean="floorPDUSaveBehavior"/>
+			</list>
+		</property> -->
+		<property name="itemDeleteBehaviors">
+			<list>
+				<ref bean="powerPanelItemDeleteBehavior"/>
+				<ref bean="meItemDeleteBehavior"/>
+				<ref bean="itemDeleteTicketBehavior"/>
+				<ref bean="moveItemDeleteBehavior"/>
+				<ref bean="itemDeleteCommonBehavior"/>
+			</list>
+		</property>		
+	</bean>
+
+	<!-- Busway Item Object -->
+	<bean id="buswayItemObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateSingle"  parent="itemObjectTemplateBase" scope="prototype">
+		<property name="itemValidator" ref="itemValidatorPowerPanel"/>
+		<property name="itemDeleteValidator" ref="itemDeleteValidatorPowerPanel"/>
+		<property name="portObjectsList">
+			<list>
+				<value>DataPorts</value>
+			</list>
+		</property>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.deletePowerPanelWithPowerOutlet</value>
+				<value>ItemValidator.LocationChangeIPAddressDelete</value>
+				<value>ItemMoveValidator.parentHasPendingRequest</value>
+			</list>
+		</property>
+		<property name="itemSaveBehaviors">
+			<list>
+				<ref bean="itemSaveCommonBehavior"/>
+				<ref bean="piqIntegratedItemsLocationChangeSaveBehavior"/>
+				<ref bean="itemSNMPSaveBehavior"/>
+				<ref bean="itemsCabinetChangeSaveBehavior"/>
+				<ref bean="itemLocationChangeSaveBehavior"/>
+			</list>
+		</property>
+		<!-- <property name="itemSaveBehaviors">
+			<list>
+				<ref bean="floorPDUSaveBehavior"/>
+			</list>
+		</property> -->
+		<property name="itemDeleteBehaviors">
+			<list>
+				<ref bean="powerPanelItemDeleteBehavior"/>
+				<ref bean="meItemDeleteBehavior"/>
+				<ref bean="itemDeleteTicketBehavior"/>
+				<ref bean="moveItemDeleteBehavior"/>
+				<ref bean="itemDeleteCommonBehavior"/>
+			</list>
+		</property>		
+	</bean>
+	
+	<!-- UPS -->
+	<bean id="upsItemObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateSingle"  parent="itemObjectTemplateBase" scope="prototype">
+		<property name="itemValidator" ref="itemValidatorUPS"/>
+		<property name="itemDeleteValidator" ref="itemDeleteValidatorUPS"/>
+		<property name="portObjectsList">
+			<list>
+				<value>DataPorts</value>
+			</list>
+		</property>		
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.LocationChangeIPAddressDelete</value>
+			</list>
+		</property>
+		<property name="itemSaveBehaviors">
+			<list>
+				<ref bean="itemSaveCommonBehavior"/>
+                <ref bean="freeStandingSaveBehavior"/>
+				<ref bean="piqIntegratedItemsLocationChangeSaveBehavior"/>
+				<ref bean="itemSNMPSaveBehavior"/>
+			</list>
+		</property>
+		<property name="itemDeleteBehaviors">
+			<list>
+				<ref bean="meItemDeleteBehavior"/>
+				<ref bean="itemDeleteTicketBehavior"/>
+				<ref bean="moveItemDeleteBehavior"/>
+				<ref bean="itemDeleteCommonBehavior"/>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- CRAC -->
+	<bean id="cracItemObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateSingle"  parent="itemObjectTemplateBase" scope="prototype">
+		<property name="itemValidator" ref="itemValidatorCRAC"/>
+		<property name="itemDeleteValidator" ref="itemDeleteValidatorCRAC"/>
+		<property name="portObjectsList">
+			<list>
+				<value>DataPorts</value>
+			</list>
+		</property>
+		<property name="validationWarningCodes">
+			<list>
+				<value>ItemValidator.LocationChangeIPAddressDelete</value>
+			</list>
+		</property>
+		<property name="itemSaveBehaviors">
+			<list>
+				<ref bean="itemSaveCommonBehavior"/>
+                <ref bean="freeStandingSaveBehavior"/>
+				<ref bean="piqIntegratedItemsLocationChangeSaveBehavior"/>
+				<ref bean="itemSNMPSaveBehavior"/>
+			</list>
+		</property>
+		<property name="itemDeleteBehaviors">
+			<list>
+				<ref bean="meItemDeleteBehavior"/>
+				<ref bean="itemDeleteTicketBehavior"/>
+				<ref bean="moveItemDeleteBehavior"/>
+				<ref bean="itemDeleteCommonBehavior"/>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- Passive -->
+	<bean id="passiveRackableItemObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateSingle" parent="itemObjectTemplateBase" scope="prototype">
+		<property name="itemValidator" ref="itemValidatorPassive"/>
+		<property name="itemSaveBehaviors">
+			<list>
+				<ref bean="itemSaveCommonBehavior"/>
+				<ref bean="piqIntegratedItemsLocationChangeSaveBehavior"/>
+				<ref bean="itemSNMPSaveBehavior"/>
+				<ref bean="itemsCabinetChangeSaveBehavior"/>
+				<ref bean="itemLocationChangeSaveBehavior"/>
+			</list>
+		</property>
+		<property name="itemDeleteBehaviors">
+			<list>
+				<ref bean="itItemDeleteBehavior"/>
+				<ref bean="itemDeleteTicketBehavior"/>
+				<ref bean="moveItemDeleteBehavior"/>
+				<ref bean="itemDeleteCommonBehavior"/>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- Blanking Plate -->
+	<bean id="blankingPlateItemObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateSingle" parent="itemObjectTemplateBase" scope="prototype">
+		<property name="itemValidator" ref="itemValidatorPassive"/>
+		<property name="itemSaveBehaviors">
+			<list>
+				<ref bean="itemSaveCommonBehavior"/>
+				<ref bean="piqIntegratedItemsLocationChangeSaveBehavior"/>
+				<ref bean="itemSNMPSaveBehavior"/>
+				<ref bean="itemsCabinetChangeSaveBehavior"/>
+				<ref bean="itemLocationChangeSaveBehavior"/>
+			</list>
+		</property>
+		<property name="itemDeleteBehaviors">
+			<list>
+				<ref bean="itItemDeleteBehavior"/>
+				<ref bean="itemDeleteTicketBehavior"/>
+				<ref bean="moveItemDeleteBehavior"/>
+				<ref bean="itemDeleteCommonBehavior"/>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Passive Shelf -->
+	<bean id="passiveShelfPlateItemObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateSingle" parent="itemObjectTemplateBase" scope="prototype">
+		<property name="itemValidator" ref="itemValidatorPassive"/>
+		<property name="itemSaveBehaviors">
+			<list>
+				<ref bean="itemSaveCommonBehavior"/>
+				<ref bean="piqIntegratedItemsLocationChangeSaveBehavior"/>
+				<ref bean="itemSNMPSaveBehavior"/>
+				<ref bean="itemsCabinetChangeSaveBehavior"/>
+				<ref bean="itemLocationChangeSaveBehavior"/>
+			</list>
+		</property>
+		<property name="itemDeleteBehaviors">
+			<list>
+				<ref bean="itItemDeleteBehavior"/>
+				<ref bean="itemDeleteTicketBehavior"/>
+				<ref bean="moveItemDeleteBehavior"/>
+				<ref bean="itemDeleteCommonBehavior"/>
+			</list>
+		</property>
+	</bean>
+	
+		
+	<bean id="passiveItItemObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateSingle" parent="itemObjectTemplateBase" scope="prototype">
+		<property name="itemValidator" ref="itemValidatorPassive"/>
+		<property name="itemSaveBehaviors">
+			<list>
+				<ref bean="itemSaveCommonBehavior"/>
+				<ref bean="piqIntegratedItemsLocationChangeSaveBehavior"/>
+				<ref bean="itemSNMPSaveBehavior"/>
+				<ref bean="itemsCabinetChangeSaveBehavior"/>
+				<ref bean="itemLocationChangeSaveBehavior"/>
+			</list>
+		</property>
+		<property name="itemDeleteBehaviors">
+			<list>
+				<ref bean="itItemDeleteBehavior"/>
+				<ref bean="itemDeleteTicketBehavior"/>
+				<ref bean="moveItemDeleteBehavior"/>
+				<ref bean="itemDeleteCommonBehavior"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="passiveMeItemObject" class="com.raritan.tdz.item.home.itemObject.ItemObjectTemplateSingle" parent="itemObjectTemplateBase" scope="prototype">
+		<property name="itemValidator" ref="itemValidatorPassive"/>
+		<property name="itemSaveBehaviors">
+			<list>
+				<ref bean="itemSaveCommonBehavior"/>
+				<ref bean="piqIntegratedItemsLocationChangeSaveBehavior"/>
+				<ref bean="itemSNMPSaveBehavior"/>
+				<ref bean="itemsCabinetChangeSaveBehavior"/>
+				<ref bean="itemLocationChangeSaveBehavior"/>
+			</list>
+		</property>
+		<property name="itemDeleteBehaviors">
+			<list>
+				<ref bean="meItemDeleteBehavior"/>
+				<ref bean="itemDeleteTicketBehavior"/>
+				<ref bean="moveItemDeleteBehavior"/>
+				<ref bean="itemDeleteCommonBehavior"/>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- The following are the save behavior objects -->
+	<bean id="floorPDUSaveBehavior" class="com.raritan.tdz.item.home.itemObject.FloorPDUSaveBehavior" scope="prototype"/>
+	<bean id="bladeSaveBehavior" class="com.raritan.tdz.item.home.itemObject.BladeSaveBehavior" scope="prototype"/>
+	<bean id="cabinetSaveBehavior" class="com.raritan.tdz.item.home.itemObject.CabinetSaveBehavior" scope="prototype"/>
+	<bean id="cabinetPassiveChildrenSaveBehavior" class="com.raritan.tdz.item.home.itemObject.CabinetPassiveChildrenSaveBehavior" scope="prototype"/>
+	<bean id="chassisSaveBehavior" class="com.raritan.tdz.item.home.itemObject.ChassisSaveBehavior" scope="prototype"/>
+	<bean id="networkBladeSaveBehavior" class="com.raritan.tdz.item.home.itemObject.NetworkBladeSaveBehavior" scope="prototype"/>
+	<bean id="networkChassisSaveBehavior" class="com.raritan.tdz.item.home.itemObject.NetworkChassisSaveBehavior" scope="prototype"/>
+	<bean id="networkStackSaveBehavior" class="com.raritan.tdz.item.home.itemObject.NetworkStackSaveBehavior" scope="prototype"/>
+	<bean id="nonRackableSaveBehavior" class="com.raritan.tdz.item.home.itemObject.NonRackableSaveBehavior" scope="prototype"/>
+	<bean id="rackPduSaveBehavior" class="com.raritan.tdz.item.home.itemObject.RackPduSaveBehavior" scope="prototype"/>
+	<bean id="itemSNMPSaveBehavior" class="com.raritan.tdz.item.snmp.home.ItemSNMPSaveBehavior" scope="prototype"/>
+	<bean id="containerCabinetSaveBehavior" class="com.raritan.tdz.item.home.itemObject.ContainerCabinetSaveBehavior" scope="prototype"/>
+	<bean id="itemSaveCommonBehavior" class="com.raritan.tdz.item.home.itemObject.ItemSaveCommonBehavior" scope="prototype"/>
+    <bean id="freeStandingSaveBehavior" class="com.raritan.tdz.item.home.itemObject.FreeStandingSaveBehavior" scope="prototype"/>
+    <bean id="itemSaveTicketBehavior" class="com.raritan.tdz.item.home.itemObject.ItemSaveTicketBehavior" scope="prototype"/>
+    <bean id="piqIntegratedItemsLocationChangeSaveBehavior" class="com.raritan.tdz.item.home.itemObject.PiqIntegratedItemsLocationChangeSaveBehavior" scope="prototype"/>
+    <bean id="itemsCabinetChangeSaveBehavior" class="com.raritan.tdz.item.home.itemObject.ItemCabinetChangeSaveBehavior" scope="prototype"/>
+    <bean id="bladesCabinetChangeSaveBehavior" class="com.raritan.tdz.item.home.itemObject.BladesCabinetChangeSaveBehavior" scope="prototype"/>
+    <bean id="nrItemCabinetChangeSaveBehavior" class="com.raritan.tdz.item.home.itemObject.NRItemCabinetChangeSaveBehavior" scope="prototype"/>	
+	<bean id="itemLocationChangeSaveBehavior" class="com.raritan.tdz.item.home.itemObject.ItemLocationChangeSaveBehavior" scope="prototype"/>
+	<bean id="bladeLocationChangeSaveBehavior" class="com.raritan.tdz.item.home.itemObject.BladeLocationChangeSaveBehavior" scope="prototype"/>
+	<bean id="nrItemLocationChangeSaveBehavior" class="com.raritan.tdz.item.home.itemObject.NRItemLocationChangeSaveBehavior" scope="prototype"/> 
+	<bean id="cabinetLocationChangeSaveBehavior" class="com.raritan.tdz.item.home.itemObject.CabinetLocationChangeSaveBehavior" scope="prototype"/>
+	
+	
+	
+	<!--  The following are the delete behavior objects -->
+	<bean id="cabinetDeleteBehavior" class="com.raritan.tdz.item.home.itemObject.CabinetItemDeleteBehavior" scope="prototype"/>
+	<bean id="chassisDeleteBehavior" class="com.raritan.tdz.item.home.itemObject.ChassisItemDeleteBehavior" scope="prototype"/>
+	<bean id="networkStackDeleteBehavior" class="com.raritan.tdz.item.home.itemObject.NetworkStackItemDeleteBehavior" scope="prototype"/>
+	<bean id="dpDeleteBehavior" class="com.raritan.tdz.item.home.itemObject.DataPanelItemDeleteBehavior" scope="prototype"/>
+	<bean id="floorPduDeleteBehavior" class="com.raritan.tdz.item.home.itemObject.FloorPDUItemDeleteBehavior" scope="prototype"/>
+	<bean id="itemDeleteCommonBehavior" class="com.raritan.tdz.item.home.itemObject.ItemDeleteCommonBehavior" scope="prototype"/>
+	<bean id="itItemDeleteBehavior" class="com.raritan.tdz.item.home.itemObject.ItItemDeleteBehavior" scope="prototype"/>
+	<bean id="meItemDeleteBehavior" class="com.raritan.tdz.item.home.itemObject.MeItemDeleteBehavior" scope="prototype"/>
+	<bean id="nrItemDeleteBehavior" class="com.raritan.tdz.item.home.itemObject.NRItemDeleteBehavior" scope="prototype"/>
+	<bean id="outletItemDeleteBehavior" class="com.raritan.tdz.item.home.itemObject.OutletItemDeleteBehavior" scope="prototype"/>
+	<bean id="powerPanelItemDeleteBehavior" class="com.raritan.tdz.item.home.itemObject.PowerPanelItemDeleteBehavior" scope="prototype"/>
+	<bean id="rpduItemDeleteBehavior" class="com.raritan.tdz.item.home.itemObject.RackPDUItemDeleteBehavior" scope="prototype"/>
+	<bean id="itemDeleteTicketBehavior" class="com.raritan.tdz.item.home.itemObject.ItemDeleteTicketBehavior" scope="prototype"/>
+
+	<bean id="itemNameGenerator" class="com.raritan.tdz.item.home.itemObject.ItemNameGeneratorImpl" autowire-candidate="true" autowire="byName">
+			<property name="supportStates">
+			<list>
+				<value>#{ T(com.raritan.tdz.lookup.SystemLookup$ItemStatus).STORAGE }</value>
+				<value>#{ T(com.raritan.tdz.lookup.SystemLookup$ItemStatus).ARCHIVED }</value>
+			</list>
+		</property>
+	</bean>	
+	
+	<bean id="fsSaveDTOHelper" class="com.raritan.tdz.item.home.itemObject.FSItemSaveDTOHelper" scope="prototype">
+		<constructor-arg name="itemDomainAdaptor" ref="itemDomainAdaptor"/>
+		<constructor-arg name="remoteRef" ref="remoteRefItemScreen"/>
+		<constructor-arg name="rulesProcessor" ref="itemRulesProcessor"/>
+	</bean>
+	
+	<bean id="itemSaveItemMoveBehavior" class="com.raritan.tdz.item.home.itemObject.ItemSaveItemMoveBehavior" scope="prototype">
+		<property name="itemSaveMoveBehaviors" ref="moveSaveBehaviors"/>
+	</bean>
+	
+	<bean id="cabinetItemSaveItemMoveBehavior" class="com.raritan.tdz.item.home.itemObject.ItemSaveItemMoveBehavior" scope="prototype">
+		<property name="itemSaveMoveBehaviors" ref="cabinetMoveSaveBehaviors"/>
+	</bean>
+	
+	<bean id="bladeItemSaveItemMoveBehavior" class="com.raritan.tdz.item.home.itemObject.ItemSaveItemMoveBehavior" scope="prototype">
+		<property name="itemSaveMoveBehaviors" ref="bladeMoveSaveBehaviors"/>
+	</bean>
+	
+	<bean id="itemDeletePlannedCircuits" class="com.raritan.tdz.move.home.ItemDeletePlannedCircuits" autowire-candidate="true" autowire="byName"/>
+	
+	<bean id="cabinetDeletePlannedCircuits" class="com.raritan.tdz.move.home.CabinetDeletePlannedCircuits" autowire-candidate="true" autowire="byName"/>
+
+	<util:map id="errorCodeMaxLength" key-type="java.lang.String" value-type="java.lang.Integer">
+		<entry key="ItemMoveValidator.hasReservations" value="100"/>
+	</util:map>
+	
+	<util:map id="errorCodeMaxLine" key-type="java.lang.String" value-type="java.lang.Integer">
+		<entry key="ItemMoveValidator.parentHasPendingRequest" value="5"/>
+		<entry key="ItemMoveValidator.childrenHasPendingRequest" value="5"/>
+	</util:map>
+
+	<bean id="errorSizeController" class="com.raritan.tdz.item.home.itemObject.ErrorSizeControllerImpl" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="errorCodeMaxLength" ref="errorCodeMaxLength"/>
+		<constructor-arg name="errorCodeMaxLine" ref="errorCodeMaxLine"/>
+	</bean>	
+	
+</beans>

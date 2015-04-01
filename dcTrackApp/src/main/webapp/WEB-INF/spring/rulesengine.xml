@@ -1,0 +1,2733 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+	<bean id="itemRulesProcessor" class="com.raritan.tdz.item.rulesengine.ItemRulesProcessorImpl" init-method="init">
+		<property name="remoteReference" ref="remoteRefItemScreen"/>
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="rulesTemplateFileName" value="uiViewTemplate-ItemScreen.xml"/>
+		<property name="itemRequest" ref="itemRequest" />
+		<property name="itemStatusEditability">
+			<map>
+				<!-- key is either "status" or "status:class/subclass" or "status:class/subclass:mounting" -->
+				<entry key="5081" value-ref="itemStatusEditabilityNew"/>
+				<entry key="5081:1204" value-ref="itemStatusEditabilityNewForVM"/> <!-- For VM we need to process the editability special -->
+				<entry key="5082" value-ref="itemStatusEditabilityInstalled"/>
+				<entry key="5082:1100" value-ref="itemStatusEditabilityInstalledForCabinet"/>
+				<entry key="5082:2201" value-ref="itemStatusEditabilityInstalledPowerOutlet"/> <!-- power outlet - whip outlet -->
+				<entry key="5082:2202" value-ref="itemStatusEditabilityInstalledPowerOutlet"/> <!-- power outlet - busway outlet -->
+				<entry key="5083" value-ref="itemStatusEditabilityInPowerOff"/>
+				<entry key="5084" value-ref="itemStatusEditabilityInOffSite"/>
+				<entry key="5085" value-ref="itemStatusEditabilityInArchived"/>
+				<entry key="5088" value-ref="itemStatusEditabilityInStorageItItem"/>
+				<entry key="5088:1400:Rackable" value-ref="itemStatusEditabilityInStorageItItem"/> <!-- Probe (Rackable) -->
+				<entry key="5088:1500" value-ref="itemStatusEditabilityInStorage"/> <!-- Data Panel -->
+				<entry key="5088:1400" value-ref="itemStatusEditabilityInStorage"/> <!-- Probe -->
+				<entry key="5088:2100" value-ref="itemStatusEditabilityInStorage"/>	<!-- Rack PDU -->
+			</map>
+		</property>
+		<property name="itemStageEditability">
+			<map>
+				<!-- key is the request stage and reference is the editibility information -->
+				<entry key="501" value-ref="itemStageEditabilityStatusNonEditable"/>
+				<entry key="502" value-ref="itemStageEditabilityStatusNonEditable"/>
+				<entry key="503" value-ref="itemStageEditabilityStatusNonEditable"/>
+				<entry key="504" value-ref="itemStageNonEditability"/>
+				<entry key="505" value-ref="itemStageNonEditability"/>
+				<entry key="506" value-ref="itemStageNonEditability"/>
+			</map>
+		</property>
+		<property name="itemUserRoleEditability">
+			<map>
+<!-- 			<entry key="944:5081" value-ref="itemUserEditabilityManager"/>
+				<entry key="941" value-ref="itemUserEditabilityViewer"/>
+				<entry key="942" value-ref="itemUserEditabilityGateKeeper"/> -->
+				<entry key="941:5082" value-ref="itemStatusUserEditabilityNonEditable"/>
+				<entry key="941:5083" value-ref="itemStatusUserEditabilityNonEditable"/>
+				<entry key="941:5084" value-ref="itemStatusUserEditabilityNonEditable"/>
+				<entry key="941:5087" value-ref="itemStatusUserEditabilityNonEditable"/>
+				<entry key="941:5088" value-ref="itemStatusUserEditabilityNonEditable"/>
+				<entry key="941:5089" value-ref="itemStatusUserEditabilityNonEditable"/>
+
+				<entry key="942:5082" value-ref="itemStatusUserEditabilityNonEditable"/>
+				<entry key="942:5083" value-ref="itemStatusUserEditabilityNonEditable"/>
+				<entry key="942:5084" value-ref="itemStatusUserEditabilityNonEditable"/>
+				<entry key="942:5085" value-ref="itemStatusUserEditabilityNonEditable"/>
+				<entry key="942:5086" value-ref="itemStatusUserEditabilityNonEditable"/>
+				<entry key="942:5087" value-ref="itemStatusUserEditabilityNonEditable"/>
+				<entry key="942:5088" value-ref="itemStatusUserEditabilityNonEditable"/>
+				<entry key="942:5089" value-ref="itemStatusUserEditabilityNonEditable"/>
+
+				<entry key="943:5082" value-ref="itemStatusUserEditabilityNonEditable"/>
+				<entry key="943:5083" value-ref="itemStatusUserEditabilityNonEditable"/>
+				<entry key="943:5084" value-ref="itemStatusUserEditabilityNonEditable"/>
+				<entry key="943:5085" value-ref="itemStatusUserEditabilityNonEditable"/>
+				<entry key="943:5086" value-ref="itemStatusUserEditabilityNonEditable"/>
+				<entry key="943:5087" value-ref="itemStatusUserEditabilityNonEditable"/>
+				<entry key="943:5088" value-ref="itemStatusUserEditabilityNonEditable"/>
+				<entry key="943:5089" value-ref="itemStatusUserEditabilityNonEditable"/>
+
+				<entry key="944:5082" value-ref="itemStatusUserEditabilityNonEditable"/>
+				<entry key="944:5083" value-ref="itemStatusUserEditabilityNonEditable"/>
+				<entry key="944:5084" value-ref="itemStatusUserEditabilityNonEditable"/>
+				<entry key="944:5085" value-ref="itemStatusUserEditabilityNonEditable"/>
+				<entry key="944:5086" value-ref="itemStatusUserEditabilityNonEditable"/>
+				<entry key="944:5087" value-ref="itemStatusUserEditabilityNonEditable"/>
+				<entry key="944:5088" value-ref="itemStatusUserEditabilityNonEditable"/>
+				<entry key="944:5089" value-ref="itemStatusUserEditabilityNonEditable"/>
+			</map>
+		</property>
+		
+		<property name="itemWhenMovedEditability" ref="whenMovedItemEditability"/>
+		
+		<!-- <property name="itemMovedEditability" ref="itemStageNonEditability"/> -->
+		<property name="itemMovedEditability"><null/></property>
+		
+	</bean>
+	
+	<bean id="remoteRefItemScreen" class="com.raritan.tdz.rulesengine.RemoteRefImpl">
+		<constructor-arg name="remoteRefMap">
+			<map>
+				<entry key="CONSTANTS_ITEM_VIEW.remoteType" value="com.raritan.tdz.domain.Item"/>
+				
+				<entry key="CONSTANT_MAKE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_MAKE_FOR_ITEM.id" value="modelMfrDetailId"/>
+				<entry key="CONSTANT_MAKE_FOR_ITEM.value" value="mfrName"/>
+				
+				<entry key="CONSTANT_MODEL_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_MODEL_FOR_ITEM.id" value="modelDetailId"/>
+				<entry key="CONSTANT_MODEL_FOR_ITEM.value" value="modelName"/>
+				
+				<entry key="CONSTANT_UPOSITION_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_UPOSITION_FOR_ITEM.value" value="uPosition"/>
+				
+				<entry key="CONSTANT_NAME_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_NAME_FOR_ITEM.id" value="itemId"/>
+				<entry key="CONSTANT_NAME_FOR_ITEM.value" value="itemName"/>
+
+				<entry key="CONSTANT_SERIAL_NUMBER_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_SERIAL_NUMBER_FOR_ITEM.value" value="serialNumber"/>
+				
+				<entry key="CONSTANT_ASSET_TAG_ID_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_ASSET_TAG_ID_FOR_ITEM.value" value="raritanAssetTag"/>
+				<entry key="CONSTANT_ASSET_TAG_ID_FOR_ITEM.remoteCallback" value-ref="itemEAssetTagMethodCallback"/>
+
+				<entry key="CONSTANT_ASSET_NUMBER_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_ASSET_NUMBER_FOR_ITEM.value" value="assetNumber"/>
+
+				<entry key="CONSTANT_ALIAS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_ALIAS_FOR_ITEM.value" value="itemAlias"/>
+				
+				<entry key="CONSTANT_STATUS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_STATUS_FOR_ITEM.id" value="statusLkpValueCode"/>
+				<entry key="CONSTANT_STATUS_FOR_ITEM.remoteCallback" value-ref="itemStateMethodCallback"/>
+				<entry key="CONSTANT_STATUS_FOR_ITEM.value" value="lkpValue"/>
+				
+				<entry key="CONSTANT_ADMIN_USER_OF_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_ADMIN_USER_OF_ITEM.id" value="itemAdminUser.id"/>
+				<entry key="CONSTANT_ADMIN_USER_OF_ITEM.value" value="itemAdminUser.userId"/>
+				
+				<entry key="CONSTANT_ADMIN_TEAM_OF_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_ADMIN_TEAM_OF_ITEM.id" value="itemAdminTeamLkuValueCode"/>
+				<entry key="CONSTANT_ADMIN_TEAM_OF_ITEM.value" value="itemAdminTeamLkuValue"/>
+				
+				<entry key="CONSTANT_CUSTOMER_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_CUSTOMER_FOR_ITEM.id" value="departmentLkuValueCode"/>
+				<entry key="CONSTANT_CUSTOMER_FOR_ITEM.value" value="departmentLkuValue"/>
+				
+				
+				<entry key="CONSTANT_CLASS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_CLASS_FOR_ITEM.remoteCallback" value-ref="itemClassMethodCallback"/>
+
+				<entry key="CONSTANT_CUSTOM_FIELDS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_CUSTOM_FIELDS_FOR_ITEM.remoteCallback" value-ref="customFieldMethodCallback"/>
+
+				<entry key="CONSTANT_DATA_PORTS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_DATA_PORTS_FOR_ITEM.remoteCallback" value-ref="dataPortsMethodCallback"/>
+
+				<entry key="CONSTANT_POWER_PORTS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_POWER_PORTS_FOR_ITEM.remoteCallback" value-ref="powerPortsMethodCallback"/>
+				
+				<entry key="CONSTANT_SENSOR_PORTS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_SENSOR_PORTS_FOR_ITEM.remoteCallback" value-ref="sensorPortsMethodCallback"/>
+				
+				<entry key="CONSTANT_TYPE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_TYPE_FOR_ITEM.id" value="purposeLkuValueCode"/>
+				<entry key="CONSTANT_TYPE_FOR_ITEM.value" value="purposeLkuValue"/>
+				
+				<entry key="CONSTANT_FUNCTION_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_FUNCTION_FOR_ITEM.id" value="functionLkuValueCode"/>
+				<entry key="CONSTANT_FUNCTION_FOR_ITEM.value" value="functionLkuValue"/>
+				
+				<entry key="CONSTANT_WEIGHT_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_WEIGHT_FOR_ITEM.value" value="weight"/>
+				<entry key="CONSTANT_WEIGHT_FOR_ITEM.unitConverter" value-ref="poundToKgUnitConverter"/>
+				
+				<entry key="CONSTANT_RACKUNITS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_RACKUNITS_FOR_ITEM.value" value="ruHeight"/>
+				
+				<entry key="CONSTANT_MOUNTING_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_MOUNTING_FOR_ITEM.remoteCallback" value-ref="modelMountingFFMethodCallback"/>
+				
+				<entry key="CONSTANT_FORMFACTOR_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_FORMFACTOR_FOR_ITEM.value" value="formFactor"/>
+				
+				<entry key="CONSTANT_DIMENSION_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_DIMENSION_FOR_ITEM.remoteCallback" value-ref="modelDimensionMethodCallback"/>
+				
+				<entry key="CONSTANT_CPUTYPE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ItItem"/>
+				<entry key="CONSTANT_CPUTYPE_FOR_ITEM.value" value="cpuType"/>
+				
+				<entry key="CONSTANT_CPUQUANTITY_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ItItem"/>
+				<entry key="CONSTANT_CPUQUANTITY_FOR_ITEM.value" value="cpuQuantity"/>
+			
+				<entry key="CONSTANT_RAMGB_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ItItem"/>
+				<entry key="CONSTANT_RAMGB_FOR_ITEM.value" value="ramGB"/>
+				
+				<entry key="CONSTANT_TOTALUSERS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ItItem"/>
+				<entry key="CONSTANT_TOTALUSERS_FOR_ITEM.value" value="totalUsers"/>
+				
+				<entry key="CONSTANT_SERVICES_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ItItem"/>
+				<entry key="CONSTANT_SERVICES_FOR_ITEM.value" value="services"/>
+			
+				<entry key="CONSTANT_TOTALPROCESSES_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ItItem"/>
+				<entry key="CONSTANT_TOTALPROCESSES_FOR_ITEM.value" value="totalProcesses"/>
+				
+				<entry key="CONSTANT_LOCATION_OF_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_LOCATION_OF_ITEM.value" value="code"/>
+				<entry key="CONSTANT_LOCATION_OF_ITEM.id" value="dataCenterLocationId"/>
+				
+				<entry key="CONSTANT_ROWLABEL_OF_CABINET_ITEM.remoteType" value="com.raritan.tdz.domain.CabinetItem"/>
+				<entry key="CONSTANT_ROWLABEL_OF_CABINET_ITEM.value" value="rowLabel"/>
+				
+				<entry key="CONSTANT_ROWPOSITION_OF_CABINET_ITEM.remoteType" value="com.raritan.tdz.domain.CabinetItem"/>
+				<entry key="CONSTANT_ROWPOSITION_OF_CABINET_ITEM.value" value="positionInRow"/>
+				
+				<entry key="CONSTANT_FRONTFACES_OF_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_FRONTFACES_OF_ITEM.value" value="facingLkpValue"/>
+				<entry key="CONSTANT_FRONTFACES_OF_ITEM.id" value="facingLkpValueCode"/>
+			
+				<entry key="CONSTANT_LOCATIONREF_CABINET_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_LOCATIONREF_CABINET_ITEM.value" value="locationReference"/>
+				
+				<entry key="CONSTANT_RAILS_USED_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_RAILS_USED_FOR_ITEM.value" value="mountedRailLkpValue"/>
+				<entry key="CONSTANT_RAILS_USED_FOR_ITEM.id" value="mountedRailLkpValueCode"/>
+				
+				<entry key="CONSTANT_CABINET_SIDE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item" />
+				<entry key="CONSTANT_CABINET_SIDE_FOR_ITEM.value" value="mountedRailLkpValue" />
+				<entry key="CONSTANT_CABINET_SIDE_FOR_ITEM.id" value="mountedRailLkpValueCode" />
+				
+				<entry key="CONSTANT_DEPTH_POSITION_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item" />
+				<entry key="CONSTANT_DEPTH_POSITION_FOR_ITEM.value" value="facingLkpValue" />
+				<entry key="CONSTANT_DEPTH_POSITION_FOR_ITEM.id" value="facingLkpValueCode" />
+				
+				<entry key="CONSTANT_PARENT_OF_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_PARENT_OF_ITEM.remoteCallback" value-ref="parentOfItemMethodCallback"/>
+				<entry key="CONSTANT_PARENT_OF_ITEM.value" value="parentItem.itemName"/>
+				<entry key="CONSTANT_PARENT_OF_ITEM.id" value="parentItem.itemId"/>
+								
+				<entry key="CONSTANT_CONTRACT_AMOUNT_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_CONTRACT_AMOUNT_FOR_ITEM.value" value="contractAmount"/>
+				
+				<entry key="CONSTANT_CONTRACT_BEGIN_DATE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_CONTRACT_BEGIN_DATE_FOR_ITEM.value" value="contractBeginDate"/>
+				
+				<entry key="CONSTANT_CONTRACT_EXPIRE_DATE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_CONTRACT_EXPIRE_DATE_FOR_ITEM.value" value="contractExpireDate"/>
+				
+				<entry key="CONSTANT_CONTRACT_NUMBER_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_CONTRACT_NUMBER_FOR_ITEM.value" value="contractNumber"/>
+				
+ 				<entry key="CONSTANT_PO_NUMBER_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_PO_NUMBER_FOR_ITEM.value" value="poNumber"/>
+				
+				<entry key="CONSTANT_PROJECT_NUMBER_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_PROJECT_NUMBER_FOR_ITEM.value" value="projectNumber"/>
+				
+				<entry key="CONSTANT_DESCRIPTION_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_DESCRIPTION_FOR_ITEM.value" value="description"/>
+				
+				<entry key="CONSTANT_EXPIRE_DATE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_EXPIRE_DATE_FOR_ITEM.value" value="expireDate"/>
+				
+				<entry key="CONSTANT_INSTALL_DATE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_INSTALL_DATE_FOR_ITEM.value" value="installDate"/>
+				
+				<entry key="CONSTANT_PURCHASE_DATE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_PURCHASE_DATE_FOR_ITEM.value" value="purchaseDate"/>
+				
+				<entry key="CONSTANT_PURCHASE_PRICE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_PURCHASE_PRICE_FOR_ITEM.value" value="purchasePrice"/>
+				
+				<entry key="CONSTANT_SLA_PROFILE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_SLA_PROFILE_FOR_ITEM.value" value="slaProfileLkuValue"/>
+				<entry key="CONSTANT_SLA_PROFILE_FOR_ITEM.id" value="slaProfileLkuValueCode"/>
+				
+				<entry key="CONSTANT_SYS_CREATED_BY_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_SYS_CREATED_BY_FOR_ITEM.value" value="sysCreatedBy"/>
+				
+				<entry key="CONSTANT_SYS_CREATION_DATE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_SYS_CREATION_DATE_FOR_ITEM.value" value="sysCreationDate"/>
+				
+				<entry key="CONSTANT_SYS_UPDATE_DATE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_SYS_UPDATE_DATE_FOR_ITEM.value" value="sysUpdateDate"/>
+				
+				<entry key="CONSTANT_MAX_SLOTS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ItItem"/>
+				<entry key="CONSTANT_MAX_SLOTS_FOR_ITEM.value" value="maxSlots"/>
+				
+				<entry key="CONSTANT_PS_REDUNDANCY_FOR_ITITEM.remoteType" value="com.raritan.tdz.domain.ItItem"/>
+				<entry key="CONSTANT_PS_REDUNDANCY_FOR_ITITEM.value" value="psredundancy"/>
+				
+				
+				<entry key="CONSTANT_LAYOUT_CHASSIS_FRONT_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ItItem"/>
+				<entry key="CONSTANT_LAYOUT_CHASSIS_FRONT_FOR_ITEM.value" value="layoutChassisFront"/>
+				
+				<entry key="CONSTANT_LAYOUT_CHASSIS_REAR_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ItItem"/>
+				<entry key="CONSTANT_LAYOUT_CHASSIS_REAR_FOR_ITEM.value" value="layoutChassisRear"/>
+				
+				<entry key="CONSTANT_OSI_LAYER_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ItItem"/>
+				<entry key="CONSTANT_OSI_LAYER_FOR_ITEM.id" value="osiLayerLkpValueCode"/>
+				<entry key="CONSTANT_OSI_LAYER_FOR_ITEM.value" value="osiLayerLkpValue"/>
+
+				<entry key="CONSTANT_REQUEST_STAGE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.RequestHistory"/>
+				<entry key="CONSTANT_REQUEST_STAGE_FOR_ITEM.id" value="stageIdLkpValueCode"/>
+				<entry key="CONSTANT_REQUEST_STAGE_FOR_ITEM.value" value="stageIdLkpValue"/>
+
+				<entry key="CONSTANT_OS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ItItem"/>
+				<entry key="CONSTANT_OS_FOR_ITEM.value" value="osLkuValue"/>
+				<entry key="CONSTANT_OS_FOR_ITEM.id" value="osLkuValueCode"/>
+
+				<entry key="CONSTANT_DOMAIN_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ItItem"/>
+				<entry key="CONSTANT_DOMAIN_FOR_ITEM.value" value="domainLkuValue"/>
+				<entry key="CONSTANT_DOMAIN_FOR_ITEM.id" value="domainLkuValueCode"/>
+
+				<entry key="CONSTANT_VM_CLUSTER_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ItItem"/>
+				<entry key="CONSTANT_VM_CLUSTER_FOR_ITEM.value" value="vmClusterLkuValue"/>
+				<entry key="CONSTANT_VM_CLUSTER_FOR_ITEM.id" value="vmClusterLkuValueCode"/>
+
+				<entry key="CONSTANT_CHASSIS_OF_ITEM.remoteType" value="com.raritan.tdz.domain.ItItem"/>
+				<entry key="CONSTANT_CHASSIS_OF_ITEM.remoteCallback" value-ref="bladeChassisNameIdCallback"/>
+				<entry key="CONSTANT_CHASSIS_OF_ITEM.value" value="bladeChassis.itemName"/>
+				<entry key="CONSTANT_CHASSIS_OF_ITEM.id" value="bladeChassis.itemId"/>
+				
+
+				<entry key="CONSTANT_DATASTORE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ItItem"/>
+				<entry key="CONSTANT_DATASTORE_FOR_ITEM.value" value="dataStore.itemName"/>
+				<entry key="CONSTANT_DATASTORE_FOR_ITEM.id" value="dataStore.itemId"/>
+
+				<entry key="CONSTANT_UPS_BANK_OF_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_UPS_BANK_OF_ITEM.remoteCallback" value-ref="upsBankNameIdCallback"/>
+				<entry key="CONSTANT_UPS_BANK_OF_ITEM.value" value="upsBankItem.itemName"/>
+				<entry key="CONSTANT_UPS_BANK_OF_ITEM.id" value="upsBankItem.itemId"/>
+
+				<entry key="CONSTANT_FPDU_BREAKER_OF_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_FPDU_BREAKER_OF_ITEM.value" value="breakerPortId"/>
+				<entry key="CONSTANT_FPDU_BREAKER_OF_ITEM.remoteCallback" value-ref="breakerPortNameCallback"/>
+
+				<entry key="CONSTANT_FPDU_INPUT_VOLTAGE_OF_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_FPDU_INPUT_VOLTAGE_OF_ITEM.remoteCallback" value-ref="fpduInputVoltageCallback"/>
+
+				<entry key="CONSTANT_FPDU_INPUT_WIRING_OF_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+                <entry key="CONSTANT_FPDU_INPUT_WIRING_OF_ITEM.id" value="phaseLkpValueCode"/>
+                <entry key="CONSTANT_FPDU_INPUT_WIRING_OF_ITEM.value" value="phaseLkpValue"/>
+				<entry key="CONSTANT_FPDU_INPUT_WIRING_OF_ITEM.remoteCallback" value-ref="fpduWiringCallback"/>
+
+				<entry key="CONSTANT_FPDU_OUTPUT_WIRING_OF_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_FPDU_OUTPUT_WIRING_OF_ITEM.remoteCallback" value-ref="fpduWiringCallback"/>
+
+				<entry key="CONSTANT_PHASE_A_COLOR_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_PHASE_A_COLOR_FOR_ITEM.value" value="phaseAColorLkpValue"/>
+				<entry key="CONSTANT_PHASE_A_COLOR_FOR_ITEM.id" value="phaseAColorLkpValueCode"/>
+
+				<entry key="CONSTANT_PHASE_B_COLOR_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_PHASE_B_COLOR_FOR_ITEM.value" value="phaseBColorLkpValue"/>
+				<entry key="CONSTANT_PHASE_B_COLOR_FOR_ITEM.id" value="phaseBColorLkpValueCode"/>
+
+				<entry key="CONSTANT_PHASE_C_COLOR_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_PHASE_C_COLOR_FOR_ITEM.value" value="phaseCColorLkpValue"/>
+				<entry key="CONSTANT_PHASE_C_COLOR_FOR_ITEM.id" value="phaseCColorLkpValueCode"/>
+
+				<entry key="CONSTANT_PHASE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_PHASE_FOR_ITEM.value" value="phaseLkpValue"/>
+				<entry key="CONSTANT_PHASE_FOR_ITEM.id" value="phaseLkpValueCode"/>
+
+				<entry key="CONSTANT_THROW_DIRECTION_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_THROW_DIRECTION_FOR_ITEM.value" value="throwDirectionLkpValue"/>
+				<entry key="CONSTANT_THROW_DIRECTION_FOR_ITEM.id" value="throwDirectionLkpValueCode"/>
+				
+				<entry key="CONSTANT_FIRST_PHASE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_FIRST_PHASE_FOR_ITEM.value" value="firstPhase"/>
+				
+				<entry key="CONSTANT_LOCATION_XY_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_LOCATION_XY_FOR_ITEM.value" value="locationXY"/>
+				
+				<entry key="CONSTANT_PS_REDUNDANCY_FOR_MEITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_PS_REDUNDANCY_FOR_MEITEM.value" value="psredundancy"/>
+				
+				<entry key="CONSTANT_EFFECTIVE_POWER_FOR_ITITEM.remoteType" value="com.raritan.tdz.domain.ItItem"/>
+				<entry key="CONSTANT_EFFECTIVE_POWER_FOR_ITITEM.value" value="effectivePower"/>
+				
+				<entry key="CONSTANT_EVEN_ODD_LAYOUT_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_EVEN_ODD_LAYOUT_FOR_ITEM.value" value="evenOddLayout"/>
+				
+				<entry key="CONSTANT_IS_TRANSFORMER_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_IS_TRANSFORMER_FOR_ITEM.value" value="isTransformer"/>
+				
+				<entry key="CONSTANT_BTU_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_BTU_FOR_ITEM.value" value="btu"/>
+				
+				<entry key="CONSTANT_CFM_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_CFM_FOR_ITEM.value" value="cfm"/>
+				
+				<entry key="CONSTANT_CLEARANCE_LEFT_FOR_MEITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_CLEARANCE_LEFT_FOR_MEITEM.value" value="clearanceLeft"/>
+				<entry key="CONSTANT_CLEARANCE_LEFT_FOR_MEITEM.unitConverter" value-ref="inchToMMUnitConverter"/>
+				
+				<entry key="CONSTANT_CLEARENCE_FRONT_FOR_MEITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_CLEARENCE_FRONT_FOR_MEITEM.value" value="clearenceFront"/>
+				<entry key="CONSTANT_CLEARENCE_FRONT_FOR_MEITEM.unitConverter" value-ref="inchToMMUnitConverter"/>
+				
+				<entry key="CONSTANT_CLEARENCE_REAR_FOR_MEITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_CLEARENCE_REAR_FOR_MEITEM.value" value="clearenceRear"/>
+				<entry key="CONSTANT_CLEARENCE_REAR_FOR_MEITEM.unitConverter" value-ref="inchToMMUnitConverter"/>
+				
+				<entry key="CONSTANT_CLEARENCE_RIGHT_FOR_MEITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_CLEARENCE_RIGHT_FOR_MEITEM.value" value="clearenceRight"/>
+				<entry key="CONSTANT_CLEARENCE_RIGHT_FOR_MEITEM.unitConverter" value-ref="inchToMMUnitConverter"/>
+				
+				<entry key="CONSTANT_EFFICIENTY_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_EFFICIENTY_FOR_ITEM.value" value="efficiency"/>
+				
+				<entry key="CONSTANT_LINE_VOLTS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_LINE_VOLTS_FOR_ITEM.value" value="lineVolts"/>
+				
+				<entry key="CONSTANT_PHASE_VOLTS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_PHASE_VOLTS_FOR_ITEM.value" value="phaseVolts"/>
+				
+				<entry key="CONSTANT_RATING_AMPS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_RATING_AMPS_FOR_ITEM.value" value="ratingAmps"/>
+				
+				<entry key="CONSTANT_RATING_KW_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_RATING_KW_FOR_ITEM.value" value="ratingKW"/>
+				
+				<entry key="CONSTANT_RATING_KVA_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_RATING_KVA_FOR_ITEM.value" value="ratingKva"/>
+				
+				<entry key="CONSTANT_RATING_TONS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_RATING_TONS_FOR_ITEM.value" value="ratingTons"/>
+				
+				<entry key="CONSTANT_RATING_V_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_RATING_V_FOR_ITEM.value" value="ratingV"/>
+				
+				<entry key="CONSTANT_THROW_DIST_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_THROW_DIST_FOR_ITEM.value" value="throwDist"/>
+				
+				<entry key="CONSTANT_PERCENT_OPEN_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_PERCENT_OPEN_FOR_ITEM.value" value="percentOpen"/>
+				
+				<entry key="CONSTANT_POLES_QTY_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_POLES_QTY_FOR_ITEM.value" value="polesQty"/>
+				
+				<entry key="CONSTANT_SLOT_POSITION_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_SLOT_POSITION_FOR_ITEM.id" value="slotPosition"/>
+				<entry key="CONSTANT_SLOT_POSITION_FOR_ITEM.value" value="slotPosition"/>
+				<entry key="CONSTANT_SLOT_POSITION_FOR_ITEM.remoteCallback" value-ref="bladeSlotMethodCallback"/>
+				
+				<entry key="CONSTANT_PIQ_ID_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_PIQ_ID_FOR_ITEM.value" value="piqId"/>
+				
+				<entry key="CONSTANT_CAD_HANDLE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_CAD_HANDLE_FOR_ITEM.value" value="cadHandle"/>
+				
+				<entry key="CONSTANT_LOGICAL_PATH_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_LOGICAL_PATH_FOR_ITEM.value" value="logicalPath"/>
+
+				<entry key="CONSTANT_SUBCLASS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_SUBCLASS_FOR_ITEM.value" value="subclassLkpValue"/>
+				<entry key="CONSTANT_SUBCLASS_FOR_ITEM.id" value="subclassLkpValueCode"/>
+				
+				<entry key="CONSTANT_LAYOUT_HORIZ_FRONT_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_LAYOUT_HORIZ_FRONT_FOR_ITEM.value" value="layoutHorizFront"/>
+				
+				<entry key="CONSTANT_LAYOUT_HORIZ_REAR_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_LAYOUT_HORIZ_REAR_FOR_ITEM.value" value="layoutHorizRear"/>
+				
+				<entry key="CONSTANT_LAYOUT_VERTICAL_LEFT_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_LAYOUT_VERTICAL_LEFT_FOR_ITEM.value" value="layoutVerticalLeft"/>
+				
+				<entry key="CONSTANT_LAYOUT_VERTICAL_RIGHT_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_LAYOUT_VERTICAL_RIGHT_FOR_ITEM.value" value="layoutVerticalRight"/>
+				
+				<entry key="CONSTANT_LAYOUT_VERTICAL_LEFT_BACK_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_LAYOUT_VERTICAL_LEFT_BACK_FOR_ITEM.value" value="layoutVerticalLeftBack"/>
+				
+				<entry key="CONSTANT_LAYOUT_VERTICAL_RIGHT_BACK_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_LAYOUT_VERTICAL_RIGHT_BACK_FOR_ITEM.value" value="layoutVerticalRightBack"/>
+				
+				<entry key="CONSTANT_FREE_DATA_PORT_COUNT_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_FREE_DATA_PORT_COUNT_FOR_ITEM.value" value="freeDataPortCount"/>
+				
+				<entry key="CONSTANT_FREE_POWER_PORT_COUNT_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_FREE_POWER_PORT_COUNT_FOR_ITEM.value" value="freePowerPortCount"/>
+				
+				<entry key="CONSTANT_FREE_INPUT_CORD_COUNT_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_FREE_INPUT_CORD_COUNT_FOR_ITEM.value" value="freeInputCordCount"/>
+				
+				<entry key="CONSTANT_GROUPING_NAME_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_GROUPING_NAME_FOR_ITEM.value" value="groupingName"/>
+				
+				<entry key="CONSTANT_NUMBER_IN_GROUP_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_NUMBER_IN_GROUP_FOR_ITEM.value" value="numPorts"/>
+				
+				<entry key="CONSTANT_GROUPING_NUMBER_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_GROUPING_NUMBER_FOR_ITEM.value" value="groupingNumber"/>
+				
+				<entry key="CONSTANT_IS_ASSET_TAG_VERIFIED_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_IS_ASSET_TAG_VERIFIED_FOR_ITEM.value" value="isAssetTagVerified"/>
+				
+				<entry key="CONSTANT_CRAC_NW_GROUP_OF_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_CRAC_NW_GROUP_OF_ITEM.value" value="cracNwGrpItem.itemName"/>
+				<entry key="CONSTANT_CRAC_NW_GROUP_OF_ITEM.id" value="cracNwGrpItem.itemId"/>		
+				
+				<entry key="CONSTANT_CLEARANCE_LEFT_FOR_CABITEM.remoteType" value="com.raritan.tdz.domain.CabinetItem"/>
+				<entry key="CONSTANT_CLEARANCE_LEFT_FOR_CABITEM.value" value="clearanceLeft"/>
+				<entry key="CONSTANT_CLEARANCE_LEFT_FOR_CABITEM.unitConverter" value-ref="inchToMMUnitConverter"/>
+				
+				<entry key="CONSTANT_CLEARANCE_FRONT_FOR_CABITEM.remoteType" value="com.raritan.tdz.domain.CabinetItem"/>
+				<entry key="CONSTANT_CLEARANCE_FRONT_FOR_CABITEM.value" value="clearenceFront"/>
+				<entry key="CONSTANT_CLEARANCE_FRONT_FOR_CABITEM.unitConverter" value-ref="inchToMMUnitConverter"/>
+				
+				<entry key="CONSTANT_CLEARANCE_REAR_FOR_CABITEM.remoteType" value="com.raritan.tdz.domain.CabinetItem"/>
+				<entry key="CONSTANT_CLEARANCE_REAR_FOR_CABITEM.value" value="clearenceRear"/>
+				<entry key="CONSTANT_CLEARANCE_REAR_FOR_CABITEM.unitConverter" value-ref="inchToMMUnitConverter"/>
+				
+				<entry key="CONSTANT_CLEARANCE_RIGHT_FOR_CABITEM.remoteType" value="com.raritan.tdz.domain.CabinetItem"/>
+				<entry key="CONSTANT_CLEARANCE_RIGHT_FOR_CABITEM.value" value="clearenceRight"/>
+				<entry key="CONSTANT_CLEARANCE_RIGHT_FOR_CABITEM.unitConverter" value-ref="inchToMMUnitConverter"/>
+
+				<entry key="CONSTANT_CORNER_SHAPE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.CabinetItem"/>
+				<entry key="CONSTANT_CORNER_SHAPE_FOR_ITEM.value" value="cornerShapeLkpValue"/>
+				<entry key="CONSTANT_CORNER_SHAPE_ITEM.id" value="cornerShapeLkpValueCode"/>
+
+				<entry key="CONSTANT_CABINET_GROUP_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.CabinetItem" />
+				<entry key="CONSTANT_CABINET_GROUP_FOR_ITEM.value" value="cabinetGrpLkuValue" />
+				<entry key="CONSTANT_CABINET_GROUP_FOR_ITEM.id" value="cabinetGrpLkuValueCode" />
+
+				<entry key="CONSTANT_GRID_LOCATION_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.CabinetItem"/>
+				<entry key="CONSTANT_GRID_LOCATION_FOR_ITEM.value" value="gridLocation"/>
+
+				<entry key="CONSTANT_FDOOR_PERFORATION_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.CabinetItem"/>
+				<entry key="CONSTANT_FDOOR_PERFORATION_FOR_ITEM.value" value="frontDoorPerforation"/>
+
+				<entry key="CONSTANT_FRONT_RAIL_OFFSET_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.CabinetItem"/>
+				<entry key="CONSTANT_FRONT_RAIL_OFFSET_FOR_ITEM.value" value="frontRailOffset"/>
+				<entry key="CONSTANT_FRONT_RAIL_OFFSET_FOR_ITEM.unitConverter" value-ref="inchToMMUnitConverter"/>
+
+				<entry key="CONSTANT_LOADING_CAPACITY_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.CabinetItem"/>
+				<entry key="CONSTANT_LOADING_CAPACITY_FOR_ITEM.value" value="loadingCapacity"/>
+				<entry key="CONSTANT_LOADING_CAPACITY_FOR_ITEM.unitConverter" value-ref="poundToKgUnitConverter"/>
+
+				<entry key="CONSTANT_RDOOR_PERFORATION_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.CabinetItem"/>
+				<entry key="CONSTANT_RDOOR_PERFORATION_FOR_ITEM.value" value="rearDoorPerforation"/>
+
+				<entry key="CONSTANT_RAIL_WIDTH_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.CabinetItem"/>
+				<entry key="CONSTANT_RAIL_WIDTH_FOR_ITEM.value" value="railWidth"/>
+				<entry key="CONSTANT_RAIL_WIDTH_FOR_ITEM.unitConverter" value-ref="inchToMMUnitConverter"/>
+
+				<entry key="CONSTANT_REAR_RAIL_OFFSET_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.CabinetItem"/>
+				<entry key="CONSTANT_REAR_RAIL_OFFSET_FOR_ITEM.value" value="rearRailOffset"/>
+				<entry key="CONSTANT_REAR_RAIL_OFFSET_FOR_ITEM.unitConverter" value-ref="inchToMMUnitConverter"/>
+
+				<entry key="CONSTANT_MAX_CONTIG_U_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.CabinetItem"/>
+				<entry key="CONSTANT_MAX_CONTIG_U_FOR_ITEM.value" value="maxContigU"/>
+
+				<entry key="CONSTANT_ROW_NUMBER_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.CabinetItem"/>
+				<entry key="CONSTANT_ROW_NUMBER_FOR_ITEM.value" value="rowNumber"/>
+
+				<entry key="_CONSTANT_SKIP_VALIDATION.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="_CONSTANT_SKIP_VALIDATION.value" value="skipValidation"/>
+
+				<entry key="_CONSTANT_ITEM_EDITABLE.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="_CONSTANT_ITEM_EDITABLE.remoteCallback" value-ref="itemEditableCallback"/>
+				
+				<entry key="CONSTANT_PROPAGATE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_PROPAGATE_FOR_ITEM.value" value="propagateFields"/>
+				<entry key="CONSTANT_PROPAGATE_FOR_ITEM.remoteCallback" value-ref="itemPropagateValueCallback"/>
+
+				<entry key="CONSTANT_SHELF_POSITION_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_SHELF_POSITION_FOR_ITEM.value" value="shelfPosition"/>
+
+				<entry key="_CONSTANT_ITEM_ORIGIN.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="_CONSTANT_ITEM_ORIGIN.id" value="originLkpValueCode"/>
+				<entry key="_CONSTANT_ITEM_ORIGIN.value" value="originLkpValue"/>
+				
+				<entry key="_CONSTANT_ITEM_PIQ_ID.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="_CONSTANT_ITEM_PIQ_ID.value" value="piqId"/>
+				
+				<entry key="CONSTANT_PIQ_EXTERNAL_KEY.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_PIQ_EXTERNAL_KEY.value" value="piqExternalKey"/>
+				
+				<entry key="_CONSTANT_ITEM_TO_MOVE_ID.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="_CONSTANT_ITEM_TO_MOVE_ID.value" value="itemToMoveId"/>
+				<entry key="_CONSTANT_ITEM_TO_MOVE_ID.remoteCallback" value-ref="itemMovedItemCallback"/>
+				
+				<entry key="_CONSTANT_WHEN_MOVE_ITEM_ID.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="_CONSTANT_WHEN_MOVE_ITEM_ID.remoteCallback" value-ref="whenMoveItemMethodCallback"/>
+				
+				<entry key="_CONSTANT_ITEM_REQUEST_LIST.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="_CONSTANT_ITEM_REQUEST_LIST.remoteCallback" value-ref="itemRequestMethodCallBack"/>
+				
+				<!-- ticket panel associated data -->
+				<entry key="CONSTANT_TICKET_NUMBER_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.TicketFields"/>
+				<entry key="CONSTANT_TICKET_NUMBER_FOR_ITEM.id" value="ticketId"/>
+				<entry key="CONSTANT_TICKET_NUMBER_FOR_ITEM.value" value="ticketNumber"/>
+				
+				<entry key="CONSTANT_TICKET_ACTION_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.TicketFields"/>
+				<entry key="CONSTANT_TICKET_ACTION_FOR_ITEM.id" value="ticketActionLkpValueCode"/>
+				<entry key="CONSTANT_TICKET_ACTION_FOR_ITEM.value" value="ticketActionLkpValue"/>
+				
+				<entry key="CONSTANT_TICKET_STATUS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.TicketFields"/>
+				<entry key="CONSTANT_TICKET_STATUS_FOR_ITEM.id" value="statusLkpValueCode"/>
+				<entry key="CONSTANT_TICKET_STATUS_FOR_ITEM.value" value="statusLkpValue"/>
+				
+				<entry key="CONSTANT_TICKET_DESC_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.TicketFields"/>
+				<entry key="CONSTANT_TICKET_DESC_FOR_ITEM.value" value="description"/>
+				
+				<entry key="CONSTANT_TICKET_COMMENTS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.TicketFields"/>
+				<entry key="CONSTANT_TICKET_COMMENTS_FOR_ITEM.value" value="statusComments"/>
+				
+				<!--  Ticket data associated with item -->
+				<entry key="CONSTANT_NAME_FOR_ITEM_TICKET.remoteType" value="com.raritan.tdz.domain.TicketFields"/>
+				<entry key="CONSTANT_NAME_FOR_ITEM_TICKET.value" value="itemName"/>
+				
+				<!-- <entry key="CONSTANT_CLASS_FOR_ITEM_TICKET.remoteType" value="com.raritan.tdz.domain.TicketFields"/>
+				<entry key="CONSTANT_CLASS_FOR_ITEM_TICKET.value" value="itemClass"/> --> 
+				
+				<entry key="CONSTANT_CLASS_FOR_ITEM_TICKET.remoteType" value="com.raritan.tdz.domain.TicketFields"/>
+				<entry key="CONSTANT_CLASS_FOR_ITEM_TICKET.remoteCallback" value-ref="ticketItemClassMethodCallback"/>
+				
+				<entry key="CONSTANT_MAKE_FOR_ITEM_TICKET.remoteType" value="com.raritan.tdz.domain.TicketFields"/>
+				<entry key="CONSTANT_MAKE_FOR_ITEM_TICKET.value" value="make"/>
+				
+				<entry key="CONSTANT_MODEL_FOR_ITEM_TICKET.remoteType" value="com.raritan.tdz.domain.TicketFields"/>
+				<entry key="CONSTANT_MODEL_FOR_ITEM_TICKET.value" value="model"/>
+				
+				<entry key="CONSTANT_PARENT_OF_ITEM_TICKET.remoteType" value="com.raritan.tdz.domain.TicketFields"/>
+				<entry key="CONSTANT_PARENT_OF_ITEM_TICKET.value" value="cabinetName"/>
+				
+				<entry key="CONSTANT_UPOSITION_FOR_ITEM_TICKET.remoteType" value="com.raritan.tdz.domain.TicketFields"/>
+				<entry key="CONSTANT_UPOSITION_FOR_ITEM_TICKET.value" value="uPosition"/>
+				
+				<entry key="CONSTANT_SERIAL_NUMBER_FOR_ITEM_TICKET.remoteType" value="com.raritan.tdz.domain.TicketFields"/>
+				<entry key="CONSTANT_SERIAL_NUMBER_FOR_ITEM_TICKET.value" value="serialNumber"/>
+				
+				<entry key="CONSTANT_ASSET_NUMBER_FOR_ITEM_TICKET.remoteType" value="com.raritan.tdz.domain.TicketFields"/>
+				<entry key="CONSTANT_ASSET_NUMBER_FOR_ITEM_TICKET.value" value="assetNumber"/>
+				
+				<entry key="CONSTANT_TYPE_FOR_ITEM_TICKET.remoteType" value="com.raritan.tdz.domain.TicketFields"/>
+				<entry key="CONSTANT_TYPE_FOR_ITEM_TICKET.value" value="purpose"/>
+				
+				<entry key="CONSTANT_FUNCTION_FOR_ITEM_TICKET.remoteType" value="com.raritan.tdz.domain.TicketFields"/>
+				<entry key="CONSTANT_FUNCTION_FOR_ITEM_TICKET.value" value="function"/>
+
+				<entry key="CONSTANT_LOCATION_OF_ITEM_TICKET.remoteType" value="com.raritan.tdz.domain.TicketFields"/>
+				<entry key="CONSTANT_LOCATION_OF_ITEM_TICKET.value" value="dataCenterCode"/>
+				
+				<entry key="CONSTANT_ORIENTATION_OF_ITEM_TICKET.remoteType" value="com.raritan.tdz.domain.TicketFields"/>
+				<entry key="CONSTANT_ORIENTATION_OF_ITEM_TICKET.value" value="orientation"/>
+				
+				<entry key="CONSTANT_CHASSIS_FRONTFACES_OF_ITEM_TICKET.remoteType" value="com.raritan.tdz.domain.TicketFields"/>
+				<entry key="CONSTANT_CHASSIS_FRONTFACES_OF_ITEM_TICKET.value" value="chassisFace"/>
+				
+				<entry key="CONSTANT_CHASSIS_OF_ITEM_TICKET.remoteType" value="com.raritan.tdz.domain.TicketFields"/>
+				<entry key="CONSTANT_CHASSIS_OF_ITEM_TICKET.value" value="chassis"/>
+				
+				<entry key="CONSTANT_SLOT_POSITION_FOR_ITEM_TICKET.remoteType" value="com.raritan.tdz.domain.TicketFields"/>
+				<entry key="CONSTANT_SLOT_POSITION_FOR_ITEM_TICKET.value" value="slotLabel"/>
+				
+				<entry key="CONSTANT_SHELF_POSITION_FOR_ITEM_TICKET.remoteType" value="com.raritan.tdz.domain.TicketFields"/>
+				<entry key="CONSTANT_SHELF_POSITION_FOR_ITEM_TICKET.value" value="shelfPosition"/>
+				
+				<entry key="CONSTANT_RAILS_USED_FOR_ITEM_TICKET.remoteType" value="com.raritan.tdz.domain.TicketFields"/>
+				<entry key="CONSTANT_RAILS_USED_FOR_ITEM_TICKET.value" value="railsUsed"/>
+				
+				<entry key="CONSTANT_DEPTH_POSITION_FOR_ITEM_TICKET.remoteType" value="com.raritan.tdz.domain.TicketFields"/>
+				<entry key="CONSTANT_DEPTH_POSITION_FOR_ITEM_TICKET.value" value="depthPosition"/>
+				
+				<entry key="CONSTANT_CABINET_SIDE_FOR_ITEM_TICKET.remoteType" value="com.raritan.tdz.domain.TicketFields"/>
+				<entry key="CONSTANT_CABINET_SIDE_FOR_ITEM_TICKET.value" value="cabinetSide"/>
+				
+				<entry key="CONSTANT_FRONTFACES_OF_ITEM_TICKET.remoteType" value="com.raritan.tdz.domain.TicketFields"/>
+				<entry key="CONSTANT_FRONTFACES_OF_ITEM_TICKET.value" value="frontFaces"/>
+				
+				<entry key="CONSTANT_ROWPOSITION_OF_CABINET_ITEM_TICKET.remoteType" value="com.raritan.tdz.domain.TicketFields"/>
+				<entry key="CONSTANT_ROWPOSITION_OF_CABINET_ITEM_TICKET.value" value="positionInRow"/>
+				
+				<entry key="CONSTANT_PS_REDUNDANCY_FOR_ITITEM_TICKET.remoteType" value="com.raritan.tdz.domain.TicketPortsPower"/>
+				<entry key="CONSTANT_PS_REDUNDANCY_FOR_ITITEM_TICKET.remoteCallback" value-ref="ticketRedundancyMethodCallback"/>
+				
+				
+				<entry key="CONSTANT_PORTNAME_PREFIX_FOR_ITITEM_TICKET.remoteType" value="com.raritan.tdz.domain.TicketPortsPower"/>
+				<entry key="CONSTANT_PORTNAME_PREFIX_FOR_ITITEM_TICKET.remoteCallback" value-ref="ticketPSPortNamePrefixMethodCallback"/>
+				
+				<entry key="CONSTANT_POWER_PORT_QTY_FOR_ITITEM_TICKET.remoteType" value="com.raritan.tdz.domain.TicketPortsPower"/>
+				<entry key="CONSTANT_POWER_PORT_QTY_FOR_ITITEM_TICKET.remoteCallback" value-ref="ticketPowerPortQuantityMethodCallback"/>
+
+				<entry key="CONSTANT_ROWLABEL_OF_CABINET_ITEM_TICKET.remoteType" value="com.raritan.tdz.domain.TicketFields"/>
+				<entry key="CONSTANT_ROWLABEL_OF_CABINET_ITEM_TICKET.value" value="rowLabel"/>
+				
+				<entry key="_CONSTANT_RESERVATION_ID_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="_CONSTANT_RESERVATION_ID_ITEM.value" value="reservationId"/>
+				
+				<entry key="CONSTANT_PORTNAME_PREFIX_FOR_ITITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_PORTNAME_PREFIX_FOR_ITITEM.remoteCallback" value-ref="pSPortNamePrefixMethodCallback"/>
+				
+				<entry key="CONSTANT_POWER_PORT_QTY_FOR_ITITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_POWER_PORT_QTY_FOR_ITITEM.remoteCallback" value-ref="powerPortQuantityMethodCallback"/>
+				
+				<entry key="CONSTANT_PX_USERNAME_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_PX_USERNAME_FOR_ITEM.value" value="pxUserName"/>
+
+				<entry key="CONSTANT_PX_PASSWORD_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_PX_PASSWORD_FOR_ITEM.value" value="pxPassword"/>
+
+				<entry key="CONSTANT_SNMP_V3_ENABLED_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_SNMP_V3_ENABLED_FOR_ITEM.value" value="snmp3Enabled"/>
+
+				<entry key="CONSTANT_SNMP_V3_USERNAME_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_SNMP_V3_USERNAME_FOR_ITEM.value" value="snmp3User"/>
+
+				<entry key="CONSTANT_SNMP_V3_AUTH_LEVEL_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_SNMP_V3_AUTH_LEVEL_FOR_ITEM.value" value="snmp3AuthLevel"/>
+
+				<entry key="CONSTANT_SNMP_V3_AUTH_PROTOCOL_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_SNMP_V3_AUTH_PROTOCOL_FOR_ITEM.value" value="snmp3AuthProtocol"/>
+
+				<entry key="CONSTANT_SNMP_V3_AUTH_PASSKEY_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_SNMP_V3_AUTH_PASSKEY_FOR_ITEM.value" value="snmp3AuthPasskey"/>
+
+				<entry key="CONSTANT_SNMP_V3_PRIVACY_PROTOCOL_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_SNMP_V3_PRIVACY_PROTOCOL_FOR_ITEM.value" value="snmp3PrivProtocol"/>
+
+				<entry key="CONSTANT_SNMP_V3_PRIVACY_PASSKEY_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_SNMP_V3_PRIVACY_PASSKEY_FOR_ITEM.value" value="snmp3PrivPasskey"/>
+
+				<entry key="CONSTANT_SNMP_WRITE_COMM_STRING_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_SNMP_WRITE_COMM_STRING_FOR_ITEM.value" value="snmpV2CommunityString"/>
+				
+				<entry key="CONSTANT_SNMP_DATA_PORT.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_SNMP_DATA_PORT.value" value="dataPortNameWithSnmp"/>
+
+			</map>
+		</constructor-arg>
+	</bean>	
+				
+	
+	<!--  This is specifically to get the model details data when user is creating a new item -->
+	<bean id="itemModelPanelRulesProcessor" class="com.raritan.tdz.model.home.ItemModelPanelRuleProcessor" init-method="init">
+		<property name="remoteReference" ref="remoteRefItemScreenModelPanel"/>
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="rulesTemplateFileName" value="uiViewTemplate-ItemScreen.xml"/>
+		<property name="panelList">
+			<list>
+				<value>hardwarePanel</value>
+				<value>dataPorts</value>
+				<value>powerPorts</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="restAPIItemRulesProcessor" class="com.raritan.tdz.item.rulesengine.ItemRulesProcessorImpl" init-method="init">
+		<property name="remoteReference" ref="restAPIRemoteRefItemScreen"/>
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="rulesTemplateFileName" value="uiViewTemplate-ItemScreen.xml"/>
+	</bean>
+	
+	<bean id="restAPIRemoteRefItemScreen" class="com.raritan.tdz.rulesengine.RemoteRefImpl">
+		<constructor-arg name="remoteRefMap">
+			<map>
+				<entry key="CONSTANTS_ITEM_VIEW.remoteType" value="com.raritan.tdz.domain.Item"/>
+				
+				<entry key="CONSTANT_MAKE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_MAKE_FOR_ITEM.id" value="modelMfrDetailId"/>
+				<entry key="CONSTANT_MAKE_FOR_ITEM.value" value="mfrName"/>
+				
+				<entry key="CONSTANT_MODEL_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_MODEL_FOR_ITEM.id" value="modelDetailId"/>
+				<entry key="CONSTANT_MODEL_FOR_ITEM.value" value="modelName"/>
+				
+				<entry key="CONSTANT_UPOSITION_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_UPOSITION_FOR_ITEM.value" value="uPosition"/>
+				
+				<entry key="CONSTANT_NAME_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_NAME_FOR_ITEM.id" value="itemId"/>
+				<entry key="CONSTANT_NAME_FOR_ITEM.value" value="itemName"/>
+
+				<entry key="CONSTANT_SERIAL_NUMBER_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_SERIAL_NUMBER_FOR_ITEM.value" value="serialNumber"/>
+				
+				<entry key="CONSTANT_ASSET_TAG_ID_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_ASSET_TAG_ID_FOR_ITEM.value" value="raritanAssetTag"/>
+				<entry key="CONSTANT_ASSET_TAG_ID_FOR_ITEM.remoteCallback" value-ref="itemEAssetTagMethodCallback"/>
+
+				<entry key="CONSTANT_ASSET_NUMBER_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_ASSET_NUMBER_FOR_ITEM.value" value="assetNumber"/>
+
+				<entry key="CONSTANT_ALIAS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_ALIAS_FOR_ITEM.value" value="itemAlias"/>
+				
+				<entry key="CONSTANT_STATUS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_STATUS_FOR_ITEM.id" value="statusLkpValueCode"/>
+				<entry key="CONSTANT_STATUS_FOR_ITEM.remoteCallback" value-ref="itemStateMethodCallback"/>
+				<entry key="CONSTANT_STATUS_FOR_ITEM.value" value="lkpValue"/>
+				
+				<entry key="CONSTANT_ADMIN_USER_OF_ITEM.remoteType" value="com.raritan.tdz.domain.cmn.Users"/>
+				<entry key="CONSTANT_ADMIN_USER_OF_ITEM.id" value="id"/>
+				<entry key="CONSTANT_ADMIN_USER_OF_ITEM.value" value="userId"/>
+				
+				<entry key="CONSTANT_ADMIN_TEAM_OF_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_ADMIN_TEAM_OF_ITEM.id" value="itemAdminTeamLkuValueCode"/>
+				<entry key="CONSTANT_ADMIN_TEAM_OF_ITEM.value" value="itemAdminTeamLkuValue"/>
+				
+				<entry key="CONSTANT_CUSTOMER_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_CUSTOMER_FOR_ITEM.id" value="departmentLkuValueCode"/>
+				<entry key="CONSTANT_CUSTOMER_FOR_ITEM.value" value="departmentLkuValue"/>
+				
+				
+				<entry key="CONSTANT_CLASS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_CLASS_FOR_ITEM.remoteCallback" value-ref="itemClassMethodCallback"/>
+
+				<entry key="CONSTANT_CUSTOM_FIELDS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_CUSTOM_FIELDS_FOR_ITEM.remoteCallback" value-ref="customFieldMethodCallback"/>
+
+				<entry key="CONSTANT_DATA_PORTS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_DATA_PORTS_FOR_ITEM.remoteCallback" value-ref="dataPortsMethodCallback"/>
+
+				<entry key="CONSTANT_POWER_PORTS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_POWER_PORTS_FOR_ITEM.remoteCallback" value-ref="powerPortsMethodCallback"/>
+				
+				<entry key="CONSTANT_SENSOR_PORTS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_SENSOR_PORTS_FOR_ITEM.remoteCallback" value-ref="sensorPortsMethodCallback"/>
+				
+				<entry key="CONSTANT_TYPE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_TYPE_FOR_ITEM.id" value="purposeLkuValueCode"/>
+				<entry key="CONSTANT_TYPE_FOR_ITEM.value" value="purposeLkuValue"/>
+				
+				<entry key="CONSTANT_FUNCTION_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_FUNCTION_FOR_ITEM.id" value="functionLkuValueCode"/>
+				<entry key="CONSTANT_FUNCTION_FOR_ITEM.value" value="functionLkuValue"/>
+				
+				<entry key="CONSTANT_WEIGHT_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_WEIGHT_FOR_ITEM.value" value="weight"/>
+				<entry key="CONSTANT_WEIGHT_FOR_ITEM.unitConverter" value-ref="poundToKgUnitConverter"/>
+				
+				<entry key="CONSTANT_RACKUNITS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_RACKUNITS_FOR_ITEM.value" value="ruHeight"/>
+				
+				<entry key="CONSTANT_MOUNTING_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_MOUNTING_FOR_ITEM.remoteCallback" value-ref="modelMountingFFMethodCallback"/>
+				
+				<entry key="CONSTANT_FORMFACTOR_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_FORMFACTOR_FOR_ITEM.value" value="formFactor"/>
+				
+				<entry key="CONSTANT_DIMENSION_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_DIMENSION_FOR_ITEM.remoteCallback" value-ref="modelDimensionMethodCallback"/>
+				
+				<entry key="CONSTANT_CPUTYPE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ItItem"/>
+				<entry key="CONSTANT_CPUTYPE_FOR_ITEM.value" value="cpuType"/>
+				
+				<entry key="CONSTANT_CPUQUANTITY_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ItItem"/>
+				<entry key="CONSTANT_CPUQUANTITY_FOR_ITEM.value" value="cpuQuantity"/>
+			
+				<entry key="CONSTANT_RAMGB_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ItItem"/>
+				<entry key="CONSTANT_RAMGB_FOR_ITEM.value" value="ramGB"/>
+				
+				<entry key="CONSTANT_TOTALUSERS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ItItem"/>
+				<entry key="CONSTANT_TOTALUSERS_FOR_ITEM.value" value="totalUsers"/>
+				
+				<entry key="CONSTANT_SERVICES_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ItItem"/>
+				<entry key="CONSTANT_SERVICES_FOR_ITEM.value" value="services"/>
+			
+				<entry key="CONSTANT_TOTALPROCESSES_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ItItem"/>
+				<entry key="CONSTANT_TOTALPROCESSES_FOR_ITEM.value" value="totalProcesses"/>
+				
+				<entry key="CONSTANT_LOCATION_OF_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_LOCATION_OF_ITEM.value" value="code"/>
+				<entry key="CONSTANT_LOCATION_OF_ITEM.id" value="dataCenterLocationId"/>
+				
+				<entry key="CONSTANT_ROWLABEL_OF_CABINET_ITEM.remoteType" value="com.raritan.tdz.domain.CabinetItem"/>
+				<entry key="CONSTANT_ROWLABEL_OF_CABINET_ITEM.value" value="rowLabel"/>
+				
+				<entry key="CONSTANT_ROWPOSITION_OF_CABINET_ITEM.remoteType" value="com.raritan.tdz.domain.CabinetItem"/>
+				<entry key="CONSTANT_ROWPOSITION_OF_CABINET_ITEM.value" value="positionInRow"/>
+				
+				<entry key="CONSTANT_FRONTFACES_OF_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_FRONTFACES_OF_ITEM.value" value="facingLkpValue"/>
+				<entry key="CONSTANT_FRONTFACES_OF_ITEM.id" value="facingLkpValueCode"/>
+			
+				<entry key="CONSTANT_LOCATIONREF_CABINET_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_LOCATIONREF_CABINET_ITEM.value" value="locationReference"/>
+				
+				<entry key="CONSTANT_RAILS_USED_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_RAILS_USED_FOR_ITEM.value" value="mountedRailLkpValue"/>
+				<entry key="CONSTANT_RAILS_USED_FOR_ITEM.id" value="mountedRailLkpValueCode"/>
+				
+				<entry key="CONSTANT_CABINET_SIDE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item" />
+				<entry key="CONSTANT_CABINET_SIDE_FOR_ITEM.value" value="mountedRailLkpValue" />
+				<entry key="CONSTANT_CABINET_SIDE_FOR_ITEM.id" value="mountedRailLkpValueCode" />
+				
+				<entry key="CONSTANT_DEPTH_POSITION_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item" />
+				<entry key="CONSTANT_DEPTH_POSITION_FOR_ITEM.value" value="facingLkpValue" />
+				<entry key="CONSTANT_DEPTH_POSITION_FOR_ITEM.id" value="facingLkpValueCode" />
+				
+				<entry key="CONSTANT_PARENT_OF_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_PARENT_OF_ITEM.remoteCallback" value-ref="parentOfItemMethodCallback"/>
+				<entry key="CONSTANT_PARENT_OF_ITEM.value" value="itemName"/>
+				<entry key="CONSTANT_PARENT_OF_ITEM.id" value="itemId"/>
+								
+				<entry key="CONSTANT_CONTRACT_AMOUNT_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_CONTRACT_AMOUNT_FOR_ITEM.value" value="contractAmount"/>
+				
+				<entry key="CONSTANT_CONTRACT_BEGIN_DATE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_CONTRACT_BEGIN_DATE_FOR_ITEM.value" value="contractBeginDate"/>
+				
+				<entry key="CONSTANT_CONTRACT_EXPIRE_DATE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_CONTRACT_EXPIRE_DATE_FOR_ITEM.value" value="contractExpireDate"/>
+				
+				<entry key="CONSTANT_CONTRACT_NUMBER_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_CONTRACT_NUMBER_FOR_ITEM.value" value="contractNumber"/>
+				
+ 				<entry key="CONSTANT_PO_NUMBER_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_PO_NUMBER_FOR_ITEM.value" value="poNumber"/>
+				
+				<entry key="CONSTANT_PROJECT_NUMBER_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_PROJECT_NUMBER_FOR_ITEM.value" value="projectNumber"/>
+				
+				<entry key="CONSTANT_DESCRIPTION_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_DESCRIPTION_FOR_ITEM.value" value="description"/>
+				
+				<entry key="CONSTANT_EXPIRE_DATE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_EXPIRE_DATE_FOR_ITEM.value" value="expireDate"/>
+				
+				<entry key="CONSTANT_INSTALL_DATE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_INSTALL_DATE_FOR_ITEM.value" value="installDate"/>
+				
+				<entry key="CONSTANT_PURCHASE_DATE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_PURCHASE_DATE_FOR_ITEM.value" value="purchaseDate"/>
+				
+				<entry key="CONSTANT_PURCHASE_PRICE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_PURCHASE_PRICE_FOR_ITEM.value" value="purchasePrice"/>
+				
+				<entry key="CONSTANT_SLA_PROFILE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_SLA_PROFILE_FOR_ITEM.value" value="slaProfileLkuValue"/>
+				<entry key="CONSTANT_SLA_PROFILE_FOR_ITEM.id" value="slaProfileLkuValueCode"/>
+				
+				<entry key="CONSTANT_SYS_CREATED_BY_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_SYS_CREATED_BY_FOR_ITEM.value" value="sysCreatedBy"/>
+				
+				<entry key="CONSTANT_SYS_CREATION_DATE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_SYS_CREATION_DATE_FOR_ITEM.value" value="sysCreationDate"/>
+				
+				<entry key="CONSTANT_SYS_UPDATE_DATE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_SYS_UPDATE_DATE_FOR_ITEM.value" value="sysUpdateDate"/>
+				
+				<entry key="CONSTANT_MAX_SLOTS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ItItem"/>
+				<entry key="CONSTANT_MAX_SLOTS_FOR_ITEM.value" value="maxSlots"/>
+				
+				<entry key="CONSTANT_PS_REDUNDANCY_FOR_ITITEM.remoteType" value="com.raritan.tdz.domain.ItItem"/>
+				<entry key="CONSTANT_PS_REDUNDANCY_FOR_ITITEM.value" value="psredundancy"/>
+				
+				<entry key="CONSTANT_EFFECTIVE_POWER_FOR_ITITEM.remoteType" value="com.raritan.tdz.domain.ItItem"/>
+				<entry key="CONSTANT_EFFECTIVE_POWER_FOR_ITITEM.value" value="effectivePower"/>
+				
+				<entry key="CONSTANT_LAYOUT_CHASSIS_FRONT_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ItItem"/>
+				<entry key="CONSTANT_LAYOUT_CHASSIS_FRONT_FOR_ITEM.value" value="layoutChassisFront"/>
+				
+				<entry key="CONSTANT_LAYOUT_CHASSIS_REAR_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ItItem"/>
+				<entry key="CONSTANT_LAYOUT_CHASSIS_REAR_FOR_ITEM.value" value="layoutChassisRear"/>
+				
+				<entry key="CONSTANT_OSI_LAYER_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ItItem"/>
+				<entry key="CONSTANT_OSI_LAYER_FOR_ITEM.id" value="osiLayerLkpValueCode"/>
+				<entry key="CONSTANT_OSI_LAYER_FOR_ITEM.value" value="osiLayerLkpValue"/>
+
+				<entry key="CONSTANT_OS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ItItem"/>
+				<entry key="CONSTANT_OS_FOR_ITEM.value" value="osLkuValue"/>
+				<entry key="CONSTANT_OS_FOR_ITEM.id" value="osLkuValueCode"/>
+
+				<entry key="CONSTANT_DOMAIN_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ItItem"/>
+				<entry key="CONSTANT_DOMAIN_FOR_ITEM.value" value="domainLkuValue"/>
+				<entry key="CONSTANT_DOMAIN_FOR_ITEM.id" value="domainLkuValueCode"/>
+
+				<entry key="CONSTANT_VM_CLUSTER_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ItItem"/>
+				<entry key="CONSTANT_VM_CLUSTER_FOR_ITEM.value" value="vmClusterLkuValue"/>
+				<entry key="CONSTANT_VM_CLUSTER_FOR_ITEM.id" value="vmClusterLkuValueCode"/>
+
+				<entry key="CONSTANT_CHASSIS_OF_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_CHASSIS_OF_ITEM.remoteCallback" value-ref="bladeChassisNameIdCallback"/>
+				<entry key="CONSTANT_CHASSIS_OF_ITEM.value" value="itemName"/>
+				<entry key="CONSTANT_CHASSIS_OF_ITEM.id" value="itemId"/>
+				
+
+				<entry key="CONSTANT_DATASTORE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ItItem"/>
+				<entry key="CONSTANT_DATASTORE_FOR_ITEM.value" value="dataStore.itemName"/>
+				<entry key="CONSTANT_DATASTORE_FOR_ITEM.id" value="dataStore.itemId"/>
+
+				<entry key="CONSTANT_UPS_BANK_OF_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_UPS_BANK_OF_ITEM.remoteCallback" value-ref="upsBankNameIdCallback"/>
+				<entry key="CONSTANT_UPS_BANK_OF_ITEM.value" value="upsBankItem.itemName"/>
+				<entry key="CONSTANT_UPS_BANK_OF_ITEM.id" value="upsBankItem.itemId"/>
+
+				<entry key="CONSTANT_FPDU_INPUT_VOLTAGE_OF_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_FPDU_INPUT_VOLTAGE_OF_ITEM.remoteCallback" value-ref="fpduInputVoltageCallback"/>
+
+				<entry key="CONSTANT_FPDU_INPUT_WIRING_OF_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_FPDU_INPUT_WIRING_OF_ITEM.remoteCallback" value-ref="fpduWiringCallback"/>
+
+                <entry key="CONSTANT_FPDU_OUTPUT_WIRING_OF_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+                <entry key="CONSTANT_FPDU_OUTPUT_WIRING_OF_ITEM.id" value="phaseLkpValueCode"/>
+                <entry key="CONSTANT_FPDU_OUTPUT_WIRING_OF_ITEM.value" value="phaseLkpValue"/>
+                <entry key="CONSTANT_FPDU_OUTPUT_WIRING_OF_ITEM.remoteCallback" value-ref="fpduWiringCallback"/>
+
+				<entry key="CONSTANT_PHASE_A_COLOR_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_PHASE_A_COLOR_FOR_ITEM.value" value="phaseAColorLkpValue"/>
+				<entry key="CONSTANT_PHASE_A_COLOR_FOR_ITEM.id" value="phaseAColorLkpValueCode"/>
+
+				<entry key="CONSTANT_PHASE_B_COLOR_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_PHASE_B_COLOR_FOR_ITEM.value" value="phaseBColorLkpValue"/>
+				<entry key="CONSTANT_PHASE_B_COLOR_FOR_ITEM.id" value="phaseBColorLkpValueCode"/>
+
+				<entry key="CONSTANT_PHASE_C_COLOR_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_PHASE_C_COLOR_FOR_ITEM.value" value="phaseCColorLkpValue"/>
+				<entry key="CONSTANT_PHASE_C_COLOR_FOR_ITEM.id" value="phaseCColorLkpValueCode"/>
+
+				<entry key="CONSTANT_PHASE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_PHASE_FOR_ITEM.value" value="phaseLkpValue"/>
+				<entry key="CONSTANT_PHASE_FOR_ITEM.id" value="phaseLkpValueCode"/>
+
+				<entry key="CONSTANT_THROW_DIRECTION_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_THROW_DIRECTION_FOR_ITEM.value" value="throwDirectionLkpValue"/>
+				<entry key="CONSTANT_THROW_DIRECTION_FOR_ITEM.id" value="throwDirectionLkpValueCode"/>
+				
+				<entry key="CONSTANT_FIRST_PHASE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_FIRST_PHASE_FOR_ITEM.value" value="firstPhase"/>
+				
+				<entry key="CONSTANT_LOCATION_XY_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_LOCATION_XY_FOR_ITEM.value" value="locationXY"/>
+				
+				<entry key="CONSTANT_PS_REDUNDANCY_FOR_MEITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_PS_REDUNDANCY_FOR_MEITEM.value" value="psredundancy"/>
+				
+				<entry key="CONSTANT_EFFECTIVE_POWER_FOR_ITITEM.remoteType" value="com.raritan.tdz.domain.ItItem"/>
+				<entry key="CONSTANT_EFFECTIVE_POWER_FOR_ITITEM.value" value="effectivePower"/>
+				
+				<entry key="CONSTANT_EVEN_ODD_LAYOUT_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_EVEN_ODD_LAYOUT_FOR_ITEM.value" value="evenOddLayout"/>
+				
+				<entry key="CONSTANT_IS_TRANSFORMER_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_IS_TRANSFORMER_FOR_ITEM.value" value="isTransformer"/>
+				
+				<entry key="CONSTANT_BTU_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_BTU_FOR_ITEM.value" value="btu"/>
+				
+				<entry key="CONSTANT_CFM_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_CFM_FOR_ITEM.value" value="cfm"/>
+				
+				<entry key="CONSTANT_CLEARANCE_LEFT_FOR_MEITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_CLEARANCE_LEFT_FOR_MEITEM.value" value="clearanceLeft"/>
+				<entry key="CONSTANT_CLEARANCE_LEFT_FOR_MEITEM.unitConverter" value-ref="inchToMMUnitConverter"/>
+				
+				<entry key="CONSTANT_CLEARENCE_FRONT_FOR_MEITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_CLEARENCE_FRONT_FOR_MEITEM.value" value="clearenceFront"/>
+				<entry key="CONSTANT_CLEARENCE_FRONT_FOR_MEITEM.unitConverter" value-ref="inchToMMUnitConverter"/>
+				
+				<entry key="CONSTANT_CLEARENCE_REAR_FOR_MEITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_CLEARENCE_REAR_FOR_MEITEM.value" value="clearenceRear"/>
+				<entry key="CONSTANT_CLEARENCE_REAR_FOR_MEITEM.unitConverter" value-ref="inchToMMUnitConverter"/>
+				
+				<entry key="CONSTANT_CLEARENCE_RIGHT_FOR_MEITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_CLEARENCE_RIGHT_FOR_MEITEM.value" value="clearenceRight"/>
+				<entry key="CONSTANT_CLEARENCE_RIGHT_FOR_MEITEM.unitConverter" value-ref="inchToMMUnitConverter"/>
+				
+				<entry key="CONSTANT_EFFICIENTY_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_EFFICIENTY_FOR_ITEM.value" value="efficiency"/>
+				
+				<entry key="CONSTANT_LINE_VOLTS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_LINE_VOLTS_FOR_ITEM.value" value="lineVolts"/>
+				
+				<entry key="CONSTANT_PHASE_VOLTS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_PHASE_VOLTS_FOR_ITEM.value" value="phaseVolts"/>
+				
+				<entry key="CONSTANT_RATING_AMPS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_RATING_AMPS_FOR_ITEM.value" value="ratingAmps"/>
+				
+				<entry key="CONSTANT_RATING_KW_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_RATING_KW_FOR_ITEM.value" value="ratingKW"/>
+				
+				<entry key="CONSTANT_RATING_KVA_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_RATING_KVA_FOR_ITEM.value" value="ratingKva"/>
+				
+				<entry key="CONSTANT_RATING_TONS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_RATING_TONS_FOR_ITEM.value" value="ratingTons"/>
+				
+				<entry key="CONSTANT_RATING_V_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_RATING_V_FOR_ITEM.value" value="ratingV"/>
+				
+				<entry key="CONSTANT_THROW_DIST_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_THROW_DIST_FOR_ITEM.value" value="throwDist"/>
+				
+				<entry key="CONSTANT_PERCENT_OPEN_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_PERCENT_OPEN_FOR_ITEM.value" value="percentOpen"/>
+				
+				<entry key="CONSTANT_POLES_QTY_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.MeItem"/>
+				<entry key="CONSTANT_POLES_QTY_FOR_ITEM.value" value="polesQty"/>
+				
+				<entry key="CONSTANT_SLOT_POSITION_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_SLOT_POSITION_FOR_ITEM.value" value="slotPosition"/>
+				
+				<entry key="CONSTANT_PIQ_ID_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_PIQ_ID_FOR_ITEM.value" value="piqId"/>
+				
+				<entry key="CONSTANT_CAD_HANDLE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_CAD_HANDLE_FOR_ITEM.value" value="cadHandle"/>
+				
+				<entry key="CONSTANT_LOGICAL_PATH_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_LOGICAL_PATH_FOR_ITEM.value" value="logicalPath"/>
+
+				<entry key="CONSTANT_SUBCLASS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_SUBCLASS_FOR_ITEM.value" value="subclassLkpValue"/>
+				<entry key="CONSTANT_SUBCLASS_FOR_ITEM.id" value="subclassLkpValueCode"/>
+				
+				<entry key="CONSTANT_LAYOUT_HORIZ_FRONT_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_LAYOUT_HORIZ_FRONT_FOR_ITEM.value" value="layoutHorizFront"/>
+				
+				<entry key="CONSTANT_LAYOUT_HORIZ_REAR_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_LAYOUT_HORIZ_REAR_FOR_ITEM.value" value="layoutHorizRear"/>
+				
+				<entry key="CONSTANT_LAYOUT_VERTICAL_LEFT_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_LAYOUT_VERTICAL_LEFT_FOR_ITEM.value" value="layoutVerticalLeft"/>
+				
+				<entry key="CONSTANT_LAYOUT_VERTICAL_RIGHT_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_LAYOUT_VERTICAL_RIGHT_FOR_ITEM.value" value="layoutVerticalRight"/>
+				
+				<entry key="CONSTANT_LAYOUT_VERTICAL_LEFT_BACK_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_LAYOUT_VERTICAL_LEFT_BACK_FOR_ITEM.value" value="layoutVerticalLeftBack"/>
+				
+				<entry key="CONSTANT_LAYOUT_VERTICAL_RIGHT_BACK_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_LAYOUT_VERTICAL_RIGHT_BACK_FOR_ITEM.value" value="layoutVerticalRightBack"/>
+				
+				<entry key="CONSTANT_FREE_DATA_PORT_COUNT_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_FREE_DATA_PORT_COUNT_FOR_ITEM.value" value="freeDataPortCount"/>
+				
+				<entry key="CONSTANT_FREE_POWER_PORT_COUNT_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_FREE_POWER_PORT_COUNT_FOR_ITEM.value" value="freePowerPortCount"/>
+				
+				<entry key="CONSTANT_FREE_INPUT_CORD_COUNT_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_FREE_INPUT_CORD_COUNT_FOR_ITEM.value" value="freeInputCordCount"/>
+				
+				<entry key="CONSTANT_GROUPING_NAME_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_GROUPING_NAME_FOR_ITEM.value" value="groupingName"/>
+				
+				<entry key="CONSTANT_NUMBER_IN_GROUP_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_NUMBER_IN_GROUP_FOR_ITEM.value" value="numPorts"/>
+				
+				<entry key="CONSTANT_GROUPING_NUMBER_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_GROUPING_NUMBER_FOR_ITEM.value" value="groupingNumber"/>
+				
+				<entry key="CONSTANT_IS_ASSET_TAG_VERIFIED_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_IS_ASSET_TAG_VERIFIED_FOR_ITEM.value" value="isAssetTagVerified"/>
+				
+				<entry key="CONSTANT_CRAC_NW_GROUP_OF_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_CRAC_NW_GROUP_OF_ITEM.value" value="cracNwGrpItem.itemName"/>
+				<entry key="CONSTANT_CRAC_NW_GROUP_OF_ITEM.id" value="cracNwGrpItem.itemId"/>		
+				
+				<entry key="CONSTANT_CLEARANCE_LEFT_FOR_CABITEM.remoteType" value="com.raritan.tdz.domain.CabinetItem"/>
+				<entry key="CONSTANT_CLEARANCE_LEFT_FOR_CABITEM.value" value="clearanceLeft"/>
+				<entry key="CONSTANT_CLEARANCE_LEFT_FOR_CABITEM.unitConverter" value-ref="inchToMMUnitConverter"/>
+				
+				<entry key="CONSTANT_CLEARANCE_FRONT_FOR_CABITEM.remoteType" value="com.raritan.tdz.domain.CabinetItem"/>
+				<entry key="CONSTANT_CLEARANCE_FRONT_FOR_CABITEM.value" value="clearenceFront"/>
+				<entry key="CONSTANT_CLEARANCE_FRONT_FOR_CABITEM.unitConverter" value-ref="inchToMMUnitConverter"/>
+				
+				<entry key="CONSTANT_CLEARANCE_REAR_FOR_CABITEM.remoteType" value="com.raritan.tdz.domain.CabinetItem"/>
+				<entry key="CONSTANT_CLEARANCE_REAR_FOR_CABITEM.value" value="clearenceRear"/>
+				<entry key="CONSTANT_CLEARANCE_REAR_FOR_CABITEM.unitConverter" value-ref="inchToMMUnitConverter"/>
+				
+				<entry key="CONSTANT_CLEARANCE_RIGHT_FOR_CABITEM.remoteType" value="com.raritan.tdz.domain.CabinetItem"/>
+				<entry key="CONSTANT_CLEARANCE_RIGHT_FOR_CABITEM.value" value="clearenceRight"/>
+				<entry key="CONSTANT_CLEARANCE_RIGHT_FOR_CABITEM.unitConverter" value-ref="inchToMMUnitConverter"/>
+
+				<entry key="CONSTANT_CORNER_SHAPE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.CabinetItem"/>
+				<entry key="CONSTANT_CORNER_SHAPE_FOR_ITEM.value" value="cornerShapeLkpValue"/>
+				<entry key="CONSTANT_CORNER_SHAPE_ITEM.id" value="cornerShapeLkpValueCode"/>
+
+				<entry key="CONSTANT_CABINET_GROUP_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.CabinetItem" />
+				<entry key="CONSTANT_CABINET_GROUP_FOR_ITEM.value" value="cabinetGrpLkuValue" />
+				<entry key="CONSTANT_CABINET_GROUP_FOR_ITEM.id" value="cabinetGrpLkuValueCode" />
+
+				<entry key="CONSTANT_GRID_LOCATION_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.CabinetItem"/>
+				<entry key="CONSTANT_GRID_LOCATION_FOR_ITEM.value" value="gridLocation"/>
+
+				<entry key="CONSTANT_FDOOR_PERFORATION_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.CabinetItem"/>
+				<entry key="CONSTANT_FDOOR_PERFORATION_FOR_ITEM.value" value="frontDoorPerforation"/>
+
+				<entry key="CONSTANT_FRONT_RAIL_OFFSET_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.CabinetItem"/>
+				<entry key="CONSTANT_FRONT_RAIL_OFFSET_FOR_ITEM.value" value="frontRailOffset"/>
+				<entry key="CONSTANT_FRONT_RAIL_OFFSET_FOR_ITEM.unitConverter" value-ref="inchToMMUnitConverter"/>
+
+				<entry key="CONSTANT_LOADING_CAPACITY_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.CabinetItem"/>
+				<entry key="CONSTANT_LOADING_CAPACITY_FOR_ITEM.value" value="loadingCapacity"/>
+				<entry key="CONSTANT_LOADING_CAPACITY_FOR_ITEM.unitConverter" value-ref="poundToKgUnitConverter"/>
+
+				<entry key="CONSTANT_RDOOR_PERFORATION_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.CabinetItem"/>
+				<entry key="CONSTANT_RDOOR_PERFORATION_FOR_ITEM.value" value="rearDoorPerforation"/>
+
+				<entry key="CONSTANT_RAIL_WIDTH_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.CabinetItem"/>
+				<entry key="CONSTANT_RAIL_WIDTH_FOR_ITEM.value" value="railWidth"/>
+				<entry key="CONSTANT_RAIL_WIDTH_FOR_ITEM.unitConverter" value-ref="inchToMMUnitConverter"/>
+
+				<entry key="CONSTANT_REAR_RAIL_OFFSET_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.CabinetItem"/>
+				<entry key="CONSTANT_REAR_RAIL_OFFSET_FOR_ITEM.value" value="rearRailOffset"/>
+				<entry key="CONSTANT_REAR_RAIL_OFFSET_FOR_ITEM.unitConverter" value-ref="inchToMMUnitConverter"/>
+
+				<entry key="CONSTANT_MAX_CONTIG_U_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.CabinetItem"/>
+				<entry key="CONSTANT_MAX_CONTIG_U_FOR_ITEM.value" value="maxContigU"/>
+
+				<entry key="CONSTANT_ROW_NUMBER_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.CabinetItem"/>
+				<entry key="CONSTANT_ROW_NUMBER_FOR_ITEM.value" value="rowNumber"/>
+
+				<entry key="_CONSTANT_SKIP_VALIDATION.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="_CONSTANT_SKIP_VALIDATION.value" value="skipValidation"/>
+
+				<entry key="_CONSTANT_ITEM_EDITABLE.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="_CONSTANT_ITEM_EDITABLE.remoteCallback" value-ref="itemEditableCallback"/>
+				
+				<entry key="CONSTANT_PROPAGATE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_PROPAGATE_FOR_ITEM.value" value="propagateFields"/>
+				<entry key="CONSTANT_PROPAGATE_FOR_ITEM.remoteCallback" value-ref="itemPropagateValueCallback"/>
+
+				<entry key="CONSTANT_SHELF_POSITION_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_SHELF_POSITION_FOR_ITEM.value" value="shelfPosition"/>
+				
+			</map>
+		</constructor-arg>
+	</bean>	
+				
+	<bean id="remoteRefItemScreenModelPanel" class="com.raritan.tdz.rulesengine.RemoteRefImpl">
+		<constructor-arg name="remoteRefMap">
+			<map>
+				<entry key="CONSTANTS_ITEM_VIEW.remoteType" value="com.raritan.tdz.domain.ModelDetails"/>
+		
+				<entry key="CONSTANT_MAKE_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ModelDetails"/>
+				<entry key="CONSTANT_MAKE_FOR_ITEM.id" value="modelMfrDetailId"/>
+				<entry key="CONSTANT_MAKE_FOR_ITEM.value" value="mfrName"/>
+				
+				<entry key="CONSTANT_MODEL_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ModelDetails"/>
+				<entry key="CONSTANT_MODEL_FOR_ITEM.id" value="modelDetailId"/>
+				<entry key="CONSTANT_MODEL_FOR_ITEM.value" value="modelName"/>
+				
+				<entry key="CONSTANT_CLASS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ModelDetails"/>
+				<entry key="CONSTANT_CLASS_FOR_ITEM.remoteCallback" value-ref="itemClassMethodCallback"/>
+				
+				<entry key="CONSTANT_SUBCLASS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ModelDetails"/>
+				<entry key="CONSTANT_SUBCLASS_FOR_ITEM.remoteCallback" value-ref="itemSubClassMethodCallback"/>
+				
+				
+				<entry key="CONSTANT_WEIGHT_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ModelDetails"/>
+				<entry key="CONSTANT_WEIGHT_FOR_ITEM.value" value="weight"/>
+				
+				<entry key="CONSTANT_RACKUNITS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ModelDetails"/>
+				<entry key="CONSTANT_RACKUNITS_FOR_ITEM.value" value="ruHeight"/>
+				
+				<entry key="CONSTANT_MOUNTING_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ModelDetails"/>
+				<entry key="CONSTANT_MOUNTING_FOR_ITEM.remoteCallback" value-ref="modelMountingFFMethodCallback"/>
+				
+				<entry key="CONSTANT_FORMFACTOR_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ModelDetails"/>
+				<entry key="CONSTANT_FORMFACTOR_FOR_ITEM.value" value="formFactor"/>
+				
+				<entry key="CONSTANT_DIMENSION_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ModelDetails"/>
+				<entry key="CONSTANT_DIMENSION_FOR_ITEM.remoteCallback" value-ref="modelDimensionMethodCallback"/>
+
+				<entry key="CONSTANT_DATA_PORTS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ModelDetails"/>
+				<entry key="CONSTANT_DATA_PORTS_FOR_ITEM.remoteCallback" value-ref="modelDataPortsMethodCallback"/>
+
+				<entry key="CONSTANT_POWER_PORTS_FOR_ITEM.remoteType" value="com.raritan.tdz.domain.ModelDetails"/>
+				<entry key="CONSTANT_POWER_PORTS_FOR_ITEM.remoteCallback" value-ref="modelPowerPortsMethodCallback"/>
+				
+				<entry key="CONSTANT_PS_REDUNDANCY_FOR_ITITEM.remoteType" value="com.raritan.tdz.domain.ModelDetails"/>
+				<entry key="CONSTANT_PS_REDUNDANCY_FOR_ITITEM.value" value="psredundancy"/>
+				
+				<entry key="CONSTANT_EFFECTIVE_POWER_FOR_ITITEM.remoteType" value="com.raritan.tdz.domain.ModelDetails"/>
+				
+				
+				<entry key="CONSTANT_PS_REDUNDANCY_FOR_ITITEM_TICKET.remoteType" value="com.raritan.tdz.domain.TicketPortsPower"/>
+				<entry key="CONSTANT_PS_REDUNDANCY_FOR_ITITEM_TICKET.remoteCallback" value-ref="ticketRedundancyMethodCallback"/>
+				
+				<entry key="CONSTANT_PORTNAME_PREFIX_FOR_ITITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_PORTNAME_PREFIX_FOR_ITITEM.remoteCallback" value-ref="pSPortNamePrefixMethodCallback"/>
+			
+				<entry key="CONSTANT_PORTNAME_PREFIX_FOR_ITITEM_TICKET.remoteType" value="com.raritan.tdz.domain.TicketPortsPower"/>
+				<entry key="CONSTANT_PORTNAME_PREFIX_FOR_ITITEM_TICKET.remoteCallback" value-ref="ticketPSPortNamePrefixMethodCallback"/>
+				
+				<entry key="CONSTANT_POWER_PORT_QTY_FOR_ITITEM_TICKET.remoteType" value="com.raritan.tdz.domain.TicketPortsPower"/>
+				<entry key="CONSTANT_POWER_PORT_QTY_FOR_ITITEM_TICKET.remoteCallback" value-ref="ticketPowerPortQuantityMethodCallback"/>
+				
+				<entry key="CONSTANT_POWER_PORT_QTY_FOR_ITITEM.remoteType" value="com.raritan.tdz.domain.Item"/>
+				<entry key="CONSTANT_POWER_PORT_QTY_FOR_ITITEM.remoteCallback" value-ref="powerPortQuantityMethodCallback"/>
+			</map>
+		</constructor-arg>
+	</bean>
+
+
+	<bean id="locationRulesProcessor" class="com.raritan.tdz.location.rulesengine.LocationRulesProcessorImpl" init-method="init">
+		<property name="remoteReference" ref="locationRemoteRefItemScreen"/>
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="rulesTemplateFileName" value="uiViewTemplate-LocationScreen.xml"/>
+	</bean>
+	
+	<bean id="locationRemoteRefItemScreen" class="com.raritan.tdz.rulesengine.RemoteRefImpl">
+		<constructor-arg name="remoteRefMap">
+			<map>
+				<entry key="CONSTANTS_LOCATION_VIEW.remoteType" value="com.raritan.tdz.domain.DataCenterLocationDetails"/>
+
+				<entry key="CONSTANT_LOCATION_NAME.remoteType" value="com.raritan.tdz.domain.DataCenterLocationDetails"/>
+				<entry key="CONSTANT_LOCATION_NAME.value" value="dcName"/>
+				<entry key="CONSTANT_LOCATION_NAME.id" value="dataCenterLocationId"/>
+
+				<entry key="CONSTANT_LOCATION_CODE.remoteType" value="com.raritan.tdz.domain.DataCenterLocationDetails"/>
+				<entry key="CONSTANT_LOCATION_CODE.value" value="code"/>
+				
+				<entry key="CONSTANT_LOCATION_DEFAULT_SITE.remoteType" value="com.raritan.tdz.domain.DataCenterLocationDetails"/>
+				<entry key="CONSTANT_LOCATION_DEFAULT_SITE.value" value="defaultSite"/>
+
+
+				<entry key="CONSTANT_LOCATION_TYPE.remoteType" value="com.raritan.tdz.domain.DataCenterLocationDetails"/>
+				<entry key="CONSTANT_LOCATION_TYPE.id" value="dcTypeLkuValueCode"/>
+				<entry key="CONSTANT_LOCATION_TYPE.value" value="dcTypeLkuValue"/>
+				<entry key="CONSTANT_LOCATION_TYPE.remoteCallback" value-ref="dcLocationTypeCallback"/>
+
+				<entry key="CONSTANT_LOCATION_AREA.remoteType" value="com.raritan.tdz.domain.DataCenterLocationDetails"/>
+				<entry key="CONSTANT_LOCATION_AREA.value" value="area"/>
+
+				<entry key="CONSTANT_LOCATION_ROOM_LENGTH.remoteType" value="com.raritan.tdz.domain.DataCenterLocationDetails"/>
+				<entry key="CONSTANT_LOCATION_ROOM_LENGTH.value" value="roomLength"/>
+
+
+				<entry key="CONSTANT_LOCATION_ROOM_WIDTH.remoteType" value="com.raritan.tdz.domain.DataCenterLocationDetails"/>
+				<entry key="CONSTANT_LOCATION_ROOM_WIDTH.value" value="roomWidth"/>
+
+
+				<entry key="CONSTANT_LOCATION_RAISED_FLOOR.remoteType" value="com.raritan.tdz.domain.DataCenterLocationDetails"/>
+				<entry key="CONSTANT_LOCATION_RAISED_FLOOR.value" value="rafHeight"/>
+
+
+				<entry key="CONSTANT_LOCATION_FLOOR_CEILING.remoteType" value="com.raritan.tdz.domain.DataCenterLocationDetails"/>
+				<entry key="CONSTANT_LOCATION_FLOOR_CEILING.value" value="affHeight"/>
+
+				<entry key="CONSTANT_LOCATION_PLENUM_CEILING_HEIGHT.remoteType" value="com.raritan.tdz.domain.DataCenterLocationDetails"/>
+
+				<entry key="CONSTANT_LOCATION_PLENUM_CEILING_HEIGHT.value" value="plenumHeight"/>
+				
+
+				<entry key="CONSTANT_LOCATION_ADDRESS_COUNTRY.remoteType" value="com.raritan.tdz.domain.DataCenterLocationDetails"/>
+				<entry key="CONSTANT_LOCATION_ADDRESS_COUNTRY.value" value="country"/>
+				
+
+				<entry key="CONSTANT_LOCATION_ADDRESS_FLOOR.remoteType" value="com.raritan.tdz.domain.DataCenterLocationDetails"/>
+				<entry key="CONSTANT_LOCATION_ADDRESS_FLOOR.value" value="addressLineOne"/>
+
+				
+				<entry key="CONSTANT_LOCATION_ADDRESS_STREET.remoteType" value="com.raritan.tdz.domain.DataCenterLocationDetails"/>
+				<entry key="CONSTANT_LOCATION_ADDRESS_STREET.value" value="street"/>
+
+
+				<entry key="CONSTANT_LOCATION_ADDRESS_CITY.remoteType" value="com.raritan.tdz.domain.DataCenterLocationDetails"/>
+				<entry key="CONSTANT_LOCATION_ADDRESS_CITY.value" value="city"/>
+
+
+				<entry key="CONSTANT_LOCATION_ADDRESS_STATE.remoteType" value="com.raritan.tdz.domain.DataCenterLocationDetails"/>
+				<entry key="CONSTANT_LOCATION_ADDRESS_STATE.value" value="state"/>
+
+
+				<entry key="CONSTANT_LOCATION_ADDRESS_ZIP.remoteType" value="com.raritan.tdz.domain.DataCenterLocationDetails"/>
+				<entry key="CONSTANT_LOCATION_ADDRESS_ZIP.value" value="zipcode"/>
+
+				
+				<entry key="CONSTANT_LOCATION_PICTURE_PATH.remoteType" value="com.raritan.tdz.domain.DataCenterLocationDetails"/>
+				<entry key="CONSTANT_LOCATION_PICTURE_PATH.value" value="pictureFileName"/>
+
+
+				<entry key="CONSTANT_LOCATION_CAD_PATH.remoteType" value="com.raritan.tdz.domain.DataCenterLocationDetails"/>
+				<entry key="CONSTANT_LOCATION_CAD_PATH.value" value="dwgFileName"/>
+				
+				<entry key="CONSTANT_LOCATION_DRAWING_NORTH.remoteType" value="com.raritan.tdz.domain.DataCenterLocationDetails"/>
+				<entry key="CONSTANT_LOCATION_DRAWING_NORTH.value" value="dwgNorth"/>
+
+	
+				<entry key="CONSTANT_LOCATION_XAXIS_NUMBERS.remoteType" value="com.raritan.tdz.domain.DataCenterLocationDetails"/>
+				<entry key="CONSTANT_LOCATION_XAXIS_NUMBERS.value" value="isXAxisNum"/>
+
+
+				<entry key="CONSTANT_LOCATION_ORIENTATION_NS.remoteType" value="com.raritan.tdz.domain.DataCenterLocationDetails"/>
+				<entry key="CONSTANT_LOCATION_ORIENTATION_NS.value" value="orientationNs"/>
+
+
+				<entry key="CONSTANT_LOCATION_ORIENTATION_EW.remoteType" value="com.raritan.tdz.domain.DataCenterLocationDetails"/>
+				<entry key="CONSTANT_LOCATION_ORIENTATION_EW.value" value="orientationEw"/>
+				
+				<entry key="CONSTANT_LOCATION_PIQ_EXTERNAL_KEY.remoteType" value="com.raritan.tdz.domain.DataCenterLocationDetails"/>
+				<entry key="CONSTANT_LOCATION_PIQ_EXTERNAL_KEY.value" value="piqExternalKey"/>
+				
+				
+			</map>
+		</constructor-arg>
+	</bean>
+
+	
+	<bean id="itemPropagateValueCallback" class="com.raritan.tdz.item.rulesengine.ItemPropagateValueCallback"/>
+	
+	<bean id="bladeChassisNameIdCallback" class="com.raritan.tdz.item.rulesengine.BladeChassisNameIdCallback">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<bean id="upsBankNameIdCallback" class="com.raritan.tdz.item.rulesengine.UPSBankNameIdCallback">
+        <constructor-arg name="itemDAO" ref="itemDAO"/>
+	</bean>
+	
+	<bean id="fpduInputVoltageCallback" class="com.raritan.tdz.item.rulesengine.FPDUInputVoltageCallback">
+        <constructor-arg name="itemDAO" ref="itemDAO"/>
+	</bean>
+	
+	<bean id="fpduWiringCallback" class="com.raritan.tdz.item.rulesengine.FpduWiringCallback">
+        <constructor-arg name="itemDAO" ref="itemDAO"/>
+	</bean>
+	
+	<bean id="breakerPortNameCallback" class="com.raritan.tdz.item.rulesengine.BreakerPortNameCallback"/>
+	
+	<bean id="ruLkpMethodCallback" class="com.raritan.tdz.item.rulesengine.RULkpMethodCallback">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<bean id="modelLkpMethodCallback" class="com.raritan.tdz.item.rulesengine.ModelLkpMethodCallback">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<bean id="modelDimensionMethodCallback" class="com.raritan.tdz.item.rulesengine.ModelDimensionMethodCallback">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<property name="inchToMMUnitConverter" ref="inchToMMUnitConverter"/>
+	</bean>
+	
+	<bean id="parentOfItemMethodCallback" class="com.raritan.tdz.item.rulesengine.ParentOfItemMethodCallback">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<bean id="itemEAssetTagMethodCallback" class="com.raritan.tdz.item.rulesengine.ItemEAssetTagMethodCallback">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+		
+	<bean id="itemStatusEditabilityNew" class="com.raritan.tdz.item.rulesengine.ItemStatusEditability">
+		<constructor-arg name="editabilityMap">
+			<map>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='tiName']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='tiAlias']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbStatus']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbType']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbFunction']" value="true"/>
+			
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='cmbMake']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='cmbModel']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiWeight']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiRackUnits']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiMounting']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiFormfactor']" value="true"/>
+			</map>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="itemStatusEditabilityNewForVM" class="com.raritan.tdz.item.rulesengine.ItemStatusEditability">
+		<constructor-arg name="editabilityMap">
+			<map>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='tiName']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='tiAlias']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbStatus']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbType']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbFunction']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='tiSerialNumber']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='tiAssetTag']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='tieAssetTag']" value="false"/>
+			
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='cmbMake']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='cmbModel']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiWeight']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiRackUnits']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiMounting']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiFormfactor']" value="true"/>
+				
+			</map>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="itemStatusEditabilityInstalledForCabinet" class="com.raritan.tdz.item.rulesengine.ItemStatusEditability">
+		<constructor-arg name="editabilityMap">
+			<map>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='tiName']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='tiAlias']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbStatus']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbType']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbFunction']" value="true"/>
+			
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='cmbMake']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='cmbModel']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiWeight']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiRackUnits']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiMounting']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiFormfactor']" value="false"/>
+
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbLocation']" value="false"/>
+			</map>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="itemStatusEditabilityInstalled" class="com.raritan.tdz.item.rulesengine.ItemStatusEditability">
+		<constructor-arg name="editabilityMap">
+			<map>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='tiName']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='tiAlias']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbStatus']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbType']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbFunction']" value="true"/>
+			
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='cmbMake']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='cmbModel']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiWeight']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiRackUnits']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiMounting']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiFormfactor']" value="false"/>
+
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbLocation']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbCabinet']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbChassis']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='radioChassisFace']" value="true"/>
+			</map>
+		</constructor-arg>
+	</bean>
+
+	<bean id="itemStatusEditabilityInstalledPowerOutlet" class="com.raritan.tdz.item.rulesengine.ItemStatusEditability">
+		<constructor-arg name="editabilityMap">
+			<map>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='tiName']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='tiAlias']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbStatus']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbType']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbFunction']" value="true"/>
+			
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='cmbMake']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='cmbModel']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiWeight']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiRackUnits']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiMounting']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiFormfactor']" value="false"/>
+
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbLocation']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbCabinet']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='radioChassisFace']" value="true"/>
+			</map>
+		</constructor-arg>
+	</bean>
+
+	<bean id="itemStatusEditabilityInPowerOff" class="com.raritan.tdz.item.rulesengine.ItemStatusEditability">
+		<constructor-arg name="editabilityMap">
+			<map>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='tiName']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='tiAlias']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbStatus']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbType']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbFunction']" value="true"/>
+			
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='cmbMake']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='cmbModel']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiWeight']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiRackUnits']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiMounting']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiFormfactor']" value="false"/>
+
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbLocation']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbCabinet']" value="false"/>
+			</map>
+		</constructor-arg>
+	</bean>
+
+
+	<bean id="itemStatusEditabilityInStorage" class="com.raritan.tdz.item.rulesengine.ItemStatusEditability">
+		<constructor-arg name="editabilityMap">
+			<map>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='tiName']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='tiAlias']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbStatus']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbType']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbFunction']" value="true"/>
+
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='cmbMake']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='cmbModel']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiWeight']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiRackUnits']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiMounting']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiFormfactor']" value="false"/>
+				
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbLocation']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbCabinet']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbChassis']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='radioChassisFace']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbSlotPosition']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='radioDepthPosition']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='radioCabinetSide']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='radioRailsUsed']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbOrientation']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbUPosition']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbRowLabel']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbRowPosition']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='radioFrontFaces']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='tiLocationRef']" value="true"/>
+			</map>
+		</constructor-arg>
+	</bean>
+
+	<bean id="itemStatusEditabilityInStorageItItem" class="com.raritan.tdz.item.rulesengine.ItemStatusEditability">
+		<constructor-arg name="editabilityMap">
+			<map>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='tiName']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='tiAlias']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbStatus']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbType']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbFunction']" value="true"/>
+
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='cmbMake']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='cmbModel']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiWeight']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiRackUnits']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiMounting']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiFormfactor']" value="false"/>
+				
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbLocation']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbCabinet']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbChassis']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='radioChassisFace']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbSlotPosition']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='radioDepthPosition']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='radioCabinetSide']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='radioRailsUsed']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbOrientation']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbUPosition']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbRowLabel']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbRowPosition']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='radioFrontFaces']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='tiLocationRef']" value="true"/>
+			</map>
+		</constructor-arg>
+	</bean>
+
+	<bean id="itemStatusEditabilityInOffSite" class="com.raritan.tdz.item.rulesengine.ItemStatusEditability">
+		<constructor-arg name="editabilityMap">
+			<map>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='tiName']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='tiAlias']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbStatus']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbType']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbFunction']" value="true"/>
+
+						
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='cmbMake']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='cmbModel']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiWeight']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiRackUnits']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiMounting']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiFormfactor']" value="false"/>
+			</map>
+		</constructor-arg>
+	</bean>
+
+	<bean id="itemStatusEditabilityInArchived" class="com.raritan.tdz.item.rulesengine.ItemStatusEditability">
+		<constructor-arg name="editabilityMap">
+			<map>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='tiName']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='tiAlias']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbType']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbFunction']" value="true"/>
+
+						
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='cmbMake']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='cmbModel']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiWeight']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiRackUnits']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiMounting']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiFormfactor']" value="false"/>
+
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbLocation']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbCabinet']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbChassis']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='radioChassisFace']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbSlotPosition']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='radioDepthPosition']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='radioCabinetSide']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='radioRailsUsed']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbOrientation']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbUPosition']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbRowLabel']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbRowPosition']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='radioFrontFaces']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='tiLocationRef']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='cmbFromUPSBank']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='cmbFromFPDUBreaker']" value="false"/>
+			</map>
+		</constructor-arg>
+	</bean>
+
+	<util:list id="allPlacementFields" value-type="java.lang.String">
+		<value>tiLocationRef</value>
+		<value>cmbLocation</value>
+		<value>cmbRowLabel</value>
+		<value>cmbRowPosition</value>
+		<value>radioFrontFaces</value>
+		<value>radioCabinetSide</value>
+		<value>radioDepthPosition</value>
+		<value>radioRailsUsed</value>
+		<value>cmbCabinet</value>
+		<value>cmbUPosition</value>
+		<value>cmbOrientation</value>
+		<value>radioChassisFace</value>
+		<value>cmbChassis</value>
+		<value>cmbSlotPosition</value>
+		<value>cmbOrder</value>
+	</util:list>
+	
+	<util:list id="rackablePlacementFields" value-type="java.lang.String">
+		<value>tiLocationRef</value>
+		<value>cmbLocation</value>
+		<value>radioRailsUsed</value>
+		<value>cmbCabinet</value>
+		<value>cmbUPosition</value>
+		<value>cmbOrientation</value>
+	</util:list>
+	
+	<util:list id="nonRackablePlacementFields" value-type="java.lang.String">
+		<idref bean="rackablePlacementFields"/>
+		<value>cmbOrder</value>
+	</util:list>
+	
+	<util:list id="zeroUPlacementFields" value-type="java.lang.String">
+		<value>tiLocationRef</value>
+		<value>cmbLocation</value>
+		<value>cmbCabinet</value>
+		<value>radioDepthPosition</value>
+		<value>radioCabinetSide</value>
+		<value>cmbUPosition</value>
+	</util:list>
+	
+	<util:list id="bladePlacementFields" value-type="java.lang.String">
+		<value>tiLocationRef</value>
+		<value>cmbLocation</value>
+		<value>cmbCabinet</value>
+		<value>cmbChassis</value>
+		<value>radioChassisFace</value>
+		<value>cmbSlotPosition</value>
+	</util:list>
+	
+	<util:list id="fsPlacementFields" value-type="java.lang.String">
+		<value>tiLocationRef</value>
+		<value>cmbLocation</value>
+		<value>cmbRowLabel</value>
+		<value>cmbRowPosition</value>
+		<value>radioFrontFaces</value>
+	</util:list>
+	
+	<util:list id="buswayPlacementFields" value-type="java.lang.String">
+		<value>tiLocationRef</value>
+		<value>cmbLocation</value>
+		<value>cmbCabinet</value>
+		<value>cmbUPosition</value>
+	</util:list>
+	
+	<util:list id="vmPlacementFields" value-type="java.lang.String">
+		<value>tiLocationRef</value>
+		<value>cmbLocation</value>
+	</util:list>
+	
+	<util:map id="mountingPlacementFields" key-type="java.lang.String" value-type="java.util.ArrayList">
+		<entry key="allMountingFields" value-ref="allPlacementFields"/>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).RACKABLE }" value-ref="rackablePlacementFields"/>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).NON_RACKABLE }" value-ref="nonRackablePlacementFields"/>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).ZERO_U }" value-ref="zeroUPlacementFields"/>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).BLADE }" value-ref="bladePlacementFields"/>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).FREE_STANDING }" value-ref="fsPlacementFields"/>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).BUSWAY }" value-ref="buswayPlacementFields"/>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).VSTACK }" value-ref="vmPlacementFields"/>
+	</util:map>
+
+	<util:list id="validZeroValue" value-type="java.lang.String">
+		<value>0</value>
+		<value></value>
+	</util:list>
+
+	<util:list id="validPositionValue" value-type="java.lang.String">
+		<value>-9</value>
+		<value></value>
+	</util:list>
+	
+	<util:list id="validBlankValue" value-type="java.lang.String">
+		<value></value>
+	</util:list>
+	
+	<util:map id="validNullValueInDB" key-type="java.lang.String" value-type="java.util.ArrayList">
+
+			<entry key="cmbUPosition" value-ref="validPositionValue"/>
+			<entry key="cmbSlotPosition" value-ref="validPositionValue"/>
+			<entry key="tiNoInGroup" value-ref="validZeroValue"/>
+			<entry key="cmbOrder" value-ref="validPositionValue"/>
+			<entry key="tiRAM" value-ref="validBlankValue"/>
+			<entry key="tiCpuQuantity" value-ref="validBlankValue"/>
+			<entry key="cmbPSRedundancy" value-ref="validBlankValue"/>
+			<entry key="tiEffectivePower" value-ref="validBlankValue"/>
+			<entry key="tiPONumber" value-ref="validBlankValue"/>
+			<entry key="tiCpuType" value-ref="validBlankValue"/>
+			<entry key="tiUsers" value-ref="validBlankValue"/>
+			<entry key="tieAssetTag" value-ref="validBlankValue"/>
+			<entry key="tiAssetTag" value-ref="validBlankValue"/>
+			<entry key="tiNotes" value-ref="validBlankValue"/>
+			<entry key="tiSerialNumber" value-ref="validBlankValue"/>
+			<entry key="tiLocationRef" value-ref="validBlankValue"/>
+			<entry key="tiProcesses" value-ref="validBlankValue"/>
+			<entry key="tiServices" value-ref="validBlankValue"/>
+			<entry key="tiGroup" value-ref="validBlankValue"/>
+			
+	</util:map>
+	
+	<util:map id="uiViewToHibernateField" key-type="java.lang.String" value-type="java.util.ArrayList">
+			<entry key="tiName">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>itemName</value>
+				</list>
+			</entry>
+ 			<entry key="tiAlias">
+ 				<list>
+ 					<value>com.raritan.tdz.domain.Item</value>
+ 					<value>itemAlias</value>
+ 				</list>
+ 			</entry>
+			<entry key="cmbStatus">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>statusLookup</value>
+					<value>lkpValueCode</value>
+				</list>
+			</entry>
+			<entry key="cmbType">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>itemServiceDetails</value>
+					<value>purposeLookup</value>
+					<value>lkuId</value>
+				</list>
+			</entry>
+			<entry key="cmbFunction">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>itemServiceDetails</value>
+					<value>functionLookup</value>
+					<value>lkuId</value>
+				</list>
+			</entry>
+			<entry key="tiSerialNumber">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>itemServiceDetails</value>
+					<value>serialNumber</value>
+				</list>
+			</entry>
+			<entry key="tieAssetTag">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>raritanAssetTag</value>
+				</list>
+			</entry>
+			<entry key="tiAssetTag">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>itemServiceDetails</value>
+					<value>assetNumber</value>
+				</list>
+			</entry> 
+			<entry key="cmbSystemAdmin">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>itemServiceDetails</value>
+					<value>itemAdminUser</value>
+					<value>id</value>
+				</list>
+			</entry>
+			<entry key="cmbSystemAdminTeam">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>itemServiceDetails</value>
+					<value>itemAdminTeamLookup</value>
+					<value>lkuId</value>
+				</list>
+			</entry>
+			<entry key="cmbCustomer">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>itemServiceDetails</value>
+					<value>departmentLookup</value>
+					<value>lkuId</value>
+				</list>
+			</entry> 
+			<entry key="tiLocationRef">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>locationReference</value>
+				</list>
+			</entry>
+			<entry key="cmbLocation">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>dataCenterLocation</value>
+					<value>dataCenterLocationId</value>
+				</list>
+			</entry> 
+			<entry key="cmbRowLabel">
+				<list>
+					<value>com.raritan.tdz.domain.CabinetItem</value>
+					<value>rowLabel</value>
+				</list>
+			</entry>
+			<entry key="cmbRowPosition">
+				<list>
+					<value>com.raritan.tdz.domain.CabinetItem</value>
+					<value>positionInRow</value>
+				</list>
+			</entry>
+			<entry key="radioFrontFaces">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>facingLookup</value>
+					<value>lkpValueCode</value>
+				</list>
+			</entry>
+			<entry key="radioCabinetSide">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>mountedRailLookup</value>
+					<value>lkpValueCode</value>
+				</list>
+			</entry>
+			<entry key="radioDepthPosition">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>facingLookup</value>
+					<value>lkpValueCode</value>
+				</list>
+			</entry>
+			<entry key="radioRailsUsed">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>mountedRailLookup</value>
+					<value>lkpValueCode</value>
+				</list>
+			</entry>
+			<entry key="cmbCabinet">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>parentItem</value>
+					<value>itemId</value>
+				</list>
+			</entry>
+			<entry key="cmbUPosition">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>uPosition</value>
+				</list>
+			</entry> 
+			<entry key="cmbOrientation">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>facingLookup</value>
+					<value>lkpValueCode</value>
+				</list>
+			</entry>
+			<entry key="radioChassisFace">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>facingLookup</value>
+					<value>lkpValueCode</value>
+				</list>
+			</entry>
+			<entry key="cmbChassis">
+				<list>
+					<value>com.raritan.tdz.domain.ItItem</value>
+					<value>bladeChassis</value>
+					<value>itemId</value>
+				</list>
+			</entry> 
+			<entry key="cmbSlotPosition">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>slotPosition</value>
+				</list>
+			</entry> 
+			<entry key="tiNoInGroup">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>numPorts</value>
+				</list>
+			</entry> 
+			<entry key="cmbOrder">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>shelfPosition</value>
+				</list>
+			</entry> 
+			<entry key="cmbMake" value="#{ null }"/>
+			<entry key="cmbModel">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>model</value>
+					<value>modelDetailId</value>
+				</list>
+			</entry>
+			<entry key="tiWeight" value="#{ null }"/>
+			<entry key="tiClass" value="#{ null }"/>
+			<entry key="tiDimension" value="#{ null }"/>
+			<entry key="tiRackUnits" value="#{ null }"/>
+			<entry key="tiMounting" value="#{ null }"/>
+			<entry key="tiFormfactor" value="#{ null }"/>
+			<entry key="tiSubClass" value="#{ null }"/>
+
+			<entry key="tiPONumber">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>itemServiceDetails</value>
+					<value>poNumber</value>
+				</list>
+			</entry> 
+			<entry key="cmbProjectNumber">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>itemServiceDetails</value>
+					<value>projectNumber</value>
+				</list>
+			</entry> 
+			<entry key="tiPurchasePrice">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>itemServiceDetails</value>
+					<value>purchasePrice</value>
+				</list>
+			</entry> 
+			<entry key="dtPurchaseDate">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>itemServiceDetails</value>
+					<value>purchaseDate</value>
+				</list>
+			</entry>
+			<entry key="dtInstallationDate">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>itemServiceDetails</value>
+					<value>installDate</value>
+				</list>
+			</entry> 
+			<entry key="cmbSLAProfile">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>itemServiceDetails</value>
+					<value>slaProfileLookup</value>
+					<value>lkuId</value>
+				</list>
+			</entry>
+			<entry key="cmbContractNumber">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>itemServiceDetails</value>
+					<value>contractNumber</value>
+				</list>
+			</entry>
+			<entry key="tiContractAmount">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>itemServiceDetails</value>
+					<value>contractAmount</value>
+				</list>
+			</entry> 
+			<entry key="dtContractStartDate">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>itemServiceDetails</value>
+					<value>contractBeginDate</value>
+				</list>
+			</entry> 
+			<entry key="dtContractEndDate">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>itemServiceDetails</value>
+					<value>contractExpireDate</value>
+				</list>
+			</entry>
+			<entry key="tiNotes">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>itemServiceDetails</value>
+					<value>description</value>
+				</list>
+			</entry> 
+			<entry key="cmbOperatingSystem">
+				<list>
+					<value>com.raritan.tdz.domain.ItItem</value>
+					<value>osLookup</value>
+					<value>lkuId</value>
+				</list>
+			</entry> 
+			<entry key="cmbDomain">
+				<list>
+					<value>com.raritan.tdz.domain.ItItem</value>
+					<value>domainLookup</value>
+					<value>lkuId</value>
+				</list>
+			</entry>
+			<entry key="tiCpuType">
+				<list>
+					<value>com.raritan.tdz.domain.ItItem</value>
+					<value>cpuType</value>
+				</list>
+			</entry> 
+			<entry key="tiCpuQuantity">
+				<list>
+					<value>com.raritan.tdz.domain.ItItem</value>
+					<value>cpuQuantity</value>
+				</list>
+			</entry>
+			<entry key="tiRAM">
+				<list>
+					<value>com.raritan.tdz.domain.ItItem</value>
+					<value>ramGB</value>
+				</list>
+			</entry> 
+			<entry key="tiUsers">
+				<list>
+					<value>com.raritan.tdz.domain.ItItem</value>
+					<value>totalUsers</value>
+				</list>
+			</entry> 
+			<entry key="tiProcesses">
+				<list>
+					<value>com.raritan.tdz.domain.ItItem</value>
+					<value>totalProcesses</value>
+				</list>
+			</entry> 
+			<entry key="tiServices">
+				<list>
+					<value>com.raritan.tdz.domain.ItItem</value>
+					<value>services</value>
+				</list>
+			</entry> 
+			<entry key="cmbVMCluster">
+				<list>
+					<value>com.raritan.tdz.domain.ItItem</value>
+					<value>vmClusterLookup</value>
+					<value>lkuId</value>
+				</list>
+			</entry>
+			<entry key="cbPropagate" value="#{ null }"/>
+			<entry key="cmbOSILayer">
+				<list>
+					<value>com.raritan.tdz.domain.ItItem</value>
+					<value>osiLayerLookup</value>
+					<value>lkpValueCode</value>
+				</list>
+			</entry>
+			<entry key="tiGroup">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>groupingName</value>
+				</list>
+			</entry>
+			<entry key="tiNoInGroup">
+				<list>
+					<value>com.raritan.tdz.domain.Item</value>
+					<value>groupingNumber</value>
+				</list>
+			</entry>
+			<entry key="cmbCabinetGrouping">
+				<list>
+					<value>com.raritan.tdz.domain.CabinetItem</value>
+					<value>cabinetGrpLookup</value>
+					<value>lkuId</value>
+				</list>
+			</entry> 
+			<entry key="tiLoadCapacity">
+				<list>
+					<value>com.raritan.tdz.domain.CabinetItem</value>
+					<value>loadingCapacity</value>
+				</list>
+			</entry> 
+			<entry key="tiRailWidth">
+				<list>
+					<value>com.raritan.tdz.domain.CabinetItem</value>
+					<value>railWidth</value>
+				</list>
+			</entry> 
+			<entry key="tiFrontRailOffset">
+				<list>
+					<value>com.raritan.tdz.domain.CabinetItem</value>
+					<value>frontRailOffset</value>
+				</list>
+			</entry> 
+			<entry key="tiRearRailOffset">
+				<list>
+					<value>com.raritan.tdz.domain.CabinetItem</value>
+					<value>rearRailOffset</value>
+				</list>
+			</entry> 
+			<entry key="tiFrontDoorPerforation">
+				<list>
+					<value>com.raritan.tdz.domain.CabinetItem</value>
+					<value>frontDoorPerforation</value>
+				</list>
+			</entry> 
+			<entry key="tiRearDoorPerforation">
+				<list>
+					<value>com.raritan.tdz.domain.CabinetItem</value>
+					<value>rearDoorPerforation</value>
+				</list>
+			</entry>
+			<entry key="tiFrontClearance">
+				<list>
+					<value>com.raritan.tdz.domain.CabinetItem</value>
+					<value>clearenceFront</value>
+				</list>
+			</entry> 
+			<entry key="tiRearClearance">
+				<list>
+					<value>com.raritan.tdz.domain.CabinetItem</value>
+					<value>clearenceRear</value>
+				</list>
+			</entry> 
+			<entry key="tiLeftClearance">
+				<list>
+					<value>com.raritan.tdz.domain.CabinetItem</value>
+					<value>clearanceLeft</value>
+				</list>
+			</entry> 
+			<entry key="tiRightClearance">
+				<list>
+					<value>com.raritan.tdz.domain.CabinetItem</value>
+					<value>clearenceRight</value>
+				</list>
+			</entry> 
+
+			<entry key="tiCustomField" value="#{ null }"/>
+
+			<entry key="tabDataPorts" value="#{ null }"/>
+
+			<entry key="cmbPSRedundancy">
+				<list>
+					<value>com.raritan.tdz.domain.ItItem</value>
+					<value>psredundancy</value>
+				</list>
+			</entry> 
+			<entry key="tiEffectivePower">
+				<list>
+					<value>com.raritan.tdz.domain.ItItem</value>
+					<value>effectivePower</value>
+				</list>
+			</entry> 
+			<entry key="tabPowerPorts" value="#{ null }"/> 
+			
+			<entry key="tabSensorPorts" value="#{ null }"/>
+	
+	</util:map>
+
+	<util:map id="uiViewToDBField">
+			<entry key="tiName" value="item_name"/>
+			<entry key="tiAlias" value="item_alias"/>
+			<entry key="cmbStatus" value="statusLks.lkp_value_code"/>
+			<entry key="cmbType" value="purpose_lku_id"/>
+			<entry key="cmbFunction" value="function_lku_id"/>
+			<entry key="tiSerialNumber" value="serial_number"/>
+			<entry key="tieAssetTag" value="raritan_tag"/>
+			<entry key="tiAssetTag" value="asset_number"/>
+			<entry key="cmbSystemAdmin" value="item_admin_user_id"/>
+			<entry key="cmbSystemAdminTeam" value="item_admin_user_grp_id"/>
+			<entry key="cmbCustomer" value="department_lku_id"/>
+
+			<entry key="tiLocationRef" value="location_reference"/>
+			<entry key="cmbLocation" value="location_id"/>
+			<entry key="cmbRowLabel" value="row_label"/>
+			<entry key="cmbRowPosition" value="position_in_row"/>
+			<entry key="radioFrontFaces" value="facingLks.lkp_value_code"/>
+			<entry key="radioCabinetSide" value="mountedRailsLks.lkp_value_code"/>
+			<entry key="radioDepthPosition" value="facingLks.lkp_value_code"/>
+			<entry key="radioRailsUsed" value="mountedRailsLks.lkp_value_code"/>
+			<entry key="cmbCabinet" value="parent_item_id"/>
+			<entry key="cmbUPosition" value="u_position"/>
+			<entry key="cmbOrientation" value="facingLks.lkp_value_code"/>
+			<entry key="radioChassisFace" value="facingLks.lkp_value_code"/>
+			<entry key="cmbChassis" value="chassis_id"/>
+			<entry key="cmbSlotPosition" value="slot_position"/>
+			<entry key="tiNoInGroup" value="num_ports"/>
+			<entry key="cmbOrder" value="shelf_position"/>
+			
+			<entry key="cmbMake" value="#{ null }"/> <!-- Client was sending null for the cmbMake for FS Device: IBM/2086-420 -->
+			<entry key="cmbModel" value="dct_items.model_id"/>
+			<entry key="tiWeight" value="#{ null }"/>
+			<entry key="tiClass" value="#{ null }"/>
+			<entry key="tiDimension" value="#{ null }"/>
+			<entry key="tiRackUnits" value="#{ null }"/>
+			<entry key="tiMounting" value="#{ null }"/>
+			<entry key="tiFormfactor" value="#{ null }"/>
+			<entry key="tiSubClass" value="#{ null }"/>
+
+			<entry key="tiPONumber" value="po_number"/>
+			<entry key="cmbProjectNumber" value="project_number"/>
+			<entry key="tiPurchasePrice" value="purchase_price"/>
+			<entry key="dtPurchaseDate" value="purchase_date"/>
+			<entry key="dtInstallationDate" value="install_date"/>
+			<entry key="cmbSLAProfile" value="sla_profile_lku_id"/>
+			<entry key="cmbContractNumber" value="contract_number"/>
+			<entry key="tiContractAmount" value="contract_amount"/>
+			<entry key="dtContractStartDate" value="contract_begin_date"/>
+			<entry key="dtContractEndDate" value="contract_expire_date"/>
+			<entry key="tiNotes" value="description"/>
+
+			<entry key="cmbOperatingSystem" value="os_lku_id"/>
+			<entry key="cmbDomain" value="domain_lku_id"/>
+			<entry key="tiCpuType" value="cpu_type"/>
+			<entry key="tiCpuQuantity" value="cpu_quantity"/>
+			<entry key="tiRAM" value="ram_gb"/>
+			<entry key="tiUsers" value="total_users"/>
+			<entry key="tiProcesses" value="total_processes"/>
+			<entry key="tiServices" value="services"/>
+			<entry key="cmbVMCluster" value="vm_cluster_lku_id"/>
+			<entry key="cbPropagate" value="#{ null }"/>
+			<entry key="cmbOSILayer" value="osi_layer"/>
+			<entry key="tiGroup" value="grouping_name"/>
+			<entry key="tiNoInGroup" value="grouping_number"/>
+			<entry key="cmbCabinetGrouping" value="cabinet_grp_lku_id"/>
+			<entry key="tiLoadCapacity" value="loading_capacity"/>
+			<entry key="tiRailWidth" value="rail_width"/>
+			<entry key="tiFrontRailOffset" value="front_rail_offset"/>
+			<entry key="tiRearRailOffset" value="rear_rail_offset"/>
+			<entry key="tiFrontDoorPerforation" value="fdoor_perforation"/>
+			<entry key="tiRearDoorPerforation" value="rdoor_perforation"/>
+			<entry key="tiFrontClearance" value="dct_items_cabinet.clearance_front"/>
+			<entry key="tiRearClearance" value="dct_items_cabinet.clearance_rear"/>
+			<entry key="tiLeftClearance" value="dct_items_cabinet.clearance_left"/>
+			<entry key="tiRightClearance" value="dct_items_cabinet.clearance_right"/>
+
+			<entry key="tiCustomField" value="#{ null }"/> <!-- TODO -->
+
+			<entry key="tabDataPorts" value="#{ null }"/> <!-- TODO -->
+
+			<entry key="cmbPSRedundancy" value="dct_items_it.psredundancy"/>
+			<entry key="tiEffectivePower" value="dct_items_it.effectivePower"/>
+			<entry key="tabPowerPorts" value="#{ null }"/> <!-- TODO -->
+			
+			<entry key="tabSensorPorts" value="#{ null }"/> <!-- TODO -->
+
+	</util:map>
+
+	<util:map id="uiViewToUserReadableName">
+			<entry key="tiName" value="Item Name"/>
+			<entry key="tiAlias" value="Alias"/>
+			<entry key="cmbStatus" value="Status"/>
+			<entry key="cmbType" value="Type"/>
+			<entry key="cmbFunction" value="Function"/>
+			<entry key="tiSerialNumber" value="Serial Number"/>
+			<entry key="tieAssetTag" value="eAsset Tag"/>
+			<entry key="tiAssetTag" value="Asset Tag"/>
+			<entry key="cmbSystemAdmin" value="System Admin"/>
+			<entry key="cmbSystemAdminTeam" value="Admin Team"/>
+			<entry key="cmbCustomer" value="Customer"/>
+
+			<entry key="tiLocationRef" value="Location Ref"/>
+			<entry key="cmbLocation" value="Location"/>
+			<entry key="cmbRowLabel" value="Row Label"/>
+			<entry key="cmbRowPosition" value="Position In Row"/>
+			<entry key="radioFrontFaces" value="Front Faces"/>
+			<entry key="radioCabinetSide" value="Cabinet Side"/>
+			<entry key="radioDepthPosition" value="Depth Position"/>
+			<entry key="radioRailsUsed" value="Rails Used"/>
+			<entry key="cmbCabinet" value="Cabinet"/>
+			<entry key="cmbUPosition" value="U Position"/>
+			<entry key="cmbOrientation" value="Orientation"/>
+			<entry key="radioChassisFace" value="Chassis Face"/>
+			<entry key="cmbChassis" value="Chassis"/>
+			<entry key="cmbSlotPosition" value="Slot Position"/>
+			<entry key="tiNoInGroup" value="num_ports"/>
+			<entry key="cmbOrder" value="Shelf Position"/>
+			
+			<entry key="cmbMake" value="#{ null }"/> <!-- Client was sending null for the cmbMake for FS Device: IBM/2086-420 -->
+			<entry key="cmbModel" value="Model"/>
+			<entry key="tiWeight" value="#{ null }"/>
+			<entry key="tiClass" value="#{ null }"/>
+			<entry key="tiDimension" value="#{ null }"/>
+			<entry key="tiRackUnits" value="#{ null }"/>
+			<entry key="tiMounting" value="#{ null }"/>
+			<entry key="tiFormfactor" value="#{ null }"/>
+			<entry key="tiSubClass" value="#{ null }"/>
+
+			<entry key="tiPONumber" value="PO Number"/>
+			<entry key="cmbProjectNumber" value="Project Number"/>
+			<entry key="tiPurchasePrice" value="Purchase Price"/>
+			<entry key="dtPurchaseDate" value="Purchase Date"/>
+			<entry key="dtInstallationDate" value="Install Date"/>
+			<entry key="cmbSLAProfile" value="Sla Profile"/>
+			<entry key="cmbContractNumber" value="Contract Number"/>
+			<entry key="tiContractAmount" value="Contract Amount"/>
+			<entry key="dtContractStartDate" value="Contract Start Date"/>
+			<entry key="dtContractEndDate" value="Contract End Date"/>
+			<entry key="tiNotes" value="Asset and Management -> Notes"/>
+
+			<entry key="cmbOperatingSystem" value="Operating System"/>
+			<entry key="cmbDomain" value="Domain"/>
+			<entry key="tiCpuType" value="CPU Type"/>
+			<entry key="tiCpuQuantity" value="CPU Quantity"/>
+			<entry key="tiRAM" value="RAM (GB)"/>
+			<entry key="tiUsers" value="Users"/>
+			<entry key="tiProcesses" value="Processes"/>
+			<entry key="tiServices" value="Services"/>
+			<entry key="cmbVMCluster" value="VM Cluster"/>
+			<entry key="cbPropagate" value="#{ null }"/>
+			<entry key="cmbOSILayer" value="OSI Layer"/>
+			<entry key="tiGroup" value="Grouping Name"/>
+			<entry key="tiNoInGroup" value="Grouping Number"/>
+			<entry key="cmbCabinetGrouping" value="Cabinet Group"/>
+			<entry key="tiLoadCapacity" value="Loading Capacity"/>
+			<entry key="tiRailWidth" value="Rail Width"/>
+			<entry key="tiFrontRailOffset" value="Front Rail Offset"/>
+			<entry key="tiRearRailOffset" value="Rear Rail Offset"/>
+			<entry key="tiFrontDoorPerforation" value="Front Door Perforation"/>
+			<entry key="tiRearDoorPerforation" value="Rear Door Perforation"/>
+			<entry key="tiFrontClearance" value="Front Clearance"/>
+			<entry key="tiRearClearance" value="Rear Clearance"/>
+			<entry key="tiLeftClearance" value="Left Clearance"/>
+			<entry key="tiRightClearance" value="Right Clearance"/>
+
+			<entry key="tiCustomField" value="#{ null }"/> <!-- TODO -->
+
+			<entry key="tabDataPorts" value="#{ null }"/> <!-- TODO -->
+
+			<entry key="cmbPSRedundancy" value="Power Port -> Redundancy"/>
+			<entry key="tiEffectivePower" value="Effective Power"/>
+			<entry key="tabPowerPorts" value="#{ null }"/> <!-- TODO -->
+			
+			<entry key="tabSensorPorts" value="#{ null }"/> <!-- TODO -->
+
+	</util:map>
+
+	
+	<bean id="itemStageNonEditability" class="com.raritan.tdz.item.rulesengine.ItemStatusEditability">
+		<constructor-arg name="editabilityMap">
+			<map>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='tiName']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='tiAlias']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbStatus']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbType']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbFunction']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='tiSerialNumber']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='tieAssetTag']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='tiAssetTag']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbSystemAdmin']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbSystemAdminTeam']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbCustomer']" value="false"/>
+
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='tiLocationRef']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbLocation']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbRowLabel']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbRowPosition']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='radioFrontFaces']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='radioCabinetSide']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='radioDepthPosition']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='radioRailsUsed']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbCabinet']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbUPosition']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbOrientation']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='radioChassisFace']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbChassis']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbSlotPosition']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='tiNoInGroup']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbOrder']" value="false"/>
+				
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='cmbMake']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='cmbModel']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiWeight']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiClass']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiDimension']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiRackUnits']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiMounting']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiFormfactor']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiSubClass']" value="false"/>
+
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='assetAndMaintenance']/uiViewComponents/uiViewComponent[@uiId='tiPONumber']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='assetAndMaintenance']/uiViewComponents/uiViewComponent[@uiId='cmbProjectNumber']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='assetAndMaintenance']/uiViewComponents/uiViewComponent[@uiId='tiPurchasePrice']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='assetAndMaintenance']/uiViewComponents/uiViewComponent[@uiId='dtPurchaseDate']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='assetAndMaintenance']/uiViewComponents/uiViewComponent[@uiId='dtInstallationDate']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='assetAndMaintenance']/uiViewComponents/uiViewComponent[@uiId='cmbSLAProfile']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='assetAndMaintenance']/uiViewComponents/uiViewComponent[@uiId='cmbContractNumber']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='assetAndMaintenance']/uiViewComponents/uiViewComponent[@uiId='tiContractAmount']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='assetAndMaintenance']/uiViewComponents/uiViewComponent[@uiId='dtContractStartDate']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='assetAndMaintenance']/uiViewComponents/uiViewComponent[@uiId='dtContractEndDate']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='assetAndMaintenance']/uiViewComponents/uiViewComponent[@uiId='tiNotes']" value="false"/>
+
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='cmbOperatingSystem']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='cmbDomain']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiCpuType']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiCpuQuantity']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiRAM']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiUsers']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiProcesses']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiServices']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='cmbVMCluster']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='cbPropagate']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='cmbOSILayer']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiGroup']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiNoInGroup']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='cmbCabinetGrouping']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiLoadCapacity']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiRailWidth']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiFrontRailOffset']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiRearRailOffset']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiFrontDoorPerforation']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiRearDoorPerforation']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiFrontClearance']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiRearClearance']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiLeftClearance']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiRightClearance']" value="false"/>
+
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='customFields']/uiViewComponents/uiViewComponent[@uiId='tiCustomField']" value="false"/>
+
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='dataPorts']/uiViewComponents/uiViewComponent[@uiId='tabDataPorts']" value="false"/>
+
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='powerPorts']/uiViewComponents/uiViewComponent[@uiId='cmbPSRedundancy']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='powerPorts']/uiViewComponents/uiViewComponent[@uiId='tiEffectivePower']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='powerPorts']/uiViewComponents/uiViewComponent[@uiId='tabPowerPorts']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='sensorPorts']/uiViewComponents/uiViewComponent[@uiId='tabSensorPorts']" value="false"/>
+
+			</map>
+		</constructor-arg>
+	</bean>
+
+	<bean id="whenMovedItemEditability" class="com.raritan.tdz.item.rulesengine.ItemStatusEditability">
+		<constructor-arg name="editabilityMap">
+			<map>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='tiName']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='tiAlias']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbStatus']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbType']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbFunction']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='tiSerialNumber']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='tieAssetTag']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='tiAssetTag']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbSystemAdmin']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbSystemAdminTeam']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbCustomer']" value="false"/>
+
+				<!-- <entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbLocation']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbCabinet']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='placementPanel']/uiViewComponents/uiViewComponent[@uiId='cmbChassis']" value="false"/> -->
+				
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='cmbMake']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='cmbModel']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiWeight']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiClass']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiDimension']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiRackUnits']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiMounting']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiFormfactor']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']/uiViewComponents/uiViewComponent[@uiId='tiSubClass']" value="false"/>
+
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='assetAndMaintenance']/uiViewComponents/uiViewComponent[@uiId='tiPONumber']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='assetAndMaintenance']/uiViewComponents/uiViewComponent[@uiId='cmbProjectNumber']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='assetAndMaintenance']/uiViewComponents/uiViewComponent[@uiId='tiPurchasePrice']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='assetAndMaintenance']/uiViewComponents/uiViewComponent[@uiId='dtPurchaseDate']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='assetAndMaintenance']/uiViewComponents/uiViewComponent[@uiId='dtInstallationDate']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='assetAndMaintenance']/uiViewComponents/uiViewComponent[@uiId='cmbSLAProfile']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='assetAndMaintenance']/uiViewComponents/uiViewComponent[@uiId='cmbContractNumber']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='assetAndMaintenance']/uiViewComponents/uiViewComponent[@uiId='tiContractAmount']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='assetAndMaintenance']/uiViewComponents/uiViewComponent[@uiId='dtContractStartDate']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='assetAndMaintenance']/uiViewComponents/uiViewComponent[@uiId='dtContractEndDate']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='assetAndMaintenance']/uiViewComponents/uiViewComponent[@uiId='tiNotes']" value="false"/>
+
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='cmbOperatingSystem']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='cmbDomain']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiCpuType']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiCpuQuantity']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiRAM']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiUsers']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiProcesses']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiServices']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='cmbVMCluster']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='cbPropagate']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='cmbOSILayer']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiGroup']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiNoInGroup']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='cmbCabinetGrouping']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiLoadCapacity']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiRailWidth']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiFrontRailOffset']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiRearRailOffset']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiFrontDoorPerforation']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiRearDoorPerforation']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiFrontClearance']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiRearClearance']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiLeftClearance']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='configuration']/uiViewComponents/uiViewComponent[@uiId='tiRightClearance']" value="false"/>
+
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='customFields']/uiViewComponents/uiViewComponent[@uiId='tiCustomField']" value="false"/>
+
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='dataPorts']/uiViewComponents/uiViewComponent[@uiId='tabDataPorts']" value="false"/>
+
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='powerPorts']/uiViewComponents/uiViewComponent[@uiId='cmbPSRedundancy']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='powerPorts']/uiViewComponents/uiViewComponent[@uiId='tiEffectivePower']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='powerPorts']/uiViewComponents/uiViewComponent[@uiId='tabPowerPorts']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='sensorPorts']/uiViewComponents/uiViewComponent[@uiId='tabSensorPorts']" value="false"/>
+
+			</map>
+		</constructor-arg>
+	</bean>
+
+	
+	<bean id="itemStageEditabilityStatusNonEditable" class="com.raritan.tdz.item.rulesengine.ItemStatusEditability">
+		<constructor-arg name="editabilityMap">
+			<map>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbStatus']" value="false"/>
+			</map>
+		</constructor-arg>
+	</bean>
+
+	<bean id="itemStatusUserEditabilityEditable" class="com.raritan.tdz.item.rulesengine.ItemUserRoleEditability">
+		<constructor-arg name="editabilityMap">
+			<map>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbStatus']" value="true"/>
+			</map>
+		</constructor-arg>
+	</bean>
+
+	<bean id="itemStatusUserEditabilityNonEditable" class="com.raritan.tdz.item.rulesengine.ItemUserRoleEditability">
+		<constructor-arg name="editabilityMap">
+			<map>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbStatus']" value="false"/>
+			</map>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="itemUserEditabilityManager" class="com.raritan.tdz.item.rulesengine.ItemUserRoleEditability">
+		<constructor-arg name="editabilityMap">
+			<map>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']/uiViewComponents/uiViewComponent[@uiId='cmbStatus']" value="false"/>
+			</map>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="itemUserEditabilityViewer" class="com.raritan.tdz.item.rulesengine.ItemUserRoleEditability">
+		<constructor-arg name="editabilityMap">
+			<map>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']" value="false"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']" value="false"/>
+			</map>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="itemUserEditabilityGateKeeper" class="com.raritan.tdz.item.rulesengine.ItemUserRoleEditability">
+		<constructor-arg name="editabilityMap">
+			<map>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='identityInformationPanel']" value="true"/>
+				<entry key="//uiView[@uiId='itemView']/uiViewPanel[@uiId='hardwarePanel']" value="true"/>
+			</map>
+		</constructor-arg>
+	</bean>
+
+	<bean id="modelItemSubclassMap" class="com.raritan.tdz.item.rulesengine.ModelItemSubclassMap">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<bean id="itemClassMethodCallback" class="com.raritan.tdz.item.rulesengine.ItemClassMethodCallback">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<property name="modelItemSubclassMap" ref="modelItemSubclassMap"/>
+	</bean>
+	
+	<bean id="ticketItemClassMethodCallback" class="com.raritan.tdz.item.rulesengine.TicketItemClassMethodCallback">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<bean id="ticketRedundancyMethodCallback" class="com.raritan.tdz.item.rulesengine.TicketPowerSupplyRedundancyMethodCallback"/>
+	<bean id="ticketPSPortNamePrefixMethodCallback" class="com.raritan.tdz.item.rulesengine.TicketPowerSupplyPortNamePrefixMethodCallback"/>
+	<bean id="pSPortNamePrefixMethodCallback" class="com.raritan.tdz.item.rulesengine.PortNamePrefixMethodCallback"/>
+	<bean id="powerPortQuantityMethodCallback" class="com.raritan.tdz.item.rulesengine.PowerPortQuantityMethodCallback"/>
+	<bean id="ticketPowerPortQuantityMethodCallback" class="com.raritan.tdz.item.rulesengine.TicketPowerPortQuantityMethodCallback"/>
+		
+	<bean id="itemSubClassMethodCallback" class="com.raritan.tdz.item.rulesengine.ItemSubClassMethodCallback">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<property name="modelItemSubclassMap" ref="modelItemSubclassMap"/>
+	</bean>
+	
+	<bean id="modelMountingFFMethodCallback" class="com.raritan.tdz.item.rulesengine.ModelMountingFormFactorMethodCallback">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<bean id="customFieldMethodCallback" class="com.raritan.tdz.item.rulesengine.CustomFieldMethodCallback">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+
+	<bean id="dataPortsMethodCallback" class="com.raritan.tdz.item.rulesengine.DataPortMethodCallback"/>
+
+	<bean id="powerPortsMethodCallback" class="com.raritan.tdz.item.rulesengine.PowerPortMethodCallback">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+
+	<bean id="sensorPortsMethodCallback" class="com.raritan.tdz.item.rulesengine.SensorPortsMethodCallback">
+		<property name="itemDAO" ref="itemDAO"/>
+		<property name="unitConverterMap">
+			<map>
+				<!-- Numeric sensor convertor -->
+				<entry key="40001" value-ref="tempSensorUnitConverter" />
+				<entry key="40003" value-ref="psiToPaSensorUnitConverter" />
+				<entry key="40008" value-ref="feetPerSecToMeterPerSecUnitConverter" />
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="modelDataPortsMethodCallback" class="com.raritan.tdz.item.rulesengine.ModelDataPortMethodCallback"/>
+
+	<bean id="modelPowerPortsMethodCallback" class="com.raritan.tdz.item.rulesengine.ModelPowerPortMethodCallback"/>
+	
+	<bean id="itemStateMethodCallback" class="com.raritan.tdz.item.rulesengine.ItemStateMethodCallback">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<property name="itemDAO" ref="itemDAO"/>
+		<property name="itemRequest" ref="itemRequest" />
+		<property name="itemRequestDAO" ref="itemRequestDAO" />
+	</bean>
+
+	<bean id="itemEditableCallback" class="com.raritan.tdz.item.rulesengine.ItemEditableMethodCallback">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<property name="itemRequest" ref="itemRequest" />
+	</bean>
+	
+	<bean id="itemMovedItemCallback" class="com.raritan.tdz.item.rulesengine.ItemToMoveMethodCallback"/>
+	
+	<bean id="whenMoveItemMethodCallback" class="com.raritan.tdz.item.rulesengine.WhenMoveItemMethodCallback"/>
+	
+	<bean id="bladeSlotMethodCallback" class="com.raritan.tdz.item.rulesengine.BladeSlotMethodCallback">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<property name="chassisHome" ref="chassisHome"/>
+	</bean>
+	<bean id="dcLocationTypeCallback" class="com.raritan.tdz.location.rulesengine.LocationTypeMethodCallback">
+		<property name="locationDAO" ref="locationDAO"/>
+	</bean>
+	
+	<bean id="itemRequestMethodCallBack" class="com.raritan.tdz.item.rulesengine.ItemRequestMethodCallBack"/>
+	
+</beans>

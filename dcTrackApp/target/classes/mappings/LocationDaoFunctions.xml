@@ -1,0 +1,37 @@
+﻿<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE hibernate-mapping
+   PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+   
+<hibernate-mapping>
+
+  <query name="DataCenterLocationDetails.findById">
+  	<![CDATA[select l from DataCenterLocationDetails l where l.dataCenterLocationId = ?]]>
+  </query>
+  
+  <query name="DataCenterLocationDetails.fetchById">
+  	<![CDATA[select l from DataCenterLocationDetails l 
+  		left join fetch l.parentLocation pl where l.dataCenterLocationId = ?]]>
+  </query>
+  
+  <query name="DataCenterLocationDetails.findLocationCodeById">
+  	<![CDATA[select l.code from DataCenterLocationDetails l where l.dataCenterLocationId = ?]]>
+  </query>
+
+  <query name="DataCenterLocationDetails.findAllVisibleLocationsId">
+  	<![CDATA[select l.dataCenterLocationId from DataCenterLocationDetails l where l.code <> 'Site' and l.code <> 'Building' and l.code <> 'Floor']]>
+  </query>
+
+  <query name="DataCenterLocationDetails.findLocationsByHierarchy">
+  	<![CDATA[select l from DataCenterLocationDetails l where l.componentTypeLookup.lkpValueCode = ?]]>
+  </query>
+  
+  <query name="DataCenterLocationDetails.findDefaultLocation">
+  	<![CDATA[select l from DataCenterLocationDetails l where l.defaultSite = true]]>
+  </query>
+  
+  <query name="DataCenterLocationDetails.updateDefaultSiteExcludeCurrent">
+  	<![CDATA[update DataCenterLocationDetails l set l.defaultSite = ? where l.dataCenterLocationId <> ?]]>
+  </query>
+                  
+</hibernate-mapping>

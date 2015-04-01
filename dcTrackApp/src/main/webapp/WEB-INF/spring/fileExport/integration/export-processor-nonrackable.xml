@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd">
+
+	
+	<!-- DEVICE NONRACKABLE -->
+	<int:channel id="deviceNonRackableItemResultChannel">
+		<int:queue/>
+	</int:channel>
+	
+	<bean id="deviceNonRackableResultSplitDTOToItemImportDTOTranslator" class="com.raritan.tdz.dctexport.integration.transformers.ItemExportSplitDTOToItemImportDTOTransformer">
+		<constructor-arg name="objectType"  value="DEVICE-NON RACKABLE"/>
+	</bean>
+	
+	<int:chain input-channel="deviceNonRackableItemResultChannel"	output-channel="itemResultAggregatorChannel">
+		<int:transformer
+			ref="deviceNonRackableResultSplitDTOToItemImportDTOTranslator"
+			method="transform"/>
+		<int:transformer
+			ref="itemImportDTOToCSVTranslator"
+			method="transform"/>
+		<int:aggregator
+			correlation-strategy="itemResultAggregatorCorrelationStrategy"
+			correlation-strategy-method="correlatedBy"
+			release-strategy="individualItemResultAggregatorReleaseStrategy"
+			release-strategy-method="canRelease"
+			expire-groups-upon-completion="true"
+			ref="individualItemResultAggregatorBean" 
+			method="aggregate"/>
+		<int:poller fixed-delay="#{10 * 1000}" task-executor="exportResultHandlerPollerTaskExecutor"/>
+	</int:chain>
+	
+	
+	<!-- NETWORK NONRACKABLE -->
+	<int:channel id="networkNonRackableItemResultChannel">
+		<int:queue/>
+	</int:channel>
+	
+	<bean id="networkNonRackableResultSplitDTOToItemImportDTOTranslator" class="com.raritan.tdz.dctexport.integration.transformers.ItemExportSplitDTOToItemImportDTOTransformer">
+		<constructor-arg name="objectType"  value="NETWORK-NON RACKABLE"/>
+	</bean>
+	
+	<int:chain input-channel="networkNonRackableItemResultChannel"	output-channel="itemResultAggregatorChannel">
+		<int:transformer
+			ref="networkNonRackableResultSplitDTOToItemImportDTOTranslator"
+			method="transform"/>
+		<int:transformer
+			ref="itemImportDTOToCSVTranslator"
+			method="transform"/>
+		<int:aggregator
+			correlation-strategy="itemResultAggregatorCorrelationStrategy"
+			correlation-strategy-method="correlatedBy"
+			release-strategy="individualItemResultAggregatorReleaseStrategy"
+			release-strategy-method="canRelease"
+			expire-groups-upon-completion="true"
+			ref="individualItemResultAggregatorBean" 
+			method="aggregate"/>
+		<int:poller fixed-delay="#{10 * 1000}" task-executor="exportResultHandlerPollerTaskExecutor"/>
+	</int:chain>
+
+			
+	<!-- DATAPANEL NONRACKABLE -->
+	<int:channel id="dataPanelNonRackableItemResultChannel">
+		<int:queue/>
+	</int:channel>
+	
+	<bean id="dataPanelNonRackableResultSplitDTOToItemImportDTOTranslator" class="com.raritan.tdz.dctexport.integration.transformers.ItemExportSplitDTOToItemImportDTOTransformer">
+		<constructor-arg name="objectType"  value="DATA PANEL-NON RACKABLE"/>
+	</bean>
+	
+	<int:chain input-channel="dataPanelNonRackableItemResultChannel"	output-channel="itemResultAggregatorChannel">
+		<int:transformer
+			ref="dataPanelNonRackableResultSplitDTOToItemImportDTOTranslator"
+			method="transform"/>
+		<int:transformer
+			ref="itemImportDTOToCSVTranslator"
+			method="transform"/>
+		<int:aggregator
+			correlation-strategy="itemResultAggregatorCorrelationStrategy"
+			correlation-strategy-method="correlatedBy"
+			release-strategy="individualItemResultAggregatorReleaseStrategy"
+			release-strategy-method="canRelease"
+			expire-groups-upon-completion="true"
+			ref="individualItemResultAggregatorBean" 
+			method="aggregate"/>
+		<int:poller fixed-delay="#{10 * 1000}" task-executor="exportResultHandlerPollerTaskExecutor"/>
+	</int:chain>
+
+	<!-- Rack PDU NONRACKABLE -->
+	<int:channel id="rackPDUNonRackableItemResultChannel">
+		<int:queue/>
+	</int:channel>
+	
+	<bean id="rackPDUNonRackableResultSplitDTOToItemImportDTOTranslator" class="com.raritan.tdz.dctexport.integration.transformers.ItemExportSplitDTOToItemImportDTOTransformer">
+		<constructor-arg name="objectType"  value="RACK PDU-NON RACKABLE"/>
+	</bean>
+	
+	<int:chain input-channel="rackPDUNonRackableItemResultChannel"	output-channel="itemResultAggregatorChannel">
+		<int:transformer
+			ref="rackPDUNonRackableResultSplitDTOToItemImportDTOTranslator"
+			method="transform"/>
+		<int:transformer
+			ref="itemImportDTOToCSVTranslator"
+			method="transform"/>
+		<int:aggregator
+			correlation-strategy="itemResultAggregatorCorrelationStrategy"
+			correlation-strategy-method="correlatedBy"
+			release-strategy="individualItemResultAggregatorReleaseStrategy"
+			release-strategy-method="canRelease"
+			expire-groups-upon-completion="true"
+			ref="individualItemResultAggregatorBean" 
+			method="aggregate"/>
+		<int:poller fixed-delay="#{10 * 1000}" task-executor="exportResultHandlerPollerTaskExecutor"/>
+	</int:chain>
+	
+	<!-- Probe NONRACKABLE -->
+	<int:channel id="probeNonRackableItemResultChannel">
+		<int:queue/>
+	</int:channel>
+	
+	<bean id="probeNonRackableResultSplitDTOToItemImportDTOTranslator" class="com.raritan.tdz.dctexport.integration.transformers.ItemExportSplitDTOToItemImportDTOTransformer">
+		<constructor-arg name="objectType"  value="PROBE-NON RACKABLE"/>
+	</bean>
+	
+	<int:chain input-channel="probeNonRackableItemResultChannel"	output-channel="itemResultAggregatorChannel">
+		<int:transformer
+			ref="probeNonRackableResultSplitDTOToItemImportDTOTranslator"
+			method="transform"/>
+		<int:transformer
+			ref="itemImportDTOToCSVTranslator"
+			method="transform"/>
+		<int:aggregator
+			correlation-strategy="itemResultAggregatorCorrelationStrategy"
+			correlation-strategy-method="correlatedBy"
+			release-strategy="individualItemResultAggregatorReleaseStrategy"
+			release-strategy-method="canRelease"
+			expire-groups-upon-completion="true"
+			ref="individualItemResultAggregatorBean" 
+			method="aggregate"/>
+		<int:poller fixed-delay="#{10 * 1000}" task-executor="exportResultHandlerPollerTaskExecutor"/>
+	</int:chain>
+
+</beans>

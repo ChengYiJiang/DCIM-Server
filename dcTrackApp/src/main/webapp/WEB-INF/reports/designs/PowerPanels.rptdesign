@@ -1,0 +1,2001 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 4.2.2.v201301221637 Build &lt;4.2.2.v20130206-1509></property>
+    <simple-property-list name="includeResource">
+        <value>../locale/report_en_US</value>
+    </simple-property-list>
+    <list-property name="propertyBindings">
+        <structure>
+            <property name="name">odaDriverClass</property>
+            <property name="id">220</property>
+        </structure>
+        <structure>
+            <property name="name">odaURL</property>
+            <property name="id">220</property>
+        </structure>
+        <structure>
+            <property name="name">odaUser</property>
+            <property name="id">220</property>
+        </structure>
+        <structure>
+            <property name="name">odaAutoCommit</property>
+            <property name="id">220</property>
+        </structure>
+        <structure>
+            <property name="name">odaIsolationMode</property>
+            <property name="id">220</property>
+        </structure>
+        <structure>
+            <property name="name">odaPassword</property>
+            <property name="id">220</property>
+        </structure>
+        <structure>
+            <property name="name">odaJndiName</property>
+            <property name="id">220</property>
+        </structure>
+        <structure>
+            <property name="name">OdaConnProfileName</property>
+            <property name="id">220</property>
+        </structure>
+        <structure>
+            <property name="name">OdaConnProfileStorePath</property>
+            <property name="id">220</property>
+        </structure>
+    </list-property>
+    <property name="units">in</property>
+    <property name="theme">three_dot_0.defaultTheme</property>
+    <text-property name="displayName">3dot0 Look and Feel</text-property>
+    <property name="eventHandlerClass">com.raritan.tdz.reports.eventhandler.ReportEH</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <list-property name="libraries">
+        <structure>
+            <property name="fileName">three_dot_0.rptlibrary</property>
+            <property name="namespace">three_dot_0</property>
+        </structure>
+    </list-property>
+    <parameters>
+        <scalar-parameter name="SiteCode" id="216" extends="three_dot_0.SiteCode"/>
+        <scalar-parameter name="Orientation" id="217" extends="three_dot_0.Orientation"/>
+        <scalar-parameter name="itemIdList" id="897" extends="three_dot_0.itemIdList"/>
+    </parameters>
+    <data-sources>
+        <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="raritan" id="220"
+ extends="three_dot_0.raritan">
+            <list-property name="privateDriverProperties">
+                <ex-property>
+                    <name>contentBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>metadataBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>disabledMetadataBidiFormatStr</name>
+                </ex-property>
+                <ex-property>
+                    <name>disabledContentBidiFormatStr</name>
+                </ex-property>
+            </list-property>
+            <property name="odaDriverClass">org.postgresql.Driver</property>
+            <property name="odaURL">jdbc:postgresql://localhost:5432/raritan</property>
+            <property name="odaUser">dctrack</property>
+            <encrypted-property name="odaPassword" encryptionID="base64">KE1hbmFnZU15U3R1ZmYpIQ==</encrypted-property>
+        </oda-data-source>
+        <script-data-source name="SimpleScriptSource" id="665" extends="three_dot_0.SimpleScriptSource"/>
+    </data-sources>
+    <data-sets>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Breaker" id="221">
+            <list-property name="computedColumns">
+                <structure>
+                    <property name="name">running_poles</property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">RUNNINGSUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value">row["poles"] ? row["poles"] : "1"</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+            </list-property>
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">port_power_id</property>
+                    <text-property name="displayName">port_power_id</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">port_name</property>
+                    <text-property name="displayName">port_name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">amps_nameplate</property>
+                    <text-property name="displayName">amps_nameplate</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">poles</property>
+                    <text-property name="displayName">poles</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">dest_item_name</property>
+                    <text-property name="displayName">dest_item_name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">dest_item_id</property>
+                    <text-property name="displayName">dest_item_id</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">param_1</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                    <property name="position">1</property>
+                    <expression name="defaultValue" type="javascript">0</expression>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">port_power_id</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">port_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">amps_nameplate</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">poles</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">dest_item_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">dest_item_id</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">running_poles</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">raritan</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">port_power_id</property>
+                    <property name="nativeName">port_power_id</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">port_name</property>
+                    <property name="nativeName">port_name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">amps_nameplate</property>
+                    <property name="nativeName">amps_nameplate</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">poles</property>
+                    <property name="nativeName">poles</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">dest_item_name</property>
+                    <property name="nativeName">dest_item_name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">dest_item_id</property>
+                    <property name="nativeName">dest_item_id</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[SELECT 	dct_ports_power.port_power_id,
+		dct_ports_power.port_name,
+		dct_ports_power.amps_nameplate,	
+		dct_lku_connectors.attribute AS poles,
+		outlet.item_name as dest_item_name,
+		outlet.item_id as dest_item_id
+FROM dct_ports_power
+INNER JOIN dct_lks_data ON dct_ports_power.subclass_lks_id = dct_lks_data.lks_id
+LEFT JOIN dct_lku_connectors ON dct_ports_power.connector_lku_id = dct_lku_connectors.lku_connector_id
+LEFT JOIN (
+	SELECT 	DISTINCT dct_ports_power.brkr_port_id,
+			cabinet.item_name,
+			cabinet.item_id
+	FROM dct_ports_power
+	INNER JOIN dct_items ON dct_ports_power.item_id = dct_items.item_id
+	INNER JOIN dct_items AS cabinet ON dct_items.parent_item_id = cabinet.item_id
+	INNER JOIN dct_lks_data AS class ON dct_items.class_lks_id = class.lks_id
+	WHERE class.lkp_value_code = 2200 /* floor outlet */
+	) AS outlet ON dct_ports_power.port_power_id = outlet.brkr_port_id
+WHERE 	dct_ports_power.item_id = ? AND 
+		dct_lks_data.lkp_value_code = 20005 /* just Breaker, no Input Breaker, FIXME: verify if this is correct */ AND
+		dct_ports_power.brkr_port_id IS NULL /* no sub ports, FIXME: verify if this is correct */
+ORDER BY dct_ports_power.sort_order
+]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>1.0</Version>
+  <design:DataSetParameters>
+    <design:parameterDefinitions>
+      <design:inOutMode>In</design:inOutMode>
+      <design:attributes>
+        <design:name></design:name>
+        <design:position>1</design:position>
+        <design:nativeDataTypeCode>-5</design:nativeDataTypeCode>
+        <design:precision>0</design:precision>
+        <design:scale>0</design:scale>
+        <design:nullability>Unknown</design:nullability>
+      </design:attributes>
+    </design:parameterDefinitions>
+  </design:DataSetParameters>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="PowerPanels" id="222">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">item_id</property>
+                    <text-property name="displayName">item_id</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">item_name</property>
+                    <text-property name="displayName">item_name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">parent_item_id</property>
+                    <text-property name="displayName">parent_item_id</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">parent_item_name</property>
+                    <text-property name="displayName">parent_item_name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">poles_qty</property>
+                    <text-property name="displayName">poles_qty</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">phase_volts</property>
+                    <text-property name="displayName">phase_volts</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">line_volts</property>
+                    <text-property name="displayName">line_volts</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">type</property>
+                    <text-property name="displayName">type</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">phase_a_color</property>
+                    <text-property name="displayName">phase_a_color</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">phase_b_color</property>
+                    <text-property name="displayName">phase_b_color</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">phase_c_color</property>
+                    <text-property name="displayName">phase_c_color</text-property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">item_id</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">item_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">parent_item_id</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">parent_item_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">poles_qty</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">phase_volts</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">line_volts</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">type</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">phase_a_color</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">phase_b_color</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">11</property>
+                        <property name="name">phase_c_color</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <method name="beforeOpen"><![CDATA[importPackage(Packages.com.raritan.tdz.reports.eventhandler);
+
+//attach where clause to filter certain ids
+items = reportContext.getParameterValue(ReportConstants.ITEM_LIST_PARAM_ID);
+if (items &amp;&amp; items.length > 0) {
+	debug("Append Item List to Query");
+	itemlist = "";
+	for (var i = 0; i < items.length; i++) {
+		if (i > 0) itemlist += ",";
+		itemlist += String(items[i]);
+	}
+	this.queryText += "and dct_items.parent_item_id IN (" + itemlist + ")";
+	debug("Resulting Query " + this.queryText);
+}]]></method>
+            <property name="dataSource">raritan</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">item_id</property>
+                    <property name="nativeName">item_id</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">item_name</property>
+                    <property name="nativeName">item_name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">parent_item_id</property>
+                    <property name="nativeName">parent_item_id</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">parent_item_name</property>
+                    <property name="nativeName">parent_item_name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">poles_qty</property>
+                    <property name="nativeName">poles_qty</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">phase_volts</property>
+                    <property name="nativeName">phase_volts</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">line_volts</property>
+                    <property name="nativeName">line_volts</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">2</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">type</property>
+                    <property name="nativeName">type</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">phase_a_color</property>
+                    <property name="nativeName">phase_a_color</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">10</property>
+                    <property name="name">phase_b_color</property>
+                    <property name="nativeName">phase_b_color</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">11</property>
+                    <property name="name">phase_c_color</property>
+                    <property name="nativeName">phase_c_color</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[SELECT 	dct_items.item_id,
+		dct_items.item_name,
+		parent.item_id as parent_item_id,
+		parent.item_name as parent_item_name,
+		dct_items_me.poles_qty,
+		dct_items_me.phase_volts,
+		dct_items_me.line_volts,
+		subclass.lkp_value as type,
+		phase_a_color.lkp_value as phase_a_color,
+		phase_b_color.lkp_value as phase_b_color,
+		phase_c_color.lkp_value as phase_c_color
+		
+FROM dct_items 
+INNER JOIN dct_items AS parent ON dct_items.parent_item_id = parent.item_id
+INNER JOIN dct_items_me ON dct_items.item_id = dct_items_me.item_id
+INNER JOIN dct_lks_data AS class ON dct_items.class_lks_id = class.lks_id
+INNER JOIN dct_lks_data AS subclass ON dct_items.subclass_lks_id = subclass.lks_id
+
+LEFT JOIN dct_lks_data AS phase_a_color ON dct_items_me.phase_a_color_lks_id = phase_a_color.lks_id
+LEFT JOIN dct_lks_data AS phase_b_color ON dct_items_me.phase_b_color_lks_id = phase_b_color.lks_id
+LEFT JOIN dct_lks_data AS phase_c_color ON dct_items_me.phase_c_color_lks_id = phase_c_color.lks_id
+
+WHERE class.lkp_value_code = 2300 /* floor pdu */ AND subclass.lkp_value_code <> 2303 /* no busway */
+
+/* 	additonal condition and order by added in script hook */
+]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>1.0</Version>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>item_id</design:name>
+            <design:position>1</design:position>
+            <design:nativeDataTypeCode>-5</design:nativeDataTypeCode>
+            <design:precision>19</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>item_id</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>item_id</design:label>
+            <design:formattingHints>
+              <design:displaySize>20</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>item_name</design:name>
+            <design:position>2</design:position>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>64</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>item_name</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>item_name</design:label>
+            <design:formattingHints>
+              <design:displaySize>64</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>parent_item_id</design:name>
+            <design:position>3</design:position>
+            <design:nativeDataTypeCode>-5</design:nativeDataTypeCode>
+            <design:precision>19</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>parent_item_id</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>parent_item_id</design:label>
+            <design:formattingHints>
+              <design:displaySize>20</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>parent_item_name</design:name>
+            <design:position>4</design:position>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>64</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>parent_item_name</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>parent_item_name</design:label>
+            <design:formattingHints>
+              <design:displaySize>64</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>psredundancy</design:name>
+            <design:position>5</design:position>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>50</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>psredundancy</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>psredundancy</design:label>
+            <design:formattingHints>
+              <design:displaySize>50</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:name>poles_qty</design:name>
+            <design:position>6</design:position>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>10</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>poles_qty</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>poles_qty</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+        <script-data-set name="PoleCounter" id="666">
+            <list-property name="resultSetHints">
+                <structure>
+                    <property name="position">0</property>
+                    <property name="name">pos</property>
+                    <property name="dataType">integer</property>
+                </structure>
+            </list-property>
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">pos</property>
+                </structure>
+            </list-property>
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">poles</property>
+                    <property name="dataType">integer</property>
+                    <property name="position">1</property>
+                    <expression name="defaultValue" type="javascript">0</expression>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">pos</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">SimpleScriptSource</property>
+            <method name="open"><![CDATA[pos = 0;]]></method>
+            <method name="fetch"><![CDATA[if (pos == inputParams["poles"]/2) return false;
+
+
+row["pos"] = ++pos;
+return true;]]></method>
+            <method name="close"><![CDATA[pos = null;]]></method>
+        </script-data-set>
+    </data-sets>
+    <styles>
+        <style name="crosstab-cell" id="218">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+        <style name="crosstab" id="219">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+    </styles>
+    <page-setup>
+        <simple-master-page name="dcTrackMaster" id="215" extends="three_dot_0.dcTrackMaster">
+            <property name="orientation">portrait</property>
+            <overridden-values>
+                <ref-entry baseId="136" name="NewGrid" id="136"/>
+                <ref-entry baseId="137" id="137"/>
+                <ref-entry baseId="138" id="138"/>
+                <ref-entry baseId="139" id="139"/>
+                <ref-entry baseId="140" id="140"/>
+                <ref-entry baseId="141" id="141"/>
+                <ref-entry baseId="148" name="NewLabel" id="148">
+                    <property name="textID">PDUPanelsVisualization</property>
+                </ref-entry>
+                <ref-entry baseId="142" id="142"/>
+                <ref-entry baseId="146" name="NewImage" id="146"/>
+                <ref-entry baseId="143" id="143"/>
+                <ref-entry baseId="147" name="NewImage1" id="147"/>
+                <ref-entry baseId="149" name="NewGrid1" id="149"/>
+                <ref-entry baseId="150" id="150"/>
+                <ref-entry baseId="151" id="151"/>
+                <ref-entry baseId="152" id="152"/>
+                <ref-entry baseId="153" id="153"/>
+                <ref-entry baseId="154" id="154"/>
+                <ref-entry baseId="175" name="NewGrid3" id="175"/>
+                <ref-entry baseId="176" id="176"/>
+                <ref-entry baseId="177" id="177"/>
+                <ref-entry baseId="178" id="178"/>
+                <ref-entry baseId="181" name="NewText2" id="181"/>
+                <ref-entry baseId="179" id="179"/>
+                <ref-entry baseId="180" id="180"/>
+                <ref-entry baseId="183" name="NewText21" id="183"/>
+                <ref-entry baseId="155" id="155"/>
+                <ref-entry baseId="157" name="NewGrid2" id="157"/>
+                <ref-entry baseId="158" id="158"/>
+                <ref-entry baseId="159" id="159"/>
+                <ref-entry baseId="160" id="160"/>
+                <ref-entry baseId="161" id="161"/>
+                <ref-entry baseId="162" id="162"/>
+                <ref-entry baseId="163" name="NewAutoText" id="163"/>
+                <ref-entry baseId="164" id="164"/>
+                <ref-entry baseId="165" name="NewText" id="165"/>
+                <ref-entry baseId="166" id="166"/>
+                <ref-entry baseId="167" name="NewAutoText1" id="167"/>
+                <ref-entry baseId="156" id="156"/>
+                <ref-entry baseId="168" name="NewText1" id="168"/>
+            </overridden-values>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <table id="223">
+            <property name="pageBreakInside">avoid</property>
+            <property name="dataSet">PowerPanels</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">item_id</property>
+                    <expression name="expression">dataSetRow["item_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">item_name</property>
+                    <expression name="expression">dataSetRow["item_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">parent_item_id</property>
+                    <expression name="expression">dataSetRow["parent_item_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">parent_item_name</property>
+                    <expression name="expression">dataSetRow["parent_item_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">poles_qty</property>
+                    <expression name="expression">dataSetRow["poles_qty"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">phase_volts</property>
+                    <expression name="expression">dataSetRow["phase_volts"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">line_volts</property>
+                    <expression name="expression">dataSetRow["line_volts"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">type</property>
+                    <expression name="expression">dataSetRow["type"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">phase_a_color</property>
+                    <expression name="expression">dataSetRow["phase_a_color"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">phase_b_color</property>
+                    <expression name="expression">dataSetRow["phase_b_color"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">phase_c_color</property>
+                    <expression name="expression">dataSetRow["phase_c_color"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <property name="pageBreakInterval">0</property>
+            <column id="244"/>
+            <column id="456"/>
+            <column id="473"/>
+            <column id="482"/>
+            <column id="466"/>
+            <column id="489"/>
+            <column id="245"/>
+            <column id="427"/>
+            <column id="434"/>
+            <column id="496"/>
+            <column id="420"/>
+            <column id="246"/>
+            <column id="247">
+                <property name="width">50px</property>
+            </column>
+            <group id="379">
+                <property name="groupName">PDU</property>
+                <property name="interval">none</property>
+                <property name="sortDirection">asc</property>
+                <expression name="keyExpr" type="javascript">row["parent_item_id"]</expression>
+                <structure name="toc">
+                    <expression name="expressionValue" type="javascript">row["parent_item_name"]</expression>
+                </structure>
+                <property name="repeatHeader">true</property>
+                <property name="hideDetail">false</property>
+                <property name="pageBreakAfter">auto</property>
+                <property name="pageBreakBefore">auto</property>
+                <property name="pageBreakInside">auto</property>
+                <list-property name="sort">
+                    <structure>
+                        <expression name="key" type="javascript">row["parent_item_name"]</expression>
+                        <property name="direction">asc</property>
+                    </structure>
+                </list-property>
+                <header>
+                    <row id="380">
+                        <property name="style">mainGroupHeaderBG</property>
+                        <cell id="381">
+                            <property name="colSpan">13</property>
+                            <property name="rowSpan">1</property>
+                            <text id="378">
+                                <property name="style">groupFont1</property>
+                                <property name="fontWeight">bold</property>
+                                <property name="contentType">html</property>
+                                <text-property name="content"><![CDATA[<VALUE-OF>reportContext.getMessage("Floor PDU", reportContext.getLocale())</VALUE-OF>
+<span style="color: #009dff;"> <VALUE-OF>
+row["parent_item_name"]
+</VALUE-OF></span>]]></text-property>
+                            </text>
+                        </cell>
+                    </row>
+                </header>
+            </group>
+            <group id="808">
+                <property name="groupName">BreakerPanel</property>
+                <property name="interval">none</property>
+                <property name="sortDirection">asc</property>
+                <expression name="keyExpr" type="javascript">row["item_id"]</expression>
+                <structure name="toc">
+                    <expression name="expressionValue" type="javascript">row["item_name"]</expression>
+                </structure>
+                <property name="repeatHeader">true</property>
+                <property name="hideDetail">false</property>
+                <property name="pageBreakAfter">auto</property>
+                <property name="pageBreakBefore">auto</property>
+                <property name="pageBreakInside">auto</property>
+                <list-property name="sort">
+                    <structure>
+                        <expression name="key" type="javascript">row["item_name"]</expression>
+                        <property name="direction">asc</property>
+                    </structure>
+                </list-property>
+                <header>
+                    <row id="809">
+                        <property name="style">groupFont2</property>
+                        <cell id="810">
+                            <property name="colSpan">13</property>
+                            <property name="rowSpan">1</property>
+                            <text id="880">
+                                <property name="contentType">html</property>
+                                <text-property name="content"><![CDATA[<VALUE-OF>reportContext.getMessage("BreakerPanel", reportContext.getLocale())</VALUE-OF>
+<span > <VALUE-OF>
+row["item_name"]
+</VALUE-OF></span>]]></text-property>
+                            </text>
+                        </cell>
+                    </row>
+                    <row id="884">
+                        <cell id="885">
+                            <property name="colSpan">4</property>
+                            <property name="rowSpan">1</property>
+                            <text id="913">
+                                <property name="contentType">html</property>
+                                <text-property name="content"><![CDATA[<b><VALUE-OF>reportContext.getMessage("Type", reportContext.getLocale())</VALUE-OF>
+</b> <span> <VALUE-OF>reportContext.getMessage(row["type"], reportContext.getLocale())</VALUE-OF></span>]]></text-property>
+                            </text>
+                        </cell>
+                        <cell id="889">
+                            <property name="colSpan">5</property>
+                            <property name="rowSpan">1</property>
+                            <text id="914">
+                                <property name="textAlign">center</property>
+                                <property name="contentType">html</property>
+                                <text-property name="content"><![CDATA[<b><VALUE-OF>reportContext.getMessage("WireColors", reportContext.getLocale())</VALUE-OF>
+</b> <span> <VALUE-OF>str="";
+str += row["phase_a_color"] ? row["phase_a_color"] : reportContext.getMessage("Black", reportContext.getLocale());
+str += "/";
+str += row["phase_b_color"] ? row["phase_b_color"] : reportContext.getMessage("Red", reportContext.getLocale());
+str += "/";
+str += row["phase_c_color"] ? row["phase_c_color"] : reportContext.getMessage("Blue", reportContext.getLocale());</VALUE-OF></span>]]></text-property>
+                            </text>
+                        </cell>
+                        <cell id="916">
+                            <property name="colSpan">4</property>
+                            <property name="rowSpan">1</property>
+                            <text id="915">
+                                <property name="textAlign">right</property>
+                                <property name="contentType">html</property>
+                                <text-property name="content"><![CDATA[<b><VALUE-OF>reportContext.getMessage("Poles", reportContext.getLocale())</VALUE-OF>
+</b> <span> <VALUE-OF>row["poles_qty"]</VALUE-OF></span>]]></text-property>
+                            </text>
+                        </cell>
+                    </row>
+                    <row id="938">
+                        <property name="height">15px</property>
+                        <cell id="939"/>
+                        <cell id="940"/>
+                        <cell id="941"/>
+                        <cell id="942"/>
+                        <cell id="943"/>
+                        <cell id="944"/>
+                        <cell id="945"/>
+                        <cell id="946"/>
+                        <cell id="947"/>
+                        <cell id="948"/>
+                        <cell id="949"/>
+                        <cell id="950"/>
+                        <cell id="951"/>
+                    </row>
+                </header>
+            </group>
+            <detail>
+                <row id="593">
+                    <cell id="594">
+                        <property name="colSpan">13</property>
+                        <property name="rowSpan">1</property>
+                        <property name="borderBottomColor">#000000</property>
+                        <property name="borderBottomStyle">dashed</property>
+                        <property name="borderLeftColor">#000000</property>
+                        <property name="borderLeftStyle">dashed</property>
+                        <property name="borderRightColor">#000000</property>
+                        <property name="borderRightStyle">dashed</property>
+                        <property name="borderTopColor">#000000</property>
+                        <property name="borderTopStyle">dashed</property>
+                        <property name="paddingTop">5pt</property>
+                        <property name="paddingLeft">3pt</property>
+                        <property name="paddingBottom">5pt</property>
+                        <property name="paddingRight">3pt</property>
+                        <grid id="607">
+                            <property name="dataSet">Breaker</property>
+                            <list-property name="paramBindings">
+                                <structure>
+                                    <property name="paramName">param_1</property>
+                                    <simple-property-list name="expression">
+                                        <value type="javascript">row["item_id"]</value>
+                                    </simple-property-list>
+                                </structure>
+                            </list-property>
+                            <list-property name="boundDataColumns">
+                                <structure>
+                                    <property name="name">port_power_id</property>
+                                    <expression name="expression">dataSetRow["port_power_id"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">port_name</property>
+                                    <expression name="expression">dataSetRow["port_name"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">poles</property>
+                                    <expression name="expression">dataSetRow["poles"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">dest_item_name</property>
+                                    <expression name="expression">dataSetRow["dest_item_name"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">dest_item_id</property>
+                                    <expression name="expression">dataSetRow["dest_item_id"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">running_poles</property>
+                                    <expression name="expression">dataSetRow["running_poles"]</expression>
+                                    <property name="dataType">integer</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">amps_nameplate</property>
+                                    <expression name="expression">dataSetRow["amps_nameplate"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                            </list-property>
+                            <method name="onCreate"><![CDATA[//for any reason binding between Table -> Grid -> to Breaker table is not working
+//use variable as workaround
+reportContext.setGlobalVariable("current_poles", row._outer["poles_qty"]);
+
+//treat is a string, otherwise it will be passed as Number (float) and not as integer, what would
+//result in 120.0 V instead of 120 V
+reportContext.setGlobalVariable("current_line_volts", String(row._outer["line_volts"]));
+reportContext.setGlobalVariable("current_phase_volts",  String(row._outer["phase_volts"]));
+
+]]></method>
+                            <column id="686">
+                                <property name="width">10px</property>
+                                <property name="textAlign">right</property>
+                                <property name="verticalAlign">middle</property>
+                            </column>
+                            <column id="608"/>
+                            <column id="609">
+                                <property name="width">82px</property>
+                            </column>
+                            <column id="610"/>
+                            <column id="693">
+                                <property name="width">10px</property>
+                                <property name="verticalAlign">middle</property>
+                            </column>
+                            <row id="611">
+                                <cell id="685">
+                                    <property name="paddingTop">0pt</property>
+                                    <property name="paddingLeft">0pt</property>
+                                    <property name="paddingBottom">0pt</property>
+                                    <property name="paddingRight">0pt</property>
+                                    <table id="687">
+                                        <property name="verticalAlign">middle</property>
+                                        <property name="dataSet">PoleCounter</property>
+                                        <list-property name="paramBindings">
+                                            <structure>
+                                                <property name="paramName">poles</property>
+                                                <simple-property-list name="expression">
+                                                    <value type="javascript">reportContext.getGlobalVariable("current_poles");</value>
+                                                </simple-property-list>
+                                            </structure>
+                                        </list-property>
+                                        <list-property name="boundDataColumns">
+                                            <structure>
+                                                <property name="name">pos</property>
+                                                <expression name="expression">dataSetRow["pos"]</expression>
+                                                <property name="dataType">integer</property>
+                                            </structure>
+                                        </list-property>
+                                        <column id="691"/>
+                                        <detail>
+                                            <row id="688">
+                                                <property name="height">20px</property>
+                                                <cell id="689">
+                                                    <property name="paddingTop">0pt</property>
+                                                    <property name="paddingLeft">0pt</property>
+                                                    <property name="paddingBottom">0pt</property>
+                                                    <property name="paddingRight">0pt</property>
+                                                    <property name="textAlign">right</property>
+                                                    <property name="verticalAlign">middle</property>
+                                                    <image id="690">
+                                                        <property name="height">16px</property>
+                                                        <property name="width">8px</property>
+                                                        <method name="onCreate"><![CDATA[this.imageName  = getPhaseLeftImg();]]></method>
+                                                        <property name="source">embed</property>
+                                                        <property name="fitToContainer">true</property>
+                                                        <property name="imageName">phaseA-left.png</property>
+                                                    </image>
+                                                </cell>
+                                            </row>
+                                        </detail>
+                                    </table>
+                                </cell>
+                                <cell id="612">
+                                    <property name="paddingTop">0pt</property>
+                                    <property name="paddingLeft">0pt</property>
+                                    <property name="paddingBottom">0pt</property>
+                                    <property name="paddingRight">0pt</property>
+                                    <table id="549">
+                                        <property name="pageBreakInterval">0</property>
+                                        <column id="562"/>
+                                        <column id="700">
+                                            <property name="width">10px</property>
+                                        </column>
+                                        <column id="563"/>
+                                        <column id="722">
+                                            <property name="width">10px</property>
+                                        </column>
+                                        <column id="564"/>
+                                        <detail>
+                                            <row id="554">
+                                                <method name="onCreate"><![CDATA[this.height = getBPRowHeight();]]></method>
+                                                <list-property name="visibility">
+                                                    <structure>
+                                                        <property name="format">all</property>
+                                                        <expression name="valueExpr" type="javascript">row["running_poles"] > reportContext.getGlobalVariable("current_poles")/2</expression>
+                                                    </structure>
+                                                </list-property>
+                                                <cell id="555">
+                                                    <property name="fontSize">8pt</property>
+                                                    <property name="borderBottomColor">#000000</property>
+                                                    <property name="borderBottomStyle">solid</property>
+                                                    <property name="borderLeftColor">#000000</property>
+                                                    <property name="borderLeftStyle">solid</property>
+                                                    <property name="borderRightColor">#000000</property>
+                                                    <property name="borderRightStyle">solid</property>
+                                                    <property name="borderTopColor">#000000</property>
+                                                    <property name="borderTopStyle">solid</property>
+                                                    <property name="textAlign">center</property>
+                                                    <property name="verticalAlign">middle</property>
+                                                    <list-property name="highlightRules">
+                                                        <structure>
+                                                            <property name="operator">is-not-null</property>
+                                                            <expression name="testExpr" type="javascript">row["poles"]</expression>
+                                                            <property name="style">breakerPanel</property>
+                                                        </structure>
+                                                    </list-property>
+                                                    <data id="566">
+                                                        <property name="resultSetColumn">port_name</property>
+                                                    </data>
+                                                </cell>
+                                                <cell id="699">
+                                                    <property name="borderLeftColor">#000000</property>
+                                                    <property name="borderLeftStyle">solid</property>
+                                                    <property name="borderRightColor">#000000</property>
+                                                    <property name="borderRightStyle">solid</property>
+                                                    <property name="paddingTop">0pt</property>
+                                                    <property name="paddingLeft">0pt</property>
+                                                    <property name="paddingBottom">0pt</property>
+                                                    <property name="paddingRight">0pt</property>
+                                                    <property name="textAlign">center</property>
+                                                    <property name="verticalAlign">middle</property>
+                                                    <grid id="701">
+                                                        <property name="verticalAlign">middle</property>
+                                                        <column id="702"/>
+                                                        <row id="703">
+                                                            <property name="height">20px</property>
+                                                            <property name="verticalAlign">middle</property>
+                                                            <cell id="704">
+                                                                <property name="paddingTop">0pt</property>
+                                                                <property name="paddingLeft">0pt</property>
+                                                                <property name="paddingBottom">0pt</property>
+                                                                <property name="paddingRight">0pt</property>
+                                                                <image id="713">
+                                                                    <property name="height">16px</property>
+                                                                    <property name="width">8px</property>
+                                                                    <method name="onCreate"><![CDATA[this.imageName  = getPhaseConImg(1, false);
+]]></method>
+                                                                    <property name="source">embed</property>
+                                                                    <property name="fitToContainer">true</property>
+                                                                    <property name="imageName">phaseA-con.png</property>
+                                                                </image>
+                                                            </cell>
+                                                        </row>
+                                                        <row id="711">
+                                                            <property name="height">20px</property>
+                                                            <property name="verticalAlign">middle</property>
+                                                            <list-property name="visibility">
+                                                                <structure>
+                                                                    <property name="format">all</property>
+                                                                    <expression name="valueExpr" type="javascript">row["poles"]&lt;2</expression>
+                                                                </structure>
+                                                            </list-property>
+                                                            <cell id="712">
+                                                                <property name="paddingTop">0pt</property>
+                                                                <property name="paddingLeft">0pt</property>
+                                                                <property name="paddingBottom">0pt</property>
+                                                                <property name="paddingRight">0pt</property>
+                                                                <image id="716">
+                                                                    <property name="height">16px</property>
+                                                                    <property name="width">8px</property>
+                                                                    <method name="onCreate"><![CDATA[this.imageName  = getPhaseConImg(2, false);
+]]></method>
+                                                                    <property name="source">embed</property>
+                                                                    <property name="fitToContainer">true</property>
+                                                                    <property name="imageName">phaseA-con.png</property>
+                                                                </image>
+                                                            </cell>
+                                                        </row>
+                                                        <row id="709">
+                                                            <property name="height">20px</property>
+                                                            <property name="verticalAlign">middle</property>
+                                                            <list-property name="visibility">
+                                                                <structure>
+                                                                    <property name="format">all</property>
+                                                                    <expression name="valueExpr" type="javascript">row["poles"]&lt;3</expression>
+                                                                </structure>
+                                                            </list-property>
+                                                            <cell id="710">
+                                                                <property name="paddingTop">0pt</property>
+                                                                <property name="paddingLeft">0pt</property>
+                                                                <property name="paddingBottom">0pt</property>
+                                                                <property name="paddingRight">0pt</property>
+                                                                <image id="717">
+                                                                    <property name="height">16px</property>
+                                                                    <property name="width">8px</property>
+                                                                    <method name="onCreate"><![CDATA[this.imageName  = getPhaseConImg(3, false);]]></method>
+                                                                    <property name="source">embed</property>
+                                                                    <property name="fitToContainer">true</property>
+                                                                    <property name="imageName">phaseA-con.png</property>
+                                                                </image>
+                                                            </cell>
+                                                        </row>
+                                                    </grid>
+                                                </cell>
+                                                <cell id="556">
+                                                    <property name="borderBottomColor">#000000</property>
+                                                    <property name="borderBottomStyle">solid</property>
+                                                    <property name="borderLeftColor">#000000</property>
+                                                    <property name="borderLeftStyle">solid</property>
+                                                    <property name="borderRightColor">#000000</property>
+                                                    <property name="borderRightStyle">solid</property>
+                                                    <property name="borderTopColor">#000000</property>
+                                                    <property name="borderTopStyle">solid</property>
+                                                    <property name="paddingTop">0pt</property>
+                                                    <property name="paddingLeft">0pt</property>
+                                                    <property name="paddingBottom">0pt</property>
+                                                    <property name="paddingRight">0pt</property>
+                                                    <property name="verticalAlign">middle</property>
+                                                    <grid id="762">
+                                                        <property name="verticalAlign">middle</property>
+                                                        <list-property name="highlightRules">
+                                                            <structure>
+                                                                <property name="operator">is-not-null</property>
+                                                                <expression name="testExpr" type="javascript">row["poles"]</expression>
+                                                                <property name="style">breakerPanel</property>
+                                                            </structure>
+                                                        </list-property>
+                                                        <column id="778"/>
+                                                        <column id="763">
+                                                            <property name="width">10px</property>
+                                                            <property name="textAlign">center</property>
+                                                        </column>
+                                                        <row id="798">
+                                                            <property name="height">20px</property>
+                                                            <list-property name="visibility">
+                                                                <structure>
+                                                                    <property name="format">all</property>
+                                                                    <expression name="valueExpr" type="javascript">row["poles"] != null</expression>
+                                                                </structure>
+                                                            </list-property>
+                                                            <cell id="799">
+                                                                <property name="paddingTop">0pt</property>
+                                                                <property name="paddingLeft">0pt</property>
+                                                                <property name="paddingBottom">0pt</property>
+                                                                <property name="paddingRight">0pt</property>
+                                                                <property name="verticalAlign">middle</property>
+                                                            </cell>
+                                                            <cell id="800">
+                                                                <property name="paddingTop">0pt</property>
+                                                                <property name="paddingLeft">0pt</property>
+                                                                <property name="paddingBottom">0pt</property>
+                                                                <property name="paddingRight">0pt</property>
+                                                                <property name="textAlign">center</property>
+                                                            </cell>
+                                                        </row>
+                                                        <row id="764">
+                                                            <property name="height">20px</property>
+                                                            <list-property name="visibility">
+                                                                <structure>
+                                                                    <property name="format">all</property>
+                                                                    <expression name="valueExpr" type="javascript">row["poles"] == null</expression>
+                                                                </structure>
+                                                            </list-property>
+                                                            <cell id="775">
+                                                                <property name="colSpan">1</property>
+                                                                <property name="rowSpan">3</property>
+                                                                <property name="paddingTop">0pt</property>
+                                                                <property name="paddingLeft">0pt</property>
+                                                                <property name="paddingBottom">0pt</property>
+                                                                <property name="paddingRight">0pt</property>
+                                                                <property name="verticalAlign">middle</property>
+                                                                <text-data id="652">
+                                                                    <property name="paddingLeft">3pt</property>
+                                                                    <expression name="valueExpr">row["amps_nameplate"] +  " A, " + getVolts(row["poles"], reportContext.getGlobalVariable("current_phase_volts"), reportContext.getGlobalVariable("current_line_volts")) + " V"</expression>
+                                                                    <property name="contentType">html</property>
+                                                                </text-data>
+                                                            </cell>
+                                                            <cell id="765">
+                                                                <property name="paddingTop">0pt</property>
+                                                                <property name="paddingLeft">0pt</property>
+                                                                <property name="paddingBottom">0pt</property>
+                                                                <property name="paddingRight">0pt</property>
+                                                                <property name="textAlign">center</property>
+                                                                <property name="verticalAlign">middle</property>
+                                                                <image id="766">
+                                                                    <property name="height">16px</property>
+                                                                    <property name="width">4px</property>
+                                                                    <property name="source">embed</property>
+                                                                    <property name="fitToContainer">true</property>
+                                                                    <property name="imageName">pole.png</property>
+                                                                </image>
+                                                            </cell>
+                                                        </row>
+                                                        <row id="767">
+                                                            <property name="height">20px</property>
+                                                            <list-property name="visibility">
+                                                                <structure>
+                                                                    <property name="format">all</property>
+                                                                    <expression name="valueExpr" type="javascript">row["poles"] == null || row["poles"]&lt;2</expression>
+                                                                </structure>
+                                                            </list-property>
+                                                            <cell id="768">
+                                                                <property name="paddingTop">0pt</property>
+                                                                <property name="paddingLeft">0pt</property>
+                                                                <property name="paddingBottom">0pt</property>
+                                                                <property name="paddingRight">0pt</property>
+                                                                <property name="textAlign">center</property>
+                                                                <property name="verticalAlign">middle</property>
+                                                                <property name="canShrink">false</property>
+                                                                <image id="773">
+                                                                    <property name="height">16px</property>
+                                                                    <property name="width">4px</property>
+                                                                    <property name="source">embed</property>
+                                                                    <property name="fitToContainer">true</property>
+                                                                    <property name="imageName">pole.png</property>
+                                                                </image>
+                                                            </cell>
+                                                        </row>
+                                                        <row id="770">
+                                                            <property name="height">20px</property>
+                                                            <list-property name="visibility">
+                                                                <structure>
+                                                                    <property name="format">all</property>
+                                                                    <expression name="valueExpr" type="javascript">row["poles"] == null || row["poles"]&lt;3</expression>
+                                                                </structure>
+                                                            </list-property>
+                                                            <cell id="771">
+                                                                <property name="paddingTop">0pt</property>
+                                                                <property name="paddingLeft">0pt</property>
+                                                                <property name="paddingBottom">0pt</property>
+                                                                <property name="paddingRight">0pt</property>
+                                                                <property name="textAlign">center</property>
+                                                                <property name="verticalAlign">middle</property>
+                                                                <image id="774">
+                                                                    <property name="height">16px</property>
+                                                                    <property name="width">4px</property>
+                                                                    <property name="source">embed</property>
+                                                                    <property name="fitToContainer">true</property>
+                                                                    <property name="imageName">pole.png</property>
+                                                                </image>
+                                                            </cell>
+                                                        </row>
+                                                    </grid>
+                                                </cell>
+                                                <cell id="721">
+                                                    <property name="borderLeftColor">#000000</property>
+                                                    <property name="borderLeftStyle">solid</property>
+                                                    <property name="borderRightColor">#000000</property>
+                                                    <property name="borderRightStyle">solid</property>
+                                                    <property name="paddingTop">0pt</property>
+                                                    <property name="paddingLeft">0pt</property>
+                                                    <property name="paddingBottom">0pt</property>
+                                                    <property name="paddingRight">0pt</property>
+                                                    <property name="textAlign">center</property>
+                                                    <property name="verticalAlign">middle</property>
+                                                    <grid id="723">
+                                                        <property name="verticalAlign">middle</property>
+                                                        <column id="724"/>
+                                                        <row id="725">
+                                                            <property name="height">20px</property>
+                                                            <property name="verticalAlign">middle</property>
+                                                            <cell id="726">
+                                                                <property name="paddingTop">0pt</property>
+                                                                <property name="paddingLeft">0pt</property>
+                                                                <property name="paddingBottom">0pt</property>
+                                                                <property name="paddingRight">0pt</property>
+                                                                <image id="727">
+                                                                    <property name="height">16px</property>
+                                                                    <property name="width">8px</property>
+                                                                    <method name="onCreate"><![CDATA[this.imageName  = getPhaseConImg(1, false);]]></method>
+                                                                    <property name="source">embed</property>
+                                                                    <property name="fitToContainer">true</property>
+                                                                    <property name="imageName">phaseA-con.png</property>
+                                                                </image>
+                                                            </cell>
+                                                        </row>
+                                                        <row id="728">
+                                                            <property name="height">20px</property>
+                                                            <property name="verticalAlign">middle</property>
+                                                            <list-property name="visibility">
+                                                                <structure>
+                                                                    <property name="format">all</property>
+                                                                    <expression name="valueExpr" type="javascript">row["poles"]&lt;2</expression>
+                                                                </structure>
+                                                            </list-property>
+                                                            <cell id="729">
+                                                                <property name="paddingTop">0pt</property>
+                                                                <property name="paddingLeft">0pt</property>
+                                                                <property name="paddingBottom">0pt</property>
+                                                                <property name="paddingRight">0pt</property>
+                                                                <image id="730">
+                                                                    <property name="height">16px</property>
+                                                                    <property name="width">8px</property>
+                                                                    <method name="onCreate"><![CDATA[this.imageName  = getPhaseConImg(2, false);]]></method>
+                                                                    <property name="source">embed</property>
+                                                                    <property name="fitToContainer">true</property>
+                                                                    <property name="imageName">phaseA-con.png</property>
+                                                                </image>
+                                                            </cell>
+                                                        </row>
+                                                        <row id="731">
+                                                            <property name="height">20px</property>
+                                                            <property name="verticalAlign">middle</property>
+                                                            <list-property name="visibility">
+                                                                <structure>
+                                                                    <property name="format">all</property>
+                                                                    <expression name="valueExpr" type="javascript">row["poles"]&lt;3</expression>
+                                                                </structure>
+                                                            </list-property>
+                                                            <cell id="732">
+                                                                <property name="paddingTop">0pt</property>
+                                                                <property name="paddingLeft">0pt</property>
+                                                                <property name="paddingBottom">0pt</property>
+                                                                <property name="paddingRight">0pt</property>
+                                                                <image id="733">
+                                                                    <property name="height">16px</property>
+                                                                    <property name="width">8px</property>
+                                                                    <method name="onCreate"><![CDATA[this.imageName  = getPhaseConImg(3, false);]]></method>
+                                                                    <property name="source">embed</property>
+                                                                    <property name="fitToContainer">true</property>
+                                                                    <property name="imageName">phaseA-con.png</property>
+                                                                </image>
+                                                            </cell>
+                                                        </row>
+                                                    </grid>
+                                                </cell>
+                                                <cell id="557">
+                                                    <property name="borderBottomColor">#000000</property>
+                                                    <property name="borderBottomStyle">solid</property>
+                                                    <property name="borderLeftColor">#000000</property>
+                                                    <property name="borderLeftStyle">solid</property>
+                                                    <property name="borderRightColor">#000000</property>
+                                                    <property name="borderRightStyle">solid</property>
+                                                    <property name="borderTopColor">#000000</property>
+                                                    <property name="borderTopStyle">solid</property>
+                                                    <property name="textAlign">left</property>
+                                                    <property name="verticalAlign">middle</property>
+                                                    <list-property name="highlightRules">
+                                                        <structure>
+                                                            <property name="operator">is-not-null</property>
+                                                            <expression name="testExpr" type="javascript">row["dest_item_id"]</expression>
+                                                            <property name="style">breakerPanel</property>
+                                                        </structure>
+                                                    </list-property>
+                                                    <text-data id="955">
+                                                        <expression name="valueExpr">if (row["dest_item_name"]) reportContext.getMessage("AtCabinet", reportContext.getLocale()) + " " +  row["dest_item_name"]</expression>
+                                                        <property name="contentType">html</property>
+                                                    </text-data>
+                                                </cell>
+                                            </row>
+                                        </detail>
+                                    </table>
+                                </cell>
+                                <cell id="613">
+                                    <property name="paddingTop">0pt</property>
+                                    <property name="paddingLeft">0pt</property>
+                                    <property name="paddingBottom">0pt</property>
+                                    <property name="paddingRight">0pt</property>
+                                    <property name="textAlign">left</property>
+                                    <property name="verticalAlign">middle</property>
+                                    <table id="655">
+                                        <property name="verticalAlign">middle</property>
+                                        <property name="dataSet">PoleCounter</property>
+                                        <list-property name="paramBindings">
+                                            <structure>
+                                                <property name="paramName">poles</property>
+                                                <simple-property-list name="expression">
+                                                    <value type="javascript">reportContext.getGlobalVariable("current_poles")</value>
+                                                </simple-property-list>
+                                            </structure>
+                                        </list-property>
+                                        <list-property name="boundDataColumns">
+                                            <structure>
+                                                <property name="name">pos</property>
+                                                <expression name="expression">dataSetRow["pos"]</expression>
+                                                <property name="dataType">integer</property>
+                                            </structure>
+                                        </list-property>
+                                        <column id="671"/>
+                                        <detail>
+                                            <row id="658">
+                                                <property name="height">20px</property>
+                                                <cell id="670">
+                                                    <property name="paddingTop">0pt</property>
+                                                    <property name="paddingLeft">0pt</property>
+                                                    <property name="paddingBottom">0pt</property>
+                                                    <property name="paddingRight">0pt</property>
+                                                    <property name="textAlign">left</property>
+                                                    <property name="verticalAlign">middle</property>
+                                                    <image id="684">
+                                                        <method name="onCreate"><![CDATA[this.imageName  = getPhaseImg();]]></method>
+                                                        <property name="source">embed</property>
+                                                        <property name="fitToContainer">true</property>
+                                                        <property name="imageName">phaseA.png</property>
+                                                    </image>
+                                                </cell>
+                                            </row>
+                                        </detail>
+                                    </table>
+                                </cell>
+                                <cell id="614">
+                                    <property name="paddingTop">0pt</property>
+                                    <property name="paddingLeft">0pt</property>
+                                    <property name="paddingBottom">0pt</property>
+                                    <property name="paddingRight">0pt</property>
+                                    <table id="569">
+                                        <property name="pageBreakInterval">0</property>
+                                        <column id="576"/>
+                                        <column id="737">
+                                            <property name="width">10px</property>
+                                        </column>
+                                        <column id="577"/>
+                                        <column id="735">
+                                            <property name="width">10px</property>
+                                        </column>
+                                        <column id="578"/>
+                                        <detail>
+                                            <row id="570">
+                                                <method name="onCreate"><![CDATA[this.height = getBPRowHeight();]]></method>
+                                                <list-property name="visibility">
+                                                    <structure>
+                                                        <property name="format">all</property>
+                                                        <expression name="valueExpr" type="javascript">row["running_poles"] &lt;= reportContext.getGlobalVariable("current_poles")/2</expression>
+                                                    </structure>
+                                                </list-property>
+                                                <cell id="571">
+                                                    <property name="borderBottomColor">#000000</property>
+                                                    <property name="borderBottomStyle">solid</property>
+                                                    <property name="borderLeftColor">#000000</property>
+                                                    <property name="borderLeftStyle">solid</property>
+                                                    <property name="borderRightColor">#000000</property>
+                                                    <property name="borderRightStyle">solid</property>
+                                                    <property name="borderTopColor">#000000</property>
+                                                    <property name="borderTopStyle">solid</property>
+                                                    <property name="textAlign">right</property>
+                                                    <property name="verticalAlign">middle</property>
+                                                    <list-property name="highlightRules">
+                                                        <structure>
+                                                            <property name="operator">is-not-null</property>
+                                                            <expression name="testExpr" type="javascript">row["dest_item_id"]</expression>
+                                                            <property name="style">breakerPanel</property>
+                                                        </structure>
+                                                    </list-property>
+                                                    <text-data id="954">
+                                                        <expression name="valueExpr">if (row["dest_item_name"]) reportContext.getMessage("AtCabinet", reportContext.getLocale()) + " " +  row["dest_item_name"]</expression>
+                                                        <property name="contentType">html</property>
+                                                    </text-data>
+                                                </cell>
+                                                <cell id="736">
+                                                    <property name="borderLeftColor">#000000</property>
+                                                    <property name="borderLeftStyle">solid</property>
+                                                    <property name="borderRightColor">#000000</property>
+                                                    <property name="borderRightStyle">solid</property>
+                                                    <property name="paddingTop">0pt</property>
+                                                    <property name="paddingLeft">0pt</property>
+                                                    <property name="paddingBottom">0pt</property>
+                                                    <property name="paddingRight">0pt</property>
+                                                    <property name="textAlign">center</property>
+                                                    <property name="verticalAlign">middle</property>
+                                                    <grid id="738">
+                                                        <property name="verticalAlign">middle</property>
+                                                        <column id="739"/>
+                                                        <row id="740">
+                                                            <property name="height">20px</property>
+                                                            <property name="verticalAlign">middle</property>
+                                                            <cell id="741">
+                                                                <property name="paddingTop">0pt</property>
+                                                                <property name="paddingLeft">0pt</property>
+                                                                <property name="paddingBottom">0pt</property>
+                                                                <property name="paddingRight">0pt</property>
+                                                                <image id="742">
+                                                                    <property name="height">16px</property>
+                                                                    <property name="width">8px</property>
+                                                                    <method name="onCreate"><![CDATA[this.imageName  = getPhaseConImg(1, true);
+]]></method>
+                                                                    <property name="source">embed</property>
+                                                                    <property name="fitToContainer">true</property>
+                                                                    <property name="imageName">phaseA-con.png</property>
+                                                                </image>
+                                                            </cell>
+                                                        </row>
+                                                        <row id="743">
+                                                            <property name="height">20px</property>
+                                                            <property name="verticalAlign">middle</property>
+                                                            <list-property name="visibility">
+                                                                <structure>
+                                                                    <property name="format">all</property>
+                                                                    <expression name="valueExpr" type="javascript">row["poles"]&lt;2</expression>
+                                                                </structure>
+                                                            </list-property>
+                                                            <cell id="744">
+                                                                <property name="paddingTop">0pt</property>
+                                                                <property name="paddingLeft">0pt</property>
+                                                                <property name="paddingBottom">0pt</property>
+                                                                <property name="paddingRight">0pt</property>
+                                                                <image id="745">
+                                                                    <property name="height">16px</property>
+                                                                    <property name="width">8px</property>
+                                                                    <method name="onCreate"><![CDATA[this.imageName  = getPhaseConImg(2, true);]]></method>
+                                                                    <property name="source">embed</property>
+                                                                    <property name="fitToContainer">true</property>
+                                                                    <property name="imageName">phaseA-con.png</property>
+                                                                </image>
+                                                            </cell>
+                                                        </row>
+                                                        <row id="746">
+                                                            <property name="height">20px</property>
+                                                            <property name="verticalAlign">middle</property>
+                                                            <list-property name="visibility">
+                                                                <structure>
+                                                                    <property name="format">all</property>
+                                                                    <expression name="valueExpr" type="javascript">row["poles"]&lt;3</expression>
+                                                                </structure>
+                                                            </list-property>
+                                                            <cell id="747">
+                                                                <property name="paddingTop">0pt</property>
+                                                                <property name="paddingLeft">0pt</property>
+                                                                <property name="paddingBottom">0pt</property>
+                                                                <property name="paddingRight">0pt</property>
+                                                                <image id="748">
+                                                                    <property name="height">16px</property>
+                                                                    <property name="width">8px</property>
+                                                                    <method name="onCreate"><![CDATA[this.imageName  = getPhaseConImg(3, true);]]></method>
+                                                                    <property name="source">embed</property>
+                                                                    <property name="fitToContainer">true</property>
+                                                                    <property name="imageName">phaseA-con.png</property>
+                                                                </image>
+                                                            </cell>
+                                                        </row>
+                                                    </grid>
+                                                </cell>
+                                                <cell id="573">
+                                                    <property name="borderBottomColor">#000000</property>
+                                                    <property name="borderBottomStyle">solid</property>
+                                                    <property name="borderLeftColor">#000000</property>
+                                                    <property name="borderLeftStyle">solid</property>
+                                                    <property name="borderRightColor">#000000</property>
+                                                    <property name="borderRightStyle">solid</property>
+                                                    <property name="borderTopColor">#000000</property>
+                                                    <property name="borderTopStyle">solid</property>
+                                                    <property name="paddingTop">0pt</property>
+                                                    <property name="paddingLeft">0pt</property>
+                                                    <property name="paddingBottom">0pt</property>
+                                                    <property name="paddingRight">0pt</property>
+                                                    <property name="verticalAlign">middle</property>
+                                                    <grid id="779">
+                                                        <list-property name="highlightRules">
+                                                            <structure>
+                                                                <property name="operator">is-not-null</property>
+                                                                <expression name="testExpr" type="javascript">row["poles"]</expression>
+                                                                <property name="style">breakerPanel</property>
+                                                            </structure>
+                                                        </list-property>
+                                                        <column id="781">
+                                                            <property name="width">10px</property>
+                                                            <property name="textAlign">center</property>
+                                                        </column>
+                                                        <column id="797"/>
+                                                        <row id="801">
+                                                            <property name="height">20px</property>
+                                                            <list-property name="visibility">
+                                                                <structure>
+                                                                    <property name="format">all</property>
+                                                                    <expression name="valueExpr" type="javascript">row["poles"] != null</expression>
+                                                                </structure>
+                                                            </list-property>
+                                                            <cell id="802">
+                                                                <property name="paddingTop">0pt</property>
+                                                                <property name="paddingLeft">0pt</property>
+                                                                <property name="paddingBottom">0pt</property>
+                                                                <property name="paddingRight">0pt</property>
+                                                                <property name="verticalAlign">middle</property>
+                                                            </cell>
+                                                            <cell id="803">
+                                                                <property name="paddingTop">0pt</property>
+                                                                <property name="paddingLeft">0pt</property>
+                                                                <property name="paddingBottom">0pt</property>
+                                                                <property name="paddingRight">0pt</property>
+                                                                <property name="verticalAlign">middle</property>
+                                                            </cell>
+                                                        </row>
+                                                        <row id="782">
+                                                            <property name="height">20px</property>
+                                                            <list-property name="visibility">
+                                                                <structure>
+                                                                    <property name="format">all</property>
+                                                                    <expression name="valueExpr" type="javascript">row["poles"] == null</expression>
+                                                                </structure>
+                                                            </list-property>
+                                                            <cell id="784">
+                                                                <property name="paddingTop">0pt</property>
+                                                                <property name="paddingLeft">0pt</property>
+                                                                <property name="paddingBottom">0pt</property>
+                                                                <property name="paddingRight">0pt</property>
+                                                                <property name="verticalAlign">middle</property>
+                                                                <image id="791">
+                                                                    <property name="height">16px</property>
+                                                                    <property name="width">4px</property>
+                                                                    <property name="source">embed</property>
+                                                                    <property name="fitToContainer">true</property>
+                                                                    <property name="imageName">pole.png</property>
+                                                                </image>
+                                                            </cell>
+                                                            <cell id="794">
+                                                                <property name="colSpan">1</property>
+                                                                <property name="rowSpan">3</property>
+                                                                <property name="paddingTop">0pt</property>
+                                                                <property name="paddingLeft">0pt</property>
+                                                                <property name="paddingBottom">0pt</property>
+                                                                <property name="paddingRight">0pt</property>
+                                                                <property name="verticalAlign">middle</property>
+                                                                <text-data id="653">
+                                                                    <property name="paddingRight">3pt</property>
+                                                                    <property name="textAlign">right</property>
+                                                                    <expression name="valueExpr">row["amps_nameplate"] +  " A, " + getVolts(row["poles"], reportContext.getGlobalVariable("current_phase_volts"), reportContext.getGlobalVariable("current_line_volts")) + " V"</expression>
+                                                                    <property name="contentType">html</property>
+                                                                </text-data>
+                                                            </cell>
+                                                        </row>
+                                                        <row id="785">
+                                                            <property name="height">20px</property>
+                                                            <list-property name="visibility">
+                                                                <structure>
+                                                                    <property name="format">all</property>
+                                                                    <expression name="valueExpr" type="javascript">row["poles"] == null || row["poles"]&lt;2</expression>
+                                                                </structure>
+                                                            </list-property>
+                                                            <cell id="787">
+                                                                <property name="paddingTop">0pt</property>
+                                                                <property name="paddingLeft">0pt</property>
+                                                                <property name="paddingBottom">0pt</property>
+                                                                <property name="paddingRight">0pt</property>
+                                                                <property name="verticalAlign">middle</property>
+                                                                <image id="792">
+                                                                    <property name="height">16px</property>
+                                                                    <property name="width">4px</property>
+                                                                    <property name="source">embed</property>
+                                                                    <property name="fitToContainer">true</property>
+                                                                    <property name="imageName">pole.png</property>
+                                                                </image>
+                                                            </cell>
+                                                        </row>
+                                                        <row id="788">
+                                                            <property name="height">20px</property>
+                                                            <list-property name="visibility">
+                                                                <structure>
+                                                                    <property name="format">all</property>
+                                                                    <expression name="valueExpr" type="javascript">row["poles"] == null || row["poles"]&lt;3</expression>
+                                                                </structure>
+                                                            </list-property>
+                                                            <cell id="790">
+                                                                <property name="paddingTop">0pt</property>
+                                                                <property name="paddingLeft">0pt</property>
+                                                                <property name="paddingBottom">0pt</property>
+                                                                <property name="paddingRight">0pt</property>
+                                                                <property name="verticalAlign">middle</property>
+                                                                <image id="793">
+                                                                    <property name="height">16px</property>
+                                                                    <property name="width">4px</property>
+                                                                    <property name="source">embed</property>
+                                                                    <property name="fitToContainer">true</property>
+                                                                    <property name="imageName">pole.png</property>
+                                                                </image>
+                                                            </cell>
+                                                        </row>
+                                                    </grid>
+                                                </cell>
+                                                <cell id="734">
+                                                    <property name="borderLeftColor">#000000</property>
+                                                    <property name="borderLeftStyle">solid</property>
+                                                    <property name="borderRightColor">#000000</property>
+                                                    <property name="borderRightStyle">solid</property>
+                                                    <property name="paddingTop">0pt</property>
+                                                    <property name="paddingLeft">0pt</property>
+                                                    <property name="paddingBottom">0pt</property>
+                                                    <property name="paddingRight">0pt</property>
+                                                    <property name="textAlign">center</property>
+                                                    <property name="verticalAlign">middle</property>
+                                                    <grid id="749">
+                                                        <property name="verticalAlign">middle</property>
+                                                        <column id="750"/>
+                                                        <row id="751">
+                                                            <property name="height">20px</property>
+                                                            <property name="verticalAlign">middle</property>
+                                                            <cell id="752">
+                                                                <property name="paddingTop">0pt</property>
+                                                                <property name="paddingLeft">0pt</property>
+                                                                <property name="paddingBottom">0pt</property>
+                                                                <property name="paddingRight">0pt</property>
+                                                                <image id="753">
+                                                                    <property name="height">16px</property>
+                                                                    <property name="width">8px</property>
+                                                                    <method name="onCreate"><![CDATA[this.imageName  = getPhaseConImg(1, true);]]></method>
+                                                                    <property name="source">embed</property>
+                                                                    <property name="fitToContainer">true</property>
+                                                                    <property name="imageName">phaseA-con.png</property>
+                                                                </image>
+                                                            </cell>
+                                                        </row>
+                                                        <row id="754">
+                                                            <property name="height">20px</property>
+                                                            <property name="verticalAlign">middle</property>
+                                                            <list-property name="visibility">
+                                                                <structure>
+                                                                    <property name="format">all</property>
+                                                                    <expression name="valueExpr" type="javascript">row["poles"]&lt;2</expression>
+                                                                </structure>
+                                                            </list-property>
+                                                            <cell id="755">
+                                                                <property name="paddingTop">0pt</property>
+                                                                <property name="paddingLeft">0pt</property>
+                                                                <property name="paddingBottom">0pt</property>
+                                                                <property name="paddingRight">0pt</property>
+                                                                <image id="756">
+                                                                    <property name="height">16px</property>
+                                                                    <property name="width">8px</property>
+                                                                    <method name="onCreate"><![CDATA[this.imageName  = getPhaseConImg(2, true);]]></method>
+                                                                    <property name="source">embed</property>
+                                                                    <property name="fitToContainer">true</property>
+                                                                    <property name="imageName">phaseA-con.png</property>
+                                                                </image>
+                                                            </cell>
+                                                        </row>
+                                                        <row id="757">
+                                                            <property name="height">20px</property>
+                                                            <property name="verticalAlign">middle</property>
+                                                            <list-property name="visibility">
+                                                                <structure>
+                                                                    <property name="format">all</property>
+                                                                    <expression name="valueExpr" type="javascript">row["poles"]&lt;3</expression>
+                                                                </structure>
+                                                            </list-property>
+                                                            <cell id="758">
+                                                                <property name="paddingTop">0pt</property>
+                                                                <property name="paddingLeft">0pt</property>
+                                                                <property name="paddingBottom">0pt</property>
+                                                                <property name="paddingRight">0pt</property>
+                                                                <image id="759">
+                                                                    <property name="height">16px</property>
+                                                                    <property name="width">8px</property>
+                                                                    <method name="onCreate"><![CDATA[this.imageName  = getPhaseConImg(3, true);]]></method>
+                                                                    <property name="source">embed</property>
+                                                                    <property name="fitToContainer">true</property>
+                                                                    <property name="imageName">phaseA-con.png</property>
+                                                                </image>
+                                                            </cell>
+                                                        </row>
+                                                    </grid>
+                                                </cell>
+                                                <cell id="574">
+                                                    <property name="borderBottomColor">#000000</property>
+                                                    <property name="borderBottomStyle">solid</property>
+                                                    <property name="borderLeftColor">#000000</property>
+                                                    <property name="borderLeftStyle">solid</property>
+                                                    <property name="borderRightColor">#000000</property>
+                                                    <property name="borderRightStyle">solid</property>
+                                                    <property name="borderTopColor">#000000</property>
+                                                    <property name="borderTopStyle">solid</property>
+                                                    <property name="textAlign">center</property>
+                                                    <property name="verticalAlign">middle</property>
+                                                    <list-property name="highlightRules">
+                                                        <structure>
+                                                            <property name="operator">is-not-null</property>
+                                                            <expression name="testExpr" type="javascript">row["poles"]</expression>
+                                                            <property name="style">breakerPanel</property>
+                                                        </structure>
+                                                    </list-property>
+                                                    <data id="572">
+                                                        <property name="resultSetColumn">port_name</property>
+                                                    </data>
+                                                </cell>
+                                            </row>
+                                        </detail>
+                                    </table>
+                                </cell>
+                                <cell id="692">
+                                    <property name="paddingTop">0pt</property>
+                                    <property name="paddingLeft">0pt</property>
+                                    <property name="paddingBottom">0pt</property>
+                                    <property name="paddingRight">0pt</property>
+                                    <property name="textAlign">left</property>
+                                    <table id="694">
+                                        <property name="verticalAlign">middle</property>
+                                        <property name="dataSet">PoleCounter</property>
+                                        <list-property name="paramBindings">
+                                            <structure>
+                                                <property name="paramName">poles</property>
+                                                <simple-property-list name="expression">
+                                                    <value type="javascript">reportContext.getGlobalVariable("current_poles")</value>
+                                                </simple-property-list>
+                                            </structure>
+                                        </list-property>
+                                        <list-property name="boundDataColumns">
+                                            <structure>
+                                                <property name="name">pos</property>
+                                                <expression name="expression">dataSetRow["pos"]</expression>
+                                                <property name="dataType">integer</property>
+                                            </structure>
+                                        </list-property>
+                                        <column id="698"/>
+                                        <detail>
+                                            <row id="695">
+                                                <property name="height">20px</property>
+                                                <cell id="696">
+                                                    <property name="paddingTop">0pt</property>
+                                                    <property name="paddingLeft">0pt</property>
+                                                    <property name="paddingBottom">0pt</property>
+                                                    <property name="paddingRight">0pt</property>
+                                                    <property name="textAlign">left</property>
+                                                    <property name="verticalAlign">middle</property>
+                                                    <image id="697">
+                                                        <property name="height">16px</property>
+                                                        <property name="width">8px</property>
+                                                        <method name="onCreate"><![CDATA[ this.imageName  = getPhaseRightImg();]]></method>
+                                                        <property name="source">embed</property>
+                                                        <property name="fitToContainer">true</property>
+                                                        <property name="imageName">phaseA-right.png</property>
+                                                    </image>
+                                                </cell>
+                                            </row>
+                                        </detail>
+                                    </table>
+                                </cell>
+                            </row>
+                        </grid>
+                    </cell>
+                </row>
+            </detail>
+        </table>
+    </body>
+    <list-property name="images">
+        <structure>
+            <property name="name">phaseA.png</property>
+            <property name="type">image/png</property>
+            <property name="libReference">three_dot_0.phaseA.png</property>
+        </structure>
+        <structure>
+            <property name="name">phaseB.png</property>
+            <property name="type">image/png</property>
+            <property name="libReference">three_dot_0.phaseB.png</property>
+        </structure>
+        <structure>
+            <property name="name">phaseC.png</property>
+            <property name="type">image/png</property>
+            <property name="libReference">three_dot_0.phaseC.png</property>
+        </structure>
+        <structure>
+            <property name="name">phaseA-con.png</property>
+            <property name="type">image/png</property>
+            <property name="libReference">three_dot_0.phaseA-con.png</property>
+        </structure>
+        <structure>
+            <property name="name">phaseA-left.png</property>
+            <property name="type">image/png</property>
+            <property name="libReference">three_dot_0.phaseA-left.png</property>
+        </structure>
+        <structure>
+            <property name="name">phaseA-right.png</property>
+            <property name="type">image/png</property>
+            <property name="libReference">three_dot_0.phaseA-right.png</property>
+        </structure>
+        <structure>
+            <property name="name">phaseB-con.png</property>
+            <property name="type">image/png</property>
+            <property name="libReference">three_dot_0.phaseB-con.png</property>
+        </structure>
+        <structure>
+            <property name="name">phaseB-left.png</property>
+            <property name="type">image/png</property>
+            <property name="libReference">three_dot_0.phaseB-left.png</property>
+        </structure>
+        <structure>
+            <property name="name">phaseB-right.png</property>
+            <property name="type">image/png</property>
+            <property name="libReference">three_dot_0.phaseB-right.png</property>
+        </structure>
+        <structure>
+            <property name="name">phaseC-con.png</property>
+            <property name="type">image/png</property>
+            <property name="libReference">three_dot_0.phaseC-con.png</property>
+        </structure>
+        <structure>
+            <property name="name">phaseC-left.png</property>
+            <property name="type">image/png</property>
+            <property name="libReference">three_dot_0.phaseC-left.png</property>
+        </structure>
+        <structure>
+            <property name="name">phaseC-right.png</property>
+            <property name="type">image/png</property>
+            <property name="libReference">three_dot_0.phaseC-right.png</property>
+        </structure>
+        <structure>
+            <property name="name">pole.png</property>
+            <property name="type">image/png</property>
+            <property name="libReference">three_dot_0.pole.png</property>
+        </structure>
+    </list-property>
+</report>

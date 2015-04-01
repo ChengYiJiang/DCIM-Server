@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:flex="http://www.springframework.org/schema/flex"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/flex http://www.springframework.org/schema/flex/spring-flex-1.5.xsd
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+
+	<import resource="homes.xml" />
+	<import resource="validators.xml" />
+
+	<bean id="dataCenterLocationService" class="com.raritan.tdz.service.DataCenterLocationServiceImpl">
+		<flex:remoting-destination destination-id="dataCenterLocationService" />
+		<constructor-arg index="0">
+			<ref bean="dataCenterLocationHome" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="utilService" class="com.raritan.tdz.service.UtilServiceImpl">
+	<flex:remoting-destination destination-id="utilService" />
+		<constructor-arg index="0">
+			<ref bean="utilHome" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="modelService" class="com.raritan.tdz.model.service.ModelServiceImpl">
+		<flex:remoting-destination destination-id="modelService" />
+		<constructor-arg index="0">
+			<ref bean="modelHome" />
+		</constructor-arg>
+	</bean>
+
+
+	<bean id="itemService" class="com.raritan.tdz.item.service.ItemServiceImpl" >
+		<flex:remoting-destination destination-id="itemService" />
+		<aop:scoped-proxy/>
+		<constructor-arg index="0">
+			<ref bean="itemHome" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="utilService" />
+		</constructor-arg>
+		<constructor-arg index="2">
+			<ref bean="validatorFactory" />
+		</constructor-arg>
+		<property name="portService">
+			<ref bean="portService" />
+		</property>
+		<property name="paginatedHome" ref="itemListPaginatedHome" />
+		<property name="utilHome" ref="utilHome" />
+		<property name="portHome" ref="portHome" />
+		<property name="cabinetHome" ref="cabinetHome" />
+		<property name="chassisService" ref="chassisService" />
+	</bean>
+
+	<bean id="itemGroupService" class="com.raritan.tdz.service.ItemGroupServiceImpl">
+		<flex:remoting-destination destination-id="itemGroupService" />
+		<constructor-arg index="0">
+			<ref bean="itemGroupHome" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="connectionService" class="com.raritan.tdz.service.ConnectionServiceImpl">
+		<flex:remoting-destination destination-id="connectionService" />
+		<constructor-arg index="0">
+			<ref bean="connectionHome" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="validatorFactory" />
+		</constructor-arg>
+		<constructor-arg index="2">
+			<ref bean="utilService" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="circuitService" class="com.raritan.tdz.service.CircuitServiceImpl">
+		<flex:remoting-destination destination-id="circuitService" />
+		<constructor-arg index="0">
+			<ref bean="circuitHome" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="connectionService" />
+		</constructor-arg>
+		<constructor-arg index="2">
+			<ref bean="validatorFactory" />
+		</constructor-arg>
+
+		<property name="portService" ref="portService" />
+	</bean>
+
+	<bean id="portService" class="com.raritan.tdz.service.PortServiceImpl">
+		<flex:remoting-destination destination-id="portService" />
+		<constructor-arg index="0">
+			<ref bean="portHome" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="itemHome" />
+		</constructor-arg>
+		<constructor-arg index="2">
+			<ref bean="utilService" />
+		</constructor-arg>
+		<property name="connectionService">
+			<ref bean="connectionService" />
+		</property>
+		<property name="circuitService">
+			<ref bean="circuitService" />
+		</property>
+	</bean>
+
+	<bean id="reservationService" class="com.raritan.tdz.service.ReservationServiceImpl">
+		<flex:remoting-destination destination-id="reservationService" />
+		<constructor-arg index="0">
+			<ref bean="reservationHome" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="ticketService" class="com.raritan.tdz.ticket.service.TicketServiceImpl">
+		<flex:remoting-destination destination-id="ticketService" />
+		<aop:scoped-proxy/>
+		<constructor-arg index="0">
+			<ref bean="ticketHome" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="itemHome" />
+		</constructor-arg>
+	</bean>
+		
+	<bean id="changeMgmtService" class="com.raritan.tdz.changemgmt.service.ChangeMgmtService26Impl">
+		<flex:remoting-destination destination-id="changeMgmtService" />
+		<constructor-arg index="0">
+			<ref bean="changeMgmtHome26" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="portHome" />
+		</constructor-arg>
+	</bean>
+	
+	<bean id="eventService" class="com.raritan.tdz.events.service.EventServiceImpl">
+		<flex:remoting-destination destination-id="eventService" />
+		<constructor-arg index="0">
+			<ref bean="eventHome" />
+		</constructor-arg>
+	</bean>
+	
+	<bean id="circuitPDService" class="com.raritan.tdz.circuit.service.CircuitPDServiceImpl">
+		<flex:remoting-destination destination-id="circuitPDService" />
+		<constructor-arg index="0">
+			<ref bean="circuitPDHome" />
+		</constructor-arg>
+		<property name="itemHome" ref="itemHome" />
+		<property name="portHome" ref="portHome" />
+		<property name="changeMgmt" ref="changeMgmtHome26" />
+		<property name="changeMgmtService" ref="changeMgmtService" />
+		<property name="itemService" ref="itemService" />
+		<property name="messageSource" ref="messageSource" />
+		<property name="circuitEditLock">
+			<bean class="com.raritan.tdz.circuit.service.CircuitEditLock">
+				<!-- Enables circuit edit locking -->
+				<property name="enabled" value="true" />
+				<!--  Maximum circuit edit lock idle time in minutes -->
+				<property name="maxLockIdleMinutes" value="5" />
+				<!--  Interval in minutes to cleanup idle locks -->
+				<property name="cleanupIntervalMinutes" value="10" />
+				<property name="messageSource" ref="messageSource" />
+			</bean>
+		</property>
+		<property name="circuitSearch" ref="circuitSearch" />
+		<property name="dataPortDAO" ref="dataPortDAO" />
+		<property name="requestHome" ref="requestHomeGateway"/>
+	</bean>
+		
+	<bean id="appSettingService" class="com.raritan.tdz.settings.service.ApplicationSettingServiceImpl" >
+		<flex:remoting-destination destination-id="appSettingService" />
+		<constructor-arg index="0">
+			<ref bean="appSettings" />
+		</constructor-arg>
+		<property name="piqSettings" ref="piqSettingGateway" />
+		<property name="snmpSettings" ref="snmpSettingsHome" />
+		<property name="piqBulkSyncService" ref="piqBulkUpdateGateway" />
+		<property name="powerIQRouter" ref="piqRemoveContextGW"/>
+		<property name="piqInfoService" ref="piqInfoService"/>
+	</bean>
+	
+	<bean id="piqInfoService" class="com.raritan.tdz.settings.service.PIQInfoServiceImpl" >
+		<property name="messageSource" ref="messageSource" />
+		<property name="piqRestTemplate" ref="piqRestTemplate" />
+		<!--property name="eventHome" ref="eventHome" /-->
+	</bean>
+	
+	<bean id="piqRestTemplate" class="com.raritan.tdz.util.dcTrackRestTemplate" init-method="init">
+    	<property name="soTimeout" value="120000"/>
+    	<!--property name="piqSSLHostVerifier" ref="piqSSLHostVerifier"/-->
+    </bean>		
+		
+	<bean id="loggingService" class="com.raritan.tdz.logging.service.Log4jLoggingService">
+		<flex:remoting-destination destination-id="loggingService" />
+		<property name="loggerName" value="dcTrackClientLogger" />
+		<property name="messageSource" ref="messageSource" />
+	</bean>
+	
+	<bean id="paginatedService" class="com.raritan.tdz.page.service.PaginatedServiceImpl">
+		<flex:remoting-destination destination-id="paginatedService" />		
+		<property name="homes">
+			<map>
+				<entry key="itemList" value-ref="itemHome"/>
+				<entry key="circuitList" value-ref="circuitPDHome"/>
+			</map>
+		</property>
+		
+	</bean>
+
+	<bean id="fieldService" class="com.raritan.tdz.field.service.FieldServiceImpl">
+		<flex:remoting-destination destination-id="fieldService" />
+		<constructor-arg index="0">
+			<ref bean="fieldHome" />
+		</constructor-arg>
+	</bean>
+	
+	<bean id="importService" class="com.raritan.tdz.dctimport.service.ImportServiceImpl">
+		<flex:remoting-destination destination-id="importService"/>
+	</bean>
+			
+<!-- 	<bean id="birtReportEngine" class="com.raritan.tdz.reports.core.BirtReportEngine" /> -->
+	
+<!-- 	<bean id="reportService" class="com.raritan.tdz.reports.service.ReportServiceImpl"> -->
+<!-- 		<constructor-arg index="0"> -->
+<!-- 			<ref bean="reportHome" /> -->
+<!-- 		</constr
+	</bean>uctor-arg>	 -->
+<!-- 		<constructor-arg index="1"> -->
+<!-- 			<ref bean="birtReportEngine" /> -->
+<!-- 		</constructor-arg>	 -->
+<!-- 	</bean> -->
+
+	<bean id="cadService" class="com.raritan.tdz.floormaps.service.CadServiceImpl">
+		<constructor-arg index="0">
+			<ref bean="cadHome" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="chassisService" class="com.raritan.tdz.chassis.service.ChassisServiceImpl">
+		<flex:remoting-destination destination-id="chassisService" />
+		<constructor-arg name="chassisHome" ref="chassisHome" />
+	</bean>
+	
+	<bean id="reportService" class="com.raritan.tdz.floormaps.service.ReportServiceImpl">
+		<property name="floorMapsReports" ref="floorMapsReports"/>
+	</bean>
+	
+	<bean id="requestService" class="com.raritan.tdz.request.home.RequestServiceImpl">
+		<flex:remoting-destination destination-id="requestService" />
+		<!-- <aop:scoped-proxy/> -->
+		<constructor-arg name="requestHome" ref="requestHomeGateway"/>
+		<constructor-arg name="requestProgressUpdate" ref="requestProgressUpdateDTO"/>
+	</bean>
+
+	<bean id="reportsService" class="com.raritan.tdz.reports.service.ReportsServiceImpl"/>
+    <bean id="paginatedServiceRESTAPI" class="com.raritan.tdz.page.service.PaginatedServiceRESTAPIImpl"/>
+</beans>

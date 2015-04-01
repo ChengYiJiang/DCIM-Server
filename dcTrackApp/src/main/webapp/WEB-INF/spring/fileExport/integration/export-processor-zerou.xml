@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd">
+
+	
+			
+	<!-- DATAPANEL ZEROU -->
+	<int:channel id="dataPanelZeroUItemResultChannel">
+		<int:queue/>
+	</int:channel>
+	
+	<bean id="dataPanelZeroUResultSplitDTOToItemImportDTOTranslator" class="com.raritan.tdz.dctexport.integration.transformers.ItemExportSplitDTOToItemImportDTOTransformer">
+		<constructor-arg name="objectType"  value="DATA PANEL-ZERO U"/>
+	</bean>
+	
+	<int:chain input-channel="dataPanelZeroUItemResultChannel"	output-channel="itemResultAggregatorChannel">
+		<int:transformer
+			ref="dataPanelZeroUResultSplitDTOToItemImportDTOTranslator"
+			method="transform"/>
+		<int:transformer
+			ref="itemImportDTOToCSVTranslator"
+			method="transform"/>
+		<int:aggregator
+			correlation-strategy="itemResultAggregatorCorrelationStrategy"
+			correlation-strategy-method="correlatedBy"
+			release-strategy="individualItemResultAggregatorReleaseStrategy"
+			release-strategy-method="canRelease"
+			expire-groups-upon-completion="true"
+			ref="individualItemResultAggregatorBean" 
+			method="aggregate"/>
+		<int:poller fixed-delay="#{10 * 1000}" task-executor="exportResultHandlerPollerTaskExecutor"/>
+	</int:chain>
+
+	<!-- Rack PDU ZEROU -->
+	<int:channel id="rackPDUZeroUItemResultChannel">
+		<int:queue/>
+	</int:channel>
+	
+	<bean id="rackPDUZeroUResultSplitDTOToItemImportDTOTranslator" class="com.raritan.tdz.dctexport.integration.transformers.ItemExportSplitDTOToItemImportDTOTransformer">
+		<constructor-arg name="objectType"  value="RACK PDU-ZERO U"/>
+	</bean>
+	
+	<int:chain input-channel="rackPDUZeroUItemResultChannel"	output-channel="itemResultAggregatorChannel">
+		<int:transformer
+			ref="rackPDUZeroUResultSplitDTOToItemImportDTOTranslator"
+			method="transform"/>
+		<int:transformer
+			ref="itemImportDTOToCSVTranslator"
+			method="transform"/>
+		<int:aggregator
+			correlation-strategy="itemResultAggregatorCorrelationStrategy"
+			correlation-strategy-method="correlatedBy"
+			release-strategy="individualItemResultAggregatorReleaseStrategy"
+			release-strategy-method="canRelease"
+			expire-groups-upon-completion="true"
+			ref="individualItemResultAggregatorBean" 
+			method="aggregate"/>
+		<int:poller fixed-delay="#{10 * 1000}" task-executor="exportResultHandlerPollerTaskExecutor"/>
+	</int:chain>
+	
+	<!-- Probe ZEROU -->
+	<int:channel id="probeZeroUItemResultChannel">
+		<int:queue/>
+	</int:channel>
+	
+	<bean id="probeZeroUResultSplitDTOToItemImportDTOTranslator" class="com.raritan.tdz.dctexport.integration.transformers.ItemExportSplitDTOToItemImportDTOTransformer">
+		<constructor-arg name="objectType"  value="PROBE-ZERO U"/>
+	</bean>
+	
+	<int:chain input-channel="probeZeroUItemResultChannel"	output-channel="itemResultAggregatorChannel">
+		<int:transformer
+			ref="probeZeroUResultSplitDTOToItemImportDTOTranslator"
+			method="transform"/>
+		<int:transformer
+			ref="itemImportDTOToCSVTranslator"
+			method="transform"/>
+		<int:aggregator
+			correlation-strategy="itemResultAggregatorCorrelationStrategy"
+			correlation-strategy-method="correlatedBy"
+			release-strategy="individualItemResultAggregatorReleaseStrategy"
+			release-strategy-method="canRelease"
+			expire-groups-upon-completion="true"
+			ref="individualItemResultAggregatorBean" 
+			method="aggregate"/>
+		<int:poller fixed-delay="#{10 * 1000}" task-executor="exportResultHandlerPollerTaskExecutor"/>
+	</int:chain>
+
+</beans>

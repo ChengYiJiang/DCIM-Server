@@ -1,0 +1,1888 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:flex="http://www.springframework.org/schema/flex"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/flex http://www.springframework.org/schema/flex/spring-flex-1.5.xsd
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+    					
+    <import resource="powerCalcValidators.xml"/>
+    
+    <bean id="springValidator"
+    	class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
+  
+  	<bean id="dtoBeanValidationInterceptor"
+  		class="com.raritan.tdz.interceptor.DTOBeanValidationInterceptor" factory-method="aspectOf">
+  		<property name="messageSource" ref="messageSource"/>
+  		<property name="springValidator" ref="springValidator"/>
+  		<property name="beanValidationHome" ref="beanValidationHome"/>
+  		<property name="processablePackages">
+  			<list>
+  				<value>com.raritan.tdz</value>
+  			</list>
+  		</property>
+  	</bean>
+  
+  	
+  	<bean id="lksValueCodeValidator"
+  		class="com.raritan.tdz.beanvalidation.validators.LksValueCodeValidator"/>
+  		
+	<bean id="lksDataValidator"
+  		class="com.raritan.tdz.beanvalidation.validators.LksDataValidator">
+  	</bean>
+  	
+  	<!--  Item Validation -->	
+  	<bean id="itemValidator" class="com.raritan.tdz.item.validators.ItemValidator">
+  		<constructor-arg name="beanValidationHome" ref="beanValidationHome"/>
+  		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+  		<constructor-arg name="itemObjectFactory" ref="itemObjectFactory"/>
+  		<property name="uniqueValidator" ref="itemNameUniqueValidator"/>
+  		<property name="itemStateContext" ref="itemStateContext"/>
+  	</bean>
+  	
+  	<bean id="freeStandingCabinetItemValidator" class="com.raritan.tdz.item.validators.FreeStandingCabinetItemValidator">
+  		<constructor-arg name="beanValidationHome" ref="beanValidationHome"/>
+  		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+  		<constructor-arg name="itemObjectFactory" ref="itemObjectFactory"/>
+  		<property name="uniqueValidator" ref="itemNameUniqueValidator"/>
+  		<property name="itemStateContext" ref="itemStateContext"/>
+  	</bean>
+  	
+  	<!--  New validators start here -->
+  	<bean id="itemValidatorVM" class="com.raritan.tdz.item.validators.ItemValidatorNew" scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemValidatorCommon"/>
+  				<ref bean="itemLocationValidator"/>
+  				<ref bean="itemNameValidator"/>
+  				<ref bean="itemRequiredFieldValidator"/>
+  				<ref bean="itemUniquenessValidator"/>
+  				<ref bean="dataPortValidator"/>
+  				<ref bean="dPSupportedValidator"/>
+  				<ref bean="vmDPSupportedValidator"/>
+  				<ref bean="itemMoveSupportedItemValidator"/>
+  				<ref bean="locationChangeIPAddressValidator"/>
+  				<ref bean="itemSNMPValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	<bean id="itemValidatorBlade" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemValidatorCommon"/>
+  				<ref bean="itemLocationValidator"/>
+  				<ref bean="itemNameValidator"/>
+  				<ref bean="itemRequiredFieldValidator"/>
+  				<ref bean="itemUniquenessValidator"/>
+  				<ref bean="bladeWithConnectionsLocationValidator"/>
+  				<ref bean="dataPortValidator"/>
+  				<ref bean="bladePlacementValidator"/>
+  				<ref bean="eAssetTagEditabilityValidator"/>
+  				<ref bean="itemUPositionValidator"/>
+  				<ref bean="dPSupportedValidator"/>
+  				<ref bean="bladeDPSupportedValidator"/>
+  				<ref bean="itemMoveSupportedItemValidator"/>
+  				<ref bean="itemMoveEditValidator"/>
+  				<ref bean="locationChangeIPAddressValidator"/>
+  				<ref bean="placeOnMovedCabinetValidator"/>
+  				<ref bean="validateParentRequest"/>
+  				<ref bean="itemSNMPValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	<bean id="itemValidatorChassis" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemValidatorCommon"/>
+  				<ref bean="itemLocationValidator"/>
+  				<ref bean="itemNameValidator"/>
+  				<ref bean="itemRequiredFieldValidator"/>
+  				<ref bean="itemUniquenessValidator"/>
+  				<ref bean="itemWithConnectionsLocationValidator"/>
+  				<ref bean="dataPortValidator"/>
+  				<ref bean="powerPortValidator"/>
+ 				<ref bean="chassisModelChangeValidator"/>
+  				<ref bean="eAssetTagEditabilityValidator"/>
+  				<ref bean="itemUPositionValidator"/>
+  				<ref bean="dpPPSupportedValidator"/>
+  				<ref bean="activeDPSupportedValidator"/>
+  				<ref bean="powerSupplySupportedValidator"/>
+  				<ref bean="powerSupplyCapacityValidator"/>
+  				<ref bean="itemMoveSupportedItemValidator"/>
+  				<ref bean="itemMoveValidators"/>
+  				<ref bean="locationChangeIPAddressValidator"/>
+  				<ref bean="placeOnMovedCabinetValidator"/>
+  				<ref bean="validateParentRequest"/>
+  				<ref bean="itemSNMPValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	<bean id="itemValidatorStandard" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemValidatorCommon"/>
+  				<ref bean="itemLocationValidator"/>
+  				<ref bean="itemNameValidator"/>
+  				<ref bean="itemRequiredFieldValidator"/>
+  				<ref bean="itemUniquenessValidator"/>
+  				<ref bean="itemWithConnectionsLocationValidator"/>
+  				<ref bean="dataPortValidator"/>
+  				<ref bean="powerPortValidator"/>
+  				<ref bean="eAssetTagEditabilityValidator"/>
+  				<ref bean="itemUPositionValidator"/>
+  				<ref bean="dpPPSupportedValidator"/>
+  				<ref bean="activeDPSupportedValidator"/>
+  				<ref bean="powerSupplySupportedValidator"/>
+  				<ref bean="powerSupplyCapacityValidator"/>
+  				<ref bean="itemMoveSupportedItemValidator"/>
+  				<ref bean="itemMoveValidators"/>
+  				<ref bean="locationChangeIPAddressValidator"/>
+  				<ref bean="placeOnMovedCabinetValidator"/>
+  				<ref bean="validateParentRequest"/>
+  				<ref bean="itemSNMPValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+
+  	<bean id="itemValidatorRackableRPDU" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemValidatorCommon"/>
+  				<ref bean="itemLocationValidator"/>
+  				<ref bean="itemNameValidator"/>
+  				<ref bean="itemRequiredFieldValidator"/>
+  				<ref bean="itemUniquenessValidator"/>
+  				<ref bean="itemWithConnectionsLocationValidator"/>
+  				<ref bean="dataPortValidator"/>
+  				<ref bean="powerPortValidator"/>
+  				<ref bean="sensorPortValidator"/>
+  				<ref bean="sensorPortsCabinetValidator"/>
+  				<ref bean="eAssetTagEditabilityValidator"/>
+  				<ref bean="itemUPositionValidator"/>
+  				<ref bean="dpPPSPSupportedValidator"/>
+  				<ref bean="activeDPSupportedValidator"/>
+  				<ref bean="rpduSubclassSupportedValidator"/>
+  				<ref bean="sensorSubclassSupportedValidator"/>
+  				<ref bean="itemMoveSupportedItemValidator"/>
+  				<ref bean="locationChangeIPAddressValidator"/>
+  				<ref bean="placeOnMovedCabinetValidator"/>
+  				<ref bean="validateParentRequest"/>
+  				<ref bean="itemSNMPValidator"/>
+
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	<bean id="itemValidatorStandardDP" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemValidatorCommon"/>
+  				<ref bean="itemLocationValidator"/>
+  				<ref bean="itemNameValidator"/>
+  				<ref bean="itemRequiredFieldValidator"/>
+  				<ref bean="itemUniquenessValidator"/>
+  				<ref bean="itemWithConnectionsLocationValidator"/>
+  				<ref bean="dataPortValidator"/>
+  				<ref bean="powerPortValidator"/>
+  				<ref bean="eAssetTagEditabilityValidator"/>
+  				<ref bean="itemUPositionValidator"/>
+  				<ref bean="dPSupportedValidator"/>
+  				<ref bean="dataPanelDPSupportedValidator"/>
+  				<ref bean="itemMoveSupportedItemValidator"/>
+  				<ref bean="locationChangeIPAddressValidator"/>
+  				<ref bean="placeOnMovedCabinetValidator"/>
+  				<ref bean="validateParentRequest"/>
+  				<ref bean="itemSNMPValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+
+  	<bean id="itemValidatorNR" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemValidatorCommon"/>
+  				<ref bean="itemLocationValidator"/>
+  				<ref bean="itemNameValidator"/>
+  				<ref bean="itemRequiredFieldValidator"/>
+  				<ref bean="itemUniquenessValidator"/>
+  				<ref bean="itemWithConnectionsLocationValidator"/>
+  				<ref bean="dataPortValidator"/>
+  				<ref bean="powerPortValidator"/>
+  				<ref bean="eAssetTagEditabilityValidator"/>
+  				<ref bean="itemUPositionValidator"/>
+  				<ref bean="nrItemUPositionValidator"/>
+  				<ref bean="nrPlacementValidator"/>
+  				<ref bean="dpPPSupportedValidator"/>
+  				<ref bean="activeDPSupportedValidator"/>
+  				<ref bean="powerSupplySupportedValidator"/>
+  				<ref bean="powerSupplyCapacityValidator"/>
+  				<ref bean="itemMoveSupportedItemValidator"/>
+  				<ref bean="locationChangeIPAddressValidator"/>
+  				<ref bean="placeOnMovedCabinetValidator"/>
+  				<ref bean="validateParentRequest"/>
+  				<ref bean="itemSNMPValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	<bean id="itemValidatorNRDP" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemValidatorCommon"/>
+  				<ref bean="itemLocationValidator"/>
+  				<ref bean="itemNameValidator"/>
+  				<ref bean="itemRequiredFieldValidator"/>
+  				<ref bean="itemUniquenessValidator"/>
+  				<ref bean="itemWithConnectionsLocationValidator"/>
+  				<ref bean="dataPortValidator"/>
+  				<ref bean="powerPortValidator"/>
+  				<ref bean="eAssetTagEditabilityValidator"/>
+  				<ref bean="itemUPositionValidator"/>
+  				<ref bean="nrItemUPositionValidator"/>
+  				<ref bean="nrPlacementValidator"/>
+  				<ref bean="dPSupportedValidator"/>
+  				<ref bean="dataPanelDPSupportedValidator"/>
+  				<ref bean="itemMoveSupportedItemValidator"/>
+  				<ref bean="locationChangeIPAddressValidator"/>
+  				<ref bean="placeOnMovedCabinetValidator"/>
+  				<ref bean="validateParentRequest"/>
+  				<ref bean="itemSNMPValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	<bean id="itemValidatorNRRPDU" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemValidatorCommon"/>
+  				<ref bean="itemLocationValidator"/>
+  				<ref bean="itemNameValidator"/>
+  				<ref bean="itemRequiredFieldValidator"/>
+  				<ref bean="itemUniquenessValidator"/>
+  				<ref bean="itemWithConnectionsLocationValidator"/>
+  				<ref bean="dataPortValidator"/>
+  				<ref bean="powerPortValidator"/>
+  				<ref bean="sensorPortValidator"/>
+  				<ref bean="sensorPortsCabinetValidator"/>
+  				<ref bean="eAssetTagEditabilityValidator"/>
+  				<ref bean="itemUPositionValidator"/>
+  				<ref bean="nrItemUPositionValidator"/>
+  				<ref bean="nrPlacementValidator"/>
+  				<ref bean="dpPPSPSupportedValidator"/>
+  				<ref bean="activeDPSupportedValidator"/>
+  				<ref bean="rpduSubclassSupportedValidator"/>
+  				<ref bean="sensorSubclassSupportedValidator"/>
+  				<ref bean="itemMoveSupportedItemValidator"/>
+  				<ref bean="locationChangeIPAddressValidator"/>
+  				<ref bean="placeOnMovedCabinetValidator"/>
+  				<ref bean="validateParentRequest"/>
+  				<ref bean="itemSNMPValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	 	<bean id="itemValidatorZeroURPDU" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemValidatorCommon"/>
+  				<ref bean="itemLocationValidator"/>
+  				<ref bean="itemNameValidator"/>
+  				<ref bean="itemRequiredFieldValidator"/>
+  				<ref bean="itemUniquenessValidator"/>
+  				<ref bean="itemWithConnectionsLocationValidator"/>
+  				<ref bean="dataPortValidator"/>
+  				<ref bean="powerPortValidator"/>
+  				<ref bean="sensorPortValidator"/>
+  				<ref bean="sensorPortsCabinetValidator"/>
+  				<ref bean="eAssetTagEditabilityValidator"/>
+  				<ref bean="itemUPositionValidator"/>
+  				<ref bean="dpPPSPSupportedValidator"/>
+  				<ref bean="activeDPSupportedValidator"/>
+  				<ref bean="rpduSubclassSupportedValidator"/>
+  				<ref bean="sensorSubclassSupportedValidator"/>
+  				<ref bean="itemMoveSupportedItemValidator"/>
+  				<ref bean="locationChangeIPAddressValidator"/>
+  				<ref bean="placeOnMovedCabinetValidator"/>
+  				<ref bean="validateParentRequest"/>
+  				<ref bean="itemSNMPValidator"/>
+ 			</list>
+  		</property>
+  	</bean>
+  	
+  	<bean id="itemValidatorZeroDP" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemValidatorCommon"/>
+  				<ref bean="itemLocationValidator"/>
+  				<ref bean="itemNameValidator"/>
+  				<ref bean="itemRequiredFieldValidator"/>
+  				<ref bean="itemUniquenessValidator"/>
+  				<ref bean="itemWithConnectionsLocationValidator"/>
+  				<ref bean="dataPortValidator"/>
+  				<ref bean="powerPortValidator"/>
+  				<ref bean="eAssetTagEditabilityValidator"/>
+  				<ref bean="itemUPositionValidator"/>
+  				<ref bean="dPSupportedValidator"/>
+  				<ref bean="dataPanelDPSupportedValidator"/>
+  				<ref bean="itemMoveSupportedItemValidator"/>
+  				<ref bean="locationChangeIPAddressValidator"/>
+  				<ref bean="placeOnMovedCabinetValidator"/>
+  				<ref bean="validateParentRequest"/>
+  				<ref bean="itemSNMPValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	<bean id="itemValidatorZeroU" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemValidatorCommon"/>
+  				<ref bean="itemLocationValidator"/>
+  				<ref bean="itemNameValidator"/>
+  				<ref bean="itemRequiredFieldValidator"/>
+  				<ref bean="itemUniquenessValidator"/>
+  				<ref bean="itemWithConnectionsLocationValidator"/>
+  				<ref bean="dataPortValidator"/>
+  				<ref bean="powerPortValidator"/>
+  				<ref bean="eAssetTagEditabilityValidator"/>
+  				<ref bean="itemUPositionValidator"/>
+  				<ref bean="dpPPSupportedValidator"/>
+  				<ref bean="activeDPSupportedValidator"/>
+  				<ref bean="powerSupplySupportedValidator"/>
+  				<ref bean="powerSupplyCapacityValidator"/>
+  				<ref bean="itemMoveSupportedItemValidator"/>
+  				<ref bean="locationChangeIPAddressValidator"/>
+  				<ref bean="placeOnMovedCabinetValidator"/>
+  				<ref bean="validateParentRequest"/>
+  				<ref bean="itemSNMPValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	
+  	<bean id="itemValidatorProbe" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemValidatorCommon"/>
+  				<ref bean="itemLocationValidator"/>
+  				<ref bean="itemNameValidator"/>
+  				<ref bean="itemRequiredFieldValidator"/>
+  				<ref bean="itemUniquenessValidator"/>
+  				<ref bean="itemWithConnectionsLocationValidator"/>
+  				<ref bean="dataPortValidator"/>
+  				<ref bean="powerPortValidator"/>
+  				<ref bean="sensorPortValidator"/>
+  				<ref bean="sensorPortsCabinetValidator"/>
+  				<ref bean="eAssetTagEditabilityValidator"/>
+  				<ref bean="itemUPositionValidator"/>
+  				<ref bean="dpPPSPSupportedValidator"/>
+  				<ref bean="activeDPSupportedValidator"/>
+  				<ref bean="powerSupplySupportedValidator"/>
+  				<ref bean="sensorSubclassSupportedValidator"/>
+  				<ref bean="powerSupplyCapacityValidator"/>
+  				<ref bean="itemMoveSupportedItemValidator"/>
+  				<ref bean="locationChangeIPAddressValidator"/>
+  				<ref bean="placeOnMovedCabinetValidator"/>
+  				<ref bean="validateParentRequest"/>
+  				<ref bean="itemSNMPValidator"/>
+ 			</list>
+  		</property>
+  	</bean>
+  	
+  	<bean id="itemValidatorZeroUProbe" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemValidatorCommon"/>
+  				<ref bean="itemLocationValidator"/>
+  				<ref bean="itemNameValidator"/>
+  				<ref bean="itemRequiredFieldValidator"/>
+  				<ref bean="itemUniquenessValidator"/>
+  				<ref bean="itemWithConnectionsLocationValidator"/>
+  				<ref bean="dataPortValidator"/>
+  				<ref bean="powerPortValidator"/>
+  				<ref bean="sensorPortValidator"/>
+  				<ref bean="sensorPortsCabinetValidator"/>
+  				<ref bean="eAssetTagEditabilityValidator"/>
+  				<ref bean="itemUPositionValidator"/>
+  				<ref bean="dpPPSPSupportedValidator"/>
+  				<ref bean="activeDPSupportedValidator"/>
+  				<ref bean="powerSupplySupportedValidator"/>
+  				<ref bean="sensorSubclassSupportedValidator"/>
+  				<ref bean="powerSupplyCapacityValidator"/>
+  				<ref bean="itemMoveSupportedItemValidator"/>
+  				<ref bean="locationChangeIPAddressValidator"/>
+  				<ref bean="placeOnMovedCabinetValidator"/>
+  				<ref bean="validateParentRequest"/>
+  				<ref bean="itemSNMPValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+    <bean id="itemValidatorNRProbe" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemValidatorCommon"/>
+  				<ref bean="itemLocationValidator"/>
+  				<ref bean="itemNameValidator"/>
+  				<ref bean="itemRequiredFieldValidator"/>
+  				<ref bean="itemUniquenessValidator"/>
+  				<ref bean="itemWithConnectionsLocationValidator"/>
+  				<ref bean="dataPortValidator"/>
+  				<ref bean="powerPortValidator"/>
+  				<ref bean="sensorPortValidator"/> 
+  				<ref bean="sensorPortsCabinetValidator"/>
+  				<ref bean="eAssetTagEditabilityValidator"/>
+  				<ref bean="itemUPositionValidator"/>
+  				<ref bean="nrItemUPositionValidator"/>
+  				<ref bean="nrPlacementValidator"/>
+  				<ref bean="dpPPSPSupportedValidator"/>
+  				<ref bean="activeDPSupportedValidator"/>
+  				<ref bean="powerSupplySupportedValidator"/>
+  				<ref bean="sensorSubclassSupportedValidator"/>
+  				<ref bean="powerSupplyCapacityValidator"/>
+  				<ref bean="itemMoveSupportedItemValidator"/>
+  				<ref bean="locationChangeIPAddressValidator"/>
+  				<ref bean="placeOnMovedCabinetValidator"/>
+  				<ref bean="validateParentRequest"/>
+  				<ref bean="itemSNMPValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	<bean id="itemValidatorOutlet" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemValidatorCommon"/>
+  				<ref bean="itemLocationValidator"/>
+  				<ref bean="itemNameValidator"/>
+  				<ref bean="itemRequiredFieldValidator"/>
+  				<ref bean="itemUniquenessValidator"/>
+  				<ref bean="powerOutletWithConnectionsLocationValidator"/>
+  				<ref bean="dataPortValidator"/>
+  				<ref bean="powerPortValidator"/>
+  				<ref bean="eAssetTagEditabilityValidator"/>
+  				<ref bean="outletItemUPositionValidator"/>
+  				<ref bean="ppSupportedValidator"/>
+  				<ref bean="itemMoveSupportedItemValidator"/>
+  				<ref bean="locationChangeIPAddressValidator"/>
+  				<ref bean="placeOnMovedCabinetValidator"/>
+  				<ref bean="validateParentRequest"/>
+  				<ref bean="itemSNMPValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+    <bean id="itemValidatorNROutlet" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemValidatorCommon"/>
+  				<ref bean="itemLocationValidator"/>
+  				<ref bean="itemNameValidator"/>
+  				<ref bean="itemRequiredFieldValidator"/>
+  				<ref bean="itemUniquenessValidator"/>
+  				<ref bean="powerOutletWithConnectionsLocationValidator"/>
+  				<ref bean="dataPortValidator"/>
+  				<ref bean="powerPortValidator"/>
+  				<ref bean="eAssetTagEditabilityValidator"/>
+  				<ref bean="itemUPositionValidator"/>
+  				<!-- <ref bean="outletItemUPositionValidator"/> -->
+  				<!-- <ref bean="nrPlacementValidator"/> -->
+  				<ref bean="ppSupportedValidator"/>
+  				<ref bean="itemMoveSupportedItemValidator"/>
+  				<ref bean="locationChangeIPAddressValidator"/>
+  				<ref bean="placeOnMovedCabinetValidator"/>
+  				<ref bean="validateParentRequest"/>
+  				<ref bean="itemSNMPValidator"/>
+ 			</list>
+  		</property>
+  	</bean>
+  	
+    <bean id="itemValidatorCabinet" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemValidatorCommon"/>
+  				<ref bean="itemLocationValidator"/>
+  				<ref bean="itemNameValidator"/>
+  				<ref bean="itemRequiredFieldValidator"/>
+  				<ref bean="itemUniquenessValidator"/>
+  				<ref bean="cabinetLicenseValidator"/>
+  				<ref bean="cabinetPlacementValidator"/>
+  				<ref bean="noPortSupportedValidator"/>
+  				<ref bean="itemMoveSupportedItemValidator"/>
+  				<ref bean="itemMoveValidators"/>
+  				<ref bean="locationChangeIPAddressValidator"/>
+  				<ref bean="itemSNMPValidator"/>
+   			</list>
+  		</property>
+  	</bean> 
+  	
+  	<bean id="itemValidatorCabinetContainer" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemValidatorCommon"/>
+  				<ref bean="itemLocationValidator"/>
+  				<ref bean="itemNameValidator"/>
+  				<ref bean="itemUniquenessValidator"/>
+  				<ref bean="cabinetLicenseValidator"/>
+  				<ref bean="cabinetPlacementValidator"/>
+  				<ref bean="noPortSupportedValidator"/>
+  				<ref bean="itemMoveSupportedItemValidator"/>
+  				<ref bean="itemMoveValidators"/>
+  				<ref bean="locationChangeIPAddressValidator"/>
+  				<ref bean="itemSNMPValidator"/>
+   			</list>
+  		</property>
+  	</bean> 
+  	
+    <bean id="itemValidatorFloorPDU" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemValidatorCommon"/>
+  				<ref bean="itemLocationValidator"/>
+  				<ref bean="itemNameValidator"/>
+  				<ref bean="itemRequiredFieldValidator"/>
+  				<ref bean="itemUniquenessValidator"/> 
+  				<ref bean="dataPortValidator"/>
+  				<ref bean="dpPPSPSupportedValidator"/>
+  				<ref bean="activeDPSupportedValidator"/>
+  				<ref bean="fpduRatingsValidator"/>
+  				<!-- <ref bean="fpduItemArchiveValidator"/> -->
+  				<ref bean="itemMoveSupportedItemValidator"/>
+  				<ref bean="locationChangeIPAddressValidator"/>
+  				<ref bean="itemSNMPValidator"/>
+   			</list>
+  		</property>
+  	</bean>  	
+
+    <bean id="itemValidatorPowerPanel" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemValidatorCommon"/>
+  				<ref bean="itemLocationValidator"/>
+  				<ref bean="itemNameValidator"/>
+  				<ref bean="itemRequiredFieldValidator"/>
+  				<ref bean="itemUniquenessValidator"/> <!-- TODO: this will be different for the power panel -->
+  				<ref bean="dpPPSupportedValidator"/>
+  				<ref bean="activeDPSupportedValidator"/>
+  				<!-- <ref bean="fpduRatingsValidator"/> -->
+  				<!-- <ref bean="panelItemArchiveValidator"/> -->
+  				<ref bean="itemMoveSupportedItemValidator"/>
+  				<ref bean="locationChangeIPAddressValidator"/>
+  				<ref bean="itemSNMPValidator"/>
+   			</list>
+  		</property>
+  	</bean>  	
+  	
+  	
+  	<bean id="itemValidatorUPS" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemValidatorCommon"/>
+  				<ref bean="itemLocationValidator"/>
+  				<ref bean="itemNameValidator"/>
+  				<ref bean="itemRequiredFieldValidator"/>
+  				<ref bean="itemUniquenessValidator"/>
+  				<!--  Add validator for placement here -->
+  				<ref bean="dataPortValidator"/>
+  				<ref bean="dPSPSupportedValidator"/>
+  				<ref bean="activeDPSupportedValidator"/>
+  				<ref bean="itemMoveSupportedItemValidator"/>
+  				<ref bean="locationChangeIPAddressValidator"/>
+  				<ref bean="itemSNMPValidator"/>
+   			</list>
+  		</property>
+  	</bean>  	
+   	<bean id="itemValidatorCRAC" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemValidatorCommon"/>
+  				<ref bean="itemLocationValidator"/>
+  				<ref bean="itemNameValidator"/>
+  				<ref bean="itemRequiredFieldValidator"/>
+  				<ref bean="itemUniquenessValidator"/>
+  				<!--  Add validator for placement here -->
+  				<ref bean="dataPortValidator"/>
+  				<ref bean="dPSPSupportedValidator"/>
+  				<ref bean="activeDPSupportedValidator"/>
+  				<ref bean="itemMoveSupportedItemValidator"/>
+  				<ref bean="locationChangeIPAddressValidator"/>
+  				<ref bean="itemSNMPValidator"/>
+   			</list>
+  		</property>
+  	</bean>	
+
+   	<bean id="itemValidatorDeviceFS" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  			  	<ref bean="itemValidatorCabinet"/>
+  				<ref bean="itemValidatorStandard"/>
+  				<ref bean="itemMoveSupportedItemValidator"/>
+  				<ref bean="locationChangeIPAddressValidator"/>
+  				<ref bean="itemSNMPValidator"/>
+  				<ref bean="itemLocationValidator"/>
+   			</list>
+  		</property>
+  	</bean>
+
+  	<bean id="itemValidatorNetworkStackFS" class="com.raritan.tdz.item.validators.ItemValidatorNew" scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemValidatorCabinetContainer"/>
+  				<ref bean="itemValidatorStandard"/> <!-- review -->
+  				<ref bean="itemMoveSupportedItemValidator"/>
+  				<ref bean="locationChangeIPAddressValidator"/>
+  				<ref bean="itemSNMPValidator"/>
+  				<ref bean="itemLocationValidator"/>
+  				
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	<bean id="itemValidatorPassive" class="com.raritan.tdz.item.validators.ItemValidatorNew" scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="passiveItemUniqueNameValidator"/>
+  				<ref bean="itemUPositionValidator"/>
+  				<ref bean="placeOnMovedCabinetValidator"/>
+  				<ref bean="itemRequiredFieldValidator"/>
+  				<ref bean="itemLocationValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	<!--  Following are the individual validators that will be injected to the ItemValidator list -->
+  	<bean id="itemRequiredFieldValidator" class="com.raritan.tdz.item.validators.ItemRequiredFieldValidator" scope="prototype">
+  		<constructor-arg name="dao" ref="fieldsDAO"/>
+  		<constructor-arg name="fieldDetailsDAO" ref="fieldDetailsDao"/>
+  		
+  		<property name="remoteRef" ref="remoteRefItemScreen"/>
+  		<property name="rulesProcessor" ref="itemRulesProcessor"/>
+  	</bean>
+  	<bean id="itemValidatorCommon" class="com.raritan.tdz.item.validators.ItemValidatorCommon" scope="prototype"/>
+  	<bean id="freeStandingCabinetItemValidatorCommon" class="com.raritan.tdz.item.validators.FreeStandingCabinetItemValidatorNew"/>
+  	<bean id="fpduItemArchiveValidator" class="com.raritan.tdz.item.validators.FPDUItemArchiveValidator" scope="prototype"/>
+  	<bean id="panelItemArchiveValidator" class="com.raritan.tdz.item.validators.PanelItemArchiveValidator" scope="prototype"/>
+  	<bean id="fpduRatingsValidator" class="com.raritan.tdz.item.validators.FloorPDURatingsValidator" scope="prototype"/>
+  	<bean id="bladePlacementValidator" class="com.raritan.tdz.item.validators.BladePlacementValidator" scope="prototype"/>
+  	<bean id="cabinetLicenseValidator" class="com.raritan.tdz.item.validators.CabinetLicenseValidator" scope="prototype"/>
+  	<bean id="cabinetPlacementValidator" class="com.raritan.tdz.item.validators.CabinetPlacementValidator" scope="prototype"/>
+  	<bean id="chassisModelChangeValidator" class="com.raritan.tdz.item.validators.ChassisModelChangeValidator" scope="prototype"/>
+  	<bean id="dataPortValidator" class="com.raritan.tdz.item.validators.DataPortValidator" scope="prototype"/>
+  	<bean id="powerPortValidator" class="com.raritan.tdz.item.validators.PowerPortValidator" scope="prototype"/>
+  	<bean id="sensorPortValidator" class="com.raritan.tdz.item.validators.SensorPortValidator" scope="prototype"/>
+  	<bean id="eAssetTagEditabilityValidator" class="com.raritan.tdz.item.validators.EAssetTagEditabilityValidator" scope="prototype"/>
+  	<bean id="itemUniquenessValidator" class="com.raritan.tdz.item.validators.ItemUniquenessValidator" scope="prototype">
+  		<property name="itemNameUniqueValidator" ref="itemNameUniqueValidator"/>
+  		<property name="uniqueValidator" ref="uniqueValidator"/>
+  	</bean>
+  	<bean id="itemUPositionValidator" class="com.raritan.tdz.item.validators.ItemUPositionValidator" scope="prototype"/>
+  	<bean id="placeOnMovedCabinetValidator" class="com.raritan.tdz.item.validators.PlaceOnMovedCabinetValidator"/>
+  	<bean id="nrItemUPositionValidator" class="com.raritan.tdz.item.validators.NRItemUPositionValidator" scope="prototype"/>
+  	<bean id="nrPlacementValidator" class="com.raritan.tdz.item.validators.NRPlacementValidator" scope="prototype"/>
+  	<bean id="numberInGroupValidator" class="com.raritan.tdz.item.validators.NumberInGroupValidator" scope="prototype"/>
+  	<bean id="outletItemUPositionValidator" class="com.raritan.tdz.item.validators.OutletItemUPositionValidator" scope="prototype"/>
+  	<bean id="itemMoveValidators" class="com.raritan.tdz.item.validators.ItemValidatorNew" scope="prototype">
+  		<property name="validators" ref="moveValidators"/>
+  	</bean>
+  	<bean id="locationChangeIPAddressValidator" class="com.raritan.tdz.item.validators.LocationChangeIPAddressValidator"/>
+  	<bean id="itemNameValidator" class="com.raritan.tdz.item.validators.IllegalItemNameValidator"/>
+	<bean id="itemSNMPValidator" class="com.raritan.tdz.item.validators.ItemSNMPValidator" scope="prototype"/>
+	<bean id="passiveItemUniqueNameValidator" class="com.raritan.tdz.item.validators.PassiveItemNameUniqueValidator" scope="prototype"/>
+	<bean id="itemLocationValidator" class="com.raritan.tdz.item.validators.ItemLocationValidator" scope="prototype"/> 
+  	
+  	<!-- delete validator -->
+  	
+  	<bean id="itemDeleteValidatorVM" class="com.raritan.tdz.item.validators.ItemValidatorNew" scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemDeleteValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+
+  	<bean id="itemDeleteValidatorBlade" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemDeleteValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	<bean id="itemDeleteValidatorChassis" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemDeleteValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	<bean id="itemDeleteValidatorStandard" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemDeleteValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+
+  	<bean id="itemDeleteValidatorRackableRPDU" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemDeleteValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	<bean id="itemDeleteValidatorStandardDP" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemDeleteValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+
+  	<bean id="itemDeleteValidatorNR" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemDeleteValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	<bean id="itemDeleteValidatorNRDP" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemDeleteValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	<bean id="itemDeleteValidatorNRRPDU" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemDeleteValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	 	<bean id="itemDeleteValidatorZeroURPDU" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemDeleteValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	<bean id="itemDeleteValidatorZeroDP" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemDeleteValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	<bean id="itemDeleteValidatorZeroU" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemDeleteValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	
+  	<bean id="itemDeleteValidatorProbe" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemDeleteValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	<bean id="itemDeleteValidatorZeroUProbe" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemDeleteValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+    <bean id="itemDeleteValidatorNRProbe" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemDeleteValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	<bean id="itemDeleteValidatorOutlet" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemDeleteValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+    <bean id="itemDeleteValidatorNROutlet" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemDeleteValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+    <bean id="itemDeleteValidatorCabinet" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemDeleteValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+   			</list>
+  		</property>
+  	</bean> 
+  	
+  	<bean id="itemDeleteValidatorCabinetContainer" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemDeleteValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+   			</list>
+  		</property>
+  	</bean> 
+  	
+    <bean id="itemDeleteValidatorFloorPDU" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemDeleteValidatorCommon"/>
+  				<ref bean="fPduItemConnectionValidator"/>
+   			</list>
+  		</property>
+  	</bean>  	
+
+    <bean id="itemDeleteValidatorPowerPanel" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemDeleteValidatorCommon"/>
+  				<ref bean="powerPanelItemConnectionValidator"/>
+   			</list>
+  		</property>
+  	</bean>  	
+  	
+  	<bean id="itemDeleteValidatorUPS" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemDeleteValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+   			</list>
+  		</property>
+  	</bean>  
+  		
+   	<bean id="itemDeleteValidatorCRAC" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemDeleteValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+   			</list>
+  		</property>
+  	</bean>	
+  	
+  	<bean id="itemDeleteValidatorDevFS" class="com.raritan.tdz.item.validators.ItemValidatorNew" scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemDeleteValidatorCabinet"/>
+  				<ref bean="itemDeleteValidatorStandard"/>
+  				
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	<bean id="itemDeleteValidatorNetworkStackFS" class="com.raritan.tdz.item.validators.ItemValidatorNew" scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemDeleteValidatorCabinetContainer"/>
+  				<ref bean="itemDeleteValidatorStandard"/> <!-- review -->
+  				
+  			</list>
+  		</property>
+  	</bean>
+
+  	<bean id="passiveItemDeleteValidator" class="com.raritan.tdz.item.validators.ItemValidatorNew" scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemDeleteValidatorCommon"/>
+  			</list>
+  		</property>
+  	</bean>
+
+  	  	
+  	<!-- =========================== -->
+  	
+  	<!--  Storage or Archive Validator -->
+  	
+  	  	
+  	<bean id="itemArchiveValidatorVM" class="com.raritan.tdz.item.validators.ItemValidatorNew" scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemArchiveValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+
+  	<bean id="itemArchiveValidatorBlade" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemArchiveValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	<bean id="itemArchiveValidatorChassis" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemArchiveValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	<bean id="itemArchiveValidatorStandard" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemArchiveValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+
+  	<bean id="itemArchiveValidatorRackableRPDU" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemArchiveValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	<bean id="itemArchiveValidatorStandardDP" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemArchiveValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+
+  	<bean id="itemArchiveValidatorNR" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemArchiveValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	<bean id="itemArchiveValidatorNRDP" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemArchiveValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  
+  	<bean id="itemArchiveValidatorNRRPDU" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemArchiveValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	 	<bean id="itemArchiveValidatorZeroURPDU" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemArchiveValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	<bean id="itemArchiveValidatorZeroDP" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemArchiveValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	<bean id="itemArchiveValidatorZeroU" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemArchiveValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	
+  	<bean id="itemArchiveValidatorProbe" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemArchiveValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	<bean id="itemArchiveValidatorZeroUProbe" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemArchiveValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+    <bean id="itemArchiveValidatorNRProbe" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemArchiveValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	<bean id="itemArchiveValidatorOutlet" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemArchiveValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+    <bean id="itemArchiveValidatorNROutlet" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemArchiveValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+    <bean id="itemArchiveValidatorCabinet" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemArchiveValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+   			</list>
+  		</property>
+  	</bean> 
+  	
+  	<bean id="itemArchiveValidatorCabinetContainer" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemArchiveValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+   			</list>
+  		</property>
+  	</bean> 
+  	
+    <bean id="itemArchiveValidatorFloorPDU" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemArchiveValidatorCommon"/>
+  				<ref bean="fPduItemConnectionValidator"/>
+   			</list>
+  		</property>
+  	</bean>  	
+
+    <bean id="itemArchiveValidatorPowerPanel" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemArchiveValidatorCommon"/>
+  				<ref bean="powerPanelItemConnectionValidator"/>
+   			</list>
+  		</property>
+  	</bean>  	
+  	
+  	<bean id="itemArchiveValidatorUPS" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemArchiveValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+   			</list>
+  		</property>
+  	</bean>  
+  		
+   	<bean id="itemArchiveValidatorCRAC" class="com.raritan.tdz.item.validators.ItemValidatorNew"  scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemArchiveValidatorCommon"/>
+  				<ref bean="itemConnectionValidator"/>
+   			</list>
+  		</property>
+  	</bean>	
+  	
+  	
+  	<bean id="itemArchiveValidatorDevFS" class="com.raritan.tdz.item.validators.ItemValidatorNew" scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemArchiveValidatorCabinet"/>
+  				<ref bean="itemArchiveValidatorStandard"/>
+  				
+  			</list>
+  		</property>
+  	</bean>
+
+  	<bean id="itemArchiveValidatorNetworkStackFS" class="com.raritan.tdz.item.validators.ItemValidatorNew" scope="prototype">
+  		<property name="validators">
+  			<list>
+  				<ref bean="itemArchiveValidatorCabinetContainer"/>
+  				<ref bean="itemArchiveValidatorStandard"/> 
+  				
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	<!--  ###########################  -->
+  	
+  	
+  	<!-- Port Validators -->
+  	<bean id="noPortSupportedValidator" class="com.raritan.tdz.item.validators.SupportedPortClassValidator" scope="prototype">
+  		<constructor-arg name="supportedPortClassMap">
+  			<map>
+  				<entry key="DataPort" value="false"/>
+  				<entry key="PowerPort" value="false"/>
+  				<entry key="SensorPort" value="false"/>
+  			</map>
+  		</constructor-arg>
+  	</bean>
+  	<bean id="dPSPSupportedValidator" class="com.raritan.tdz.item.validators.SupportedPortClassValidator" scope="prototype">
+  		<constructor-arg name="supportedPortClassMap">
+  			<map>
+  				<entry key="DataPort" value="true"/>
+  				<entry key="PowerPort" value="false"/>
+  				<entry key="SensorPort" value="true"/>
+  			</map>
+  		</constructor-arg>
+  	</bean>
+  	
+  	<bean id="dPSupportedValidator" class="com.raritan.tdz.item.validators.SupportedPortClassValidator" scope="prototype">
+  		<constructor-arg name="supportedPortClassMap">
+  			<map>
+  				<entry key="DataPort" value="true"/>
+  				<entry key="PowerPort" value="false"/>
+  				<entry key="SensorPort" value="false"/>
+  			</map>
+  		</constructor-arg>
+  	</bean>
+  	
+  	<bean id="dpPPSupportedValidator" class="com.raritan.tdz.item.validators.SupportedPortClassValidator" scope="prototype">
+  		<constructor-arg name="supportedPortClassMap">
+  			<map>
+  				<entry key="DataPort" value="true"/>
+  				<entry key="PowerPort" value="true"/>
+  				<entry key="SensorPort" value="false"/>
+  			</map>
+  		</constructor-arg>
+  	</bean>
+  	
+  
+  	
+   <bean id="dpPPSPSupportedValidator" class="com.raritan.tdz.item.validators.SupportedPortClassValidator" scope="prototype">
+  		<constructor-arg name="supportedPortClassMap">
+  			<map>
+  				<entry key="DataPort" value="true"/>
+  				<entry key="PowerPort" value="true"/>
+  				<entry key="SensorPort" value="true"/>
+  			</map>
+  		</constructor-arg>
+  	</bean>
+  	
+  	<bean id="ppSupportedValidator" class="com.raritan.tdz.item.validators.SupportedPortClassValidator" scope="prototype">
+  		<constructor-arg name="supportedPortClassMap">
+  			<map>
+  				<entry key="DataPort" value="false"/>
+  				<entry key="PowerPort" value="true"/>
+  				<entry key="SensorPort" value="false"/>
+  			</map>
+  		</constructor-arg>
+  	</bean>
+  	
+  	<!--  Port Subclass validators -->
+  	
+  	<bean id="powerSupplySupportedValidator" class="com.raritan.tdz.item.validators.SupportedPortSubClassValidator" scope="prototype">
+  		<constructor-arg name="type" value="#{T(com.raritan.tdz.domain.PowerPort)}"/>
+  		<property name="supportedSubClass">
+  			<list>
+  				<value>20001</value>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	<bean id="rpduSubclassSupportedValidator" class="com.raritan.tdz.item.validators.SupportedPortSubClassValidator" scope="prototype">
+  		<constructor-arg name="type" value="#{T(com.raritan.tdz.domain.PowerPort)}"/>
+  		<property name="supportedSubClass">
+  			<list>
+  				<value>20002</value>
+  				<value>20003</value>
+  			</list>
+  		</property>
+  	</bean>
+  	
+ 
+
+  	<bean id="bladeDPSupportedValidator" class="com.raritan.tdz.item.validators.SupportedPortSubClassValidator" scope="prototype">
+  		<constructor-arg name="type" value="#{T(com.raritan.tdz.domain.DataPort)}"/>
+  		<property name="supportedSubClass">
+  			<list>
+  				<value>30001</value>
+  				<value>30004</value>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	<bean id="dataPanelDPSupportedValidator" class="com.raritan.tdz.item.validators.SupportedPortSubClassValidator" scope="prototype">
+  		<constructor-arg name="type" value="#{T(com.raritan.tdz.domain.DataPort)}"/>
+  		<property name="supportedSubClass">
+  			<list>
+  				<value>30002</value>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	<bean id="vmDPSupportedValidator" class="com.raritan.tdz.item.validators.SupportedPortSubClassValidator" scope="prototype">
+  		<constructor-arg name="type" value="#{T(com.raritan.tdz.domain.DataPort)}"/>
+  		<property name="supportedSubClass">
+  			<list>
+  				<value>30003</value>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	<bean id="activeDPSupportedValidator" class="com.raritan.tdz.item.validators.SupportedPortSubClassValidator" scope="prototype">
+  		<constructor-arg name="type" value="#{T(com.raritan.tdz.domain.DataPort)}"/>
+  		<property name="supportedSubClass">
+  			<list>
+  				<value>30001</value>
+  			</list>
+  		</property>
+  	</bean>
+  	
+   <bean id="sensorSubclassSupportedValidator" class="com.raritan.tdz.item.validators.SupportedPortSubClassValidator" scope="prototype">
+  		<constructor-arg name="type" value="#{T(com.raritan.tdz.domain.SensorPort)}"/>
+  		<property name="supportedSubClass">
+  			<list>
+  				<value>40001</value> <!-- TEMPERATURE sensor lkpValueCode -->
+  				<value>40002</value> <!-- HUMIDITY sensor lkpValueCode -->
+  				<value>40003</value> <!-- PRESSURE sensor lkpValueCode -->
+  				<value>40005</value> <!-- CONTACT_CLOSURE sensor lkpValueCode -->
+  				<value>40006</value> <!-- TODO: unknown - remove this --> 
+  				<value>40007</value> <!-- ASSET_STRIP sensor lkpValueCode -->
+  				<value>40008</value> <!-- AIR_FLOW sensor lkpValueCode -->
+  				<value>40009</value> <!-- WATER sensor lkpValueCode -->
+  				<value>40010</value> <!-- VIBRATION sensor lkpValueCode -->
+  				<value>40011</value> <!-- SMOKE sensor lkpValueCode -->
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	<bean id="powerSupplyCapacityValidator" class="com.raritan.tdz.item.validators.PowerCapacityValidator"/>
+  	
+
+  	<bean id="permissionValidator" class="com.raritan.tdz.item.validators.PermissionValidator" scope="prototype" />
+  	<bean id="itemStageValidator" class="com.raritan.tdz.item.validators.ItemStageValidator" scope="prototype" />
+  	<bean id="itemStatusValidator" class="com.raritan.tdz.item.validators.ItemStatusValidator" scope="prototype" />
+
+	<!-- the following validation has to be performed against the original item when the 'whenmoved' item is getting deleted -->
+  	<bean id="movedItemDeleteValidator" class="com.raritan.tdz.item.validators.DeleteMovedItemValidator" autowire="byName" autowire-candidate="true">
+  	  	<property name="validators">
+  			<list>
+  				<!-- test the stage of the 'when moved' item against the original item -->
+  				<ref bean="itemStageValidator"/>
+  			</list>
+  		</property>
+  		<property name="itemRequestDAO" ref="itemRequestDAO"/>
+  	</bean>
+  	
+  	<!--  Item Delete validation -->
+  	<bean id="itemDeleteValidatorCommon" class="com.raritan.tdz.item.validators.DeleteItemCommonValidator" scope="prototype" autowire="byName" autowire-candidate="true">
+  		<property name="validators">
+  			<list>
+  				<ref bean="permissionValidator"/>
+  				<ref bean="itemStageValidator"/>
+  				<ref bean="itemStatusValidator"/>
+  				<ref bean="movedItemDeleteValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	<bean id="itemArchiveValidatorCommon" class="com.raritan.tdz.item.validators.DeleteItemCommonValidator" scope="prototype" autowire="byName" autowire-candidate="true">
+  		<property name="validators">
+  			<list>
+  				<ref bean="permissionValidator"/>
+  				<ref bean="itemStageValidator"/>
+  			</list>
+  		</property>
+  	</bean>
+  	
+  	
+  	<bean id="itemConnectionValidator" class="com.raritan.tdz.item.validators.DeleteItemConnectionValidator" scope="prototype" />
+  	<bean id="fPduItemConnectionValidator" class="com.raritan.tdz.item.validators.FPDUItemConnectionValidator" scope="prototype" />
+  	<bean id="powerPanelItemConnectionValidator" class="com.raritan.tdz.item.validators.PowerPanelItemConnectionValidator" scope="prototype" />
+  	
+  	
+  	<!--  Location Validation -->
+  	<bean id="locationValidator" class="com.raritan.tdz.location.validators.LocationValidator"/>
+  	<bean id="locationRequiredFieldValidator" class="com.raritan.tdz.location.validators.LocationRequiredFieldValidator">
+  		<constructor-arg name="dao" ref="fieldsDAO"/>
+  		<property name="remoteRef" ref="locationRemoteRefItemScreen"/>
+  		<property name="rulesProcessor" ref="locationRulesProcessor"/>
+  	</bean>
+  	<bean id="locationPermissionValidator" class="com.raritan.tdz.location.validators.LocationPermissionValidator"/>
+
+  	<bean id="sensorPortsCabinetValidator" class="com.raritan.tdz.port.validators.SensorPortsCabinetValidator"  scope="prototype"/>
+  		
+	<bean id="validatorFactory" class="com.raritan.tdz.validators.ValidatorFactory">
+		<!--
+		<property name="prelimItemValidator">
+			<ref bean="prelimItemValidator" />
+		</property>
+		<property name="itemValidator">
+			<ref bean="itemValidator" />
+		</property>
+		<property name="itItemValidator">
+			<ref bean="itItemValidator" />
+		</property>
+		<property name="meItemValidator">
+			<ref bean="meItemValidator" />
+		</property>
+		<property name="cabinetItemValidator">
+			<ref bean="cabinetItemValidator" />
+		</property>
+		<property name="powerConnectionValidator">
+			<ref bean="powerConnectionValidator" />
+		</property>
+		-->
+	</bean>
+
+	<bean id="dataPortAssociationValidator" class="com.raritan.tdz.port.validators.ItemPortAssociationValidator" scope="prototype">
+		<constructor-arg name="portCollectionHelper" ref="dataPortObjectCollectionHelper"/>
+		<constructor-arg name="portDAO" ref="dataPortDAO"/>
+	</bean>
+	
+	<bean id="itemEditabilityValidator" class="com.raritan.tdz.item.validators.ItemEditabilityValidator" scope="prototype"/>
+	
+	<bean id="dataPortCommonValidator" class="com.raritan.tdz.port.validators.ItemPortCommonValidator" scope="prototype"/>
+	<bean id="dataPortPortLoaderValidator" class="com.raritan.tdz.port.validators.DataPortPortLoadingValidator" scope="prototype">
+		<constructor-arg name="portDAO" ref="dataPortDAO"/>
+    </bean>
+    
+    <bean id="dataPortDeleteValidator" class="com.raritan.tdz.port.validators.PortDeleteValidator" scope="prototype">
+		<constructor-arg name="portDAO" ref="dataPortDAO"/>
+    </bean>
+    
+    <!-- <bean id="powerPortCommonValidator" class="com.raritan.tdz.port.validators.ItemPortCommonValidator" scope="prototype"/> -->
+    
+    <bean id="powerPortLoadValidator" class="com.raritan.tdz.port.validators.PowerPortLoadValidator" scope="prototype" autowire-candidate="true" autowire="byName">
+    </bean>
+    
+    <bean id="dataPortWithIPAddressDeleteValidator" class="com.raritan.tdz.port.validators.DataPortWithIPAddressDeleteValidator" scope="prototype">
+    	<constructor-arg name="itemSpecificValidatorMap">
+    		<map>
+    			<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$ModelUniqueValue).RackPDUZeroU }" value-ref="rackPDUDataPortWithIPAddressDeleteValidator"/>
+    			<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$ModelUniqueValue).RackPDURackable }" value-ref="rackPDUDataPortWithIPAddressDeleteValidator"/>
+    			<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$ModelUniqueValue).RackPDUNonRackable }" value-ref="rackPDUDataPortWithIPAddressDeleteValidator"/>
+    			<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$ModelUniqueValue).ProbeRackable }" value-ref="probeDataPortWithIPAddressDeleteValidator"/>
+    			<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$ModelUniqueValue).ProbeZeroU }" value-ref="probeDataPortWithIPAddressDeleteValidator"/>
+    			<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$ModelUniqueValue).ProbeNonRackable }" value-ref="probeDataPortWithIPAddressDeleteValidator"/>
+    		</map>
+    	</constructor-arg>
+    </bean>
+    
+    <bean id="rackPDUDataPortWithIPAddressDeleteValidator" class="com.raritan.tdz.port.validators.ItemSpecificDataPortWithIPAddressDeleteValidator"
+    	scope="prototype"/>
+    
+    <bean id="probeDataPortWithIPAddressDeleteValidator" class="com.raritan.tdz.port.validators.ItemSpecificDataPortWithIPAddressDeleteValidator"
+    	scope="prototype"/>
+	
+	<bean id="dataPortCreateItemPortValidator" class="com.raritan.tdz.port.validators.ItemPortValidator" autowire-candidate="true" autowire="byName" scope="prototype">
+            <constructor-arg name="validators">
+            <list>
+                <ref bean="dataPortCommonValidator"/>
+                <ref bean="itemEditabilityValidator"/>
+                <ref bean="validateImportFieldAgainstItemClass"/>
+            </list>
+        </constructor-arg>
+	</bean>
+	
+	<bean id="dataPortDeleteItemPortValidator" class="com.raritan.tdz.port.validators.ItemPortValidator" autowire-candidate="true" autowire="byName" scope="prototype">
+        <constructor-arg name="validators">
+            <list>
+                <ref bean="dataPortCommonValidator"/>
+                <ref bean="dataPortPortLoaderValidator"/>
+                <ref bean="itemEditabilityValidator"/>
+                <ref bean="dataPortAssociationValidator"/>
+                <ref bean="dataPortDeleteValidator"/>
+                <ref bean="dataPortWithIPAddressDeleteValidator"/>
+            </list>
+        </constructor-arg>
+	</bean>	
+
+	<bean id="dataPortUpdateItemPortValidator" class="com.raritan.tdz.port.validators.ItemPortValidator" autowire-candidate="true" autowire="byName" scope="prototype">
+        <constructor-arg name="validators">
+            <list>
+                <ref bean="dataPortCommonValidator"/>
+                <ref bean="dataPortPortLoaderValidator"/>
+                <ref bean="itemEditabilityValidator"/>
+                <ref bean="dataPortAssociationValidator"/>
+                <ref bean="validateImportFieldAgainstItemClass"/>
+            </list>
+        </constructor-arg>
+	</bean>
+	
+	<bean id="dataPortDeleteItemPortImportValidator" class="com.raritan.tdz.port.validators.ItemPortValidator" autowire-candidate="true" autowire="byName" scope="prototype">
+        <constructor-arg name="validators">
+            <list>
+                <ref bean="dataPortCommonValidator"/>
+                <ref bean="dataPortPortLoaderValidator"/>
+                <ref bean="itemEditabilityValidator"/>
+            </list>
+        </constructor-arg>
+	</bean>
+
+	<bean id="dataPortCreateItemPortImportValidator" class="com.raritan.tdz.port.validators.ItemPortValidator" autowire-candidate="true" autowire="byName" scope="prototype">
+            <constructor-arg name="validators">
+            <list>
+                <ref bean="dataPortCommonValidator"/>
+                <ref bean="itemEditabilityValidator"/>
+                <ref bean="validateImportFieldAgainstItemClass"/>
+            </list>
+        </constructor-arg>
+	</bean>
+
+	<bean id="dataPortUpdateItemPortImportValidator" class="com.raritan.tdz.port.validators.ItemPortValidator" autowire-candidate="true" autowire="byName" scope="prototype">
+        <constructor-arg name="validators">
+            <list>
+                <ref bean="dataPortCommonValidator"/>
+                <ref bean="dataPortPortLoaderValidator"/>
+                <ref bean="itemEditabilityValidator"/>
+                <ref bean="dataPortAssociationValidator"/>
+                <ref bean="validateImportFieldAgainstItemClass"/>
+            </list>
+        </constructor-arg>
+	</bean>
+
+	<bean id="powerPortDeleteItemPortValidator" class="com.raritan.tdz.port.validators.ItemPortValidator" autowire-candidate="true" autowire="byName" scope="prototype">
+        <constructor-arg name="validators">
+            <list>
+                <!-- <ref bean="powerPortCommonValidator"/> -->
+                <!-- <ref bean="powerPortPortLoaderValidator"/> -->
+                <ref bean="itemEditabilityValidator"/>
+                <!-- <ref bean="powerPortDeleteValidator"/> -->
+            </list>
+        </constructor-arg>
+	</bean>
+
+	<bean id="powerPortCreateItemPortValidator" class="com.raritan.tdz.port.validators.ItemPortValidator" autowire-candidate="true" autowire="byName" scope="prototype">
+            <constructor-arg name="validators">
+            <list>
+                <!-- <ref bean="powerPortCommonValidator"/> -->
+                <ref bean="itemEditabilityValidator"/>
+            </list>
+        </constructor-arg>
+	</bean>
+
+	<bean id="powerPortUpdateItemPortValidator" class="com.raritan.tdz.port.validators.ItemPortValidator" autowire-candidate="true" autowire="byName" scope="prototype">
+        <constructor-arg name="validators">
+            <list>
+                <!-- <ref bean="powerPortCommonValidator"/> -->
+                <!-- <ref bean="powerPortPortLoaderValidator"/> -->
+                <ref bean="itemEditabilityValidator"/>
+                <!-- <ref bean="powerPortAssociationValidator"/> -->
+            </list>
+        </constructor-arg>
+	</bean>
+	
+	<bean id="itemWithConnectionsLocationValidator" class="com.raritan.tdz.item.validators.ItemWithConnectionsLocationValidator"/>
+	<bean id="bladeWithConnectionsLocationValidator" class="com.raritan.tdz.item.validators.BladeWithConnectionsLocationValidator"/>
+	<bean id="powerOutletWithConnectionsLocationValidator" class="com.raritan.tdz.item.validators.PowerOutletWithConnectionsLocationValidator"/>
+
+	<!--
+	<bean id="prelimItemValidator" class="com.raritan.tdz.validators.PrelimItemValidator">
+		<property name="validators">
+			<ref bean="validators" />
+		</property>
+	</bean>
+
+	<bean id="itemValidator" class="com.raritan.tdz.validators.ItemValidator">
+		<property name="validators">
+			<ref bean="validators" />
+		</property>
+	</bean>
+
+	<bean id="itItemValidator" class="com.raritan.tdz.validators.ItItemValidator">
+		<property name="validators">
+			<ref bean="validators" />
+		</property>
+	</bean>
+
+	<bean id="meItemValidator" class="com.raritan.tdz.validators.MeItemValidator">
+		<property name="validators">
+			<ref bean="validators" />
+		</property>
+	</bean>
+
+	<bean id="cabinetItemValidator" class="com.raritan.tdz.validators.CabinetItemValidator">
+		<property name="validators">
+			<ref bean="validators" />
+		</property>
+	</bean>
+
+	<bean id="powerConnectionValidator" class="com.raritan.tdz.validators.PowerConnectionValidator">
+		<property name="validators">
+			<ref bean="validators" />
+		</property>
+		<property name="connectionHome">
+			<ref bean="connectionHome" />
+		</property>
+	</bean>
+
+	<bean id="validators" class="com.raritan.tdz.validators.Validators">
+		<property name="itemService">
+			<ref bean="itemService" />
+		</property>
+	</bean>
+	-->
+
+	<bean id="itemObjectSaveValidatorsFactory" class="com.raritan.tdz.item.validators.ItemObjectSaveValidatorsFactoryImpl" scope="prototype" autowire="byName" autowire-candidate="true" >
+
+		<property name = "saveValidatorsMap">
+			<map>
+			    <!--  item archive validators are same as that of delete validators-->
+				<entry key="100" value-ref="itemValidatorVM"/>
+				<entry key="105" value-ref="itemValidatorBlade"/>
+				<entry key="104" value-ref="itemValidatorChassis"/>
+				<entry key="101" value-ref="itemValidatorStandard"/>
+				
+				<entry key="103" value-ref="itemValidatorDeviceFS"/> <!-- review -->
+				<entry key="102" value-ref="itemValidatorNR"/>
+				<entry key="106" value-ref="itemValidatorZeroU"/>
+
+				<entry key="205" value-ref="itemValidatorBlade"/>		
+				<entry key="204" value-ref="itemValidatorChassis"/>		
+				<entry key="203" value-ref="itemValidatorNetworkStackFS"/>		
+				<entry key="201" value-ref="itemValidatorStandard"/>		
+				<entry key="202" value-ref="itemValidatorNR"/>		
+				<entry key="206" value-ref="itemValidatorZeroU"/>		
+				
+				<!-- data panel Rackable, NonRackable and 0U -->
+				<entry key="301" value-ref="itemValidatorStandardDP"/>
+				<entry key="302" value-ref="itemValidatorNRDP"/>
+				<entry key="306" value-ref="itemValidatorZeroDP"/>
+				
+				<!--  Outlet, Rackable and nonRackable -->
+				<entry key="412" value-ref="itemValidatorOutlet"/>
+				<entry key="411" value-ref="itemValidatorNROutlet"/>
+
+				<!--  Rack PDU Rackable, nonRackable and 0U -->
+				<entry key="506" value-ref="itemValidatorZeroURPDU"/>
+				<entry key="501" value-ref="itemValidatorRackableRPDU"/>
+				<entry key="502" value-ref="itemDeleteValidatorNRRPDU"/>
+
+				<!--  Cabinet and Cabinet Container -->
+				<entry key="603" value-ref="itemValidatorCabinet"/>
+				<entry key="613" value-ref="itemValidatorCabinetContainer"/>
+				
+				
+				<!-- Probe Rackable, nonRackable and 0U -->
+				<entry key="701" value-ref="itemValidatorProbe"/>
+				<entry key="706" value-ref="itemValidatorZeroUProbe"/>
+				<entry key="702" value-ref="itemValidatorNRProbe"/>
+				
+				<!--  Floor pdu -->
+				<entry key="1103" value-ref="itemValidatorFloorPDU"/>
+				
+				<entry key="1114" value-ref="itemValidatorPowerPanel"/>
+				<entry key="1115" value-ref="itemValidatorPowerPanel"/>
+				<entry key="1116" value-ref="itemValidatorPowerPanel"/>
+				
+				<entry key="1203" value-ref="itemValidatorUPS"/>
+				<entry key="1303" value-ref="itemValidatorCRAC"/>
+
+			</map>
+		</property>
+	</bean>	
+	
+	<bean id="itemObjectValidatorsFactory" class="com.raritan.tdz.item.validators.ItemObjectValidatorsFactoryImpl" >
+		<!--  Need to refactor to avoid duplication where ever possible in this section-->
+			
+	    <!--  NOTE: item archive, storage and delete validators are same when this bean was defined -->
+
+		<property name = "deleteValidatorsMap">
+			<map>
+			    <!--  item archive validators are same as that of delete validators-->
+				<entry key="100" value-ref="itemDeleteValidatorVM"/>
+				<entry key="105" value-ref="itemDeleteValidatorBlade"/>
+				<entry key="104" value-ref="itemDeleteValidatorChassis"/>
+				<entry key="101" value-ref="itemDeleteValidatorStandard"/>
+
+				<entry key="103" value-ref="itemDeleteValidatorDevFS"/>
+				<entry key="102" value-ref="itemDeleteValidatorNR"/>
+				<entry key="106" value-ref="itemDeleteValidatorZeroU"/>
+
+				<entry key="205" value-ref="itemDeleteValidatorBlade"/>		
+				<entry key="204" value-ref="itemDeleteValidatorChassis"/>		
+				<entry key="203" value-ref="itemDeleteValidatorNetworkStackFS"/>		
+				<entry key="201" value-ref="itemDeleteValidatorStandard"/>		
+				<entry key="202" value-ref="itemDeleteValidatorNR"/>		
+				<entry key="206" value-ref="itemDeleteValidatorZeroU"/>		
+				
+				<!--  Rack PDU Rackable, nonRackable and 0U -->
+				<entry key="501" value-ref="itemDeleteValidatorRackableRPDU"/>
+				<entry key="502" value-ref="itemDeleteValidatorNRRPDU"/>
+				<entry key="506" value-ref="itemDeleteValidatorZeroURPDU"/>
+				
+				<!-- data panel Rackable, NonRackable and 0U -->
+				<entry key="301" value-ref="itemDeleteValidatorStandardDP"/>
+				<entry key="302" value-ref="itemDeleteValidatorNRDP"/>
+				<entry key="306" value-ref="itemDeleteValidatorZeroDP"/>
+				
+				<!-- Probe Rackable, nonRackable and 0U -->
+				
+				<entry key="701" value-ref="itemDeleteValidatorProbe"/>
+				<entry key="706" value-ref="itemDeleteValidatorZeroUProbe"/>
+				<entry key="702" value-ref="itemDeleteValidatorNRProbe"/>
+				
+				<!--  Outlet, Rackable and nonRackable -->
+				<entry key="412" value-ref="itemDeleteValidatorOutlet"/>
+				<entry key="411" value-ref="itemDeleteValidatorNROutlet"/>
+				
+				<!--  Cabinet and Cabinet Container -->
+				<entry key="603" value-ref="itemDeleteValidatorCabinet"/>
+				<entry key="613" value-ref="itemDeleteValidatorCabinetContainer"/>
+				
+				<!--  Floor pdu -->
+				<entry key="1103" value-ref="itemDeleteValidatorFloorPDU"/>
+				
+				<entry key="1114" value-ref="itemDeleteValidatorPowerPanel"/>
+				<entry key="1115" value-ref="itemDeleteValidatorPowerPanel"/>
+				<entry key="1116" value-ref="itemDeleteValidatorPowerPanel"/>
+
+				<entry key="1203" value-ref="itemDeleteValidatorUPS"/>
+				<entry key="1303" value-ref="itemDeleteValidatorCRAC"/>
+				
+				<entry key="3001" value-ref="passiveItemDeleteValidator"/>
+				<entry key="3007" value-ref="passiveItemDeleteValidator"/>
+				<entry key="3008" value-ref="passiveItemDeleteValidator"/>
+				
+			</map>
+		</property>
+
+		<property name = "archiveValidatorsMap">
+			<map>
+			    <!--  item archive validators are same as that of delete validators-->
+				<entry key="100" value-ref="itemArchiveValidatorVM"/>
+				<entry key="105" value-ref="itemArchiveValidatorBlade"/>
+				<entry key="104" value-ref="itemArchiveValidatorChassis"/>
+				<entry key="101" value-ref="itemArchiveValidatorStandard"/>
+				
+				<entry key="103" value-ref="itemArchiveValidatorDevFS"/>
+				<entry key="102" value-ref="itemArchiveValidatorNR"/>
+				<entry key="106" value-ref="itemArchiveValidatorZeroU"/>
+
+				<entry key="205" value-ref="itemArchiveValidatorBlade"/>		
+				<entry key="204" value-ref="itemArchiveValidatorChassis"/>		
+				<entry key="203" value-ref="itemArchiveValidatorNetworkStackFS"/>		
+				<entry key="201" value-ref="itemArchiveValidatorStandard"/>		
+				<entry key="202" value-ref="itemArchiveValidatorNR"/>		
+				<entry key="206" value-ref="itemArchiveValidatorZeroU"/>		
+				
+				<!--  Rack PDU Rackable, nonRackable and 0U -->
+				<entry key="501" value-ref="itemArchiveValidatorRackableRPDU"/>
+				<entry key="502" value-ref="itemArchiveValidatorNRRPDU"/>
+				<entry key="506" value-ref="itemArchiveValidatorZeroURPDU"/>
+				
+				<!-- data panel Rackable, NonRackable and 0U -->
+				<entry key="301" value-ref="itemArchiveValidatorStandardDP"/>
+				<entry key="302" value-ref="itemArchiveValidatorNRDP"/>
+				<entry key="306" value-ref="itemArchiveValidatorZeroDP"/>
+				
+				
+				<!-- Probe Rackable, nonRackable and 0U -->
+				
+				<entry key="701" value-ref="itemArchiveValidatorProbe"/>
+				<entry key="706" value-ref="itemArchiveValidatorZeroUProbe"/>
+				<entry key="702" value-ref="itemArchiveValidatorNRProbe"/>
+				
+				<!--  Outlet, Rackable and nonRackable -->
+				<entry key="412" value-ref="itemArchiveValidatorOutlet"/>
+				<entry key="411" value-ref="itemArchiveValidatorNROutlet"/>
+				
+				<!--  Cabinet and Cabinet Container -->
+				<entry key="603" value-ref="itemArchiveValidatorCabinet"/>
+				<entry key="613" value-ref="itemArchiveValidatorCabinetContainer"/>
+				
+				<!--  Floor pdu -->
+				<entry key="1103" value-ref="itemArchiveValidatorFloorPDU"/>
+				
+				<entry key="1114" value-ref="itemArchiveValidatorPowerPanel"/>
+				<entry key="1115" value-ref="itemArchiveValidatorPowerPanel"/>
+				<entry key="1116" value-ref="itemArchiveValidatorPowerPanel"/>
+				
+				<entry key="1203" value-ref="itemArchiveValidatorUPS"/>
+				<entry key="1303" value-ref="itemArchiveValidatorCRAC"/>
+				
+			</map>
+		</property>
+
+	</bean> 
+	<bean id="jsonAssgSaveOpReqFieldsValidator" class="com.raritan.tdz.util.RequiredFieldsValidator">
+	     <property name="requiredFields">	 
+		 <map>   
+		    <entry key="ipAddress" value="ipAddress"/>
+		    <entry key="portId" value="portId"/>
+		 </map>	 
+	     </property>     
+	</bean>
+
+	<bean id="jsonAssgEditOpReqFieldsValidator" class="com.raritan.tdz.util.RequiredFieldsValidator">
+	     <property name="requiredFields">	 
+		<map>
+                    <entry key="ipAddress" value="ipAddress"/>
+                    <entry key="id" value="id"/>
+                 </map> 
+	     </property>     
+	</bean>
+
+	<bean id="jsonReportConfigReqFieldsValidator" class="com.raritan.tdz.util.RequiredFieldsValidator">
+	     <property name="requiredFields">	 
+		<map>
+                    <entry key="configName" value="configName"/>
+                    <entry key="reportConfigDetails" value="reportConfigDetails"/>
+                 </map> 
+	     </property>     
+	</bean>
+
+	<bean id="jsonReportConfigDetailsReqFieldsValidator" class="com.raritan.tdz.util.RequiredFieldsValidator">
+	     <property name="requiredFields">	 
+		<map>
+                    <entry key="fieldName" value="fieldName"/>
+                    <entry key="fieldValue" value="fieldValue"/>
+		    <entry key="uiPanelId" value="uiPanelId"/>
+                    <entry key="conditionLookupValue" value="conditionLookupValue"/>
+                 </map> 
+	     </property>     
+	</bean>
+
+	<bean id="ipAddressValidatorCommon" class="com.raritan.tdz.ip.validators.IPAddressValidatorCommon"/>
+	<bean id="ipAssgSaveOpValidator" class="com.raritan.tdz.ip.validators.IPAssgSaveOpValidator"/>
+	<bean id="ipAssgEditOpValidator" class="com.raritan.tdz.ip.validators.IPAssgEditOpValidator"/>
+	<bean id="ipAssgDeleteOpValidator" class="com.raritan.tdz.ip.validators.IPAssgDeleteOpValidator"/>
+	<bean id="itemIpAddrAndProxyValidator" class="com.raritan.tdz.ip.validators.ItemIpAddrAandProxyValidator"/>
+	
+	<util:list id="supportedClassesForProxyIndex" value-type="java.lang.Long">
+	    <value>501</value>
+	    <value>502</value>
+	    <value>506</value>
+	</util:list>
+	
+	<util:list id="supportedClassesForDataPort" value-type="java.lang.Long">
+	    <value>100</value>
+	    <value>101</value>
+	    <value>102</value>
+	    <value>103</value>
+	    <value>104</value>
+	    <value>105</value>
+	    <value>106</value>
+	    <value>201</value>
+	    <value>202</value>
+	    <value>203</value>
+	    <value>204</value>
+	    <value>205</value>
+	    <value>206</value>
+	    <value>501</value>
+	    <value>502</value>
+	    <value>506</value>
+	    <value>701</value>
+	    <value>702</value>
+	    <value>706</value>
+	    <value>1103</value>
+	    <value>1114</value>
+	    <value>1115</value>
+	    <value>1116</value>
+	    <value>1203</value>
+	    <value>1303</value>
+	</util:list>
+	
+	<bean id="itemClassForProxyIndexValidator" class="com.raritan.tdz.item.validators.ItemClassValidator">
+	    <property name="supportedClasses" ref="supportedClassesForProxyIndex"/>
+	</bean>
+
+	<bean id="itemClassForIpAddressValidator" class="com.raritan.tdz.item.validators.ItemClassValidator">
+	    <property name="supportedClasses" ref="supportedClassesForDataPort"/>
+	</bean>
+	
+	<bean id="validateImportFieldAgainstItemClass" class="com.raritan.tdz.item.validators.ValidateImportFieldAgainstItemClass">
+		<property name="fieldSupportedItemClass">
+			<map>
+				<entry key="ipAddressImport" value-ref="supportedClassesForDataPort"/>
+				<entry key="proxyIndex" value-ref="supportedClassesForProxyIndex"/>
+			</map>
+		</property>
+		<property name="fieldUserFriendlyName">
+			<map>
+				<entry key="ipAddressImport" value="IP Address"/>
+				<entry key="proxyIndex" value="Proxy Index"/>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="itemValidatorEditabilty" class="com.raritan.tdz.item.validators.ItemValidatorEditabilty">
+		<constructor-arg name="itemRulesProcessor" ref="itemRulesProcessor"/>
+		<constructor-arg name="uiFieldToDBField" ref="uiViewToDBField"/>
+		<constructor-arg name="mountingPlacementFieldsMap" ref="mountingPlacementFields"/>
+		<constructor-arg name="validNullValueInDBMap" ref="validNullValueInDB"/>
+		<constructor-arg name="uiViewToHibernateField" ref="uiViewToHibernateField"/>
+		<constructor-arg name="uiViewToUserReadableName" ref="uiViewToUserReadableName"/>
+	</bean>
+	<bean id="reportsValidator" class="com.raritan.tdz.reports.validators.ReportsSettingsCommonValidator"> 
+		<property name="messageSource" ref="messageSource" />
+	</bean>
+	
+	<util:list id="itemUnmapValidators">
+		<ref bean="itemEditabilityValidator"/>
+	</util:list>
+	
+	<util:list id="locationUnmapValidators">
+		<ref bean="locationPermissionValidator"/>
+	</util:list>
+	
+	<bean id="circuitPermissionValidator" class="com.raritan.tdz.circuit.validators.CircuitPermissionValidator"/>
+	
+ </beans>

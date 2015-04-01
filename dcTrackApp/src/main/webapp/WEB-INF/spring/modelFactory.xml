@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<bean id="upsGenericModelFactory" class="com.raritan.tdz.model.factory.GenericModelFactoryImpl"  autowire-candidate="true" autowire="byName">
+		<constructor-arg name="modelClass" value="#{ T(com.raritan.tdz.lookup.SystemLookup$Class).UPS }"/>
+		<constructor-arg name="mounting" value="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).FREE_STANDING }"/>
+		<constructor-arg name="formFactor" value="#{ T(com.raritan.tdz.lookup.SystemLookup$FormFactor).FULL }"/> 
+	</bean>
+	
+	<bean id="upsBankGenericModelFactory" class="com.raritan.tdz.model.factory.GenericModelFactoryImpl" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="modelClass" value="#{ T(com.raritan.tdz.lookup.SystemLookup$Class).UPS_BANK }"/>
+		<constructor-arg name="mounting" value="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).FREE_STANDING }"/>
+		<constructor-arg name="formFactor" value="#{ T(com.raritan.tdz.lookup.SystemLookup$FormFactor).FULL }"/> 
+	</bean>
+	
+	<bean id="floorPduGenericModelFactory" class="com.raritan.tdz.model.factory.GenericModelFactoryImpl" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="modelClass" value="#{ T(com.raritan.tdz.lookup.SystemLookup$Class).FLOOR_PDU }"/>
+		<constructor-arg name="mounting" value="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).FREE_STANDING }"/>
+		<constructor-arg name="formFactor" value="#{ T(com.raritan.tdz.lookup.SystemLookup$FormFactor).FIXED }"/> 
+	</bean>
+	
+	<bean id="powerPanelGenericModelFactory" class="com.raritan.tdz.model.factory.GenericModelFactoryImpl"  autowire-candidate="true" autowire="byName">
+		<constructor-arg name="modelClass" value="#{ T(com.raritan.tdz.lookup.SystemLookup$Class).FLOOR_PDU }"/>
+		<constructor-arg name="mounting" value="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).FREE_STANDING }"/>
+		<constructor-arg name="formFactor" value="#{ T(com.raritan.tdz.lookup.SystemLookup$FormFactor).FIXED }"/> 
+	</bean>
+	
+	<bean id="powerOutletGenericModelFactory" class="com.raritan.tdz.model.factory.GenericModelFactoryImpl"  autowire-candidate="true" autowire="byName">
+		<constructor-arg name="modelClass" value="#{ T(com.raritan.tdz.lookup.SystemLookup$Class).FLOOR_OUTLET }"/>
+		<constructor-arg name="mounting" value="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).NON_RACKABLE }"/>
+		<constructor-arg name="formFactor" value="#{ T(com.raritan.tdz.lookup.SystemLookup$FormFactor).FIXED }"/> 
+	</bean>
+	
+</beans>

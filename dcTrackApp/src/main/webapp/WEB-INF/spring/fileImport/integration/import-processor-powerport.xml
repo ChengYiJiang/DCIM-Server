@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<int:channel id="importPowerPortChannel"/>
+	<int:channel id="importPowerPortAddChannel"/>
+	<int:channel id="importPowerPortUpdateChannel"/>
+	<int:channel id="importPowerPortDeleteChannel"/>
+	
+	<bean id="powerPortImportProcessor" class="com.raritan.tdz.dctimport.processors.ImportProcessorImpl">
+		<constructor-arg name="messageChannelMap">
+			<map>
+				<entry key="#{T(com.raritan.tdz.dctimport.processors.ImportProcessorImpl).ADD_OPERATION}" value-ref="importPowerPortAddChannel"/>
+				<entry key="#{T(com.raritan.tdz.dctimport.processors.ImportProcessorImpl).EDIT_OPERATION}" value-ref="importPowerPortUpdateChannel"/>
+				<entry key="#{T(com.raritan.tdz.dctimport.processors.ImportProcessorImpl).DELETE_OPERATION}" value-ref="importPowerPortDeleteChannel"/>
+			</map>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="beanToPowerPortDtoAddDeleteConverter" class="com.raritan.tdz.dctimport.integration.transformers.BeanToPowerPortDtoConverterImpl">
+		<constructor-arg name="updatePowerPort" value="false"/>
+	</bean>
+	
+	<bean id="beanToPowerPortDtoUpdateConverter" class="com.raritan.tdz.dctimport.integration.transformers.BeanToPowerPortDtoConverterImpl">
+		<constructor-arg name="updatePowerPort" value="true"/>
+	</bean>
+	
+	<bean id="powerPortBeanToDtoAddDeleteTranslator" class="com.raritan.tdz.dctimport.integration.transformers.PowerPortTransformer">
+		<constructor-arg name="uuid" value="${UserUUIDProperty}"/>
+		<constructor-arg name="beanToPowerPortDtoConverter" ref="beanToPowerPortDtoAddDeleteConverter"/>
+		<property name="importErrorHandler" ref="importErrorHandlerGateway"/>
+	</bean>
+
+	<bean id="powerPortBeanToDtoUpdateTranslator" class="com.raritan.tdz.dctimport.integration.transformers.PowerPortTransformer">
+		<constructor-arg name="uuid" value="${UserUUIDProperty}"/>
+		<constructor-arg name="beanToPowerPortDtoConverter" ref="beanToPowerPortDtoUpdateConverter"/>
+		<property name="importErrorHandler" ref="importErrorHandlerGateway"/>
+	</bean>
+	
+	<bean id="importPowerPortHome" parent="abstractImportProcessor">
+		<property name="proxyInterfaces">
+    		<list>
+	    		<value>com.raritan.tdz.item.home.ItemHome</value>
+    		</list>
+    		
+    	</property>
+    	<property name="target" ref="itemHome"/>
+	</bean>
+	
+	<int:chain input-channel="importPowerPortAddChannel">
+		<int:transformer id="powerPortBeanToDtoAddTransformer" ref="powerPortBeanToDtoAddDeleteTranslator" method="transform"/>
+		<int:service-activator id="powerPortHomeActivator" expression="@importPowerPortHome.createItemPowerPortExtAPI(payload.get(0),payload.get(1))"
+			requires-reply="false"/>
+	</int:chain>
+	
+	<int:chain input-channel="importPowerPortUpdateChannel">
+		<int:transformer id="powerPortBeanToDtoUpdateTransformer" ref="powerPortBeanToDtoUpdateTranslator" method="transform"/>
+		<int:service-activator id="powerPortHomeActivator" expression="@importPowerPortHome.updateItemPowerPortExtAPI(payload.get(0),payload.get(1))"
+			requires-reply="false"/>
+	</int:chain>
+	
+	<int:chain input-channel="importPowerPortDeleteChannel">
+		<int:transformer id="powerPortBeanToDtoDeleteTransformer" ref="powerPortBeanToDtoAddDeleteTranslator" method="transform"/>
+		<int:service-activator id="powerPortHomeActivator" expression="@importPowerPortHome.deleteItemPowerPortExtAPI(payload.get(0),payload.get(1))"/>
+	</int:chain>
+	
+	<int:service-activator id="powerPortProcessor" input-channel="importPowerPortChannel" ref="powerPortImportProcessor" method="process"/>
+</beans>

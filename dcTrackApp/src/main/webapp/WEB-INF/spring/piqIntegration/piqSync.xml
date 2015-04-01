@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+	This file contains the job launcher and all required beans used to update
+	Power IQ with all the items in dcTrack.
+ -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:job="http://www.springframework.org/schema/batch"
+	xmlns:flex="http://www.springframework.org/schema/flex"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+						http://www.springframework.org/schema/batch 
+						http://www.springframework.org/schema/batch/spring-batch-2.2.xsd 
+						http://www.springframework.org/schema/flex 
+    					http://www.springframework.org/schema/flex/spring-flex-1.5.xsd">
+    					
+	<bean id="transactionManagerForJob" 
+		class="org.springframework.batch.support.transaction.ResourcelessTransactionManager"/>
+	
+	<bean id="jobRegistry" class="org.springframework.batch.core.configuration.support.MapJobRegistry"/>
+	
+	<bean id="piqSyncJobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+		<property name="jobRepository" ref="piqSyncJobRepository" />
+	    <property name="taskExecutor">
+	        <bean class="org.springframework.core.task.SimpleAsyncTaskExecutor" />
+	    </property>
+	</bean>
+		
+	<bean id="piqSyncJobRepository" class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean">
+		<property name="transactionManager" ref="transactionManagerForJob"/>
+	</bean>
+	
+	<bean id="locationQueryString" class="java.lang.String">
+		<constructor-arg type="java.lang.String" value="from DataCenterLocationDetails as l where l.componentTypeLookup.lkpValueCode=5001 and l.applicationSetting.value=:piqHost"/>
+	</bean>
+	
+	<bean id="cabinetQueryString" class="java.lang.String">
+		<constructor-arg type="java.lang.String" value="from Item where classLookup.lkpValueCode=1100 and dataCenterLocation.applicationSetting.value=:piqHost"/>
+	</bean>
+	
+	<bean id="deviceQueryString" class="java.lang.String">
+		<constructor-arg type="java.lang.String"
+			 value="from Item where itemId > 0 and (parentItem is not null) and (classLookup.lkpValueCode=1200 or classLookup.lkpValueCode=1300 or classLookup.lkpValueCode=1400)  and dataCenterLocation.applicationSetting.value=:piqHost"/>
+	</bean>
+	
+	<bean id="rpduQueryString" class="java.lang.String">
+		<constructor-arg type="java.lang.String" value="from Item where classLookup.lkpValueCode=2100  and dataCenterLocation.applicationSetting.value=:piqHost"/>
+	</bean>
+	
+	<bean id="connectionsQueryString" class="java.lang.String">
+		<constructor-arg type="java.lang.String" value="from PowerConnection as pc where pc.sourcePowerPort.item.classLookup.lkpValueCode in (1200,1300,1400) and pc.destPowerPort.item.classLookup.lkpValueCode = 2100 and pc.destPowerPort.piqId is not null and pc.sourcePowerPort.item.dataCenterLocation.applicationSetting.value=:piqHost and pc.destPowerPort.item.dataCenterLocation.applicationSetting.value=:piqHost"/>
+	</bean>
+	
+	<bean id="locationReader" class="org.springframework.batch.item.database.HibernateCursorItemReader">
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="queryString" ref="locationQueryString"/>
+		<property name="parameterValues">
+			<map>
+				<entry key="piqHost">
+					<value>${powerIQHost}</value>
+				</entry>
+			</map>
+		</property>
+		<property name="useStatelessSession" value="false"/>
+	</bean>
+	
+	<bean id="piqLocBulkSyncStepListner" class="com.raritan.tdz.piq.jobs.listener.PIQBulkSyncStepListener">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="queryString" ref="locationQueryString"/>
+		<constructor-arg name="piqHost" value="${powerIQHost}"></constructor-arg>
+	</bean>
+	
+	<bean id="cabinetReader" class="org.springframework.batch.item.database.HibernateCursorItemReader">
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="queryString" ref="cabinetQueryString"/>
+		<property name="useStatelessSession" value="false"/>
+		<property name="parameterValues">
+			<map>
+				<entry key="piqHost">
+					<value>${powerIQHost}</value>
+				</entry>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="piqBulkSyncRackStepListener" class="com.raritan.tdz.piq.jobs.listener.PIQBulkSyncRackStepListener">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="queryString" ref="cabinetQueryString"/>
+		<constructor-arg name="piqSyncRackClient" ref="piqSyncRackClient"/>
+		<constructor-arg name="itemHome" ref="itemHome"/>
+		<constructor-arg name="piqHost" value="${powerIQHost}"></constructor-arg>
+	</bean>
+	
+	<bean id="deviceReader" class="org.springframework.batch.item.database.HibernateCursorItemReader">
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="queryString" ref="deviceQueryString"/>
+		<property name="useStatelessSession" value="false"/>
+		<property name="parameterValues">
+			<map>
+				<entry key="piqHost">
+					<value>${powerIQHost}</value>
+				</entry>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="piqBulkSyncDeviceStepListener" class="com.raritan.tdz.piq.jobs.listener.PIQBulkSyncDeviceStepListener">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="queryString" ref="deviceQueryString"/>
+		<constructor-arg name="piqSyncDeviceClient" ref="piqSyncDeviceClient"/>
+		<constructor-arg name="itemHome" ref="itemHome"/>
+		<constructor-arg name="piqHost" value="${powerIQHost}"></constructor-arg>
+	</bean>
+	
+	<bean id="piqJobBulkSyncListener" class="com.raritan.tdz.piq.jobs.listener.PIQBulkSyncJobListener">
+		<constructor-arg name="lnHome" ref="listenNotifyHome"/>
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="piqHost" value="${powerIQHost}"/>
+		<property name="totalCountQueries">
+			<map>
+				<entry key="location" value-ref="locationQueryString" />
+				<entry key="cabinet" value-ref="cabinetQueryString" />
+				<entry key="device" value-ref="deviceQueryString" />
+				<entry key="rpdu" value-ref="rpduQueryString" />
+				<entry key="connection" value-ref="connectionsQueryString"/>
+			</map>
+		</property>
+		<property name="piqSysEventLogger" ref="piqSysEventLogger" />
+	</bean>
+	
+	<bean id="rpduReader" class="org.springframework.batch.item.database.HibernateCursorItemReader">
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="queryString" ref="rpduQueryString"/>
+		<property name="useStatelessSession" value="false"/>
+		<property name="parameterValues">
+			<map>
+				<entry key="piqHost">
+					<value>${powerIQHost}</value>
+				</entry>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="piqRPDUBulkSyncStepListener" class="com.raritan.tdz.piq.jobs.listener.PIQBulkSyncRPDUStepListener">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="queryString" ref="rpduQueryString"/>
+		<constructor-arg name="itemHome" ref="itemHome"/>
+		<constructor-arg name="piqSyncRPDUClient" ref="piqSyncPDUClient"/>
+		<constructor-arg name="piqHost" value="${powerIQHost}"/>
+		<property name="piqSyncJobListener" ref="piqJobBulkSyncListener"/>
+	</bean>
+	
+	<bean id="connectionsReader" class="org.springframework.batch.item.database.HibernateCursorItemReader">
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="queryString" ref="connectionsQueryString"/>
+		<property name="useStatelessSession" value="false"/>
+		<property name="parameterValues">
+			<map>
+				<entry key="piqHost">
+					<value>${powerIQHost}</value>
+				</entry>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="piqBulkSyncConnStepListener" class="com.raritan.tdz.piq.jobs.listener.PIQBulkSyncConnStepListener">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="queryString" ref="connectionsQueryString"/>
+		<constructor-arg name="itemHome" ref="itemHome"/>
+		<constructor-arg name="piqSyncOutletClient" ref="piqSyncOutletClient"/>
+		<constructor-arg name="piqHost" value="${powerIQHost}"/>
+		<property name="piqSyncJobListener" ref="piqJobBulkSyncListener" />
+	</bean>
+	
+	<bean id="piqBulkSyncService" class="com.raritan.tdz.piq.service.PIQBulkSyncServiceImpl">
+		<property name="piqSyncJobLauncher" ref="piqSyncJobLauncher" />
+		<property name="piqSyncJob" ref="piqBulkSyncJob" />
+		<property name="piqLocSyncListener" ref="piqLocBulkSyncStepListner" />	
+		<property name="piqCabSyncListener" ref="piqBulkSyncRackStepListener" />
+		<property name="piqDevSyncListener" ref="piqBulkSyncDeviceStepListener" />
+		<property name="piqRPDUSyncListener" ref="piqRPDUBulkSyncStepListener" />
+		<property name="piqPowerConnSyncListener" ref="piqBulkSyncConnStepListener" />
+		<property name="piqJobListener" ref="piqJobBulkSyncListener" />
+		<property name="eventHome" ref="eventHome" />			
+		<property name="piqHost" value="${powerIQHost}"/>
+	</bean>
+	
+	<job:job id="piqBulkSyncJob" job-repository="piqSyncJobRepository">
+		<job:step id="piqBulkLocation" next="piqBulkCabinet">
+			<job:tasklet>
+				<job:chunk reader="locationReader"
+					writer="dcSubscriber"
+					commit-interval="5">
+				</job:chunk>
+				<job:listeners>
+					<job:listener ref="piqLocBulkSyncStepListner"/>
+				</job:listeners>
+			</job:tasklet>
+		</job:step>
+		<job:step id="piqBulkCabinet" next="piqBulkDevice">
+			<job:tasklet>
+				<job:chunk reader="cabinetReader"
+					writer="cabinetItemSubscriber"
+					commit-interval="5">
+				</job:chunk>
+				<job:listeners>
+					<job:listener ref="piqBulkSyncRackStepListener"/>
+				</job:listeners>
+			</job:tasklet>
+		</job:step>
+		<job:step id="piqBulkDevice" next="piqBulkRPDU">
+			<job:tasklet>
+				<job:chunk reader="deviceReader"
+					writer="itItemSubscriber"
+					commit-interval="1" 
+					skip-limit="50000">
+					<job:skippable-exception-classes>
+						<job:include class="com.raritan.tdz.piq.exceptions.PIQUpdateException"/>
+					</job:skippable-exception-classes>
+				</job:chunk>
+				<job:no-rollback-exception-classes>
+					<job:include class="com.raritan.tdz.piq.exceptions.PIQIPAddressConflictException"/>
+				</job:no-rollback-exception-classes>
+				<job:listeners>
+					<job:listener ref="piqBulkSyncDeviceStepListener"/>
+				</job:listeners>
+			</job:tasklet>
+		</job:step>
+		<job:step id="piqBulkRPDU" next="piqBulkConnection">
+			<job:tasklet>
+				<job:chunk reader="rpduReader" 
+					writer="pduDataPortSubscriber"
+					commit-interval="25" 
+					skip-limit="50000">
+					<job:skippable-exception-classes>
+						<job:include class="com.raritan.tdz.piq.exceptions.PIQUpdateException"/>
+					</job:skippable-exception-classes>					
+				</job:chunk>
+				<job:no-rollback-exception-classes>
+					<job:include class="com.raritan.tdz.piq.exceptions.PIQIPAddressConflictException"/>
+				</job:no-rollback-exception-classes>
+				<job:listeners>
+					<job:listener ref="piqRPDUBulkSyncStepListener"/>
+				</job:listeners>
+			</job:tasklet>
+		</job:step>
+		<job:step id="piqBulkConnection">
+			<job:tasklet>
+				<job:chunk reader="connectionsReader"
+					writer="powerConnectionsSubscriber"
+					commit-interval="5">
+				</job:chunk>
+				<job:listeners>
+					<job:listener ref="piqBulkSyncConnStepListener"/>
+				</job:listeners>
+			</job:tasklet>
+		</job:step>
+		<job:listeners>
+			<job:listener ref="piqJobBulkSyncListener"/>
+			<job:listener ref="piqBulkSyncService"/>
+		</job:listeners>
+	</job:job>
+</beans>

@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<util:list id="specialHeadersId" value-type="java.lang.String">
+		<value>customfield.+</value>
+	</util:list>
+
+	<util:list id="noIpAddressSupport" value-type="java.lang.String">
+		<value>ipaddress</value>
+		<value>ipaddressportname</value>
+	</util:list>
+
+	<util:list id="noProxyIndexSupport" value-type="java.lang.String">
+		<value>proxyindex</value>
+	</util:list>
+
+	<util:list id="noPxSupport" value-type="java.lang.String">
+		<value>pxusername</value>
+		<value>pxpassword</value>
+	</util:list>
+
+	<util:list id="noSnmpSupport" value-type="java.lang.String">
+		<value>snmpwritecommunitystring</value>
+		<value>snmp3enabled</value>
+		<value>snmp3username</value>
+		<value>snmp3authorizationlevel</value>
+		<value>snmp3authorizationprotocol</value>
+		<value>snmp3authorizationpasskey</value>
+		<value>snmp3privacyprotocol</value>
+		<value>snmp3privacypasskey</value>
+	</util:list>
+	
+	<util:list id="noPiqSupport" value-type="java.lang.String">
+		<value>poweriqexternalkey</value>
+	</util:list>
+	
+	<bean id="itemImport" class="com.raritan.tdz.dctimport.dto.ItemImport" scope="prototype">
+		<constructor-arg name="specialHeaders" ref="specialHeadersId"/>
+	</bean>
+
+	<bean id="cabinetItemImport" class="com.raritan.tdz.dctimport.dto.ItemImport" scope="prototype">
+		<constructor-arg name="specialHeaders" ref="specialHeadersId"/>
+		<property name="unsupportedField">
+			<list>
+				<ref bean="noSnmpSupport"/>
+				<ref bean="noPxSupport"/>
+				<ref bean="noProxyIndexSupport"/>
+				<ref bean="noIpAddressSupport"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="dataPanelItemImport" class="com.raritan.tdz.dctimport.dto.ItemImport" scope="prototype">
+		<constructor-arg name="specialHeaders" ref="specialHeadersId"/>
+		<property name="unsupportedField">
+			<list>
+				<ref bean="noSnmpSupport"/>
+				<ref bean="noPxSupport"/>
+				<ref bean="noProxyIndexSupport"/>
+				<ref bean="noIpAddressSupport"/>
+				<ref bean="noPiqSupport"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="powerOutletItemImport" class="com.raritan.tdz.dctimport.dto.ItemImport" scope="prototype">
+		<constructor-arg name="specialHeaders" ref="specialHeadersId"/>
+		<property name="unsupportedField">
+			<list>
+				<ref bean="noSnmpSupport"/>
+				<ref bean="noPxSupport"/>
+				<ref bean="noProxyIndexSupport"/>
+				<ref bean="noIpAddressSupport"/>
+				<ref bean="noPiqSupport"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="passiveItemImport" class="com.raritan.tdz.dctimport.dto.ItemImport" scope="prototype">
+		<constructor-arg name="specialHeaders" ref="specialHeadersId"/>
+		<property name="unsupportedField">
+			<list>
+				<ref bean="noSnmpSupport"/>
+				<ref bean="noPxSupport"/>
+				<ref bean="noProxyIndexSupport"/>
+				<ref bean="noIpAddressSupport"/>
+				<ref bean="noPiqSupport"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="deviceItemImport" class="com.raritan.tdz.dctimport.dto.ItemImport" scope="prototype">
+		<constructor-arg name="specialHeaders" ref="specialHeadersId"/>
+		<property name="unsupportedField">
+			<list>
+				<ref bean="noPxSupport"/>
+				<ref bean="noProxyIndexSupport"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="networkItemImport" class="com.raritan.tdz.dctimport.dto.ItemImport" scope="prototype">
+		<constructor-arg name="specialHeaders" ref="specialHeadersId"/>
+		<property name="unsupportedField">
+			<list>
+				<ref bean="noPxSupport"/>
+				<ref bean="noProxyIndexSupport"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="upsItemImport" class="com.raritan.tdz.dctimport.dto.ItemImport" scope="prototype">
+		<constructor-arg name="specialHeaders" ref="specialHeadersId"/>
+		<property name="unsupportedField">
+			<list>
+				<ref bean="noPxSupport"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="cracItemImport" class="com.raritan.tdz.dctimport.dto.ItemImport" scope="prototype">
+		<constructor-arg name="specialHeaders" ref="specialHeadersId"/>
+		<property name="unsupportedField">
+			<list>
+				<ref bean="noPxSupport"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="floorPduItemImport" class="com.raritan.tdz.dctimport.dto.ItemImport" scope="prototype">
+		<constructor-arg name="specialHeaders" ref="specialHeadersId"/>
+		<property name="unsupportedField">
+			<list>
+				<ref bean="noPxSupport"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="locationImport" class="com.raritan.tdz.dctimport.dto.LocationImport" scope="prototype"/>
+
+	<bean id="powerPortImport" class="com.raritan.tdz.dctimport.dto.PowerPortImport" scope="prototype"/>
+
+	<bean id="dataPortImport" class="com.raritan.tdz.dctimport.dto.DataPortImport" scope="prototype"/>
+
+	<bean id="dataConnImport" class="com.raritan.tdz.dctimport.dto.DataConnImport" scope="prototype">
+		<constructor-arg name="specialHeaders">
+			<list>	 
+ 				<value>cord.+type</value> 
+ 				<value>cord.+id</value> 
+ 				<value>cord.+color</value> 
+ 				<value>cord.+length</value> 
+ 				<value>hop.+panelname</value> 
+ 				<value>hop.+portname</value>
+ 				<value>hop.+location</value>					 
+ 			</list> 
+		</constructor-arg>
+	</bean>
+
+	<bean id="powerConnImport" class="com.raritan.tdz.dctimport.dto.PowerConnImport" scope="prototype"/>
+	
+	<bean id="structuredCablingConnImport" class="com.raritan.tdz.dctimport.dto.StructuredCablingConnImport" scope="prototype"/>
+
+	<util:map id="importDTOs">
+		<entry key="add,location*" value-ref="locationImport"/>
+		<entry key="edit,location*" value-ref="locationImport"/>
+		<entry key="delete,location*" value-ref="locationImport"/>
+		<entry key="unmap,location*" value-ref="locationImport"/>
+
+		<entry key="add,cabinet*" value-ref="cabinetItemImport"/>
+		<entry key="add,device-freestanding*" value-ref="deviceItemImport"/>
+		<entry key="add,network-freestanding*" value-ref="networkItemImport"/>
+		
+		<entry key="add,data-port*" value-ref="dataPortImport"/>
+		<entry key="edit,data-port*" value-ref="dataPortImport"/>
+		<entry key="delete,data-port*" value-ref="dataPortImport"/>
+		
+		<entry key="add,ups*" value-ref="upsItemImport"/>
+		<entry key="add,crac*" value-ref="cracItemImport"/>
+		<entry key="add,floorpdu*" value-ref="floorPduItemImport"/>
+		<entry key="add,powerpanel*" value-ref="itemImport"/>
+		<entry key="add,device-rackable*" value-ref="deviceItemImport"/>
+		<entry key="add,device-bladechassis-rackable*" value-ref="deviceItemImport"/>
+		<entry key="add,network-chassis-rackable*" value-ref="networkItemImport"/>
+		<entry key="add,network-rackable*" value-ref="networkItemImport"/>
+		<entry key="add,datapanel-rackable*" value-ref="dataPanelItemImport"/>
+		<entry key="add,rackpdu-rackable*" value-ref="itemImport"/>
+		<entry key="add,probe-rackable*" value-ref="itemImport"/>
+		<entry key="add,device-nonrackable*" value-ref="deviceItemImport"/>
+		<entry key="add,network-nonrackable*" value-ref="networkItemImport"/>
+		<entry key="add,datapanel-nonrackable*" value-ref="dataPanelItemImport"/>
+		<entry key="add,rackpdu-nonrackable*" value-ref="itemImport"/>
+		<entry key="add,probe-nonrackable*" value-ref="itemImport"/>
+		<entry key="add,device-zerou*" value-ref="deviceItemImport"/>
+		<entry key="add,rackpdu-zerou*" value-ref="itemImport"/>
+		<entry key="add,probe-zerou*" value-ref="itemImport"/>
+		<entry key="add,datapanel-zerou*" value-ref="dataPanelItemImport"/>
+		<entry key="add,device-blade*" value-ref="deviceItemImport"/>
+		<entry key="add,network-blade*" value-ref="networkItemImport"/>
+		<entry key="add,poweroutlet*" value-ref="powerOutletItemImport"/>
+		<entry key="add,passive*" value-ref="passiveItemImport"/>
+
+		<entry key="edit,cabinet*" value-ref="cabinetItemImport"/>
+		<entry key="edit,device-freestanding*" value-ref="deviceItemImport"/>
+		<entry key="edit,network-freestanding*" value-ref="networkItemImport"/>
+		<entry key="edit,ups*" value-ref="upsItemImport"/>
+		<entry key="edit,crac*" value-ref="cracItemImport"/>
+		<entry key="edit,floorpdu*" value-ref="floorPduItemImport"/>
+		<entry key="edit,powerpanel*" value-ref="itemImport"/>
+		<entry key="edit,device-rackable*" value-ref="deviceItemImport"/>
+		<entry key="edit,device-bladechassis-rackable*" value-ref="deviceItemImport"/>
+		<entry key="edit,network-chassis-rackable*" value-ref="networkItemImport"/>
+		<entry key="edit,network-rackable*" value-ref="networkItemImport"/>
+		<entry key="edit,datapanel-rackable*" value-ref="dataPanelItemImport"/>
+		<entry key="edit,rackpdu-rackable*" value-ref="itemImport"/>
+		<entry key="edit,probe-rackable*" value-ref="itemImport"/>
+		<entry key="edit,device-nonrackable*" value-ref="deviceItemImport"/>
+		<entry key="edit,network-nonrackable*" value-ref="networkItemImport"/>
+		<entry key="edit,datapanel-nonrackable*" value-ref="dataPanelItemImport"/>
+		<entry key="edit,rackpdu-nonrackable*" value-ref="itemImport"/>
+		<entry key="edit,probe-nonrackable*" value-ref="itemImport"/>
+		<entry key="edit,device-zerou*" value-ref="deviceItemImport"/>
+		<entry key="edit,rackpdu-zerou*" value-ref="itemImport"/>
+		<entry key="edit,probe-zerou*" value-ref="itemImport"/>
+		<entry key="edit,datapanel-zerou*" value-ref="dataPanelItemImport"/>
+		<entry key="edit,device-blade*" value-ref="deviceItemImport"/>
+		<entry key="edit,network-blade*" value-ref="networkItemImport"/>
+		<entry key="edit,poweroutlet*" value-ref="powerOutletItemImport"/>
+		<entry key="edit,passive*" value-ref="passiveItemImport"/>
+
+		<entry key="delete,cabinet*" value-ref="cabinetItemImport"/>
+		<entry key="delete,device-freestanding*" value-ref="deviceItemImport"/>
+		<entry key="delete,network-freestanding*" value-ref="networkItemImport"/>
+		<entry key="delete,ups*" value-ref="upsItemImport"/>
+		<entry key="delete,crac*" value-ref="cracItemImport"/>
+		<entry key="delete,floorpdu*" value-ref="floorPduItemImport"/>
+		<entry key="delete,powerpanel*" value-ref="itemImport"/>
+		<entry key="delete,device-rackable*" value-ref="deviceItemImport"/>
+		<entry key="delete,device-bladechassis-rackable*" value-ref="deviceItemImport"/>
+		<entry key="delete,network-chassis-rackable*" value-ref="networkItemImport"/>
+		<entry key="delete,network-rackable*" value-ref="networkItemImport"/>
+		<entry key="delete,datapanel-rackable*" value-ref="dataPanelItemImport"/>
+		<entry key="delete,rackpdu-rackable*" value-ref="itemImport"/>
+		<entry key="delete,probe-rackable*" value-ref="itemImport"/>
+		<entry key="delete,device-nonrackable*" value-ref="deviceItemImport"/>
+		<entry key="delete,network-nonrackable*" value-ref="networkItemImport"/>
+		<entry key="delete,datapanel-nonrackable*" value-ref="dataPanelItemImport"/>
+		<entry key="delete,rackpdu-nonrackable*" value-ref="itemImport"/>
+		<entry key="delete,probe-nonrackable*" value-ref="itemImport"/>
+		<entry key="delete,device-zerou*" value-ref="deviceItemImport"/>
+		<entry key="delete,rackpdu-zerou*" value-ref="itemImport"/>
+		<entry key="delete,probe-zerou*" value-ref="itemImport"/>
+		<entry key="delete,datapanel-zerou*" value-ref="dataPanelItemImport"/>
+		<entry key="delete,device-blade*" value-ref="deviceItemImport"/>
+		<entry key="delete,network-blade*" value-ref="networkItemImport"/>
+		<entry key="delete,poweroutlet*" value-ref="powerOutletItemImport"/>
+		<entry key="delete,passive*" value-ref="passiveItemImport"/>
+		
+		<entry key="unmap,item*" value-ref="itemImport"/>
+
+		<entry key="add,power-port*" value-ref="powerPortImport"/>
+		<entry key="edit,power-port*" value-ref="powerPortImport"/>
+		<entry key="delete,power-port*" value-ref="powerPortImport"/>
+		
+		<entry key="add,data-connection*" value-ref="dataConnImport"/>
+		<entry key="edit,data-connection*" value-ref="dataConnImport"/>
+		<entry key="delete,data-connection*" value-ref="dataConnImport"/>
+		
+		<entry key="add,power-connection*" value-ref="powerConnImport"/>
+		<entry key="edit,power-connection*" value-ref="powerConnImport"/>
+		<entry key="delete,power-connection*" value-ref="powerConnImport"/>
+		
+		<entry key="delete,structured-cabling*" value-ref="structuredCablingConnImport"/>
+	</util:map>
+</beans>

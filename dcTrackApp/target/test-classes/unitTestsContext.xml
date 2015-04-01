@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:flex="http://www.springframework.org/schema/flex"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+						http://www.springframework.org/schema/flex 
+    					http://www.springframework.org/schema/flex/spring-flex-1.0.xsd
+    					http://www.springframework.org/schema/context
+    					http://www.springframework.org/schema/context/spring-context-3.1.xsd
+    					http://www.springframework.org/schema/aop
+    					http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
+	
+	<context:annotation-config/>
+	<aop:aspectj-autoproxy/>
+	
+	<context:property-placeholder ignore-unresolvable="true"/>
+	
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="properties">
+			<props>
+				<prop key="piqContextPathPrefix">.</prop>
+				<prop key="powerIQHost"></prop>
+				<prop key="requestContextPathPrefix">../../../../../../src/main/webapp/WEB-INF/spring</prop>
+				<prop key="reportContextPathPrefix">../../../../../../src/main/webapp/WEB-INF/spring/reports</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+      <property name="scopes">
+          <map>
+              <entry key="thread">
+                  <bean class="org.springframework.context.support.SimpleThreadScope"/>
+              </entry>
+              <entry key="session">
+                  <bean class="org.springframework.context.support.SimpleThreadScope"/>
+              </entry>
+          </map>
+      </property>
+  	</bean>
+  	
+
+  	
+  	
+  	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+  	
+  	<import resource="hibernate.cfg.xml" />
+	<import resource="../../src/main/webapp/WEB-INF/spring/messageSources.xml" />
+	<import resource="../../src/main/webapp/WEB-INF/spring/rest.xml" />
+	<import resource="test-daos.xml"/>
+	<import resource="testMockObjects.xml"/>
+	<import resource="../../src/main/webapp/WEB-INF/spring/reports/reportConfig.xml"/>
+	<import resource="../../src/main/webapp/WEB-INF/spring/reports/birt.xml"/>
+	<import resource="../../src/main/webapp/WEB-INF/spring/homes.xml" /> 
+	<import resource="../../src/main/webapp/WEB-INF/spring/rulesengine.xml" />
+	<import resource="../../src/main/webapp/WEB-INF/spring/validators.xml" />
+	<import resource="../../src/main/webapp/WEB-INF/spring/ItemStateChart.xml" />
+	<import resource="../../src/main/webapp/WEB-INF/spring/ChangeModel.xml" />
+	<import resource="../../src/main/webapp/WEB-INF/spring/ports.xml" />
+	<import resource="../../src/main/webapp/WEB-INF/spring/powerChain.xml" />
+	<import resource="../../src/main/webapp/WEB-INF/spring/diagnostics.xml" />
+	<import resource="../../src/main/webapp/WEB-INF/spring/units.xml" />
+	<import resource="../../src/main/webapp/WEB-INF/spring/cache.xml" />
+<!-- 	<import resource="../../src/main/webapp/WEB-INF/spring/piqIntegration/jobs.xml" /> 
+	<import resource="../../src/main/webapp/WEB-INF/spring/piqIntegration/piqEventsAndAssetStrip.xml"/> -->
+<!-- 	<import resource="../../src/main/webapp/WEB-INF/spring/piqIntegration/piqSyncClient.xml"/>
+	<import resource="../../src/main/webapp/WEB-INF/spring/piqIntegration/piqSubscribers.xml"/> -->
+	<import resource="../../src/main/webapp/WEB-INF/spring/piqIntegration/piqOngoingUpdatesConfig.xml" />
+	<import resource="../../src/main/webapp/WEB-INF/spring/piqIntegration/piqGetDataConfig.xml" />
+	<import resource="../../src/main/webapp/WEB-INF/spring/piqIntegration/piqBulkUpdateConfig.xml"/>
+	<import resource="../../src/main/webapp/WEB-INF/spring/piqIntegration/piqAssetStripEventsAndSettingsConfig.xml"/>
+	<import resource="../../src/main/webapp/WEB-INF/spring/piqIntegration/piqFloorMapUpdateConfig.xml"/>
+	<import resource="../../src/main/webapp/WEB-INF/spring/vpc.xml" />
+	<import resource="../../src/main/webapp/WEB-INF/spring/itemmove.xml" />
+	<import resource="../../src/main/webapp/WEB-INF/spring/modelFactory.xml" />
+	
+	<!--  TODO: importing services.xml has a problem, so including services that are being tested here -->
+	<bean id="dataCenterLocationService" class="com.raritan.tdz.service.DataCenterLocationServiceImpl">
+		<constructor-arg index="0">
+			<ref bean="dataCenterLocationHome" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="utilService" class="com.raritan.tdz.service.UtilServiceImpl">
+		<constructor-arg index="0">
+			<ref bean="utilHome" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="modelService" class="com.raritan.tdz.service.ModelServiceImpl">
+		<constructor-arg index="0">
+			<ref bean="modelHome" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="itemService" class="com.raritan.tdz.item.service.ItemServiceImpl">
+		<constructor-arg index="0">
+			<ref bean="itemHome" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="utilService" />
+		</constructor-arg>
+		<constructor-arg index="2">
+			<ref bean="validatorFactory" />
+		</constructor-arg>
+		<property name="portService">
+			<ref bean="portService" />
+		</property>
+		<property name="utilHome" ref="utilHome" />
+		<property name="cabinetHome" ref="cabinetHome"/>
+		<property name="portHome" ref="portHome" />
+		<property name="chassisService" ref="chassisService" />
+	</bean>
+
+	<bean id="itemGroupService" class="com.raritan.tdz.service.ItemGroupServiceImpl">
+		<constructor-arg index="0">
+			<ref bean="itemGroupHome" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="connectionService" class="com.raritan.tdz.service.ConnectionServiceImpl">
+		<constructor-arg index="0">
+			<ref bean="connectionHome" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="validatorFactory" />
+		</constructor-arg>
+		<constructor-arg index="2">
+			<ref bean="utilService" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="circuitService" class="com.raritan.tdz.service.CircuitServiceImpl">
+		<constructor-arg index="0">
+			<ref bean="circuitHome" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="connectionService" />
+		</constructor-arg>
+		<constructor-arg index="2">
+			<ref bean="validatorFactory" />
+		</constructor-arg>
+
+		<property name="portService" ref="portService" />
+	</bean>
+
+	<bean id="portService" class="com.raritan.tdz.service.PortServiceImpl">
+		<constructor-arg index="0">
+			<ref bean="portHome" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="itemHome" />
+		</constructor-arg>
+		<constructor-arg index="2">
+			<ref bean="utilService" />
+		</constructor-arg>
+		<property name="connectionService">
+			<ref bean="connectionService" />
+		</property>
+		<property name="circuitService">
+			<ref bean="circuitService" />
+		</property>
+	</bean>
+
+	<bean id="reservationService" class="com.raritan.tdz.service.ReservationServiceImpl">
+		<constructor-arg index="0">
+			<ref bean="reservationHome" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="ticketService" class="com.raritan.tdz.service.TicketServiceImpl">
+		<constructor-arg index="0">
+			<ref bean="ticketHome" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="itemHome" />
+		</constructor-arg>
+	</bean>
+		
+<!-- 	<bean id="workflowService" class="com.raritan.tdz.changemgmt.home.BonitaWorkflowService" /> -->
+	
+	<bean id="changeMgmtWorkflow" class="com.raritan.tdz.changemgmt.home.workflow.WorkflowTests">
+	</bean>
+	
+	<!--  
+	<bean id="changeMgmtService" class="com.raritan.tdz.changemgmt.service.ChangeMgmtService26Impl">
+		<constructor-arg name="workflowHome" ref="changeMgmtWorkflow" />
+		<constructor-arg name="itemHome" ref="itemHome" />
+	</bean>
+	-->
+	
+	<bean id="changeMgmtService" class="com.raritan.tdz.changemgmt.service.ChangeMgmtService26Impl">
+		<constructor-arg index="0">
+			<ref bean="changeMgmtHome26" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="portHome" />
+		</constructor-arg>
+	</bean>
+	
+	<bean id="eventService" class="com.raritan.tdz.events.service.EventServiceImpl">
+		<constructor-arg index="0">
+			<ref bean="eventHome" />
+		</constructor-arg>
+	</bean>
+	
+	<!--
+	<bean id="circuitPDService" class="com.raritan.tdz.circuit.service.CircuitPDServiceImpl">
+		<constructor-arg index="0">
+			<ref bean="circuitPDHome" />
+		</constructor-arg>
+		<property name="itemHome" ref="itemHome" />
+		<property name="changeMgmt" ref="changeMgmtHome26" />
+		<property name="changeMgmtService" ref="changeMgmtService" />
+		<property name="itemService" ref="itemService" />
+	</bean>
+	
+	<bean id="appSettingService" class="com.raritan.tdz.settings.service.ApplicationSettingServiceImpl">
+		<constructor-arg index="0">
+			<ref bean="appSettings" />
+		</constructor-arg>
+		<property name="piqSettings" ref="piqSettingsHome" />
+		<property name="snmpSettings" ref="snmpSettingsHome" />
+		<property name="piqBulkSyncService" ref="piqBulkUpdateGateway" />
+	</bean>
+	  -->
+	  
+	<bean id="circuitPDService" class="com.raritan.tdz.circuit.service.CircuitPDServiceImpl">
+		<constructor-arg index="0">
+			<ref bean="circuitPDHome" />
+		</constructor-arg>
+		<property name="itemHome" ref="itemHome" />
+		<property name="portHome" ref="portHome" />
+		<property name="changeMgmt" ref="changeMgmtHome26" />
+		<property name="changeMgmtService" ref="changeMgmtService" />
+		<property name="itemService" ref="itemService" />
+		<property name="messageSource" ref="messageSource" />
+		<property name="circuitEditLock">
+			<bean class="com.raritan.tdz.circuit.service.CircuitEditLock">
+				<!-- Enables circuit edit locking -->
+				<property name="enabled" value="true" />
+				<!--  Maximum circuit edit lock idle time in minutes -->
+				<property name="maxLockIdleMinutes" value="5" />
+				<!--  Interval in minutes to cleanup idle locks -->
+				<property name="cleanupIntervalMinutes" value="10" />
+				<property name="messageSource" ref="messageSource" />
+			</bean>
+		</property>
+		<property name="circuitSearch" ref="circuitSearch" />
+	</bean>
+	
+	<bean id="appSettingService" class="com.raritan.tdz.settings.service.ApplicationSettingServiceImpl">
+		<constructor-arg index="0">
+			<ref bean="appSettings" />
+		</constructor-arg>
+		<property name="piqSettings" ref="piqSettingsHome" />
+		<property name="snmpSettings" ref="snmpSettingsHome" />
+		<property name="piqBulkSyncService" value="#{ null }" />
+	</bean>
+	
+	<bean id="piqSettingsHome" class="com.raritan.tdz.piq.home.PIQSettingsHomeImpl">
+		<constructor-arg index="0" value="#{ null }" />
+<!-- 			<value>null</value> -->
+<!-- 			<ref bean="assetStripJobTrigger" /> -->
+<!-- 		</constructor-arg> -->
+		<constructor-arg index="1" value="#{ null }" />
+<!-- 			<value>null</value> -->
+		<constructor-arg index="2">
+			<ref bean="restTemplate" />
+		</constructor-arg>
+		<constructor-arg index="3" value="#{null}"/>
+		<constructor-arg index="4" value="#{null}"/>
+	</bean>
+
+	<bean id="dzMapper" class="org.dozer.DozerBeanMapper">
+		<property name="mappingFiles">
+			<list>
+				<value>com/raritan/tdz/item/dto/dozer/mapping/ItemSearchResultDTOMapping.xml</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="jaasAuthenticationProvider" 
+  		class="org.springframework.security.authentication.jaas.JaasAuthenticationProvider">
+	    <property name="loginConfig" value="classpath:jaas-standard.cfg"/>
+	    <property name="loginContextName" value="Bonita"/>
+	    <property name="callbackHandlers">
+	       <list>
+	          <bean class="org.springframework.security.authentication.jaas.JaasNameCallbackHandler" />
+	          <bean class="org.springframework.security.authentication.jaas.JaasPasswordCallbackHandler" />
+	       </list>
+	    </property>
+	    <property name="authorityGranters">
+	    	<list>
+	    		<bean class="com.raritan.tdz.security.BonitaAuthorityGranter" />
+	    	</list>
+	    </property>
+ 	</bean>
+	
+	<!-- <bean id="pduJobHandler" class="com.raritan.tdz.piq.jobs.PDUJobHandler">
+		<constructor-arg index="0">
+			<ref bean="eventHome" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="piqSyncPDUClient" />
+		</constructor-arg>
+	</bean> -->
+	
+	<bean id="fieldService" class="com.raritan.tdz.field.service.FieldServiceImpl">
+		<constructor-arg index="0">
+			<ref bean="fieldHome" />
+		</constructor-arg>
+	</bean>
+	
+	<bean id="chassisService" class="com.raritan.tdz.chassis.service.ChassisServiceImpl">
+		<constructor-arg name="chassisHome" ref="chassisHome" />
+	</bean>
+
+	<!-- <import resource="../../src/main/webapp/WEB-INF/spring/piqIntegration/piqSync.xml" /> -->
+
+	<bean id="unitConverterHelper" class="com.raritan.tdz.util.UnitConverterHelperImpl"/> 
+
+	<bean id="poundToKgUnitConverter" class="com.raritan.tdz.util.UnitConverterImpl">
+		<constructor-arg name="conversionFactor" value="0.4536"/>
+		<property name="unitConverterHelper" ref="unitConverterHelper"/>
+	</bean>
+
+	<bean id="tonToKgUnitConverter" class="com.raritan.tdz.util.UnitConverterImpl">
+		<constructor-arg name="conversionFactor" value="907.18474"/>
+		<property name="unitConverterHelper" ref="unitConverterHelper"/>
+	</bean>
+		
+	<bean id="inchToMMUnitConverter" class="com.raritan.tdz.util.UnitConverterImpl">
+		<constructor-arg name="conversionFactor" value="25.4"/>
+		<property name="unitConverterHelper" ref="unitConverterHelper"/>
+	</bean>
+
+	<bean id="feetToMeterUnitConverter" class="com.raritan.tdz.util.UnitConverterImpl">
+		<constructor-arg name="conversionFactor" value="0.3048"/>
+		<property name="unitConverterHelper" ref="unitConverterHelper"/>
+	</bean>
+
+	<bean id="sqFeetToSqMtrUnitConverter" class="com.raritan.tdz.util.UnitConverterImpl">
+		<constructor-arg name="conversionFactor" value="0.092903"/>
+		<property name="unitConverterHelper" ref="unitConverterHelper"/>
+	</bean>
+
+	<bean id="tonToKwUnitConverter" class="com.raritan.tdz.util.UnitConverterImpl">
+		<constructor-arg name="conversionFactor" value="3.5168532"/>
+		<property name="unitConverterHelper" ref="unitConverterHelper"/>
+	</bean>
+    
+	<bean id="kwToTonsUnitConverter" class="com.raritan.tdz.util.KwToTonConverterImpl">
+		<constructor-arg name="conversionFactor" value="0.284345136"/>
+	</bean>
+	
+	<bean id="unitTestItemDAO" class="com.raritan.tdz.item.home.UnitTestItemDAOImpl" 
+		autowire-candidate="true" autowire="byName">
+		<constructor-arg name="sf" ref="sessionFactory"/>
+	</bean>
+	
+	<bean id="unitTestSessionMgmtAspect"
+  		class="com.raritan.tdz.item.home.UnitTestSessionMgmtAspect" factory-method="aspectOf">
+  		<property name="sf" ref="sessionFactory"/>
+   	</bean>
+   	
+   	<bean id="requestService" class="com.raritan.tdz.request.home.RequestServiceImpl">
+   		<constructor-arg name="requestHome" ref="requestHomeGateway"/>
+		<constructor-arg name="requestProgressUpdate" ref="requestProgressUpdateDTO"/>
+	</bean>
+   	
+   	
+</beans>

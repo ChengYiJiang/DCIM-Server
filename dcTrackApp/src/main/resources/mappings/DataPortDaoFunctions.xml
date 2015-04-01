@@ -1,0 +1,11 @@
+﻿<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE hibernate-mapping
+   PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+   
+<hibernate-mapping>
+  <query name="DataPort.findUsedPorts">
+  	<![CDATA[select dp.portId from DataPort dp where dp.item.itemId = ? and dp.used = 'true']]>
+  </query>
+                
+</hibernate-mapping>

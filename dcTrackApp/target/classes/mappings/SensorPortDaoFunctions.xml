@@ -1,0 +1,55 @@
+﻿<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE hibernate-mapping
+   PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+   
+<hibernate-mapping>
+
+  <query name="SensorPort.findSensorPortByPiqIdSubClassAndSortOrder">
+  	<![CDATA[select sp from SensorPort sp where sp.item.itemId = ? and sp.piqId = ? and sp.sortOrder = ? and sp.portSubClassLookup.lkpValueCode = ? ]]>
+  </query>
+
+  <query name="SensorPort.findSensorPortByTypeAndOrder">
+  	<![CDATA[select sp from SensorPort sp where sp.item.itemId = ? and sp.sortOrder = ? and sp.portSubClassLookup.lkpValueCode = ? ]]>
+  </query>
+
+  <query name="SensorPort.updateSensorData">
+  	<![CDATA[update SensorPort sp set sp.piqId = ?, valueActual = ?  where sp.item.itemId = ? ]]>
+  </query>
+
+  <query name="SensorPort.updateSensorPortSyncToFalse">
+  	<![CDATA[update SensorPort sp set sp.sync = false where sp.item = (select i from Item i where i.itemId = ?) 
+  				and sp.portSubClassLookup <> (select sub from LksData sub where sub.lkpValueCode = ?) ]]>
+  </query>
+  
+  <query name="SensorPort.findSensorPortbyIdAndSync">
+  	<![CDATA[delete from SensorPort pp where pp.item.itemId = ? and pp.sync = FALSE]]>
+  </query>
+  
+  <query name="SensorPort.findPortsNotInSync">
+  	<![CDATA[select sp from SensorPort sp where sp.item.itemId = ? and sp.portSubClassLookup.lkpValueCode <> ? and sp.sync=FALSE ]]>
+  </query>
+
+  <!--  find ports excluding port with sortOrder for a given lkpValueCode -->
+  <query name="SensorPort.findPorts">
+  	<![CDATA[select sp from SensorPort sp where sp.item.itemId = ? and  not (sp.portSubClassLookup.lkpValueCode = ? and sp.sortOrder = ?) ]]>
+  </query>
+
+  <query name="SensorPort.findPortsBySubclass">
+  	<![CDATA[select sp from SensorPort sp where sp.item.itemId = ? and sp.portSubClassLookup.lkpValueCode = ? ]]>
+  </query>
+
+  <query name="SensorPort.updateAssetStripSensorPortSyncToFalse">
+  	<![CDATA[update SensorPort sp set sp.sync = false where sp.item = (select i from Item i where i.itemId = ?) 
+  				and sp.portSubClassLookup = (select sub from LksData sub where sub.lkpValueCode = ?) ]]>
+  </query>
+
+  <query name="SensorPort.findAssetStripPortsNotInSync">
+  	<![CDATA[select sp from SensorPort sp where sp.item.itemId = ? and sp.portSubClassLookup.lkpValueCode = ? and sp.sync=FALSE ]]>
+  </query>
+  
+    <query name="SensorPort.findUsedPorts">
+  	<![CDATA[select sp.portId from DataPort sp where sp.item.itemId = ? and sp.used = 'true']]>
+  </query>
+                              
+</hibernate-mapping>

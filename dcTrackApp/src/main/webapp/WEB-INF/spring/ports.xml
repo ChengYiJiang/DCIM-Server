@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+    					http://www.springframework.org/schema/util
+    					http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+	
+	<import resource="messageSources.xml"/>
+	<import resource="itemmove.xml"/>
+	
+	<bean id="portObjectFactory" class="com.raritan.tdz.port.home.PortObjectFactory" autowire-candidate="true" autowire="byName" scope="prototype">
+		<property name="portClasses">
+			<map>
+				<!--TODO: change the hard coded numeric lkpValueCode 
+				to constants defined in SystemLookup table as defined 
+				at the bottom of this map. For 3.1.0 patch release I want 
+				to keep the changes minimal --> 
+
+				<!-- Logical Port Object -->
+				<entry key="30004" value="logicalPortObject" />
+				
+				<!-- Power Supply Port Object -->
+				<entry key="20001" value="powerSupplyPortObject" />
+				
+				<!-- Input Cord Port Object -->
+				<entry key="20002" value="inputCordPortObject" />
+				
+				<!-- Rack PDU Output Port Object -->
+				<entry key="20003" value="rackPduOutputPortObject" />
+				
+				<!-- Branch Circuit Breaker Port Object -->
+				<entry key="20005" value="breakerPortObject" />
+				
+				<!-- Panel Breaker Object -->
+				<entry key="20006" value="breakerPortObject" />
+				
+				<!-- FPDU Input Breaker Port Object -->
+				<entry key="20007" value="breakerPortObject" />
+				
+				<!-- UPS Bank Output Breaker Port Object -->
+				<entry key="20010" value="breakerPortObject" />
+				
+				<!-- Whip Outlet Port Object. Uses the generic behavior of breaker -->
+				<entry key="20008" value="powerOutletBreakerPortObject" />
+				
+				<!-- Busway Outlet Port Object. Uses the generic behavior of breaker -->
+				<entry key="20009" value="powerOutletBreakerPortObject" />
+				
+				<!-- Active Port Object -->
+				<entry key="30001" value="activePortObject" />
+				
+				<!-- Passive Port Object -->
+				<entry key="30002" value="passivePortObject" />
+				
+				<!-- Virtual Port Object -->
+				<entry key="30003" value="virtualPortObject" />
+				
+				<!-- Temperature Port Object -->
+				 <entry key="40001" value="temperaturePortObject" /> 
+				
+				<!-- Humidity Port Object -->
+				<entry key="40002" value="humidityPortObject" />
+				
+				<!-- Air Pressure Port Object -->
+				<entry key="40003" value="airPressurePortObject" />
+				
+				<!-- Air Flow Port Object -->
+				<!-- <entry key="40003" value="airFlowPortObject" /> -->
+				
+				<!-- Contact Closure Object -->
+				<entry key="40005" value="contactClosurePortObject" /> 
+				
+				<!-- AssetStrip Port Object -->
+				<entry key="40007" value="assetStripPortObject" /> 
+
+                <!-- AirFlow Port Object -->
+                <entry key="40008" value="airFlowPortObject" />
+
+				<!--  Water Sensor port Object -->
+				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).WATER }" value="contactClosurePortObject" /> 
+
+				<!--  Vibration Sensor port Object -->
+				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).VIBRATION }" value="contactClosurePortObject" />
+				 
+				<!--  Smoke Sensor port Object -->
+				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).SMOKE }" value="contactClosurePortObject" /> 
+			</map>
+		</property>
+	</bean>
+
+	<bean id="logicalPortObject" class="com.raritan.tdz.port.home.LogicalPortObject" autowire-candidate="true" autowire="byName" scope="prototype">
+		<property name="messageSource" ref="messageSource"/>
+	</bean>
+
+	<bean id="powerSupplyPortObject" class="com.raritan.tdz.port.home.PowerSupplyPortObject" autowire-candidate="true" autowire="byName" scope="prototype">
+		<property name="messageSource" ref="messageSource"/>
+	</bean>
+
+	<bean id="inputCordPortObject" class="com.raritan.tdz.port.home.InputCordPortObject" autowire-candidate="true" autowire="byName" scope="prototype">
+		<property name="messageSource" ref="messageSource"/>
+	</bean>
+
+	<bean id="rackPduOutputPortObject" class="com.raritan.tdz.port.home.RackPduOutputPortObject" autowire-candidate="true" autowire="byName" scope="prototype">
+		<property name="messageSource" ref="messageSource"/>
+	</bean>
+
+	<bean id="breakerPortObject" class="com.raritan.tdz.port.home.BreakerPortObject" autowire-candidate="true" autowire="byName" scope="prototype">
+		<property name="messageSource" ref="messageSource"/>
+	</bean>
+	
+	<bean id="powerOutletBreakerPortObject" class="com.raritan.tdz.port.home.PowerOutletBreakerPortObject"  autowire-candidate="true" autowire="byName" scope="prototype">
+		<property name="messageSource" ref="messageSource"/>
+	</bean>
+
+	<bean id="activePortObject" class="com.raritan.tdz.port.home.ActivePortObject" autowire-candidate="true" autowire="byName" scope="prototype">
+		<property name="messageSource" ref="messageSource"/>
+	</bean>
+
+	<bean id="passivePortObject" class="com.raritan.tdz.port.home.PassivePortObject" autowire-candidate="true" autowire="byName" scope="prototype">
+		<property name="messageSource" ref="messageSource"/>
+	</bean>
+
+	<bean id="virtualPortObject" class="com.raritan.tdz.port.home.VirtualPortObject" autowire-candidate="true" autowire="byName" scope="prototype">
+		<property name="messageSource" ref="messageSource"/>
+	</bean>
+
+	<bean id="temperaturePortObject" class="com.raritan.tdz.port.home.TemperaturePortObject" autowire-candidate="true" autowire="byName" scope="prototype">
+		<property name="messageSource" ref="messageSource"/>
+	</bean>
+
+	<bean id="humidityPortObject" class="com.raritan.tdz.port.home.HumidityPortObject" autowire-candidate="true" autowire="byName" scope="prototype">
+		<property name="messageSource" ref="messageSource"/>
+	</bean>
+
+	<bean id="airPressurePortObject" class="com.raritan.tdz.port.home.AirPressurePortObject" autowire-candidate="true" autowire="byName" scope="prototype">
+		<property name="messageSource" ref="messageSource"/>
+	</bean>
+
+<!--
+	<bean id="airFlowPortObject" class="com.raritan.tdz.port.home.AirFlowPortObject" autowire-candidate="true" autowire="byName" scope="prototype">
+		<property name="messageSource" ref="messageSource"/>
+	</bean>
+-->
+
+	<bean id="airFlowPortObject" class="com.raritan.tdz.port.home.AirFlowPortObject" autowire-candidate="true" autowire="byName" scope="prototype">
+		<property name="messageSource" ref="messageSource"/>
+	</bean>
+
+	<bean id="assetStripPortObject" class="com.raritan.tdz.port.home.AssetStripPortObject" autowire-candidate="true" autowire="byName" scope="prototype">
+		<property name="messageSource" ref="messageSource"/>
+	</bean>
+
+	<bean id="contactClosurePortObject" class="com.raritan.tdz.port.home.ContactClosurePortObject" autowire-candidate="true" autowire="byName" scope="prototype">
+		<property name="messageSource" ref="messageSource"/>
+	</bean>
+
+	
+	<bean id="portObjectCollectionFactory" class="com.raritan.tdz.port.home.PortObjectCollectionFactory" autowire-candidate="true" autowire="byName" scope="prototype">
+		<property name="portsIds">
+			<map>
+				<!-- TODO:: change the key to the unique key value  -->
+				
+				<!-- Power Port Objects  -->
+				<entry key="PowerPorts" value-ref="powerPortObjectCollection" />
+				
+				<!-- Power Port Objects: Rack Pdu  -->
+				<entry key="501:PowerPorts" value-ref="rackPduPowerPortObjectCollection" /> <!-- Rackable  -->
+				<entry key="502:PowerPorts" value-ref="rackPduPowerPortObjectCollection" /> <!-- Non Rackable -->
+				<entry key="506:PowerPorts" value-ref="rackPduPowerPortObjectCollection" /> <!-- Zero U  -->
+				
+				<entry key="411:PowerPorts" value-ref="powerOutletPowerPortObjectCollection" /> <!-- Whip Outlet  -->
+				<entry key="412:PowerPorts" value-ref="powerOutletPowerPortObjectCollection" /> <!-- Busway Outlet  -->
+				
+				<!-- Data Port Objects  -->
+				<entry key="DataPorts" value-ref="dataPortObjectCollection" />
+
+				<!-- Data Port Objects: Network Blades -->
+				<entry key="205:DataPorts" value-ref="nwBladeDataPortObjectCollection" />
+				
+				<!-- Data Port Objects: Data Panel -->
+				<entry key="301:DataPorts" value-ref="dataPanelDataPortObjectCollection" />
+				<entry key="302:DataPorts" value-ref="dataPanelDataPortObjectCollection" />
+				<entry key="306:DataPorts" value-ref="dataPanelDataPortObjectCollection" />
+				
+				<!-- Sensor Port Objects  -->
+				<entry key="SensorPorts" value-ref="sensorPortObjectCollection" /> 
+			</map>
+		</property>
+	</bean>
+
+	<bean id="powerPortObjectCollection" class="com.raritan.tdz.port.home.PowerPortObjectCollection" autowire-candidate="true" autowire="byName" scope="prototype">
+		<constructor-arg name="portObjectFactory" ref="portObjectFactory"/>
+		<property name="portMoveDAO" ref="powerPortMoveDAO"/>
+		<property name="powerSupplyCapacityValidator" value="powerSupplyCapacityValidator"/>
+	</bean>
+	
+	<bean id="dataPortObjectCollection" class="com.raritan.tdz.port.home.DataPortObjectCollection" autowire-candidate="true" autowire="byName" scope="prototype">
+		<constructor-arg name="portObjectFactory" ref="portObjectFactory"/>
+		<property name="portMoveDAO" ref="dataPortMoveDAO"/>
+	</bean>
+	
+	<bean id="sensorPortObjectCollection" class="com.raritan.tdz.port.home.SensorPortObjectCollection" autowire-candidate="true" autowire="byName" scope="prototype">
+		<constructor-arg name="portObjectFactory" ref="portObjectFactory"/>
+	</bean>
+	
+	<bean id="rackPduPowerPortObjectCollection" class="com.raritan.tdz.port.home.RackPduPowerPortObjectCollection" autowire-candidate="true" autowire="byName" scope="prototype">
+		<constructor-arg name="portObjectFactory" ref="portObjectFactory"/>
+		<property name="portMoveDAO" ref="powerPortMoveDAO"/>
+		<property name="powerSupplyCapacityValidator" value="powerSupplyCapacityValidator"/>
+	</bean>
+	
+	<bean id="powerOutletPowerPortObjectCollection" class="com.raritan.tdz.port.home.PowerOutletPowerPortObjectCollection" autowire-candidate="true" autowire="byName" scope="prototype">
+		<constructor-arg name="portObjectFactory" ref="portObjectFactory"/>
+		<property name="portMoveDAO" ref="powerPortMoveDAO"/>
+		<property name="powerSupplyCapacityValidator" value="powerSupplyCapacityValidator"/>
+	</bean>
+	
+	<bean id="nwBladeDataPortObjectCollection" class="com.raritan.tdz.port.home.NetworkBladeDataPortObjectCollection" autowire-candidate="true" autowire="byName" scope="prototype">
+		<constructor-arg name="portObjectFactory" ref="portObjectFactory"/>
+		<property name="portMoveDAO" ref="dataPortMoveDAO"/>
+	</bean>
+	
+	<bean id="dataPanelDataPortObjectCollection" class="com.raritan.tdz.port.home.DataPanelDataPortObjectCollection"  autowire-candidate="true" autowire="byName" scope="prototype">
+		<constructor-arg name="portObjectFactory" ref="portObjectFactory"/>
+		<property name="portMoveDAO" ref="dataPortMoveDAO"/>
+	</bean>
+
+	<bean id="powerPortObjectCollectionHelper" class="com.raritan.tdz.port.home.PortCollectionHelperImpl" autowire-candidate="true" autowire="byName" scope="prototype">
+		<constructor-arg name="type" value="com.raritan.tdz.domain.PowerPort" />
+	</bean>
+
+	<bean id="dataPortObjectCollectionHelper" class="com.raritan.tdz.port.home.PortCollectionHelperImpl" autowire-candidate="true" autowire="byName" scope="prototype">
+		<constructor-arg name="type" value="com.raritan.tdz.domain.DataPort" />
+	</bean>
+
+	<bean id="sensorPortObjectCollectionHelper" class="com.raritan.tdz.port.home.PortCollectionHelperImpl" autowire-candidate="true" autowire="byName" scope="prototype">
+		<constructor-arg name="type" value="com.raritan.tdz.domain.SensorPort" />
+	</bean>
+
+	<bean id="dataPortObjectHelper" class="com.raritan.tdz.port.home.PortObjectHelperImpl" autowire-candidate="true" autowire="byName" scope="prototype">
+		<constructor-arg name="type" value="com.raritan.tdz.domain.DataPort" />
+		<property name="messageSource" ref="messageSource"/>
+	</bean>
+	
+	<bean id="powerPortObjectHelper" class="com.raritan.tdz.port.home.PortObjectHelperImpl" autowire-candidate="true" autowire="byName" scope="prototype">
+		<constructor-arg name="type" value="com.raritan.tdz.domain.PowerPort" />
+		<property name="messageSource" ref="messageSource"/>
+	</bean>
+	
+	<bean id="sensorPortObjectHelper" class="com.raritan.tdz.port.home.PortObjectHelperImpl" autowire-candidate="true" autowire="byName" scope="prototype">
+		<constructor-arg name="type" value="com.raritan.tdz.domain.SensorPort" />
+		<property name="messageSource" ref="messageSource"/>
+	</bean>
+	
+	<bean id="validateRequiredFieldLks" class="com.raritan.tdz.port.home.ValidateRequiredFieldLksImpl" autowire-candidate="true" autowire="byName" scope="prototype">
+		<property name="messageSource" ref="messageSource"/>
+	</bean>
+	
+	<bean id="validateRequiredFieldLku" class="com.raritan.tdz.port.home.ValidateRequiredFieldLkuImpl" autowire-candidate="true" autowire="byName" scope="prototype">
+		<property name="messageSource" ref="messageSource"/>
+	</bean>
+	
+	<bean id="validateFieldLength" class="com.raritan.tdz.port.home.ValidateFieldLengthImpl" autowire-candidate="true" autowire="byName" scope="prototype">
+	</bean>
+
+ 	<bean id="portNameUniquenessValidator" class="com.raritan.tdz.port.home.PortNameUniquenessValidator" scope="prototype"/>
+	
+</beans>
+
+

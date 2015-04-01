@@ -1,0 +1,1157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 4.2.2.v201301221637 Build &lt;4.2.2.v20130206-1509></property>
+    <list-property name="userProperties">
+        <structure>
+            <property name="name">CabinetInLocDC.CabinetsInLocation.x</property>
+            <property name="type">integer</property>
+            <property name="isVisible">false</property>
+        </structure>
+        <structure>
+            <property name="name">CabinetInLocDC.CabinetsInLocation.y</property>
+            <property name="type">integer</property>
+            <property name="isVisible">false</property>
+        </structure>
+        <structure>
+            <property name="name">CabinetInLocDC.CabinetsInLocation.width</property>
+            <property name="type">integer</property>
+            <property name="isVisible">false</property>
+        </structure>
+        <structure>
+            <property name="name">CabinetInLocDC.CabinetsInLocation.height</property>
+            <property name="type">integer</property>
+            <property name="isVisible">false</property>
+        </structure>
+        <structure>
+            <property name="name">CabinetInLocDC.LocCabinet.NewTabularHierarchy2.x</property>
+            <property name="type">integer</property>
+            <property name="isVisible">false</property>
+        </structure>
+        <structure>
+            <property name="name">CabinetInLocDC.LocCabinet.NewTabularHierarchy2.y</property>
+            <property name="type">integer</property>
+            <property name="isVisible">false</property>
+        </structure>
+    </list-property>
+    <property name="CabinetInLocDC.CabinetsInLocation.x">244</property>
+    <property name="CabinetInLocDC.CabinetsInLocation.y">180</property>
+    <property name="CabinetInLocDC.CabinetsInLocation.width">150</property>
+    <property name="CabinetInLocDC.CabinetsInLocation.height">200</property>
+    <property name="CabinetInLocDC.LocCabinet.NewTabularHierarchy2.x">5</property>
+    <property name="CabinetInLocDC.LocCabinet.NewTabularHierarchy2.y">58</property>
+    <simple-property-list name="includeResource">
+        <value>../locale/report_en_US</value>
+    </simple-property-list>
+    <property name="units">in</property>
+    <property name="theme">three_dot_0.defaultTheme</property>
+    <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="eventHandlerClass">com.raritan.tdz.reports.eventhandler.ImgProvReportEH</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <list-property name="libraries">
+        <structure>
+            <property name="fileName">three_dot_0.rptlibrary</property>
+            <property name="namespace">three_dot_0</property>
+        </structure>
+    </list-property>
+    <parameters>
+        <scalar-parameter name="cabinetIdList" id="171" extends="three_dot_0.cabinetIdList"/>
+        <scalar-parameter name="locationIdList" id="949" extends="three_dot_0.locationIdList"/>
+        <scalar-parameter name="cabImageMode" id="189" extends="three_dot_0.cabImageMode"/>
+        <scalar-parameter name="cabImageRails" id="951" extends="three_dot_0.cabImageRails"/>
+        <scalar-parameter name="cabsPerPage" id="950" extends="three_dot_0.cabsPerPage"/>
+        <scalar-parameter name="Orientation" id="940" extends="three_dot_0.Orientation"/>
+        <scalar-parameter name="SiteCode" id="1227" extends="three_dot_0.SiteCode"/>
+    </parameters>
+    <data-sources>
+        <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="Data Source" id="948">
+            <list-property name="privateDriverProperties">
+                <ex-property>
+                    <name>metadataBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>disabledMetadataBidiFormatStr</name>
+                </ex-property>
+                <ex-property>
+                    <name>contentBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>disabledContentBidiFormatStr</name>
+                </ex-property>
+            </list-property>
+            <property name="odaDriverClass">org.postgresql.Driver</property>
+            <property name="odaURL">jdbc:postgresql://localhost:5432/raritan</property>
+            <property name="odaUser">dctrack</property>
+            <encrypted-property name="odaPassword" encryptionID="base64">KE1hbmFnZU15U3R1ZmYpIQ==</encrypted-property>
+        </oda-data-source>
+    </data-sources>
+    <data-sets>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="CabinetList" id="173"
+ extends="three_dot_0.CabinetList">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">item_id</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">item_id</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">item_name</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">item_name</text-property>
+                    <text-property name="heading">item_name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">model_id</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">model_id</text-property>
+                    <text-property name="heading">model_id</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">model_name</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">model_name</text-property>
+                    <text-property name="heading">model_name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">ru_height</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">ru_height</text-property>
+                    <text-property name="heading">ru_height</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">location_code</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">location_code</text-property>
+                    <text-property name="heading">location_code</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters"/>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">item_id</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">item_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">model_id</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">model_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">ru_height</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">location_code</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <method name="beforeOpen"><![CDATA[importPackage(Packages.com.raritan.tdz.reports.eventhandler);
+
+//attach where clause to filter certain ids
+cabs = reportContext.getParameterValue(ReportConstants.CABINET_LIST_PARAM_ID);
+locations = reportContext.getParameterValue(ReportConstants.LOCATION_LIST_ID_PARAM_ID);
+if (cabs &amp;&amp; cabs.length > 0) {
+	cablist = "";
+	for (var i = 0; i < cabs.length; i++) {
+		if (i > 0) cablist += ",";
+		cablist += cabs[i];
+	}
+	this.queryText += " WHERE dct_items_cabinet.item_id IN (" + cablist + ") AND dct_items_cabinet.item_id not in (SELECT move_item_id from dct_ports_move_power)";
+}
+else {
+	this.queryText += " WHERE dct_items_cabinet.item_id not in (SELECT move_item_id from dct_ports_move_power)";
+}
+
+if (locations &amp;&amp; locations.length > 0) {
+	locationlist = "";
+	for (var i = 0; i < locations.length; i++) {
+		if (i > 0) locationlist += ",";
+		locationlist += locations[i];
+	}
+	this.queryText += " AND dct_locations.location_id IN ( " + locationlist + ") ";
+}
+
+this.queryText += " ORDER by dct_locations.code ";
+
+
+]]></method>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">item_id</property>
+                    <property name="nativeName">item_id</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">item_name</property>
+                    <property name="nativeName">item_name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">model_id</property>
+                    <property name="nativeName">model_id</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">model_name</property>
+                    <property name="nativeName">model_name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">ru_height</property>
+                    <property name="nativeName">ru_height</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">location_code</property>
+                    <property name="nativeName">location_code</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[SELECT 	dct_items_cabinet.item_id,
+		dct_items.item_name,
+		dct_items.model_id,
+		dct_models.model_name,
+		dct_models.ru_height,
+		dct_locations.code AS location_code
+FROM dct_items_cabinet
+INNER JOIN dct_items ON dct_items_cabinet.item_id = dct_items.item_id
+LEFT JOIN dct_models ON dct_items.model_id = dct_models.model_id
+LEFT JOIN dct_locations ON dct_items.location_id = dct_locations.location_id]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>item_id</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>-5</design:nativeDataTypeCode>
+            <design:precision>20</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>item_id</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>item_id</design:label>
+            <design:formattingHints>
+              <design:displaySize>20</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="CabinetsInLocation" id="286"
+ extends="three_dot_0.CabinetsInLocation">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">item_id</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">item_id</text-property>
+                    <text-property name="heading">item_id</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">item_name</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">item_name</text-property>
+                    <text-property name="heading">item_name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">model_id</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">model_id</text-property>
+                    <text-property name="heading">model_id</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">model_name</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">model_name</text-property>
+                    <text-property name="heading">model_name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">ru_height</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">ru_height</text-property>
+                    <text-property name="heading">ru_height</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">location_code</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">location_code</text-property>
+                    <text-property name="heading">location_code</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">param_1</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                    <property name="position">1</property>
+                    <expression name="defaultValue" type="constant">1</expression>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">item_id</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">item_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">model_id</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">model_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">ru_height</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">location_code</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <method name="beforeOpen"><![CDATA[importPackage(Packages.com.raritan.tdz.reports.eventhandler);
+
+//attach where clause to filter certain ids
+cabs = reportContext.getParameterValue(ReportConstants.CABINET_LIST_PARAM_ID);
+if (cabs &amp;&amp; cabs.length > 0) {
+	cablist = "";
+	for (var i = 0; i < cabs.length; i++) {
+		if (i > 0) cablist += ",";
+		cablist += cabs[i];
+	}
+	this.queryText += " AND dct_items_cabinet.item_id IN (" + cablist + ") AND dct_items_cabinet.item_id not in (SELECT move_item_id from dct_ports_move_power)";
+}
+else {
+	this.queryText += " AND dct_items_cabinet.item_id not in (SELECT move_item_id from dct_ports_move_power)";
+}
+
+]]></method>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">item_id</property>
+                    <property name="nativeName">item_id</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">item_name</property>
+                    <property name="nativeName">item_name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">model_id</property>
+                    <property name="nativeName">model_id</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">model_name</property>
+                    <property name="nativeName">model_name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">ru_height</property>
+                    <property name="nativeName">ru_height</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">location_code</property>
+                    <property name="nativeName">location_code</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[SELECT 	dct_items_cabinet.item_id,
+		dct_items.item_name,
+		dct_items.model_id,
+		dct_models.model_name,
+		dct_models.ru_height,
+		dct_locations.code As location_code
+
+FROM dct_items_cabinet
+INNER JOIN dct_items ON dct_items_cabinet.item_id = dct_items.item_id
+LEFT JOIN dct_models ON dct_items.model_id = dct_models.model_id
+LEFT JOIN dct_locations ON dct_items.location_id = dct_locations.location_id
+LEFT JOIN dct_lks_data status_lks_data ON dct_items.status_lks_id = status_lks_data.lks_id
+WHERE dct_locations.code = ?]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <DataSetParameters>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>1</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+  </DataSetParameters>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Locations" id="281"
+ extends="three_dot_0.Locations">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">location_id</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">location_id</text-property>
+                    <text-property name="heading">location_id</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">code</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">code</text-property>
+                    <text-property name="heading">code</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">dc_name</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">dc_name</text-property>
+                    <text-property name="heading">dc_name</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters"/>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">location_id</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">code</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">dc_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <method name="beforeOpen"><![CDATA[importPackage(Packages.com.raritan.tdz.reports.eventhandler);
+
+//attach where clause to filter certain ids
+cabs = reportContext.getParameterValue(ReportConstants.CABINET_LIST_PARAM_ID);
+locations = reportContext.getParameterValue(ReportConstants.LOCATION_LIST_ID_PARAM_ID);
+if (cabs &amp;&amp; cabs.length > 0) {
+	cablist = "";
+	for (var i = 0; i < cabs.length; i++) {
+		if (i > 0) cablist += ",";
+		cablist += cabs[i];
+	}
+	this.queryText += " WHERE item.item_id IN (" + cablist + ") AND item.item_id not in (SELECT move_item_id from dct_ports_move_power)";
+}
+else {
+	this.queryText += " WHERE item.item_id not in (SELECT move_item_id from dct_ports_move_power)";
+}
+
+this.queryText += " AND loc_hierarchy_lks.lkp_value_code = 5001 "/* Room */
+this.queryText += " AND item_class_lks.lkp_value_code = 1100 "/* cabinet items */
+this.queryText += " AND item_status_lks.lkp_value_code != 5091 "/* exclude hidden items */
+this.queryText += " AND item.item_id > 1 "
+
+if (locations &amp;&amp; locations.length > 0) {
+	locationlist = "";
+	for (var i = 0; i < locations.length; i++) {
+		if (i > 0) locationlist += ",";
+		locationlist += locations[i];
+	}
+	this.queryText += " AND loc.location_id IN ( " + locationlist + ") ";
+}
+
+this.queryText += " ORDER by loc.code ";
+
+]]></method>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">location_id</property>
+                    <property name="nativeName">location_id</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">code</property>
+                    <property name="nativeName">code</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">dc_name</property>
+                    <property name="nativeName">dc_name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[SELECT  DISTINCT (item.location_id) , loc.code, loc.dc_name FROM dct_items item
+INNER JOIN dct_lks_data item_class_lks ON item_class_lks.lks_id = item.class_lks_id 
+INNER JOIN dct_locations loc ON loc.location_id = item.location_id
+INNER JOIN dct_lks_data loc_hierarchy_lks ON loc_hierarchy_lks.lks_id = loc.hierarchy_lks_id
+INNER JOIN dct_lks_data item_status_lks ON item_status_lks.lks_id = item.status_lks_id]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>location_id</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>-5</design:nativeDataTypeCode>
+            <design:precision>19</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>location_id</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>location_id</design:label>
+            <design:formattingHints>
+              <design:displaySize>20</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>dc_name</design:name>
+              <design:position>2</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>50</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>dc_name</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>dc_name</design:label>
+            <design:formattingHints>
+              <design:displaySize>50</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+    </data-sets>
+    <cubes>
+        <tabular-cube name="Data Cube - CabinetList" id="174">
+            <property name="dimensions">
+                <tabular-dimension name="Cabinet" id="175">
+                    <property name="defaultHierarchy">NewTabularHierarchy</property>
+                    <property name="hierarchies">
+                        <tabular-hierarchy name="NewTabularHierarchy" id="176">
+                            <property name="levels">
+                                <tabular-level name="location_code" id="1029">
+                                    <property name="dataType">string</property>
+                                    <property name="columnName">location_code</property>
+                                </tabular-level>
+                                <tabular-level name="item_id" id="178">
+                                    <property name="dataType">decimal</property>
+                                    <property name="columnName">item_id</property>
+                                </tabular-level>
+                                <tabular-level name="item_name" id="177">
+                                    <property name="dataType">string</property>
+                                    <property name="columnName">item_name</property>
+                                </tabular-level>
+                                <tabular-level name="model_id" id="240">
+                                    <property name="dataType">decimal</property>
+                                    <property name="columnName">model_id</property>
+                                </tabular-level>
+                                <tabular-level name="location_code1" id="1201">
+                                    <property name="dataType">string</property>
+                                    <property name="columnName">location_code</property>
+                                </tabular-level>
+                                <tabular-level name="item_name1" id="1228">
+                                    <property name="dataType">string</property>
+                                    <property name="columnName">item_name</property>
+                                </tabular-level>
+                            </property>
+                        </tabular-hierarchy>
+                    </property>
+                </tabular-dimension>
+                <tabular-dimension name="locationCode" id="991">
+                    <property name="defaultHierarchy">NewTabularHierarchy1</property>
+                    <property name="hierarchies">
+                        <tabular-hierarchy name="NewTabularHierarchy1" id="992">
+                            <property name="levels">
+                                <tabular-level name="location_code" id="993">
+                                    <property name="dataType">string</property>
+                                    <property name="columnName">location_code</property>
+                                </tabular-level>
+                            </property>
+                        </tabular-hierarchy>
+                    </property>
+                </tabular-dimension>
+            </property>
+            <property name="dataSet">CabinetList</property>
+        </tabular-cube>
+        <tabular-cube name="CabinetInLocDC" id="1036">
+            <property name="dimensions">
+                <tabular-dimension name="LocCabinet" id="1053">
+                    <property name="defaultHierarchy">NewTabularHierarchy2</property>
+                    <property name="hierarchies">
+                        <tabular-hierarchy name="NewTabularHierarchy2" id="1054">
+                            <property name="levels">
+                                <tabular-level name="location_code" id="1055">
+                                    <property name="dataType">string</property>
+                                    <property name="columnName">location_code</property>
+                                </tabular-level>
+                            </property>
+                            <property name="dataSet">CabinetList</property>
+                        </tabular-hierarchy>
+                    </property>
+                </tabular-dimension>
+            </property>
+            <property name="dataSet">CabinetsInLocation</property>
+            <property name="autoKey">true</property>
+            <list-property name="dimensionConditions">
+                <structure>
+                    <list-property name="joinConditions">
+                        <structure>
+                            <property name="cubeKey">location_code</property>
+                            <property name="hierarchyKey">location_code</property>
+                        </structure>
+                    </list-property>
+                    <property name="hierarchy">NewTabularHierarchy2</property>
+                </structure>
+            </list-property>
+        </tabular-cube>
+    </cubes>
+    <page-setup>
+        <simple-master-page name="dcTrackMaster" id="7" extends="three_dot_0.dcTrackMaster">
+            <property name="orientation">landscape</property>
+            <overridden-values>
+                <ref-entry baseId="136" name="NewGrid" id="136"/>
+                <ref-entry baseId="137" id="137"/>
+                <ref-entry baseId="138" id="138"/>
+                <ref-entry baseId="140" id="140"/>
+                <ref-entry baseId="141" id="141"/>
+                <ref-entry baseId="148" name="NewLabel" id="148">
+                    <property name="textID">CabinetElevations</property>
+                </ref-entry>
+                <ref-entry baseId="142" id="142"/>
+                <ref-entry baseId="288" name="NewImage" id="288"/>
+                <ref-entry baseId="149" name="NewGrid1" id="149"/>
+                <ref-entry baseId="150" id="150"/>
+                <ref-entry baseId="151" id="151"/>
+                <ref-entry baseId="152" id="152"/>
+                <ref-entry baseId="153" id="153"/>
+                <ref-entry baseId="154" id="154"/>
+                <ref-entry baseId="175" name="NewGrid3" id="1232"/>
+                <ref-entry baseId="176" id="1233"/>
+                <ref-entry baseId="177" id="1234"/>
+                <ref-entry baseId="178" id="1235"/>
+                <ref-entry baseId="181" name="NewText2" id="181">
+                    <property name="contentType">html</property>
+                    <list-property name="visibility">
+                        <structure>
+                            <property name="format">all</property>
+                            <expression name="valueExpr" type="javascript">true</expression>
+                        </structure>
+                    </list-property>
+                </ref-entry>
+                <ref-entry baseId="179" id="179"/>
+                <ref-entry baseId="180" id="180"/>
+                <ref-entry baseId="183" name="NewText21" id="183"/>
+                <ref-entry baseId="155" id="155"/>
+                <ref-entry baseId="157" name="NewGrid2" id="157"/>
+                <ref-entry baseId="158" id="158"/>
+                <ref-entry baseId="159" id="159"/>
+                <ref-entry baseId="160" id="160"/>
+                <ref-entry baseId="161" id="161"/>
+                <ref-entry baseId="162" id="162"/>
+                <ref-entry baseId="163" name="NewAutoText" id="163"/>
+                <ref-entry baseId="164" id="164"/>
+                <ref-entry baseId="165" name="NewText" id="165"/>
+                <ref-entry baseId="166" id="166"/>
+                <ref-entry baseId="167" name="NewAutoText1" id="167"/>
+                <ref-entry baseId="156" id="156"/>
+                <ref-entry baseId="168" name="NewText1" id="168"/>
+            </overridden-values>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <table id="1133">
+            <property name="dataSet">Locations</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">location_id</property>
+                    <text-property name="displayName">location_id</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["location_id"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">dc_name</property>
+                    <text-property name="displayName">dc_name</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["dc_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">code</property>
+                    <text-property name="displayName">code</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["code"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <column id="1140"/>
+            <header>
+                <row id="1134">
+                    <cell id="1135"/>
+                </row>
+            </header>
+            <group id="1142">
+                <property name="groupName">LocationCodeGroup</property>
+                <expression name="keyExpr" type="javascript">row["code"]</expression>
+                <structure name="toc">
+                    <expression name="expressionValue" type="javascript">row["code"]</expression>
+                </structure>
+                <property name="hideDetail">false</property>
+                <property name="pageBreakAfter">always-excluding-last</property>
+                <header>
+                    <row id="1143">
+                        <cell id="1144">
+                            <property name="fontSize">12pt</property>
+                            <data id="1147">
+                                <property name="fontSize">8%</property>
+                                <property name="fontWeight">normal</property>
+                                <property name="textAlign">left</property>
+                                <list-property name="visibility">
+                                    <structure>
+                                        <property name="format">all</property>
+                                        <expression name="valueExpr" type="javascript">true</expression>
+                                    </structure>
+                                </list-property>
+                                <structure name="toc"/>
+                                <property name="resultSetColumn">code</property>
+                            </data>
+                        </cell>
+                    </row>
+                </header>
+                <footer>
+                    <row id="1145">
+                        <cell id="1146"/>
+                    </row>
+                </footer>
+            </group>
+            <detail>
+                <row id="1136">
+                    <cell id="1137">
+                        <extended-item extensionName="Crosstab" extensionVersion="3.7.0" id="1148">
+                            <property name="cube">Data Cube - CabinetList</property>
+                            <property name="columns">
+                                <extended-item extensionName="CrosstabView" id="1149">
+                                    <property name="views">
+                                        <extended-item extensionName="DimensionView" id="1214">
+                                            <property name="dimension">locationCode</property>
+                                            <property name="levels">
+                                                <extended-item extensionName="LevelView" name="NewLevel View1" id="1215">
+                                                    <property name="level">locationCode/location_code</property>
+                                                    <property name="member">
+                                                        <extended-item extensionName="CrosstabCell" id="1216">
+                                                            <property name="content">
+                                                                <data name="location_code" id="1218">
+                                                                    <property name="fontSize">10pt</property>
+                                                                    <property name="fontWeight">bold</property>
+                                                                    <property name="resultSetColumn">location_code_1</property>
+                                                                </data>
+                                                            </property>
+                                                        </extended-item>
+                                                    </property>
+                                                </extended-item>
+                                            </property>
+                                        </extended-item>
+                                        <extended-item extensionName="DimensionView" id="1150">
+                                            <property name="dimension">Cabinet</property>
+                                            <property name="levels">
+                                                <extended-item extensionName="LevelView" name="NewLevel View81" id="1151">
+                                                    <property name="level">Cabinet/item_id</property>
+                                                    <property name="member">
+                                                        <extended-item extensionName="CrosstabCell" id="1152">
+                                                            <property name="content">
+                                                                <data name="item_id1" id="1153">
+                                                                    <list-property name="visibility">
+                                                                        <structure>
+                                                                            <property name="format">all</property>
+                                                                            <expression name="valueExpr" type="javascript">true</expression>
+                                                                        </structure>
+                                                                    </list-property>
+                                                                    <property name="resultSetColumn">item_id_1</property>
+                                                                </data>
+                                                            </property>
+                                                        </extended-item>
+                                                    </property>
+                                                </extended-item>
+                                                <extended-item extensionName="LevelView" name="NewLevel View91" id="1154">
+                                                    <property name="level">Cabinet/location_code</property>
+                                                    <property name="filter">
+                                                        <filter-condition-element>
+                                                            <expression name="expr" type="javascript">data["location_code"]</expression>
+                                                            <property name="operator">eq</property>
+                                                            <simple-property-list name="value1">
+                                                                <value type="javascript">row._outer["code"]</value>
+                                                            </simple-property-list>
+                                                            <property name="updateAggregation">true</property>
+                                                        </filter-condition-element>
+                                                    </property>
+                                                    <property name="member">
+                                                        <extended-item extensionName="CrosstabCell" id="1155">
+                                                            <property name="content">
+                                                                <data id="1196">
+                                                                    <property name="fontSize">6pt</property>
+                                                                    <property name="textAlign">center</property>
+                                                                    <property name="pageBreakAfter">avoid</property>
+                                                                    <property name="pageBreakBefore">avoid</property>
+                                                                    <property name="pageBreakInside">avoid</property>
+                                                                    <property name="canShrink">true</property>
+                                                                    <property name="overflow">visible</property>
+                                                                    <property name="resultSetColumn">item_name</property>
+                                                                </data>
+                                                            </property>
+                                                        </extended-item>
+                                                    </property>
+                                                </extended-item>
+                                                <extended-item extensionName="LevelView" name="NewLevel View101" id="1157">
+                                                    <property name="level">Cabinet/item_name</property>
+                                                    <property name="member">
+                                                        <extended-item extensionName="CrosstabCell" id="1158">
+                                                            <property name="content">
+                                                                <grid id="1159">
+                                                                    <property name="dataSet">CabinetsInLocation</property>
+                                                                    <list-property name="boundDataColumns">
+                                                                        <structure>
+                                                                            <property name="name">item_id</property>
+                                                                            <text-property name="displayName">item_id</text-property>
+                                                                            <expression name="expression" type="javascript">dataSetRow["item_id"]</expression>
+                                                                            <property name="dataType">decimal</property>
+                                                                        </structure>
+                                                                        <structure>
+                                                                            <property name="name">item_name</property>
+                                                                            <text-property name="displayName">item_name</text-property>
+                                                                            <expression name="expression" type="javascript">dataSetRow["item_name"]</expression>
+                                                                            <property name="dataType">string</property>
+                                                                        </structure>
+                                                                        <structure>
+                                                                            <property name="name">model_id</property>
+                                                                            <text-property name="displayName">model_id</text-property>
+                                                                            <expression name="expression" type="javascript">dataSetRow["model_id"]</expression>
+                                                                            <property name="dataType">decimal</property>
+                                                                        </structure>
+                                                                        <structure>
+                                                                            <property name="name">model_name</property>
+                                                                            <text-property name="displayName">model_name</text-property>
+                                                                            <expression name="expression" type="javascript">dataSetRow["model_name"]</expression>
+                                                                            <property name="dataType">string</property>
+                                                                        </structure>
+                                                                        <structure>
+                                                                            <property name="name">ru_height</property>
+                                                                            <text-property name="displayName">ru_height</text-property>
+                                                                            <expression name="expression" type="javascript">dataSetRow["ru_height"]</expression>
+                                                                            <property name="dataType">integer</property>
+                                                                        </structure>
+                                                                        <structure>
+                                                                            <property name="name">location_code</property>
+                                                                            <text-property name="displayName">location_code</text-property>
+                                                                            <expression name="expression" type="javascript">dataSetRow["location_code"]</expression>
+                                                                            <property name="dataType">string</property>
+                                                                        </structure>
+                                                                    </list-property>
+                                                                    <column id="1160">
+                                                                        <list-property name="visibility">
+                                                                            <structure>
+                                                                                <property name="format">all</property>
+                                                                                <expression name="valueExpr" type="javascript">!((params[ReportConstants.CAB_IMAGERAIL_PARAM_ID].value == null) || (params[ReportConstants.CAB_IMAGERAIL_PARAM_ID].value == ReportConstants.IMAGERAIL_FRONT) || (params[ReportConstants.CAB_IMAGERAIL_PARAM_ID].value == ReportConstants.IMAGERAIL_BOTH))</expression>
+                                                                            </structure>
+                                                                        </list-property>
+                                                                    </column>
+                                                                    <column id="1161">
+                                                                        <list-property name="visibility">
+                                                                            <structure>
+                                                                                <property name="format">all</property>
+                                                                                <expression name="valueExpr" type="javascript">!((params[ReportConstants.CAB_IMAGERAIL_PARAM_ID].value != null) &amp;&amp; ((params[ReportConstants.CAB_IMAGERAIL_PARAM_ID].value == ReportConstants.IMAGERAIL_REAR) || (params[ReportConstants.CAB_IMAGERAIL_PARAM_ID].value == ReportConstants.IMAGERAIL_BOTH)) )</expression>
+                                                                            </structure>
+                                                                        </list-property>
+                                                                    </column>
+                                                                    <row id="1167">
+                                                                        <property name="borderBottomStyle">none</property>
+                                                                        <property name="borderLeftStyle">none</property>
+                                                                        <property name="borderRightStyle">none</property>
+                                                                        <property name="borderTopStyle">none</property>
+                                                                        <list-property name="visibility">
+                                                                            <structure>
+                                                                                <property name="format">all</property>
+                                                                                <expression name="valueExpr" type="javascript">!isDataPresent("model_id")</expression>
+                                                                            </structure>
+                                                                        </list-property>
+                                                                        <cell id="1168">
+                                                                            <property name="textAlign">center</property>
+                                                                            <property name="verticalAlign">bottom</property>
+                                                                            <image id="1169">
+                                                                                <property name="height">5.8125in</property>
+                                                                                <method name="onCreate"><![CDATA[importPackage(Packages.com.raritan.tdz.reports.eventhandler);
+importPackage(Packages.com.raritan.tdz.reports.imageprovider);
+importPackage(Packages.com.raritan.tdz.lookup);
+
+hasModel = dimension["Cabinet"]["model_id"] > 0;
+if (hasModel) {
+	id = dimension["Cabinet"]["item_id"];
+	provider = reportContext.getAppContext().get(ReportConstants.IMAGEPROVIDERPROXY_ID);
+	if (!params[ReportConstants.CAB_IMAGERAIL_PARAM_ID].value || params[ReportConstants.CAB_IMAGERAIL_PARAM_ID].value == ReportConstants.IMAGERAIL_FRONT || params[ReportConstants.CAB_IMAGERAIL_PARAM_ID].value == ReportConstants.IMAGERAIL_BOTH) {
+		this.data = provider.createCabinetElevationImgByteStream(id, ImageProvider.rails_t.FRONT);
+	}
+}]]></method>
+                                                                                <property name="source">expr</property>
+                                                                                <property name="fitToContainer">true</property>
+                                                                                <expression name="valueExpr">data["item_id"]</expression>
+                                                                            </image>
+                                                                            <label id="1164">
+                                                                                <property name="fontSize">6pt</property>
+                                                                                <property name="fontWeight">bold</property>
+                                                                                <property name="textAlign">center</property>
+                                                                                <text-property name="text" key="Front"></text-property>
+                                                                            </label>
+                                                                        </cell>
+                                                                        <cell id="1170">
+                                                                            <property name="textAlign">center</property>
+                                                                            <image id="1171">
+                                                                                <property name="height">5.8125in</property>
+                                                                                <method name="onCreate"><![CDATA[importPackage(Packages.com.raritan.tdz.reports.eventhandler);
+importPackage(Packages.com.raritan.tdz.reports.imageProvider);
+importPackage(Packages.com.raritan.tdz.lookup);
+hasModel = dimension["Cabinet"]["model_id"] > 0;
+if (hasModel) {
+	id = dimension["Cabinet"]["item_id"];
+	provider = reportContext.getAppContext().get(ReportConstants.IMAGEPROVIDERPROXY_ID);
+	if (params[ReportConstants.CAB_IMAGERAIL_PARAM_ID].value &amp;&amp; (params[ReportConstants.CAB_IMAGERAIL_PARAM_ID].value == ReportConstants.IMAGERAIL_REAR || params[ReportConstants.CAB_IMAGERAIL_PARAM_ID].value == ReportConstants.IMAGERAIL_BOTH)) {
+		this.data = provider.createCabinetElevationImgByteStream(id, ImageProvider.rails_t.REAR);
+	}
+}]]></method>
+                                                                                <property name="source">expr</property>
+                                                                                <property name="fitToContainer">true</property>
+                                                                                <expression name="valueExpr">data["item_id"]</expression>
+                                                                            </image>
+                                                                            <label id="1166">
+                                                                                <property name="fontSize">6pt</property>
+                                                                                <property name="fontWeight">bold</property>
+                                                                                <property name="textAlign">center</property>
+                                                                                <text-property name="text" key="Back"></text-property>
+                                                                            </label>
+                                                                        </cell>
+                                                                    </row>
+                                                                    <row id="1175">
+                                                                        <property name="borderBottomStyle">none</property>
+                                                                        <property name="borderLeftStyle">none</property>
+                                                                        <property name="borderRightStyle">none</property>
+                                                                        <property name="borderTopStyle">none</property>
+                                                                        <list-property name="visibility">
+                                                                            <structure>
+                                                                                <property name="format">all</property>
+                                                                                <expression name="valueExpr" type="javascript">isDataPresent("model_id")</expression>
+                                                                            </structure>
+                                                                        </list-property>
+                                                                        <cell id="1176">
+                                                                            <property name="borderBottomStyle">none</property>
+                                                                            <property name="borderLeftStyle">none</property>
+                                                                            <property name="borderRightStyle">none</property>
+                                                                            <property name="borderTopStyle">none</property>
+                                                                            <label id="1177">
+                                                                                <property name="textAlign">center</property>
+                                                                                <text-property name="text" key="NoCabinetImageModelNotAvailable"></text-property>
+                                                                            </label>
+                                                                        </cell>
+                                                                        <cell id="1178">
+                                                                            <property name="borderBottomStyle">none</property>
+                                                                            <property name="borderLeftStyle">none</property>
+                                                                            <property name="borderRightStyle">none</property>
+                                                                            <property name="borderTopStyle">none</property>
+                                                                            <label id="1179">
+                                                                                <property name="textAlign">center</property>
+                                                                                <text-property name="text" key="NoCabinetImageModelNotAvailable"></text-property>
+                                                                            </label>
+                                                                        </cell>
+                                                                    </row>
+                                                                </grid>
+                                                            </property>
+                                                        </extended-item>
+                                                    </property>
+                                                </extended-item>
+                                                <extended-item extensionName="LevelView" name="NewLevel View111" id="1180">
+                                                    <property name="level">Cabinet/model_id</property>
+                                                    <property name="member">
+                                                        <extended-item extensionName="CrosstabCell" id="1181"/>
+                                                    </property>
+                                                </extended-item>
+                                                <extended-item extensionName="LevelView" name="NewLevel View" id="1208">
+                                                    <property name="level">Cabinet/location_code1</property>
+                                                    <property name="member">
+                                                        <extended-item extensionName="CrosstabCell" id="1209"/>
+                                                    </property>
+                                                </extended-item>
+                                                <extended-item extensionName="LevelView" name="NewLevel View2" id="1229">
+                                                    <property name="level">Cabinet/item_name1</property>
+                                                    <property name="member">
+                                                        <extended-item extensionName="CrosstabCell" id="1230"/>
+                                                    </property>
+                                                </extended-item>
+                                            </property>
+                                        </extended-item>
+                                    </property>
+                                </extended-item>
+                            </property>
+                            <property name="header">
+                                <extended-item extensionName="CrosstabCell" id="1217"/>
+                                <extended-item extensionName="CrosstabCell" id="1183"/>
+                                <extended-item extensionName="CrosstabCell" id="1185"/>
+                                <extended-item extensionName="CrosstabCell" id="1187"/>
+                                <extended-item extensionName="CrosstabCell" id="1204"/>
+                                <extended-item extensionName="CrosstabCell" id="1210"/>
+                                <extended-item extensionName="CrosstabCell" id="1231"/>
+                            </property>
+                            <method name="onPrepare"><![CDATA[importPackage(Packages.com.raritan.tdz.lookup);
+importPackage(Packages.com.raritan.tdz.reports.eventhandler);
+
+function onPrepareCrosstab ( crosstab, reportContext) {
+cabsPerPage = reportContext.getParameterValue(ReportConstants.CABS_PER_PAGE_PARAM_ID);
+	if ( cabsPerPage ) {
+		crosstab.setColumnPageBreakInterval( cabsPerPage);
+	} else {
+		crosstab.setColumnPageBreakInterval(4);
+	}
+}]]></method>
+                            <list-property name="boundDataColumns">
+                                <structure>
+                                    <property name="name">item_id_1</property>
+                                    <expression name="expression">dimension["Cabinet"]["item_id"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">location_code</property>
+                                    <expression name="expression">dimension["Cabinet"]["location_code"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">item_name</property>
+                                    <expression name="expression" type="javascript">wrap (data["item_name1"], 14)</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">model_id</property>
+                                    <expression name="expression">dimension["Cabinet"]["model_id"]</expression>
+                                    <property name="dataType">decimal</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">Column Binding</property>
+                                    <expression name="expression" type="javascript">dimension["Cabinet"]["item_name"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">location_code1</property>
+                                    <expression name="expression">dimension["Cabinet"]["location_code1"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">location_code_1</property>
+                                    <expression name="expression" type="javascript">dimension["locationCode"]["location_code"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">item_name1</property>
+                                    <expression name="expression">dimension["Cabinet"]["item_name1"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                            </list-property>
+                        </extended-item>
+                    </cell>
+                </row>
+            </detail>
+            <footer>
+                <row id="1138">
+                    <cell id="1139"/>
+                </row>
+            </footer>
+        </table>
+    </body>
+</report>

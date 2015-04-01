@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+	<!-- Request Stage Helper -->
+	<bean id="requestStageUpdateHistory" class="com.raritan.tdz.request.home.RequestStageUpdateHistory" autowire-candidate="true" autowire="byName">
+	</bean>
+	
+	<bean id="itemMoveWorkOrderComplete" class="com.raritan.tdz.request.home.ItemMoveWorkOrderComplete" autowire-candidate="true" autowire="byName">
+	</bean>
+	
+	<bean id="workOrderIssueUpdater" class="com.raritan.tdz.request.home.WorkOrderIssueUpdater" autowire-candidate="true" autowire="byName">
+	</bean>
+	
+	<bean id="workOrderCompleteUpdater" class="com.raritan.tdz.request.home.WorkOrderCompleteUpdater" autowire-candidate="true" autowire="byName">
+	</bean>
+	
+	<bean id="itemSetArchived" class="com.raritan.tdz.request.home.ItemSetArchived" autowire-candidate="true" autowire="byName">
+	</bean>
+	
+	<!-- Request Stage Validators -->
+	<bean id="supportedItemClassForMove" class="com.raritan.tdz.request.validator.SupportedItemClass" autowire-candidate="true" autowire="byName">
+		<property name="itemClassSupported">
+			<list>
+				<value>#{ T(com.raritan.tdz.lookup.SystemLookup$Class).DEVICE }</value>
+				<value>#{ T(com.raritan.tdz.lookup.SystemLookup$Class).NETWORK }</value>
+				<value>#{ T(com.raritan.tdz.lookup.SystemLookup$Class).CABINET }</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="parentItemStatusCheckForMove" class="com.raritan.tdz.request.validator.ParentItemStatusCheck">
+		<property name="itemParentStatusSupported">
+			<list>
+				<value>#{ T(com.raritan.tdz.lookup.SystemLookup$ItemStatus).INSTALLED }</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- Mandatory Field Check Validator Map -->
+	<util:map id="mandatoryMountingMap" key-type="java.lang.String" value-type="com.raritan.tdz.item.itemState.MandatoryFieldStateValidator">
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).FREE_STANDING }" value-ref="mandatoryFieldValidatorCabInstalled"/>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).RACKABLE }" value-ref="mandatoryFieldValidatorITItemInstalled"/>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).ZERO_U }" value-ref="mandatoryFieldValidatorZeroUInstalled"/>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).VSTACK }"><null/></entry>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).NON_RACKABLE }" value-ref="mandatoryFieldValidatorITItemInstalled"/>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).BLADE }" value-ref="mandatoryFieldValidatorBladeInstalled"/>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).BUSWAY }" value-ref="mandatoryFieldValidatorPowerOutletInstalled"/>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).NON_RACKABLE}:#{ T(com.raritan.tdz.lookup.SystemLookup$Class).FLOOR_OUTLET}" value-ref="mandatoryFieldValidatorPowerOutletInstalled"/>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).FREE_STANDING}:#{ T(com.raritan.tdz.lookup.SystemLookup$Class).UPS}" value-ref="mandatoryFieldValidatorUPS"/>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).FREE_STANDING}:#{ T(com.raritan.tdz.lookup.SystemLookup$Class).CRAC}" value-ref="mandatoryFieldValidatorCRAC"/>
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).FREE_STANDING}:#{ T(com.raritan.tdz.lookup.SystemLookup$Class).FLOOR_PDU}" value-ref="mandatoryFieldValidatorPowerPanelInstalled"/> <!-- Power Panel -->
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).FREE_STANDING}:#{ T(com.raritan.tdz.lookup.SystemLookup$Class).DEVICE}" value-ref="mandatoryFieldValidatorRackableBladeInstalled"/> <!-- Free-standing device -->
+		<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Mounting).FREE_STANDING}:#{ T(com.raritan.tdz.lookup.SystemLookup$Class).NETWORK}" value-ref="mandatoryFieldValidatorRackableBladeInstalled"/> <!-- Free-standing network -->
+	</util:map>
+	
+	<!-- Mandatory Field Check Validator -->
+	<bean id="mandatoryFieldCheckForInstallState" class="com.raritan.tdz.request.validator.MandatoryFieldCheck">
+		<constructor-arg name="mountingToMandatoryFieldValidator" ref="mandatoryMountingMap"/>
+	</bean>
+	
+	<!-- this can be used to find the conflict of a request against the parents (grandparents) of the item. 
+		The request need not be for an item, it can be a circuit request -->
+	<bean id="checkParentConflict" class="com.raritan.tdz.request.validator.CheckParentConflict">
+		<constructor-arg name="permissionValidator" ref="validatePermission"/>
+	</bean>
+	
+	<!-- this can be used to find the conflict of a request against the children of item.
+		It also check for conflict in permissions 
+		The request need not be for an item, it can be a circuit request -->
+	<bean id="checkChildConflict" class="com.raritan.tdz.request.validator.CheckChildConflict">
+		<constructor-arg name="permissionValidator" ref="validatePermission"/>
+	</bean>
+	
+	<!-- this can be used to find the conflict of a request against the item. The request need not be for an item, it can be a circuit request as well -->
+	<bean id="checkItemConflict" class="com.raritan.tdz.request.validator.CheckItemConflict">
+		<constructor-arg name="errorCodePostFix" value="item"/>
+	</bean>
+	
+	<bean id="checkCircuitConflict" class="com.raritan.tdz.request.validator.CheckItemConflict">
+		<constructor-arg name="errorCodePostFix" value="circuit"/>
+	</bean>
+	
+	<!-- Child Check Parent Validator -->
+	<bean id="childCheckParentRequestValidator" class="com.raritan.tdz.request.validator.ItemCheckRequestValidator"  autowire-candidate="true" autowire="byName">
+		<constructor-arg name="validateConflictState" ref="checkParentConflict"/>
+	</bean>
+	
+	<!-- Parent Check Child Validator -->
+	<bean id="parentCheckChildRequestValidator" class="com.raritan.tdz.request.validator.ItemCheckRequestValidator" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="validateConflictState" ref="checkChildConflict"/>
+	</bean>
+
+	<!-- Item Checks Request -->
+	<bean id="itemCheckRequestValidator" class="com.raritan.tdz.request.validator.ItemCheckRequestValidator" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="validateConflictState" ref="checkItemConflict"/>
+	</bean>
+	
+	<!-- Circuit Checks Request -->
+	<bean id="circuitCheckRequestValidator" class="com.raritan.tdz.request.validator.ItemCheckRequestValidator" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="validateConflictState" ref="checkCircuitConflict"/>
+	</bean>
+	
+	<!-- Chassis Check Blades Validator -->
+	<bean id="chassisCheckBladesRequestValidator" class="com.raritan.tdz.request.validator.ChassisCheckBladesRequestValidator" autowire-candidate="true" autowire="byName" >
+	</bean>
+	
+	<!-- Disconnect Circuits Executor -->
+	<bean id="disconnectWorkOrderComplete" class="com.raritan.tdz.request.home.DisconnectWorkOrderComplete" autowire-candidate="true" autowire="byName" >
+	</bean>
+	
+	<!--  Install circuits Executor -->
+	<bean id="circuitInstalledWorkOrderComplete" class="com.raritan.tdz.request.home.CircuitStatusWorkOrderComplete" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="status" value="#{ T(com.raritan.tdz.lookup.SystemLookup$ItemStatus).INSTALLED }"/>
+	</bean>
+	
+	<!--  Power On circuits Executor -->
+	<bean id="circuitPowerOnWorkOrderComplete" class="com.raritan.tdz.request.home.CircuitStatusWorkOrderComplete" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="status" value="#{ T(com.raritan.tdz.lookup.SystemLookup$ItemStatus).INSTALLED }"/>
+	</bean>
+	
+	<!--  Power Off circuits Executor -->
+	<bean id="circuitPowerOffWorkOrderComplete" class="com.raritan.tdz.request.home.CircuitStatusWorkOrderComplete" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="status" value="#{ T(com.raritan.tdz.lookup.SystemLookup$ItemStatus).POWERED_OFF }"/>
+	</bean>
+
+	<!-- Install item State Change Executor -->
+	<bean id="itemInstalledWorkOrderComplete" class="com.raritan.tdz.request.home.ItemStatusWorkOrderComplete" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="status" value="#{ T(com.raritan.tdz.lookup.SystemLookup$ItemStatus).INSTALLED }"/>
+	</bean>
+
+	<!-- Off Site item State Change Executor -->
+	<bean id="itemOffSiteWorkOrderComplete" class="com.raritan.tdz.request.home.ItemStatusWorkOrderComplete" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="status" value="#{ T(com.raritan.tdz.lookup.SystemLookup$ItemStatus).OFF_SITE }"/>
+	</bean>
+
+	<!-- Power Off item State Change Executor -->
+	<bean id="itemPowerOffWorkOrderComplete" class="com.raritan.tdz.request.home.ItemStatusWorkOrderComplete" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="status" value="#{ T(com.raritan.tdz.lookup.SystemLookup$ItemStatus).POWERED_OFF }"/>
+	</bean>
+
+	<!-- Storage item State Change Executor -->
+	<bean id="itemStorageWorkOrderComplete" class="com.raritan.tdz.request.home.ItemStatusWorkOrderComplete" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="status" value="#{ T(com.raritan.tdz.lookup.SystemLookup$ItemStatus).STORAGE }"/>
+	</bean>
+	
+	<!-- Archived item State Change Executor -->
+	<bean id="itemArchiveWorkOrderComplete" class="com.raritan.tdz.request.home.ItemStatusWorkOrderComplete" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="status" value="#{ T(com.raritan.tdz.lookup.SystemLookup$ItemStatus).ARCHIVED }"/>
+	</bean>
+
+	<bean id="itemStorageRequestStateContext" class="com.raritan.tdz.request.home.RequestStateContext" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="itemStateWorkOrderComplete" ref="itemStorageWorkOrderComplete"/>
+	</bean>
+
+	<bean id="itemArchiveRequestStateContext" class="com.raritan.tdz.request.home.RequestStateContext" autowire-candidate="true" autowire="byName">
+		<constructor-arg name="itemStateWorkOrderComplete" ref="itemArchiveWorkOrderComplete"/>
+	</bean>
+	
+	<bean id="itemMoveUniquenessValidator" class="com.raritan.tdz.move.validator.ItemMoveUniquenessValidator">
+		<constructor-arg name="itemUniquenessValidator" ref="itemUniquenessValidator"/>
+	</bean>
+	
+	<bean id="validateUserPermission" class="com.raritan.tdz.request.validator.ValidateUserPermission">
+		<property name="itemModifyRoleValidator" ref="itemModifyRoleValidator"/>
+		<constructor-arg name="permissionValidator" ref="validatePermission"/>
+	</bean>
+
+	<!-- DO NOT REMOVE THESE TWO  BEANS BELOW - NEEDED FOR UNIT TESTING -->
+	<bean id="circuitStatusWorkOrderComplete" class="com.raritan.tdz.request.home.CircuitStatusWorkOrderComplete" autowire-candidate="true" autowire="byName">
+	</bean>
+	
+	<bean id="itemStatusWorkOrderComplete" class="com.raritan.tdz.request.home.ItemStatusWorkOrderComplete" autowire-candidate="true" autowire="byName">
+	</bean>
+
+	<bean id="validateNoCircuits" class="com.raritan.tdz.request.validator.ValidateNoCircuits" autowire-candidate="true" autowire="byName"/>
+	
+	<!-- deletes the planned circuits for an item -->
+	
+	<bean id="requestDeletePlannedCircuits" class="com.raritan.tdz.request.home.RequestDeletePlannedCircuits">
+		<constructor-arg name="deletePlannedCircuitBehaviors">
+			<map>
+				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Class).CABINET }" value-ref="cabinetDeletePlannedCircuits"/>
+				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Class).DEVICE }" value-ref="itemDeletePlannedCircuits"/>
+				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Class).NETWORK }" value-ref="itemDeletePlannedCircuits"/>
+				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Class).PROBE }" value-ref="itemDeletePlannedCircuits"/>
+				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Class).DATA_PANEL }" value-ref="itemDeletePlannedCircuits"/>
+				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Class).RACK_PDU }" value-ref="itemDeletePlannedCircuits"/>
+				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Class).FLOOR_OUTLET }" value-ref="itemDeletePlannedCircuits"/>
+				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Class).FLOOR_PDU }" value-ref="itemDeletePlannedCircuits"/>
+				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Class).UPS }" value-ref="itemDeletePlannedCircuits"/>
+				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Class).UPS_BANK }" value-ref="itemDeletePlannedCircuits"/>
+				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Class).CRAC }" value-ref="itemDeletePlannedCircuits"/>
+				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Class).CRAC_GROUP }" value-ref="itemDeletePlannedCircuits"/>
+				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Class).PASSIVE }" value-ref="itemDeletePlannedCircuits"/>
+				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$Class).BLANKING_PLATE }" value-ref="itemDeletePlannedCircuits"/>
+			</map>
+		</constructor-arg>
+	</bean>
+	
+	<!-- <bean id="updateChildrenRequestComments" class="com.raritan.tdz.request.home.UpdateChildrenRequestComments"/>
+	
+	<bean id="updateParentRequestComments" class="com.raritan.tdz.request.home.UpdateParentRequestComments"/> -->
+	
+	<bean id="updateChildrenInstallCircuitRequestComment" class="com.raritan.tdz.request.home.UpdateChildrenInstallCircuitRequestComment"/>
+
+	<bean id="requestDeleteIPAddressAndTeam" class="com.raritan.tdz.request.home.RequestDeleteIPAddressAndTeam"/>
+
+</beans>

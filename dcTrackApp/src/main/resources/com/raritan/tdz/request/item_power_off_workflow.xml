@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+	<!-- ==================================== -->
+	<!-- Item Poweroff Request Issued -->
+	<!-- ==================================== -->
+	
+	<!-- Item Poweroff Request Issued Validator -->
+	
+	<import resource="request_validators.xml"/>
+	<import resource="request_executors.xml"/>
+	
+	<!-- Channel for Poweroff issued request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_OFF }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.validateChannel"/> -->
+    <int:channel id="713.501.validateChannel"/>
+
+    <!-- Subscriber - service activator for Poweroff request approved validator -->
+    <int:service-activator id="itemPoweroffReqIssueValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_OFF }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.validateChannel" 
+    		ref="itemPoweroffReqIssuedValidator" method="validate"/>
+
+	<!-- item Poweroff request issued validator bean -->
+    <bean id="itemPoweroffReqIssuedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemPoweroffWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item Poweroff Request Issued Executor -->
+	
+	<!-- Channel for Poweroff issue request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_OFF }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.executeChannel"/> -->
+	<int:channel id="713.501.executeChannel"/>
+
+    <!-- Subscriber - service activator for Poweroff request issued executor -->
+    <int:service-activator id="itemPoweroffReqIssueExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_OFF }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.executeChannel" 
+    		ref="itemPoweroffRequestStageIssued" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item Poweroff request issued executor bean -->
+	<bean id="itemPoweroffRequestStageIssued" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }"/>
+		<property name="requestStageHelpers" ref="itemPoweroffRequestIssuedExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Item Poweroff Request Updated -->
+	<!-- ==================================== -->
+	
+	<!-- Item Poweroff Request Updated Validator -->
+	
+	<!-- Channel for Poweroff updated request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_OFF }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.validateChannel"/> -->
+    <int:channel id="713.503.validateChannel"/>
+
+    <!-- Subscriber - service activator for Poweroff request updated validator -->
+    <int:service-activator id="itemPoweroffReqUpdateValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_OFF }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.validateChannel" 
+    		ref="itemPoweroffReqUpdatedValidator" method="validate"/>
+
+	<!-- item Poweroff request updated validator bean -->
+    <bean id="itemPoweroffReqUpdatedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemPoweroffWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item Poweroff Request Updated Executor -->
+	
+	<!-- Channel for Poweroff update request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_OFF }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.executeChannel"/> -->
+	<int:channel id="713.503.executeChannel"/>
+
+    <!-- Subscriber - service activator for Poweroff request updated executor -->
+    <int:service-activator id="itemPoweroffReqUpdateExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_OFF }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.executeChannel" 
+    		ref="itemPoweroffRequestStageUpdated" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item Poweroff request updated executor bean -->
+	<bean id="itemPoweroffRequestStageUpdated" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }"/>
+		<property name="requestStageHelpers" ref="itemPoweroffRequestUpdatedExecutors"/>
+	</bean>
+
+
+	
+	<!-- ==================================== -->
+	<!-- Item Poweroff Request Approved -->
+	<!-- ==================================== -->
+	
+	<!-- Item Poweroff Request Approved Validator -->
+	
+	<!-- Channel for Poweroff approve request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_OFF }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.validateChannel"/> -->
+    <int:channel id="713.504.validateChannel"/>
+
+    <!-- Subscriber - service activator for Poweroff request approved validator -->
+    <int:service-activator id="itemPoweroffReqApproveValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_OFF }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.validateChannel" 
+    		ref="itemPoweroffReqApprovedValidator" method="validate"/>
+
+	<!-- item Poweroff request approved validator bean -->
+    <bean id="itemPoweroffReqApprovedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemPoweroffWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item Poweroff Request Approved Executor -->
+	
+	<!-- Channel for Poweroff approve request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_OFF }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.executeChannel"/> -->
+	<int:channel id="713.504.executeChannel"/>
+
+    <!-- Subscriber - service activator for Poweroff request approved executor -->
+    <int:service-activator id="itemPoweroffReqApproveExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_OFF }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.executeChannel" 
+    		ref="itemPoweroffReqApprovedExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item Poweroff request approved executor bean -->
+    <bean id="itemPoweroffReqApprovedExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }"/>
+		<property name="requestStageHelpers" ref="itemPoweroffRequestApprovedExecutors"/>
+	</bean>
+    
+
+	<!-- ==================================== -->
+	<!-- Item Poweroff Work Order Issue -->
+	<!-- ==================================== -->
+	
+	<!-- Item Poweroff Work order issue Validator -->
+	
+	<!-- Channel for Poweroff Work Order Issue validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_OFF }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.validateChannel"/> -->
+	<int:channel id="713.505.validateChannel"/>
+
+    <!-- Subscriber - service activator for Poweroff request approved validator -->
+    <int:service-activator id="itemPoweroffWorkorderIssueValidateActivator" requires-reply="false" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_OFF }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.validateChannel" 
+    		ref="itemPoweroffWorkorderIssueValidator" method="validate"/>
+
+	<!-- item Poweroff request approved validator bean -->
+    <bean id="itemPoweroffWorkorderIssueValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemPoweroffWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item Poweroff Request Approved Executor -->
+	
+	<!-- Channel for Poweroff approve request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_OFF }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.executeChannel"/> -->
+    <int:channel id="713.505.executeChannel"/>
+
+    <!-- Subscriber - service activator for Poweroff request approved executor -->
+    <int:service-activator id="itemPoweroffWorkorderIssueExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_OFF }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.executeChannel" 
+    		ref="itemPoweroffWorkorderIssueExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item Poweroff request approved executor bean -->
+    <bean id="itemPoweroffWorkorderIssueExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }"/>
+		<property name="requestStageHelpers" ref="itemPoweroffWorkOrderIssueExecutors"/>
+	</bean>
+    
+
+	<!-- ==================================== -->
+	<!-- Item Poweroff Work Order Complete -->
+	<!-- ==================================== -->
+	
+	<!-- Item Poweroff Work order complete Validator -->
+	
+	<!-- Channel for Poweroff Work Order Complete validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_OFF }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.validateChannel"/> -->
+    <int:channel id="713.506.validateChannel"/>
+
+    <!-- Subscriber - service activator for Poweroff work order complete validator -->
+    <int:service-activator id="itemPoweroffWorkorderCompleteValidateActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_OFF }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.validateChannel" 
+    		ref="itemPoweroffWorkorderCompleteValidator" method="validate"/>
+
+	<!-- item Poweroff request complete validator bean -->
+    <bean id="itemPoweroffWorkorderCompleteValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemPoweroffWorkOrderCompleteValidators"/>
+    </bean>
+    
+	
+	<!-- Item Poweroff Workorder complete Executor -->
+	
+	<!-- Channel for Poweroff work order complete executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_OFF }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.executeChannel"/> -->
+    <int:channel id="713.506.executeChannel"/>
+
+    <!-- Subscriber - service activator for Poweroff request approved executor -->
+    <int:service-activator id="itemPoweroffWorkorderCompleteExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_OFF }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.executeChannel" 
+    		ref="itemPoweroffWorkorderCompleteExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item Poweroff request approved executor bean -->
+    <bean id="itemPoweroffWorkorderCompleteExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }"/>
+		<property name="requestStageHelpers" ref="itemPoweroffWorkOrderCompleteExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Item Poweroff Request Complete -->
+	<!-- ==================================== -->
+	
+	<!-- Item Poweroff Request complete Validator -->
+	
+	<!-- Channel for Poweroff Request Complete validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_OFF }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.validateChannel"/> -->
+    <int:channel id="713.507.validateChannel"/>
+
+    <!-- Subscriber - service activator for Poweroff request complete validator -->
+    <int:service-activator id="itemPoweroffRequestCompleteValidateActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_OFF }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.validateChannel" 
+    		ref="itemPoweroffRequestCompleteValidator" method="validate"/>
+
+	<!-- item Poweroff request complete validator bean -->
+    <bean id="itemPoweroffRequestCompleteValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemPoweroffWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item Poweroff Request complete Executor -->
+	
+	<!-- Channel for Poweroff request complete executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_OFF }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.executeChannel"/> -->
+    <int:channel id="713.507.executeChannel"/>
+
+    <!-- Subscriber - service activator for Poweroff request approved executor -->
+    <!-- output-channel="nullChannel" -->
+    <int:service-activator id="itemPoweroffRequestCompleteExecuteActivator" requires-reply="false" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_OFF }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.executeChannel" 
+    		ref="itemPoweroffRequestCompleteExecutor" method="process" output-channel="nullChannel"/>
+    		
+
+	<!-- item Poweroff request approved executor bean -->
+    <bean id="itemPoweroffRequestCompleteExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }"/>
+		<property name="requestStageHelpers" ref="itemPoweroffRequestCompleteExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Item Poweroff Routers               				-->
+	<!-- ==================================== -->
+
+	<!-- item Poweroff validate router -->
+	<!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_OFF }ValidateRouter"/> -->
+	<int:channel id="713.ValidateRouter"/>
+	<int:router input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_OFF }.ValidateRouter" ref="requestStageRouter" method="validatorRouter"/>
+	
+	<!-- item Poweroff execute router -->
+	<!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_OFF }ExecuteRouter"/> -->
+	<int:channel id="713.ExecuteRouter"/>
+	<int:router input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_POWER_OFF }.ExecuteRouter" ref="requestStageRouter" method="executorRouter"/>
+    
+
+
+
+</beans>

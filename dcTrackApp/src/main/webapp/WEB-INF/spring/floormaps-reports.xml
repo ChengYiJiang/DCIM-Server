@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+    					http://www.springframework.org/schema/util
+    					http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+	
+	<bean id="floorMapsReports" class="java.util.LinkedHashMap" >
+		<constructor-arg>
+			<map>
+				<entry key="1010" value-ref="usedRUsPerCabinetReport" />
+				<entry key="1020" value-ref="availableRUsPerCabinetReport" />
+				<entry key="1030" value-ref="measuredAmpsPerCabinetReport" />
+				<entry key="1040" value-ref="budgetedPowerPerCabinetReport" />
+				<entry key="1050" value-ref="maxTemperaturePerCabinetFrontsReport" />
+				<entry key="1060" value-ref="maxTemperaturePerCabinetRearsReport" />
+				<!--
+				<entry key="UPS_BANK" value-ref="budgetedAmpsPerCabinetReport" />
+				-->
+			</map>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="reportHelper" class="com.raritan.tdz.floormaps.home.ReportHelper">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+	</bean>
+	
+	<bean id="usedRUsPerCabinetReport" class="com.raritan.tdz.floormaps.home.UsedRUsPerCabinetReport">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+	</bean>
+	
+	<bean id="availableRUsPerCabinetReport" class="com.raritan.tdz.floormaps.home.AvailableRUsPerCabinetReport">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+	</bean>
+	
+	<bean id="measuredAmpsPerCabinetReport" class="com.raritan.tdz.floormaps.home.MeasuredAmpsPerCabinetReport">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+	</bean>
+	
+	<bean id="budgetedPowerPerCabinetReport" class="com.raritan.tdz.floormaps.home.BudgetedPowerPerCabinetReport">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+	</bean>
+	
+	<bean id="maxTemperaturePerCabinetFrontsReport" class="com.raritan.tdz.floormaps.home.MaxTemperaturePerCabinetFrontsReport">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+	</bean>
+	
+	<bean id="maxTemperaturePerCabinetRearsReport" class="com.raritan.tdz.floormaps.home.MaxTemperaturePerCabinetRearsReport">
+		<constructor-arg index="0">
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+	</bean>
+		
+</beans>

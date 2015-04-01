@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+	<!-- output-channel="nullChannel" -->
+	<!-- Service Activator for the error channel when an error is encountered -->
+	<int:service-activator id="requestErrorHandlersServiceActivator" requires-reply="false" 
+		input-channel="requestErrorChannel"  
+		ref="requestErrorHandlers" method="handleError"/>
+
+	<!-- update the comment field of when an error is encountered while processing request work flow -->
+	<bean id="requestErrorUpdateComment" class="com.raritan.tdz.request.error.RequestErrorUpdateComment">
+	</bean>
+
+	<!-- list of error handler when an error is encountered during request work flow -->
+	<util:list id="errorHandlerList" value-type="com.raritan.tdz.request.error.RequestErrorHandler">
+		<ref bean="requestErrorUpdateComment"/>
+	</util:list>
+
+
+	<!-- Request error handlers will be called by this bean if an error is encountered while processing the request work flow -->
+	<bean id="requestErrorHandlers" class="com.raritan.tdz.request.error.RequestErrorHandlerImpl">
+		<property name="errorHandlers" ref="errorHandlerList"/>
+	</bean>
+
+</beans>

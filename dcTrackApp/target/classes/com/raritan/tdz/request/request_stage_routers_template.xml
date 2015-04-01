@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+	<!-- ==================================== -->
+	<!-- Routers               				-->
+	<!-- ==================================== -->
+
+	<!-- item move validate router -->
+	
+	<bean name="${requestType}ValidateRouter" class="org.springframework.integration.channel.DirectChannel"/>
+	
+	<!-- <int:channel id="${requestType}ValidateRouter"/> -->
+	<!-- <int:router input-channel="${requestType}ValidateRouter" ref="requestStageRouter" method="validatorRouter"/> -->
+	
+	
+	<bean name="${requestType}CustomValidateRouter" class="org.springframework.integration.router.MethodInvokingRouter">
+		<constructor-arg name="object" ref="requestStageRouter"/>
+		<constructor-arg name="methodName" value="validatorRouter"/>
+	</bean>
+	
+	<!-- item move execute router -->
+	<bean name="${requestType}ExecuteRouter" class="org.springframework.integration.channel.DirectChannel"/>
+	<!-- <int:channel id="${requestType}ExecuteRouter"/> -->
+	<!-- <int:router input-channel="${requestType}ExecuteRouter" ref="requestStageRouter" method="executorRouter"/> -->
+
+
+</beans>

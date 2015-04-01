@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/integration
+						http://www.springframework.org/schema/integration/spring-integration.xsd
+						http://www.springframework.org/schema/tx 
+           				http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+           				http://www.springframework.org/schema/context
+    					http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+	<bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+      <property name="scopes">
+          <map>
+              <entry key="thread">
+                  <bean class="org.springframework.context.support.SimpleThreadScope"/>
+              </entry>
+              <entry key="session">
+                  <bean class="org.springframework.context.support.SimpleThreadScope"/>
+              </entry>
+          </map>
+      </property>
+  	</bean>
+  	
+  	<context:annotation-config/>
+  	<context:property-placeholder ignore-unresolvable="true"/>
+  	
+  	
+  	
+  	<import resource="../messageSources.xml" />
+	<import resource="../daos.xml"/>
+	<import resource="piqSubscribers.xml"/>
+	<import resource="piqSyncClient.xml"/>
+	
+	<bean id="queueQueryProviderOngoingUpdateCtx" class="org.springframework.integration.jdbc.store.channel.PostgresChannelMessageStoreQueryProvider"/>
+	
+	<bean id="queueDataStoreOngoingUpdateCtx" class="org.springframework.integration.jdbc.store.JdbcChannelMessageStore">
+		<property name="dataSource" ref="queueDataSource"/>
+		<property name="channelMessageStoreQueryProvider" ref="queueQueryProviderOngoingUpdateCtx"/>
+		<property name="region" value="${powerIQHost}"/>
+		<property name="usingIdCache" value="true"/>
+	</bean>
+	
+	<int:channel id="piqChannel">
+		<int:queue/>		
+	</int:channel>
+	
+	<bean id="piqChannelInterceptor" class="com.raritan.tdz.piq.integration.PIQChannelDebugLogger"/>
+	
+	<int:channel-interceptor ref="piqChannelInterceptor" pattern="piqChannel"/>
+	
+	<bean id="onGoingPollerTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<!-- <property name="corePoolSize" value="5"/>
+		<property name="maxPoolSize" value="10"/>
+		<property name="queueCapacity" value="1"/> -->
+	</bean>
+	
+	<int:service-activator id="piqOngoingUpdateActivator"
+					input-channel="piqChannel" 
+					ref="lnHomePerPIQ"
+					method="processEvent" auto-startup="false">
+		<int:poller fixed-delay="#{10 * 1000}" task-executor="onGoingPollerTaskExecutor"/>				
+	</int:service-activator>
+					
+	
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+		<!--<property name="entityInterceptor">
+			<ref bean="hibernateInterceptor" />
+		</property>-->
+	</bean>
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+</beans>

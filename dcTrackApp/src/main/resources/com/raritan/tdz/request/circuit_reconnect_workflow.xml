@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+
+	<!-- ==================================== -->
+	<!-- Circuit Reconnect Request Issued 		-->
+	<!-- ==================================== -->
+	
+	<!-- Circuit Reconnect Request Issued Validator -->
+	
+	<import resource="request_validators.xml"/>
+	<import resource="request_executors.xml"/>
+	
+	<!-- Channel for Circuit Reconnect issued request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).RECONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.validateChannel"/> -->
+    <int:channel id="709.501.validateChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Reconnect request approved validator -->
+    <int:service-activator id="circuitReconnectReqIssueValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).RECONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.validateChannel" 
+    		ref="circuitReconnectReqIssuedValidator" method="validate"/>
+
+	<!-- Circuit Reconnect request issued validator bean -->
+    <bean id="circuitReconnectReqIssuedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="circuitReconnectWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Circuit Reconnect Request Issued Executor -->
+	
+	<!-- Channel for Circuit Reconnect issue request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).RECONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.executeChannel"/> -->
+	<int:channel id="709.501.executeChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Reconnect request issued executor -->
+    <int:service-activator id="circuitReconnectReqIssueExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).RECONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.executeChannel" 
+    		ref="circuitReconnectRequestStageIssued" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- Circuit Reconnect request issued executor bean -->
+	<bean id="circuitReconnectRequestStageIssued" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }"/>
+		<property name="requestStageHelpers" ref="circuitReconnectRequestIssuedExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Circuit Reconnect Request Updated -->
+	<!-- ==================================== -->
+	
+	<!-- Circuit Reconnect Request Updated Validator -->
+	
+	<!-- Channel for Circuit Reconnect updated request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).RECONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.validateChannel"/> -->
+    <int:channel id="709.503.validateChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Reconnect request updated validator -->
+    <int:service-activator id="circuitReconnectReqUpdateValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).RECONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.validateChannel" 
+    		ref="circuitReconnectReqUpdatedValidator" method="validate"/>
+
+	<!-- Circuit Reconnect request updated validator bean -->
+    <bean id="circuitReconnectReqUpdatedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="circuitReconnectWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Circuit Reconnect Request Updated Executor -->
+	
+	<!-- Channel for Circuit Reconnect update request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).RECONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.executeChannel"/> -->
+	<int:channel id="709.503.executeChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Reconnect request updated executor -->
+    <int:service-activator id="circuitReconnectReqUpdateExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).RECONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.executeChannel" 
+    		ref="circuitReconnectRequestStageUpdated" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- Circuit Reconnect request updated executor bean -->
+	<bean id="circuitReconnectRequestStageUpdated" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }"/>
+		<property name="requestStageHelpers" ref="circuitReconnectRequestUpdatedExecutors"/>
+	</bean>
+
+
+	
+	<!-- ==================================== -->
+	<!-- Circuit Reconnect Request Approved -->
+	<!-- ==================================== -->
+	
+	<!-- Circuit Reconnect Request Approved Validator -->
+	
+	<!-- Channel for Circuit Reconnect approve request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).RECONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.validateChannel"/> -->
+    <int:channel id="709.504.validateChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Reconnect request approved validator -->
+    <int:service-activator id="circuitReconnectReqApproveValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).RECONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.validateChannel" 
+    		ref="circuitReconnectReqApprovedValidator" method="validate"/>
+
+	<!-- Circuit Reconnect request approved validator bean -->
+    <bean id="circuitReconnectReqApprovedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="circuitReconnectWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Circuit Reconnect Request Approved Executor -->
+	
+	<!-- Channel for Circuit Reconnect approve request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).RECONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.executeChannel"/> -->
+	<int:channel id="709.504.executeChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Reconnect request approved executor -->
+    <int:service-activator id="circuitReconnectReqApproveExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).RECONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.executeChannel" 
+    		ref="circuitReconnectReqApprovedExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- Circuit Reconnect request approved executor bean -->
+    <bean id="circuitReconnectReqApprovedExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }"/>
+		<property name="requestStageHelpers" ref="circuitReconnectRequestApprovedExecutors"/>
+	</bean>
+    
+
+	<!-- ==================================== -->
+	<!-- Circuit Reconnect Work Order Issue -->
+	<!-- ==================================== -->
+	
+	<!-- Circuit Reconnect Work order issue Validator -->
+	
+	<!-- Channel for Circuit Reconnect Work Order Issue validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).RECONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.validateChannel"/> -->
+	<int:channel id="709.505.validateChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Reconnect request approved validator -->
+    <int:service-activator id="circuitReconnectWorkorderIssueValidateActivator" requires-reply="false" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).RECONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.validateChannel" 
+    		ref="circuitReconnectWorkorderIssueValidator" method="validate"/>
+
+	<!-- Circuit Reconnect request approved validator bean -->
+    <bean id="circuitReconnectWorkorderIssueValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="circuitReconnectWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Circuit Reconnect Request Approved Executor -->
+	
+	<!-- Channel for Circuit Reconnect approve request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).RECONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.executeChannel"/> -->
+    <int:channel id="709.505.executeChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Reconnect request approved executor -->
+    <int:service-activator id="circuitReconnectWorkorderIssueExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).RECONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.executeChannel" 
+    		ref="circuitReconnectWorkorderIssueExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- Circuit Reconnect request approved executor bean -->
+    <bean id="circuitReconnectWorkorderIssueExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }"/>
+		<property name="requestStageHelpers" ref="circuitReconnectWorkOrderIssueExecutors"/>
+	</bean>
+    
+
+	<!-- ==================================== -->
+	<!-- Circuit Reconnect Work Order Complete -->
+	<!-- ==================================== -->
+	
+	<!-- Circuit Reconnect Work order complete Validator -->
+	
+	<!-- Channel for Circuit Reconnect Work Order Complete validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).RECONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.validateChannel"/> -->
+    <int:channel id="709.506.validateChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Reconnect work order complete validator -->
+    <int:service-activator id="circuitReconnectWorkorderCompleteValidateActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).RECONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.validateChannel" 
+    		ref="circuitReconnectWorkorderCompleteValidator" method="validate"/>
+
+	<!-- Circuit Reconnect request complete validator bean -->
+    <bean id="circuitReconnectWorkorderCompleteValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="circuitReconnectWorkOrderCompleteValidators"/>
+    </bean>
+    
+	
+	<!-- Circuit Reconnect Workorder complete Executor -->
+	
+	<!-- Channel for Circuit Reconnect work order complete executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).RECONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.executeChannel"/> -->
+    <int:channel id="709.506.executeChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Reconnect request approved executor -->
+    <int:service-activator id="circuitReconnectWorkorderCompleteExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).RECONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.executeChannel" 
+    		ref="circuitReconnectWorkorderCompleteExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- Circuit Reconnect request approved executor bean -->
+    <bean id="circuitReconnectWorkorderCompleteExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }"/>
+		<property name="requestStageHelpers" ref="circuitReconnectWorkOrderCompleteExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Circuit Reconnect Request Complete -->
+	<!-- ==================================== -->
+	
+	<!-- Circuit Reconnect Request complete Validator -->
+	
+	<!-- Channel for Circuit Reconnect Request Complete validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).RECONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.validateChannel"/> -->
+    <int:channel id="709.507.validateChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Reconnect request complete validator -->
+    <int:service-activator id="circuitReconnectRequestCompleteValidateActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).RECONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.validateChannel" 
+    		ref="circuitReconnectRequestCompleteValidator" method="validate"/>
+
+	<!-- Circuit Reconnect request complete validator bean -->
+    <bean id="circuitReconnectRequestCompleteValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="circuitReconnectWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Circuit Reconnect Request complete Executor -->
+	
+	<!-- Channel for Circuit Reconnect request complete executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).RECONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.executeChannel"/> -->
+    <int:channel id="709.507.executeChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Reconnect request approved executor -->
+    <!-- output-channel="nullChannel" -->
+    <int:service-activator id="circuitReconnectRequestCompleteExecuteActivator" requires-reply="false" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).RECONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.executeChannel" 
+    		ref="circuitReconnectRequestCompleteExecutor" method="process" output-channel="nullChannel"/>
+    		
+
+	<!-- Circuit Reconnect request approved executor bean -->
+    <bean id="circuitReconnectRequestCompleteExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }"/>
+		<property name="requestStageHelpers" ref="circuitReconnectRequestCompleteExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Circuit Reconnect Routers               				-->
+	<!-- ==================================== -->
+
+	<!-- Circuit Reconnect validate router -->
+	<!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).RECONNECT }ValidateRouter"/> -->
+	<int:channel id="709.ValidateRouter"/>
+	<int:router input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).RECONNECT }.ValidateRouter" ref="requestStageRouter" method="validatorRouter"/>
+	
+	<!-- Circuit Reconnect execute router -->
+	<!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).RECONNECT }ExecuteRouter"/> -->
+	<int:channel id="709.ExecuteRouter"/>
+	<int:router input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).RECONNECT }.ExecuteRouter" ref="requestStageRouter" method="executorRouter"/>
+
+
+
+</beans>

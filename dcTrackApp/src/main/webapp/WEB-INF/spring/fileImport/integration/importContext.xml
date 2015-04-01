@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<import resource="../import-dto.xml"/>
+	<import resource="../dct-import-tokenizers.xml"/>
+	<import resource="../dct-import-field-set-mappers.xml"/>
+	<import resource="../dct-import-job.xml"/>
+	<import resource="../import-home.xml"/>
+	<import resource="import-home-integration.xml"/>
+	<import resource="import-filetype-processor-integration.xml"/>
+	<import resource="import-job-integration.xml"/>
+	<import resource="import-processor.xml"/>
+	<import resource="import-processor-object-type.xml"/>
+	<import resource="import-processor-location.xml"/>
+	<import resource="import-processor-item.xml"/>
+	<import resource="import-processor-dataport.xml"/>
+	<import resource="import-processor-powerport.xml"/>
+	<import resource="import-processor-dataconn.xml"/>
+	<import resource="import-error-handler-integration.xml"/>
+	<import resource="import-processor-powerconn.xml"/>
+	<import resource="import-processor-structuredcablingconn.xml"/>
+	
+	<int:channel id="importUserChannel"/>
+	
+	<context:annotation-config/>
+	<context:property-placeholder ignore-unresolvable="true"/>
+	
+	<bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+      <property name="scopes">
+          <map>
+              <entry key="thread">
+                  <bean class="org.springframework.context.support.SimpleThreadScope"/>
+              </entry>
+              <entry key="session">
+                  <bean class="org.springframework.context.support.SimpleThreadScope"/>
+              </entry>
+          </map>
+      </property>
+  	</bean>
+  	
+  
+
+</beans>

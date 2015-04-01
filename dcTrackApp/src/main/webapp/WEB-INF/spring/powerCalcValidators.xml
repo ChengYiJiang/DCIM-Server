@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:flex="http://www.springframework.org/schema/flex" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+						http://www.springframework.org/schema/flex 
+    					http://www.springframework.org/schema/flex/spring-flex-1.5.xsd
+    					http://www.springframework.org/schema/util
+    					http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+    
+    <!--  These are the Enough Power validator beans -->
+ 	<bean id="enoughPowerValidatorAtUPS" class="com.raritan.tdz.circuit.validators.EnoughPowerValidatorUPS"/>
+ 	<bean id="enoughPowerValidatorAtFloorPDU" class="com.raritan.tdz.circuit.validators.EnoughPowerValidatorFloorPDU"/>
+ 	<bean id="enoughPowerValidatorAtFloorPDUPanel" class="com.raritan.tdz.circuit.validators.EnoughPowerValidatorFloorPDUPanel"/>
+ 	<bean id="enoughPowerValidatorAtBranchCircuitBreaker" class="com.raritan.tdz.circuit.validators.EnoughPowerValidatorBranchCircuitBreaker"/>
+ 	<bean id="enoughPowerValidatorAtRackPDUFuse" class="com.raritan.tdz.circuit.validators.EnoughPowerValidatorRackPDUFuse"/>
+ 	<bean id="enoughPowerValidatorAtRackPDUInput" class="com.raritan.tdz.circuit.validators.EnoughPowerValidatorRackPDUInput"/>
+ 	
+ 	<!--  The validation at the rackpdu outlet is not required. I will keep this class just in case it should be used elsewhere -->
+ 	<!--  <bean id="enoughPowerValidatorAtRackPDUReceptacle" class="com.raritan.tdz.circuit.validators.EnoughPowerValidatorRackPDUReceptacle"/> -->
+ 	
+ 	<util:list id="rackPDUOutputEnoughPowerValidators">
+ 		<!--  <ref bean="enoughPowerValidatorAtRackPDUReceptacle"/>  -->
+ 		<ref bean="enoughPowerValidatorAtRackPDUFuse"/>
+ 	</util:list>
+ 	
+ 	<util:list id="rackPDUInputEnoughPowerValidators">
+ 		<ref bean="enoughPowerValidatorAtRackPDUInput"/>	
+ 	</util:list>
+ 	
+ 	<util:list id="bcBreakerEnoughPowerValidators">
+ 		<ref bean="enoughPowerValidatorAtBranchCircuitBreaker"/>
+ 	</util:list>
+ 	
+ 	<util:list id="panelBreakerEnoughPowerValidators">
+ 		<ref bean="enoughPowerValidatorAtFloorPDUPanel"/>
+ 	</util:list>
+ 	
+ 	<util:list id="floorPDUInputBreakerEnoughPowerValidators">
+ 		<ref bean="enoughPowerValidatorAtFloorPDU"/>
+ 	</util:list>
+ 	
+ 	<util:list id="upsOutputBreakerEnoughPowerValidators">
+ 		<ref bean="enoughPowerValidatorAtUPS"/>
+ 	</util:list>
+ 	
+ 	<bean id="enoughPowerValidatorFactory" class="com.raritan.tdz.circuit.validators.EnoughPowerValidatorFactoryImpl">
+ 		<constructor-arg name="enoughPowerValidatorMap">
+ 			<map>
+ 				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).RACK_PDU_OUTPUT }" value-ref="rackPDUOutputEnoughPowerValidators"/>
+ 				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).INPUT_CORD }" value-ref="rackPDUInputEnoughPowerValidators"/>
+ 				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).BRANCH_CIRCUIT_BREAKER }" value-ref="bcBreakerEnoughPowerValidators"/>
+ 				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).PANEL_BREAKER }" value-ref="panelBreakerEnoughPowerValidators"/>
+ 				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).PDU_INPUT_BREAKER }" value-ref="floorPDUInputBreakerEnoughPowerValidators"/>
+ 				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).UPS_OUTPUT_BREAKER }" value-ref="upsOutputBreakerEnoughPowerValidators"/>
+ 			</map>
+ 		</constructor-arg>
+ 	</bean>
+ 	
+ 	<!-- These are the power connection compatibility validator beans -->
+ 	<bean id="powerSupplyPowerConnPortValidator" class="com.raritan.tdz.circuit.validators.PowerSupplyPowerConnPortValidator"/>
+ 	<bean id="floorOutletPowerConnPortValidator" class="com.raritan.tdz.circuit.validators.FloorOutletPowerConnPortValidator"/>
+ 	<bean id="rpduPowerConnPortValidator" class="com.raritan.tdz.circuit.validators.RPDUPowerConnPortValidator"/>
+ 	<bean id="floorPduPowerConnPortValidator" class="com.raritan.tdz.circuit.validators.FloorPduPowerConnPortValidator"/>
+ 	
+ 	<bean id ="powerConnPortValidator" class="com.raritan.tdz.circuit.validators.PowerConnPortValidator">
+ 		<constructor-arg name="itemSpecificPortValidator">
+ 			<map>
+ 				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).POWER_SUPPLY }" value-ref="powerSupplyPowerConnPortValidator"/>
+ 				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).RACK_PDU_OUTPUT }" value-ref="rpduPowerConnPortValidator"/>
+ 				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).INPUT_CORD }" value-ref="rpduPowerConnPortValidator"/>
+ 				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).WHIP_OUTLET }" value-ref="floorOutletPowerConnPortValidator"/>
+ 				<entry key="#{ T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).BUSWAY_OUTLET }" value-ref="floorOutletPowerConnPortValidator"/>
+ 			</map>
+ 		</constructor-arg>
+ 	</bean>
+ 	
+ 	<bean id="powerConnConnectorValidator" class="com.raritan.tdz.circuit.validators.PowerConnConnectorValidator"/>
+ 	<bean id="powerConnVoltsValidator" class="com.raritan.tdz.circuit.validators.PowerConnVoltsValidator"/>
+ 	<bean id="powerConnRPDUOutletPhaseValidator" class="com.raritan.tdz.circuit.validators.PowerConnRPDUOutletPhaseValidator"/>
+ 	<bean id="powerConnRPDULoopValidator" class="com.raritan.tdz.circuit.validators.PowerConnRPDULoopValidator"/>
+ 	<bean id="powerConnRatingsValidator" class="com.raritan.tdz.circuit.validators.PowerConnRatingsValidator"/>
+ 	
+ 	
+ 	<bean id="powerConnCompatibilityFactory" class="com.raritan.tdz.circuit.validators.PowerConnCompatibilityValidatorFactoryImpl">
+ 		<constructor-arg name="validatorMap">
+ 		<!--  The map key is the port subclass of the destination port under consideration -->
+ 			<map>
+ 				<entry key="#{  T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).RACK_PDU_OUTPUT }" value-ref="rpduPowerConnCompatibilityValidator"/>
+ 				<entry key="#{  T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).WHIP_OUTLET  }" value-ref="floorOutletPowerConnCompatibilityValidator"/>
+ 				<entry key="#{  T(com.raritan.tdz.lookup.SystemLookup$PortSubClass).BUSWAY_OUTLET  }" value-ref="floorOutletPowerConnCompatibilityValidator"/>
+ 			</map>
+ 		</constructor-arg>
+ 	</bean>
+ 	
+ 	<bean id="rpduPowerConnCompatibilityValidator" class="com.raritan.tdz.circuit.validators.PowerConnCompatibilityValidator">
+ 		<constructor-arg name="connValidatorList">
+ 			<list>
+ 				<ref bean="powerConnPortValidator"/>
+ 				<ref bean="powerConnConnectorValidator"/>
+ 				<ref bean="powerConnVoltsValidator"/>
+ 				<ref bean="powerConnRatingsValidator"/>
+ 				<ref bean="powerConnRPDUOutletPhaseValidator"/>
+ 				<ref bean="powerConnRPDULoopValidator"/>
+ 			</list>
+ 		</constructor-arg>
+ 	</bean>
+ 	
+ 	<bean id="floorOutletPowerConnCompatibilityValidator" class="com.raritan.tdz.circuit.validators.PowerConnCompatibilityValidator">
+ 		<constructor-arg name="connValidatorList">
+ 			<list>
+ 				<ref bean="powerConnPortValidator"/>
+ 				<ref bean="powerConnConnectorValidator"/>
+ 				<ref bean="powerConnVoltsValidator"/>
+ 				<ref bean="powerConnRatingsValidator"/>
+ 			</list>
+ 		</constructor-arg>
+ 	</bean>
+
+ 	<bean id="branchCircuitBreakerPowerConnCompatibilityValidator" class="com.raritan.tdz.circuit.validators.PowerConnCompatibilityValidator">
+ 		<constructor-arg name="connValidatorList">
+ 			<list>
+ 				<ref bean="powerConnPortValidator"/>
+ 				<ref bean="powerConnConnectorValidator"/>
+ 				<!-- <ref bean="powerConnVoltsValidator"/> -->
+ 				<ref bean="powerConnRatingsValidator"/>
+ 			</list>
+ 		</constructor-arg>
+ 	</bean>
+
+ 	<bean id="powerPanelBreakerPowerConnCompatibilityValidator" class="com.raritan.tdz.circuit.validators.PowerConnCompatibilityValidator">
+ 		<constructor-arg name="connValidatorList">
+ 			<list>
+ 				<ref bean="powerConnPortValidator"/>
+ 				<ref bean="powerConnConnectorValidator"/>
+ 				<!-- <ref bean="powerConnVoltsValidator"/> -->
+ 				<ref bean="powerConnRatingsValidator"/>
+ 			</list>
+ 		</constructor-arg>
+ 	</bean>
+
+ 	<bean id="floorPDUBreakerPowerConnCompatibilityValidator" class="com.raritan.tdz.circuit.validators.PowerConnCompatibilityValidator">
+ 		<constructor-arg name="connValidatorList">
+ 			<list>
+ 				<ref bean="powerConnPortValidator"/>
+ 				<ref bean="powerConnConnectorValidator"/>
+ 				<!-- <ref bean="powerConnVoltsValidator"/> -->
+ 				<ref bean="powerConnRatingsValidator"/>
+ 			</list>
+ 		</constructor-arg>
+ 	</bean>
+
+ 	<bean id="powerCircuitLoopValidator" class="com.raritan.tdz.circuit.validators.PowerCircuitLoopValidator"/>
+ 	
+ 	<bean id="powerCircuitValidator" class="com.raritan.tdz.circuit.validators.PowerCircuitValidator"/>
+ 	
+ 	<bean id="enoughPowerCircuitValidator" class="com.raritan.tdz.circuit.validators.EnoughPowerCircuitValidator"/>
+</beans>

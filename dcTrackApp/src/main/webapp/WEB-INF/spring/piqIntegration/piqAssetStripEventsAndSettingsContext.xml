@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/integration
+						http://www.springframework.org/schema/integration/spring-integration.xsd
+						http://www.springframework.org/schema/tx 
+           				http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+           				http://www.springframework.org/schema/context
+    					http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+	<bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+      <property name="scopes">
+          <map>
+              <entry key="thread">
+                  <bean class="org.springframework.context.support.SimpleThreadScope"/>
+              </entry>
+              <entry key="session">
+                  <bean class="org.springframework.context.support.SimpleThreadScope"/>
+              </entry>
+          </map>
+      </property>
+  	</bean>
+  	
+  	<context:annotation-config/>
+  	<context:property-placeholder ignore-unresolvable="true"/>
+  	
+  	<import resource="../messageSources.xml" />
+	<import resource="../daos.xml"/>
+	<import resource="jobs.xml"/>
+	<import resource="piqSyncClient.xml"/>
+	
+	
+	<int:channel id="piqAssetStripAndSettingsChannel"/>
+	
+	
+	
+	<int:header-value-router input-channel="piqAssetStripAndSettingsChannel" header-name="command">
+		<int:mapping value="initializeCommand" channel="initializeSettingsCmdChannel"/>
+		<int:mapping value="testSettingsCommand" channel="testSettingsCmdChannel" />
+		<int:mapping value="reloadSettingsCommand" channel="reloadSettingsCmdChannel"/>
+	</int:header-value-router>	
+	
+	<int:channel id="testSettingsCmdChannel"/>
+	<int:channel id="reloadSettingsCmdChannel"/>
+	<int:channel id="initializeSettingsCmdChannel"/>
+	
+	<int:service-activator id="initializeSettingsCmdServiceActivator" 
+						input-channel="initializeSettingsCmdChannel"
+						ref="piqSettingHome"
+						method="initalize"/>
+						
+	<int:service-activator id="testSettingsCmdServiceActivator" 
+						input-channel="testSettingsCmdChannel"
+						ref="piqSettingHome"
+						method="testSettings"/>
+						
+	<int:service-activator id="reloadSettingsServiceActivator" 
+						input-channel="reloadSettingsCmdChannel"
+						ref="piqSettingHome"
+						method="reloadSettings"/>
+						
+	
+	<bean id="piqSettingHome" class="com.raritan.tdz.piq.home.PIQSettingsHomeImpl">
+		<constructor-arg name="applicationSettings" ref="contextAppSettings"/>
+		<constructor-arg name="assetStripJobTrigger" ref="assetStripJobTrigger"/>
+		<constructor-arg name="assetStripScheduler" ref="assetStripScheduler"/>
+		<constructor-arg name="restTemplate" ref="restTemplate"/>
+		<constructor-arg name="piqReconfiguration" ref="piqReconfigurationGw"/>
+	</bean>
+	
+	
+
+	
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+		<!--<property name="entityInterceptor">
+			<ref bean="hibernateInterceptor" />
+		</property>-->
+	</bean>
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+</beans>

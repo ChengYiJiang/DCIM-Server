@@ -1,0 +1,252 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean name="jmockSynchroniser" class="org.jmock.lib.concurrent.Synchroniser"/>
+
+  	<bean name="jmockContext" class="org.jmock.Mockery">
+		<property name="imposteriser" value="#{ T(org.jmock.lib.legacy.ClassImposteriser).INSTANCE}"/>
+		<property name="threadingPolicy" ref="jmockSynchroniser"/>
+	</bean>
+
+	<!--  Dao Layer generic config-->
+    	<bean id="genericDAO" class="com.raritan.tdz.dao.DaoImpl" abstract="true">
+        	<property name="sessionFactory">
+            		<ref bean="sessionFactory"/>
+        	</property>
+    	</bean>
+	
+   	<bean id="itemfinderDao" name="itemFinderDao" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.item.dao.ItemFinderDAO" autowire-candidate="true" autowire="byName">
+		<constructor-arg value="com.raritan.tdz.item.dao.ItemFinderDAO"/>
+	</bean>
+	
+	<bean id="externalTicketFinderDao" name="externalTicketFinderDao" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.externalticket.dao.ExternalTicketFinderDAO">
+		<constructor-arg value="com.raritan.tdz.externalticket.dao.ExternalTicketFinderDAO"/>
+	</bean>
+	
+	<bean id="itemDAO" name="itemDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.item.dao.ItemDAO" autowire-candidate="true" autowire="byName">
+		<constructor-arg value="com.raritan.tdz.item.dao.ItemDAO"/>
+	</bean>
+	
+
+	<bean id="modelDAO" name="modelDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.model.dao.ModelDAO">
+		<constructor-arg value="com.raritan.tdz.model.dao.ModelDAO"/>
+	</bean>
+	
+	<bean id="dataPortDAO" name="dataPortDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.port.dao.DataPortDAO">
+		<constructor-arg value="com.raritan.tdz.port.dao.DataPortDAO"/>
+	</bean>
+	
+	<bean id="dataPortFinderDAO" name="dataPortFinderDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.port.dao.DataPortFinderDAO">
+		<constructor-arg value="com.raritan.tdz.port.dao.DataPortFinderDAO"/>
+	</bean>
+	
+	<bean id="dataConnectionDAO" name="dataConnectionDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.circuit.dao.DataConnDAO">
+		<constructor-arg value="com.raritan.tdz.circuit.dao.DataConnDAO"/>
+	</bean>
+	
+	<bean id="powerCircuitDAO" name="powerCircuitDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.circuit.dao.PowerCircuitDAO">
+		<constructor-arg value="com.raritan.tdz.circuit.dao.PowerCircuitDAO"/>
+	</bean>
+	
+	<bean id="powerCircuitDAOExt" name="powerCircuitDAOExt" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.circuit.dao.CircuitDAO">
+		<constructor-arg value="com.raritan.tdz.circuit.dao.PowerCircuitDAOExtImpl"/>
+	</bean>
+	
+	
+	<bean id="powerCircuitFinderDAO" name="powerCircuitFinderDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.circuit.dao.PowerCircuitFinderDAO">
+		<constructor-arg value="com.raritan.tdz.circuit.dao.PowerCircuitFinderDAO"/>
+	</bean>
+	
+	<bean id="dataCircuitDAO" name="dataCircuitDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.circuit.dao.DataCircuitDAO">
+		<constructor-arg value="com.raritan.tdz.circuit.dao.DataCircuitDAO"/>
+	</bean>
+
+	<bean id="dataCircuitDAOExt" name="dataCircuitDAOExt" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.circuit.dao.CircuitDAO">
+		<constructor-arg value="com.raritan.tdz.circuit.dao.DataCircuitDAOExtImpl"/>
+	</bean>
+	
+	<bean id="powerConnectionDAO" name="powerConnectionDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.circuit.dao.PowerConnDAO">
+		<constructor-arg value="com.raritan.tdz.circuit.dao.PowerConnDAO"/>
+	</bean>
+	
+	<bean id="powerConnectionFinderDAO" name="powerConnectionFinderDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.circuit.dao.PowerConnFinderDAO">
+		<constructor-arg value="com.raritan.tdz.circuit.dao.PowerConnFinderDAO"/>
+	</bean>
+	
+	<bean id="powerPortDAO" name="powerPortDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.port.dao.PowerPortDAO">
+		<constructor-arg value="com.raritan.tdz.port.dao.PowerPortDAO"/>
+	</bean>
+	
+	<bean id="powerPortFinder" name="powerPortFinderDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.port.dao.PowerPortFinderDAO" autowire-candidate="true" autowire="byName">
+		<constructor-arg value="com.raritan.tdz.port.dao.PowerPortFinderDAO"/>
+	</bean>
+	
+	<bean id="powerPortUpdateDAO" name="powerPortUpdateDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.port.dao.PowerPortUpdateDAO">
+		<constructor-arg value="com.raritan.tdz.port.dao.PowerPortUpdateDAO"/>
+	</bean>
+	
+	<bean id="sensorPortDAO" name="sensorPortDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.port.dao.SensorPortDAO" autowire-candidate="true" autowire="byName">
+		<constructor-arg value="com.raritan.tdz.port.dao.SensorPortDAO"/>
+	</bean>
+	
+	<bean id="sensorPortFinder" name="sensorPortFinderDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.port.dao.SensorPortFinderDAO" autowire-candidate="true" autowire="byName">
+		<constructor-arg value="com.raritan.tdz.port.dao.SensorPortFinderDAO"/>
+	</bean>
+	
+	<bean id="sensorPortUpdateDAO" name="sensorPortUpdateDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.port.dao.SensorPortUpdaterDAO">
+		<constructor-arg value="com.raritan.tdz.port.dao.SensorPortUpdaterDAO"/>
+	</bean>
+	
+	<bean id="locationDAO" name="locationDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.location.dao.LocationDAO">
+		<constructor-arg value="com.raritan.tdz.location.dao.LocationDAO"/>
+	</bean>
+	
+	<bean id="locationFinderDAO" name="locationFinderDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.location.dao.LocationFinderDAO">
+		<constructor-arg value="com.raritan.tdz.location.dao.LocationFinderDAO"/>
+	</bean>
+	
+	<bean id="locationUpdaterDAO" name="locationUpdateDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.location.dao.LocationUpdateDAO">
+		<constructor-arg value="com.raritan.tdz.location.dao.LocationUpdateDAO"/>
+	</bean>
+	
+	<bean id="fieldsDAO" name="fieldsDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.field.dao.FieldsFinderDAO">
+		<constructor-arg value="com.raritan.tdz.field.dao.FieldsFinderDAO"/>
+	</bean>
+	
+	<bean id="itemRequestDAO" name="itemRequestDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.item.request.ItemRequestDAO">
+		<constructor-arg value="com.raritan.tdz.item.request.ItemRequestDAO"/>
+	</bean>
+	
+	
+	<bean id="systemLookupDAO" name="systemLookupDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.lookup.dao.SystemLookupFinderDAO">
+		<constructor-arg value="com.raritan.tdz.lookup.dao.SystemLookupFinderDAO"/>
+	</bean>
+	
+	<bean id="userLookupDAO" name="userLookupDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.lookup.dao.UserLookupFinderDAO">
+		<constructor-arg value="com.raritan.tdz.lookup.dao.UserLookupFinderDAO"/>
+	</bean>
+	
+	<bean id="connectorLookupDAO" name="connectorLookupDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.lookup.dao.ConnectorLookupFinderDAO">
+		<constructor-arg value="com.raritan.tdz.lookup.dao.ConnectorLookupFinderDAO"/>
+	</bean>
+	
+	<bean id="powerPortDiagnosticsDAO" name="powerPortDiagnosticsDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.port.diagnostics.PowerPortDiagnosticsDAO">
+		<constructor-arg value="com.raritan.tdz.port.diagnostics.PowerPortDiagnosticsDAO"/>
+	</bean>
+
+	<bean id="circuitDiagnosticsDAO" name="circuitDiagnosticsDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.port.diagnostics.CircuitDiagnosticsDAO">
+		<constructor-arg value="com.raritan.tdz.port.diagnostics.CircuitDiagnosticsDAO"/>
+	</bean>
+
+	<bean id="eventDAO" name="eventDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.events.dao.EventDAO">
+		<constructor-arg value="com.raritan.tdz.events.dao.EventDAO"/>
+	</bean>
+	
+	<bean id="ticketsDAO" name="ticketsDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.ticket.dao.TicketsDAO">
+		<constructor-arg value="com.raritan.tdz.ticket.dao.TicketsDAO"/>
+	</bean>
+	
+	<bean id="ticketFieldsDAO" name="ticketFieldsDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.ticket.dao.TicketFieldsDAO">
+		<constructor-arg value="com.raritan.tdz.ticket.dao.TicketFieldsDAO"/>
+	</bean>
+	
+	<bean id="ticketPortsDataDAO" name="ticketPortsDataDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.ticket.dao.TicketPortsDataDAO">
+		<constructor-arg value="com.raritan.tdz.ticket.dao.TicketPortsDataDAO"/>
+	</bean>
+	
+	<bean id="ticketPortsPowerDAO" name="ticketPortsPowerDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.ticket.dao.TicketPortsPowerDAO">
+		<constructor-arg value="com.raritan.tdz.ticket.dao.TicketPortsPowerDAO"/>
+	</bean>
+	
+	<bean id="ipAddressDAO" name="ipAddressDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.ip.dao.IPAddressDAO">
+		<constructor-arg value="com.raritan.tdz.ip.dao.IPAddressDAO"/>
+	</bean>
+
+	<bean id="ipAddressDetailsDAO" name="ipAddressDetailsDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.ip.dao.IPAddressDetailsDAO">
+		<constructor-arg value="com.raritan.tdz.ip.dao.IPAddressDetailsDAO"/>
+	</bean>
+
+	<bean id="ipTeamingDAO" name="ipTeamingDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.ip.dao.IPTeamingDAO">
+		<constructor-arg value="com.raritan.tdz.ip.dao.IPTeamingDAO"/>
+	</bean>
+
+	<bean id="networksDAO" name="networksDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.ip.dao.NetworksDAO">
+		<constructor-arg value="com.raritan.tdz.ip.dao.NetworksDAO"/>
+	</bean>
+
+	<bean id="netMaskDAO" name="netMaskDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.ip.dao.NetMaskDAO">
+		<constructor-arg value="com.raritan.tdz.ip.dao.NetMaskDAO"/>
+	</bean>
+
+	<bean id="powerPortMoveDAO" name="powerPortMoveDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.move.dao.PortMoveDAO">
+		<constructor-arg value="com.raritan.tdz.move.dao.PowerPortMoveDAOImpl"/>
+	</bean>	
+	
+	<bean id="dataPortMoveDAO" name="dataPortMoveDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.move.dao.PortMoveDAO">
+		<constructor-arg value="com.raritan.tdz.move.dao.DataPortMoveDAOImpl"/>
+	</bean>
+	
+	<bean id="lnEventDao" name="lnEventDao" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.vbjavabridge.dao.LNEventDAO">
+		<constructor-arg value="com.raritan.tdz.vbjavabridge.dao.LNEventDAO"/>
+	</bean>
+	
+	
+	<bean id="genericDAOLoader" name="genericDAOLoader" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.dao.GenericDAOLoader">
+		<constructor-arg value="com.raritan.tdz.dao.GenericDAOLoader"/>
+	</bean>
+	
+	<bean id="systemLookupInitUnitTest" class="com.raritan.tdz.unit.tests.SystemLookupInitUnitTest" init-method="init"/>
+	
+	<bean id="unitTestDatabaseIdGenerator" class="com.raritan.tdz.unit.tests.UnitTestDatabaseIdGenerator"/>
+
+	<bean id="requestDAO" name="requestDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.request.dao.RequestDAOImpl">
+		<constructor-arg value="com.raritan.tdz.request.dao.RequestDAO"/>
+	</bean>		
+
+	<bean id="requestHistoryDAO" name="requestHistoryDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.request.dao.RequestHistoryDAOImpl">
+		<constructor-arg value="com.raritan.tdz.request.dao.RequestHistoryDAO"/>
+	</bean>
+
+	<bean id="userDAO" name="userDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.user.dao.UserDAOImpl">
+		<constructor-arg value="com.raritan.tdz.user.dao.UserDAO"/>
+	</bean>
+	
+	<bean id="fieldDetailsDao" name="fieldDetailsDao" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.field.dao.FieldDetailsDAOImpl">
+		<constructor-arg value="com.raritan.tdz.field.dao.FieldDetailsDAO"/>
+	</bean>
+
+    <bean id="reportsDAO" class="com.raritan.tdz.reports.dao.ReportsDAOImpl" parent="genericDAO" autowire-candidate="true" autowire="byName"/>
+    <bean id="reportParamDAO" class="com.raritan.tdz.reports.dao.ReportParamDAOImpl" parent="genericDAO" autowire-candidate="true" autowire="byName"/>
+    <bean id="reportConfigDAO" class="com.raritan.tdz.reports.dao.ReportConfigDAOImpl" parent="genericDAO" autowire-candidate="true" autowire="byName"/>
+    <bean id="reportConfigDetailsDAO" class="com.raritan.tdz.reports.dao.ReportConfigDetailsDAOImpl" parent="genericDAO" autowire-candidate="true" autowire="byName"/>
+
+	<bean id="applicationSettingsDAO" name="applicationSettingsDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.settings.dao.ApplicationSettingsDAOImpl">
+		<constructor-arg value="com.raritan.tdz.settings.dao.ApplicationSettingsDAO"/>
+	</bean>
+
+	<bean id="modelMfrDetailsDAO" name="modelMfrDetailsDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.mfr.dao.ModelMfrDetailsDAOImpl">
+		<constructor-arg value="com.raritan.tdz.mfr.dao.ModelMfrDetailsDAO"/>
+	</bean>
+
+	<bean id="reservationDetailsDAO" name="reservationDetailsDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.reservation.dao.ReservationDetailsDAOImpl">
+		<constructor-arg value="com.raritan.tdz.reservation.dao.ReservationDetailsDAO"/>
+	</bean>
+	
+	<bean id="userSessionDAO" name="userSessionDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.session.dao.UserSessionDAOImpl">
+		<constructor-arg value="com.raritan.tdz.session.dao.UserSessionDAO"/>
+	</bean>
+
+	<bean id="itemSNMPDAO" name="itemSNMPDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.item.snmp.dao.ItemSNMPDAOImpl">
+		<constructor-arg value="com.raritan.tdz.item.snmp.dao.ItemSNMPDAO"/>
+	</bean>
+	
+	<bean id="circuitViewDataDAO" name="circuitViewDataDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.circuit.dao.CircuitViewDataDAOImpl">
+		<constructor-arg value="com.raritan.tdz.circuit.dao.CircuitViewDataDAO"/>
+	</bean>
+	
+	<bean id="usersDAO" name="usersDAO" factory-bean="jmockContext" factory-method="mock" class="com.raritan.tdz.user.dao.UsersDAOImpl">
+		<constructor-arg value="com.raritan.tdz.user.dao.UsersDAO"/>
+	</bean>
+
+</beans>

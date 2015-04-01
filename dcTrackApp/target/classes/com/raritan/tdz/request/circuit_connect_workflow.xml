@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+	<!-- ==================================== -->
+	<!-- Circuit Connect Request Issued 			-->
+	<!-- ==================================== -->
+	
+	<!-- Circuit Connect Request Issued Validator -->
+	
+	<import resource="request_validators.xml"/>
+	<import resource="request_executors.xml"/>
+	
+	<!-- Channel for Circuit Connect issued request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.validateChannel"/> -->
+    <int:channel id="706.501.validateChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Connect request approved validator -->
+    <int:service-activator id="circuitConnectReqIssueValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.validateChannel" 
+    		ref="circuitConnectReqIssuedValidator" method="validate"/>
+
+	<!-- Circuit Connect request issued validator bean -->
+    <bean id="circuitConnectReqIssuedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="circuitConnectWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Circuit Connect Request Issued Executor -->
+	
+	<!-- Channel for Circuit Connect issue request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.executeChannel"/> -->
+	<int:channel id="706.501.executeChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Connect request issued executor -->
+    <int:service-activator id="circuitConnectReqIssueExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.executeChannel" 
+    		ref="circuitConnectRequestStageIssued" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- Circuit Connect request issued executor bean -->
+	<bean id="circuitConnectRequestStageIssued" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }"/>
+		<property name="requestStageHelpers" ref="circuitConnectRequestIssuedExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Circuit Connect Request Updated -->
+	<!-- ==================================== -->
+	
+	<!-- Circuit Connect Request Updated Validator -->
+	
+	<!-- Channel for Circuit Connect updated request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.validateChannel"/> -->
+    <int:channel id="706.503.validateChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Connect request updated validator -->
+    <int:service-activator id="circuitConnectReqUpdateValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.validateChannel" 
+    		ref="circuitConnectReqUpdatedValidator" method="validate"/>
+
+	<!-- Circuit Connect request updated validator bean -->
+    <bean id="circuitConnectReqUpdatedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="circuitConnectWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Circuit Connect Request Updated Executor -->
+	
+	<!-- Channel for Circuit Connect update request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.executeChannel"/> -->
+	<int:channel id="706.503.executeChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Connect request updated executor -->
+    <int:service-activator id="circuitConnectReqUpdateExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.executeChannel" 
+    		ref="circuitConnectRequestStageUpdated" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- Circuit Connect request updated executor bean -->
+	<bean id="circuitConnectRequestStageUpdated" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }"/>
+		<property name="requestStageHelpers" ref="circuitConnectRequestUpdatedExecutors"/>
+	</bean>
+
+
+	
+	<!-- ==================================== -->
+	<!-- Circuit Connect Request Approved -->
+	<!-- ==================================== -->
+	
+	<!-- Circuit Connect Request Approved Validator -->
+	
+	<!-- Channel for Circuit Connect approve request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.validateChannel"/> -->
+    <int:channel id="706.504.validateChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Connect request approved validator -->
+    <int:service-activator id="circuitConnectReqApproveValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.validateChannel" 
+    		ref="circuitConnectReqApprovedValidator" method="validate"/>
+
+	<!-- Circuit Connect request approved validator bean -->
+    <bean id="circuitConnectReqApprovedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="circuitConnectWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Circuit Connect Request Approved Executor -->
+	
+	<!-- Channel for Circuit Connect approve request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.executeChannel"/> -->
+	<int:channel id="706.504.executeChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Connect request approved executor -->
+    <int:service-activator id="circuitConnectReqApproveExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.executeChannel" 
+    		ref="circuitConnectReqApprovedExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- Circuit Connect request approved executor bean -->
+    <bean id="circuitConnectReqApprovedExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }"/>
+		<property name="requestStageHelpers" ref="circuitConnectRequestApprovedExecutors"/>
+	</bean>
+    
+
+	<!-- ==================================== -->
+	<!-- Circuit Connect Work Order Issue -->
+	<!-- ==================================== -->
+	
+	<!-- Circuit Connect Work order issue Validator -->
+	
+	<!-- Channel for Circuit Connect Work Order Issue validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.validateChannel"/> -->
+	<int:channel id="706.505.validateChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Connect request approved validator -->
+    <int:service-activator id="circuitConnectWorkorderIssueValidateActivator" requires-reply="false" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.validateChannel" 
+    		ref="circuitConnectWorkorderIssueValidator" method="validate"/>
+
+	<!-- Circuit Connect request approved validator bean -->
+    <bean id="circuitConnectWorkorderIssueValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="circuitConnectWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Circuit Connect Request Approved Executor -->
+	
+	<!-- Channel for Circuit Connect approve request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.executeChannel"/> -->
+    <int:channel id="706.505.executeChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Connect request approved executor -->
+    <int:service-activator id="circuitConnectWorkorderIssueExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.executeChannel" 
+    		ref="circuitConnectWorkorderIssueExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- Circuit Connect request approved executor bean -->
+    <bean id="circuitConnectWorkorderIssueExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }"/>
+		<property name="requestStageHelpers" ref="circuitConnectWorkOrderIssueExecutors"/>
+	</bean>
+    
+
+	<!-- ==================================== -->
+	<!-- Circuit Connect Work Order Complete -->
+	<!-- ==================================== -->
+	
+	<!-- Circuit Connect Work order complete Validator -->
+	
+	<!-- Channel for Circuit Connect Work Order Complete validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.validateChannel"/> -->
+    <int:channel id="706.506.validateChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Connect work order complete validator -->
+    <int:service-activator id="circuitConnectWorkorderCompleteValidateActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.validateChannel" 
+    		ref="circuitConnectWorkorderCompleteValidator" method="validate"/>
+
+	<!-- Circuit Connect request complete validator bean -->
+    <bean id="circuitConnectWorkorderCompleteValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="circuitConnectWorkOrderCompleteValidators"/>
+    </bean>
+    
+	
+	<!-- Circuit Connect Workorder complete Executor -->
+	
+	<!-- Channel for Circuit Connect work order complete executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.executeChannel"/> -->
+    <int:channel id="706.506.executeChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Connect request approved executor -->
+    <int:service-activator id="circuitConnectWorkorderCompleteExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.executeChannel" 
+    		ref="circuitConnectWorkorderCompleteExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- Circuit Connect request approved executor bean -->
+    <bean id="circuitConnectWorkorderCompleteExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }"/>
+		<property name="requestStageHelpers" ref="circuitConnectWorkOrderCompleteExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Circuit Connect Request Complete -->
+	<!-- ==================================== -->
+	
+	<!-- Circuit Connect Request complete Validator -->
+	
+	<!-- Channel for Circuit Connect Request Complete validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.validateChannel"/> -->
+    <int:channel id="706.507.validateChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Connect request complete validator -->
+    <int:service-activator id="circuitConnectRequestCompleteValidateActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.validateChannel" 
+    		ref="circuitConnectRequestCompleteValidator" method="validate"/>
+
+	<!-- Circuit Connect request complete validator bean -->
+    <bean id="circuitConnectRequestCompleteValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="circuitConnectWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Circuit Connect Request complete Executor -->
+	
+	<!-- Channel for Circuit Connect request complete executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.executeChannel"/> -->
+    <int:channel id="706.507.executeChannel"/>
+
+    <!-- Subscriber - service activator for Circuit Connect request approved executor -->
+    <!-- output-channel="nullChannel" -->
+    <int:service-activator id="circuitConnectRequestCompleteExecuteActivator" requires-reply="false" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONNECT }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.executeChannel" 
+    		ref="circuitConnectRequestCompleteExecutor" method="process" output-channel="nullChannel"/>
+    		
+
+	<!-- Circuit Connect request approved executor bean -->
+    <bean id="circuitConnectRequestCompleteExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }"/>
+		<property name="requestStageHelpers" ref="circuitConnectRequestCompleteExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Circuit Connect Routers               				-->
+	<!-- ==================================== -->
+
+	<!-- Circuit Connect validate router -->
+	<!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONNECT }ValidateRouter"/> -->
+	<int:channel id="706.ValidateRouter"/>
+	<int:router input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONNECT }.ValidateRouter" ref="requestStageRouter" method="validatorRouter"/>
+	
+	<!-- Circuit Connect execute router -->
+	<!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONNECT }ExecuteRouter"/> -->
+	<int:channel id="706.ExecuteRouter"/>
+	<int:router input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).CONNECT }.ExecuteRouter" ref="requestStageRouter" method="executorRouter"/>
+    
+</beans>

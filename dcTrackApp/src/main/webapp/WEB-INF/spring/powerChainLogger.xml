@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+	<import resource="messageSources.xml"/>
+
+	<bean id="powerChainConsoleLogger" class="com.raritan.tdz.powerchain.logger.PowerChainConsoleLogger" autowire-candidate="true" autowire="byName">
+		<property name="messageSource" ref="messageSource"/>
+	</bean>
+	
+	<bean id="powerChainEventLogger" class="com.raritan.tdz.powerchain.logger.PowerChainEventLogger" autowire-candidate="true" autowire="byName">
+		<property name="messageSource" ref="messageSource"/>
+		<property name="dctExecutor" ref="dcTExecutor"/>
+	</bean>
+	
+	<!-- 
+	- generate a logger factory of different kind of event logger
+	-> power connection errors
+	-> power port errors
+	-> item errors
+	- change the error code to have 
+	-> PowerChain.PowerConnection.ErrorType
+	-> PowerChain.PowerPort.ErrorType
+	-> PowerChain.Item.ErrorType
+	 --> 
+
+</beans>

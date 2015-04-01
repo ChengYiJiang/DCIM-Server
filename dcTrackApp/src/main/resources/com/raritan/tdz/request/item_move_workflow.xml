@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+		
+
+	<!-- ==================================== -->
+	<!-- Item Move Request Issued -->
+	<!-- ==================================== -->
+	
+	<!-- Item Move Request Issued Validator -->
+	
+	<import resource="request_validators.xml"/>
+	<import resource="request_executors.xml"/>
+	
+	<!-- Channel for move issued request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.validateChannel"/> -->
+    <int:channel id="705.501.validateChannel"/>
+
+    <!-- Subscriber - service activator for move request approved validator -->
+    <int:service-activator id="itemMoveReqIssueValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.validateChannel" 
+    		ref="itemMoveReqIssuedValidator" method="validate"/>
+
+	<!-- item move request issued validator bean -->
+    <bean id="itemMoveReqIssuedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemMoveWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item Move Request Issued Executor -->
+	
+	<!-- Channel for move issue request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.executeChannel"/> -->
+	<int:channel id="705.501.executeChannel"/>
+
+    <!-- Subscriber - service activator for move request issued executor -->
+    <int:service-activator id="itemMoveReqIssueExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }.executeChannel" 
+    		ref="itemMoveRequestStageIssued" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item move request issued executor bean -->
+	<bean id="itemMoveRequestStageIssued" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }"/>
+		<property name="requestStageHelpers" ref="itemMoveRequestIssuedExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Item Move Request Updated -->
+	<!-- ==================================== -->
+	
+	<!-- Item Move Request Updated Validator -->
+	
+	<!-- Channel for move updated request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.validateChannel"/> -->
+    <int:channel id="705.503.validateChannel"/>
+
+    <!-- Subscriber - service activator for move request updated validator -->
+    <int:service-activator id="itemMoveReqUpdateValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.validateChannel" 
+    		ref="itemMoveReqUpdatedValidator" method="validate"/>
+
+	<!-- item move request updated validator bean -->
+    <bean id="itemMoveReqUpdatedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemMoveWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item Move Request Updated Executor -->
+	
+	<!-- Channel for move update request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.executeChannel"/> -->
+	<int:channel id="705.503.executeChannel"/>
+
+    <!-- Subscriber - service activator for move request updated executor -->
+    <int:service-activator id="itemMoveReqUpdateExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }.executeChannel" 
+    		ref="itemMoveRequestStageUpdated" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item move request updated executor bean -->
+	<bean id="itemMoveRequestStageUpdated" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_UPDATED }"/>
+		<property name="requestStageHelpers" ref="itemMoveRequestUpdatedExecutors"/>
+	</bean>
+
+
+	
+	<!-- ==================================== -->
+	<!-- Item Move Request Approved -->
+	<!-- ==================================== -->
+	
+	<!-- Item Move Request Approved Validator -->
+	
+	<!-- Channel for move approve request validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.validateChannel"/> -->
+    <int:channel id="705.504.validateChannel"/>
+
+    <!-- Subscriber - service activator for move request approved validator -->
+    <int:service-activator id="itemMoveReqApproveValidateActivator" requires-reply="false"
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.validateChannel" 
+    		ref="itemMoveReqApprovedValidator" method="validate"/>
+
+	<!-- item move request approved validator bean -->
+    <bean id="itemMoveReqApprovedValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemMoveWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item Move Request Approved Executor -->
+	
+	<!-- Channel for move approve request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.executeChannel"/> -->
+	<int:channel id="705.504.executeChannel"/>
+
+    <!-- Subscriber - service activator for move request approved executor -->
+    <int:service-activator id="itemMoveReqApproveExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }.executeChannel" 
+    		ref="itemMoveReqApprovedExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item move request approved executor bean -->
+    <bean id="itemMoveReqApprovedExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_APPROVED }"/>
+		<property name="requestStageHelpers" ref="itemMoveRequestApprovedExecutors"/>
+	</bean>
+    
+
+	<!-- ==================================== -->
+	<!-- Item Move Work Order Issue -->
+	<!-- ==================================== -->
+	
+	<!-- Item Move Work order issue Validator -->
+	
+	<!-- Channel for move Work Order Issue validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.validateChannel"/> -->
+	<int:channel id="705.505.validateChannel"/>
+
+    <!-- Subscriber - service activator for move request approved validator -->
+    <int:service-activator id="itemMoveWorkorderIssueValidateActivator" requires-reply="false" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.validateChannel" 
+    		ref="itemMoveWorkorderIssueValidator" method="validate"/>
+
+	<!-- item move request approved validator bean -->
+    <bean id="itemMoveWorkorderIssueValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemMoveWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item Move Request Approved Executor -->
+	
+	<!-- Channel for move approve request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.executeChannel"/> -->
+    <int:channel id="705.505.executeChannel"/>
+
+    <!-- Subscriber - service activator for move request approved executor -->
+    <int:service-activator id="itemMoveWorkorderIssueExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }.executeChannel" 
+    		ref="itemMoveWorkorderIssueExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item move request approved executor bean -->
+    <bean id="itemMoveWorkorderIssueExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_ISSUED }"/>
+		<property name="requestStageHelpers" ref="itemMoveWorkOrderIssueExecutors"/>
+	</bean>
+    
+
+	<!-- ==================================== -->
+	<!-- Item Move Work Order Complete -->
+	<!-- ==================================== -->
+	
+	<!-- Item Move Work order complete Validator -->
+	
+	<!-- Channel for move Work Order Complete validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.validateChannel"/> -->
+    <int:channel id="705.506.validateChannel"/>
+
+    <!-- Subscriber - service activator for move work order complete validator -->
+    <int:service-activator id="itemMoveWorkorderCompleteValidateActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.validateChannel" 
+    		ref="itemMoveWorkorderCompleteValidator" method="validate"/>
+
+	<!-- item move request complete validator bean -->
+    <bean id="itemMoveWorkorderCompleteValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemMoveWorkOrderCompleteValidators"/>
+    </bean>
+    
+	
+	<!-- Item Move Workorder complete Executor -->
+	
+	<!-- Channel for move work order complete executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.executeChannel"/> -->
+    <int:channel id="705.506.executeChannel"/>
+
+    <!-- Subscriber - service activator for move request approved executor -->
+    <int:service-activator id="itemMoveWorkorderCompleteExecuteActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }.executeChannel" 
+    		ref="itemMoveWorkorderCompleteExecutor" method="process" output-channel="requestManagerReplyChannel"/>
+
+	<!-- item move request approved executor bean -->
+    <bean id="itemMoveWorkorderCompleteExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).WORK_ORDER_COMPLETE }"/>
+		<property name="requestStageHelpers" ref="itemMoveWorkOrderCompleteExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Item Move Request Complete -->
+	<!-- ==================================== -->
+	
+	<!-- Item Move Request complete Validator -->
+	
+	<!-- Channel for move Request Complete validator -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.validateChannel"/> -->
+    <int:channel id="705.507.validateChannel"/>
+
+    <!-- Subscriber - service activator for move request complete validator -->
+    <int:service-activator id="itemMoveRequestCompleteValidateActivator" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.validateChannel" 
+    		ref="itemMoveRequestCompleteValidator" method="validate"/>
+
+	<!-- item move request complete validator bean -->
+    <bean id="itemMoveRequestCompleteValidator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="itemMoveWorkOrderCompleteValidators"/>
+    </bean>
+	
+	<!-- Item Move Request complete Executor -->
+	
+	<!-- Channel for move request complete executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.executeChannel"/> -->
+    <int:channel id="705.507.executeChannel"/>
+
+    <!-- Subscriber - service activator for move request approved executor -->
+    <!-- output-channel="nullChannel" -->
+    <int:service-activator id="itemMoveRequestCompleteExecuteActivator" requires-reply="false" 
+    		input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_MOVE }.#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }.executeChannel" 
+    		ref="itemMoveRequestCompleteExecutor" method="process" output-channel="nullChannel"/>
+    		
+
+	<!-- item move request approved executor bean -->
+    <bean id="itemMoveRequestCompleteExecutor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_COMPLETE }"/>
+		<property name="requestStageHelpers" ref="itemMoveRequestCompleteExecutors"/>
+	</bean>
+
+	<!-- ==================================== -->
+	<!-- Item Move Routers               				-->
+	<!-- ==================================== -->
+
+	<!-- item move validate router -->
+	<!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_MOVE }ValidateRouter"/> -->
+	<int:channel id="705.ValidateRouter"/>
+	<int:router input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_MOVE }.ValidateRouter" ref="requestStageRouter" method="validatorRouter"/>
+	
+	<!-- item move execute router -->
+	<!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_MOVE }ExecuteRouter"/> -->
+	<int:channel id="705.ExecuteRouter"/>
+	<int:router input-channel="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_MOVE }.ExecuteRouter" ref="requestStageRouter" method="executorRouter"/>
+    
+ 
+</beans>

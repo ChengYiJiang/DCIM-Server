@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+
+	<task:scheduler id="taskScheduler"/>
+	
+	<!-- ==================================================================================== -->
+	<!-- Aspect to intercept the calls to request manager and update the progress information -->
+	<!-- ==================================================================================== -->
+	
+	<bean id="requestProgressAPIIntercepter" class="com.raritan.tdz.request.progress.RequestProgressAPIIntercepter">
+		<constructor-arg name="requestProgressUpdate" ref="requestProgressUpdateDTO"/>
+	</bean>
+	
+	<aop:config>
+	
+		<aop:aspect id="aspectRequestProgress" ref="requestProgressAPIIntercepter">
+
+			<!-- define a point cut for when the request manager starts and stops processing all the requests -->		
+			<aop:pointcut expression="execution(* com.raritan.tdz.request.home.RequestManager.process(..))" id="requestProgressStartStopPointCut"/>
+			
+			<!-- define a point cut for when the request manager starts processing individual request -->
+			<!-- <aop:pointcut expression="execution(* com.raritan.tdz.request.home.RequestManager.processRelatedRequests(..))" id="requestProgressPerRequestStartStop"/> -->
+			
+			<!-- aspect method that will create and initialize the progress data --> 
+			<aop:before method="createRequestProgress" pointcut-ref="requestProgressStartStopPointCut"/>
+			
+			<!-- aspect method that will update that the progress is finished  -->
+			<aop:after method="completeRequestProgress" pointcut-ref="requestProgressStartStopPointCut"/>
+			
+			<!-- aspect method that will update that the progress data to the next request  -->
+			<!-- <aop:before method="updateRequestNumber" pointcut-ref="requestProgressPerRequestStartStop"/> -->
+			
+			<!-- aspect method that will update that the errors data of the request  -->
+			<!-- <aop:after method="updateRequestErrors" pointcut-ref="requestProgressPerRequestStartStop"/> -->
+			
+		</aop:aspect>
+	
+	</aop:config>
+	
+	<!-- ==================================================================================== -->
+	<!-- Request work flow channel intercepter to update the progress information -->
+	<!-- ==================================================================================== -->
+
+	<bean id="requestProgressChannelIntercepter" class="com.raritan.tdz.request.progress.RequestProgressChannelIntercepter">
+		<constructor-arg name="requestProgressUpdate" ref="requestProgressUpdateDTO"/>
+	</bean>
+
+	<int:channel-interceptor ref="requestProgressChannelIntercepter" pattern="*.validateChannel, *.executeChannel" order="1"/>
+
+	<!-- ==================================================================================== -->
+	<!-- Request error channel intercepter to update the progress error information -->
+	<!-- ==================================================================================== -->
+
+	
+	<bean id="requestErrorChannelIntercepter" class="com.raritan.tdz.request.progress.RequestErrorChannelIntercepter">
+		<constructor-arg name="requestProgressUpdate" ref="requestProgressUpdateDTO"/>
+	</bean>
+	
+	<!-- <int:channel-interceptor ref="requestErrorChannelIntercepter" pattern="requestErrorChannel" order="1"/> -->
+	
+	<!-- ========================================================================================= -->
+	<!-- Request execution complete channel intercepter to update the progress stage error information -->
+	<!-- ========================================================================================= -->
+	
+	<bean id="requestExecutionCompleteChannelIntercepter" class="com.raritan.tdz.request.progress.RequestExecutionCompleteChannelIntercepter">
+		<constructor-arg name="requestProgressUpdate" ref="requestProgressUpdateDTO"/>
+	</bean>
+ 
+
+</beans>

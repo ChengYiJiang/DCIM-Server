@@ -1,0 +1,2893 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 4.2.2.v201301221637 Build &lt;4.2.2.v20130206-1509></property>
+    <simple-property-list name="includeResource">
+        <value>../locale/report_en_US</value>
+    </simple-property-list>
+    <property name="units">in</property>
+    <property name="theme">three_dot_0.defaultTheme</property>
+    <text-property name="displayName">3dot0 Look and Feel</text-property>
+    <property name="eventHandlerClass">com.raritan.tdz.reports.eventhandler.ReportEH</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <list-property name="libraries">
+        <structure>
+            <property name="fileName">three_dot_0.rptlibrary</property>
+            <property name="namespace">three_dot_0</property>
+        </structure>
+    </list-property>
+    <parameters>
+        <scalar-parameter name="SiteCode" id="216" extends="three_dot_0.SiteCode"/>
+        <scalar-parameter name="Orientation" id="217" extends="three_dot_0.Orientation"/>
+        <scalar-parameter name="cabinetIdList" id="220" extends="three_dot_0.cabinetIdList"/>
+    </parameters>
+    <data-sets>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="PowerPath" id="223"
+ extends="three_dot_0.PowerPath"/>
+    </data-sets>
+    <page-setup>
+        <simple-master-page name="dcTrackMaster" id="215" extends="three_dot_0.dcTrackMaster">
+            <overridden-values>
+                <ref-entry baseId="136" name="NewGrid" id="136"/>
+                <ref-entry baseId="137" id="137"/>
+                <ref-entry baseId="138" id="138"/>
+                <ref-entry baseId="139" id="139"/>
+                <ref-entry baseId="140" id="140"/>
+                <ref-entry baseId="141" id="141"/>
+                <ref-entry baseId="148" name="NewLabel" id="148">
+                    <property name="textID">PowerUsagePerCabinet</property>
+                </ref-entry>
+                <ref-entry baseId="142" id="142"/>
+                <ref-entry baseId="146" name="NewImage" id="146"/>
+                <ref-entry baseId="143" id="143"/>
+                <ref-entry baseId="147" name="NewImage1" id="147"/>
+                <ref-entry baseId="149" name="NewGrid1" id="149"/>
+                <ref-entry baseId="150" id="150"/>
+                <ref-entry baseId="151" id="151"/>
+                <ref-entry baseId="152" id="152"/>
+                <ref-entry baseId="153" id="153"/>
+                <ref-entry baseId="154" id="154"/>
+                <ref-entry baseId="175" name="NewGrid3" id="175"/>
+                <ref-entry baseId="176" id="176"/>
+                <ref-entry baseId="177" id="177"/>
+                <ref-entry baseId="178" id="178"/>
+                <ref-entry baseId="181" name="NewText2" id="181"/>
+                <ref-entry baseId="179" id="179"/>
+                <ref-entry baseId="180" id="180"/>
+                <ref-entry baseId="183" name="NewText21" id="183"/>
+                <ref-entry baseId="155" id="155"/>
+                <ref-entry baseId="157" name="NewGrid2" id="157"/>
+                <ref-entry baseId="158" id="158"/>
+                <ref-entry baseId="159" id="159"/>
+                <ref-entry baseId="160" id="160"/>
+                <ref-entry baseId="161" id="161"/>
+                <ref-entry baseId="162" id="162"/>
+                <ref-entry baseId="163" name="NewAutoText" id="163"/>
+                <ref-entry baseId="164" id="164"/>
+                <ref-entry baseId="165" name="NewText" id="165"/>
+                <ref-entry baseId="166" id="166"/>
+                <ref-entry baseId="167" name="NewAutoText1" id="167"/>
+                <ref-entry baseId="156" id="156"/>
+                <ref-entry baseId="168" name="NewText1" id="168"/>
+            </overridden-values>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <table id="686">
+            <property name="dataSet">PowerPath</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">item_id</property>
+                    <expression name="expression">dataSetRow["item_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">item_name</property>
+                    <expression name="expression">dataSetRow["item_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">model_name</property>
+                    <expression name="expression">dataSetRow["model_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">parent_item_name</property>
+                    <expression name="expression">dataSetRow["parent_item_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">parent_item_id</property>
+                    <expression name="expression">dataSetRow["parent_item_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">item_port_name</property>
+                    <expression name="expression">dataSetRow["item_port_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">amps_actual</property>
+                    <expression name="expression">dataSetRow["amps_actual"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">amps_budget</property>
+                    <expression name="expression">dataSetRow["amps_budget"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">amps_actual_a</property>
+                    <expression name="expression">dataSetRow["amps_actual_a"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">amps_actual_b</property>
+                    <expression name="expression">dataSetRow["amps_actual_b"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">amps_actual_c</property>
+                    <expression name="expression">dataSetRow["amps_actual_c"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">power_factor</property>
+                    <expression name="expression">dataSetRow["power_factor"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">watts_budget</property>
+                    <expression name="expression">dataSetRow["watts_budget"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">watts_actual</property>
+                    <expression name="expression">dataSetRow["watts_actual"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">supply_item_id</property>
+                    <expression name="expression">dataSetRow["supply_item_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">supply_item_name</property>
+                    <expression name="expression">dataSetRow["supply_item_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">supply_port_name</property>
+                    <expression name="expression">dataSetRow["supply_port_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">supply_port_amps_actual</property>
+                    <expression name="expression">dataSetRow["supply_port_amps_actual"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">supply_connector</property>
+                    <expression name="expression">dataSetRow["supply_connector"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu1_item_id</property>
+                    <expression name="expression">dataSetRow["rpdu1_item_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu1_item_name</property>
+                    <expression name="expression">dataSetRow["rpdu1_item_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu1_input_port_id</property>
+                    <expression name="expression">dataSetRow["rpdu1_input_port_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu1_input_port_name</property>
+                    <expression name="expression">dataSetRow["rpdu1_input_port_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu1_input_port_amps_actual</property>
+                    <expression name="expression">dataSetRow["rpdu1_input_port_amps_actual"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu1_input_port_volts</property>
+                    <expression name="expression">dataSetRow["rpdu1_input_port_volts"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu2_item_id</property>
+                    <expression name="expression">dataSetRow["rpdu2_item_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu2_item_name</property>
+                    <expression name="expression">dataSetRow["rpdu2_item_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu2_input_port_id</property>
+                    <expression name="expression">dataSetRow["rpdu2_input_port_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu2_input_port_name</property>
+                    <expression name="expression">dataSetRow["rpdu2_input_port_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu2_input_port_amps_actual</property>
+                    <expression name="expression" type="javascript">dataSetRow["rpdu2_input_port_amps_actual"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu2_input_port_volts</property>
+                    <expression name="expression">dataSetRow["rpdu2_input_port_volts"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">breaker_panel_item_id</property>
+                    <expression name="expression">dataSetRow["breaker_panel_item_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">breaker_panel_item_name</property>
+                    <expression name="expression">dataSetRow["breaker_panel_item_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">breaker_panel_volts</property>
+                    <expression name="expression">dataSetRow["breaker_panel_volts"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">breaker_id</property>
+                    <expression name="expression">dataSetRow["breaker_id"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">breaker_name</property>
+                    <expression name="expression">dataSetRow["breaker_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">breaker_volts</property>
+                    <expression name="expression">dataSetRow["breaker_volts"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">breaker_poles</property>
+                    <expression name="expression">dataSetRow["breaker_poles"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">breaker_poles_name</property>
+                    <expression name="expression">dataSetRow["breaker_poles_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">a</property>
+                    <expression name="expression">dataSetRow["a"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">b</property>
+                    <expression name="expression">dataSetRow["b"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">c</property>
+                    <expression name="expression">dataSetRow["c"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">ab</property>
+                    <expression name="expression">dataSetRow["ab"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">bc</property>
+                    <expression name="expression">dataSetRow["bc"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">ca</property>
+                    <expression name="expression">dataSetRow["ca"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">floorpdu_item_id</property>
+                    <expression name="expression">dataSetRow["floorpdu_item_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">floorpdu_item_name</property>
+                    <expression name="expression">dataSetRow["floorpdu_item_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">floorpdu_volts</property>
+                    <expression name="expression">dataSetRow["floorpdu_volts"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">site</property>
+                    <expression name="expression">dataSetRow["site"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">site_id</property>
+                    <expression name="expression">dataSetRow["site_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">room</property>
+                    <expression name="expression">dataSetRow["room"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">room_id</property>
+                    <expression name="expression">dataSetRow["room_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">supply_class</property>
+                    <expression name="expression">dataSetRow["supply_class"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">supply_class_code</property>
+                    <expression name="expression">dataSetRow["supply_class_code"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">SupplySumA</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>rpdu1input</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["a"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">SupplySumB</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>rpdu1input</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["b"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">SupplySumC</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>rpdu1input</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["c"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">SupplySumAB</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>rpdu1input</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["ab"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">SupplySumBC</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>rpdu1input</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["bc"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">SupplySumCA</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>rpdu1input</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["ca"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">RPDU2SumA</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>rpdu2input</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["a"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">RPDU2SumB</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>rpdu2input</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["b"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">RPDU2SumC</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>rpdu2input</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["c"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">RPDU2SumAB</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>rpdu2input</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["ab"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">RPDU2SumBC</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>rpdu2input</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["bc"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">RPDU2SumCA</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>rpdu2input</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["ca"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">CabSumA</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Cabinet</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["a"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">CabSumB</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Cabinet</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["b"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">CabSumC</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Cabinet</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["c"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">CabSumAB</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Cabinet</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["ab"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">CabSumBC</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Cabinet</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["bc"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">CabSumCA</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Cabinet</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["ca"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">Aggregation</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Supply</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["watts_budget"]/1000</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">Aggregation_1</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>rpdu2</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["watts_budget"]/1000</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">Aggregation_2</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Cabinet</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["watts_budget"]/1000</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu1_input_port_amps_actual_a</property>
+                    <expression name="expression">dataSetRow["rpdu1_input_port_amps_actual_a"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu1_input_port_amps_actual_b</property>
+                    <expression name="expression">dataSetRow["rpdu1_input_port_amps_actual_b"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu1_input_port_amps_actual_c</property>
+                    <expression name="expression">dataSetRow["rpdu1_input_port_amps_actual_c"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu1_input_port_power_factor</property>
+                    <expression name="expression">dataSetRow["rpdu1_input_port_power_factor"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu2_input_port_amps_actual_a</property>
+                    <expression name="expression">dataSetRow["rpdu2_input_port_amps_actual_a"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu2_input_port_amps_actual_b</property>
+                    <expression name="expression">dataSetRow["rpdu2_input_port_amps_actual_b"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu2_input_port_amps_actual_c</property>
+                    <expression name="expression">dataSetRow["rpdu2_input_port_amps_actual_c"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu2_input_port_power_factor</property>
+                    <expression name="expression">dataSetRow["rpdu2_input_port_power_factor"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">item_class</property>
+                    <expression name="expression">dataSetRow["item_class"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">legs_num</property>
+                    <expression name="expression">dataSetRow["legs_num"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">legs_alpha</property>
+                    <expression name="expression">dataSetRow["legs_alpha"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">floorpdu_class</property>
+                    <expression name="expression">dataSetRow["floorpdu_class"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">cab_sum_amps_actual_A</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Cabinet</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["amps_actual_a"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">cab_sum_amps_actual_B</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Cabinet</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["amps_actual_b"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">cab_sum_amps_actual_C</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Cabinet</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["amps_actual_c"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">act_a</property>
+                    <expression name="expression">dataSetRow["act_a"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">act_b</property>
+                    <expression name="expression">dataSetRow["act_b"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">act_c</property>
+                    <expression name="expression">dataSetRow["act_c"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">act_ab</property>
+                    <expression name="expression">dataSetRow["act_ab"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">act_bc</property>
+                    <expression name="expression">dataSetRow["act_bc"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">act_ca</property>
+                    <expression name="expression">dataSetRow["act_ca"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">CabSumActA</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Cabinet</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">dataSetRow["act_a"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">CabSumActB</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Cabinet</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">dataSetRow["act_b"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">CabSumActC</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Cabinet</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">dataSetRow["act_c"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">CabSumActAB</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Cabinet</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">dataSetRow["act_ab"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">CabSumActBC</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Cabinet</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">dataSetRow["act_bc"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">CabSumActCA</property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Cabinet</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">dataSetRow["act_ca"]</expression>
+                        </structure>
+                    </list-property>
+                </structure>
+                <structure>
+                    <property name="name">ups_id</property>
+                    <expression name="expression">dataSetRow["ups_id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">ups_name</property>
+                    <expression name="expression">dataSetRow["ups_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">amps_nameplate</property>
+                    <expression name="expression">dataSetRow["amps_nameplate"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">watts_nameplate</property>
+                    <expression name="expression">dataSetRow["watts_nameplate"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">supply_port_amps_nameplate</property>
+                    <expression name="expression">dataSetRow["supply_port_amps_nameplate"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu1_input_port_amps_nameplate</property>
+                    <expression name="expression">dataSetRow["rpdu1_input_port_amps_nameplate"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">rpdu2_input_port_amps_nameplate</property>
+                    <expression name="expression">dataSetRow["rpdu2_input_port_amps_nameplate"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">ups_volts</property>
+                    <expression name="expression">dataSetRow["ups_volts"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+            </list-property>
+            <property name="pageBreakInterval">0</property>
+            <list-property name="sort">
+                <structure>
+                    <expression name="key" type="javascript">row["supply_port_name"]</expression>
+                    <property name="direction">asc</property>
+                </structure>
+            </list-property>
+            <column id="723">
+                <property name="width">3px</property>
+            </column>
+            <column id="1236">
+                <property name="width">6px</property>
+            </column>
+            <column id="1335">
+                <property name="width">3px</property>
+            </column>
+            <column id="1084">
+                <property name="width">6px</property>
+            </column>
+            <column id="1347">
+                <property name="width">3px</property>
+            </column>
+            <column id="1113">
+                <property name="width">6px</property>
+            </column>
+            <column id="1072"/>
+            <column id="976"/>
+            <column id="724"/>
+            <column id="725"/>
+            <column id="966"/>
+            <column id="956"/>
+            <column id="726"/>
+            <column id="727">
+                <property name="width">24px</property>
+            </column>
+            <column id="728"/>
+            <column id="946"/>
+            <column id="916"/>
+            <column id="729"/>
+            <column id="936"/>
+            <column id="906"/>
+            <column id="730"/>
+            <column id="926"/>
+            <column id="731">
+                <property name="textAlign">center</property>
+            </column>
+            <column id="876">
+                <property name="textAlign">center</property>
+            </column>
+            <column id="866">
+                <property name="textAlign">center</property>
+            </column>
+            <column id="732">
+                <property name="textAlign">center</property>
+            </column>
+            <column id="1401">
+                <property name="textAlign">center</property>
+            </column>
+            <column id="733">
+                <property name="textAlign">center</property>
+            </column>
+            <column id="896">
+                <property name="textAlign">center</property>
+            </column>
+            <column id="886">
+                <property name="textAlign">center</property>
+            </column>
+            <column id="1147">
+                <list-property name="visibility">
+                    <structure>
+                        <property name="format">all</property>
+                        <expression name="valueExpr" type="javascript">true</expression>
+                    </structure>
+                </list-property>
+            </column>
+            <group id="753">
+                <property name="groupName">Cabinet</property>
+                <property name="interval">none</property>
+                <property name="sortDirection">asc</property>
+                <expression name="keyExpr" type="javascript">row["parent_item_id"]</expression>
+                <structure name="toc">
+                    <expression name="expressionValue" type="javascript">row["parent_item_name"]</expression>
+                </structure>
+                <property name="repeatHeader">true</property>
+                <property name="hideDetail">false</property>
+                <property name="pageBreakAfter">auto</property>
+                <property name="pageBreakBefore">auto</property>
+                <property name="pageBreakInside">auto</property>
+                <list-property name="sort">
+                    <structure>
+                        <expression name="key" type="javascript">row["parent_item_name"]</expression>
+                        <property name="direction">asc</property>
+                    </structure>
+                </list-property>
+                <header>
+                    <row id="754">
+                        <method name="onCreate"><![CDATA[vars["SumActpA"] = 0;
+vars["SumActpB"] = 0;
+vars["SumActpC"] = 0;
+vars["SumActA"] = 0;
+vars["SumActB"] = 0;
+vars["SumActC"] = 0;
+vars["SumActAB"] = 0;
+vars["SumActCA"] = 0;
+vars["SumActBC"] = 0;
+]]></method>
+                        <property name="style">mainGroupHeaderBG</property>
+                        <cell id="755">
+                            <property name="colSpan">18</property>
+                            <property name="rowSpan">1</property>
+                            <text id="856">
+                                <property name="style">groupFont1</property>
+                                <property name="contentType">html</property>
+                                <text-property name="content"><![CDATA[<VALUE-OF>reportContext.getMessage("Cabinet", reportContext.getLocale())</VALUE-OF>
+<span style="color: #009dff;"> <VALUE-OF>row["parent_item_name"]</VALUE-OF></span>]]></text-property>
+                            </text>
+                        </cell>
+                        <cell id="927"/>
+                        <cell id="897"/>
+                        <cell id="762"/>
+                        <cell id="917"/>
+                        <cell id="763">
+                            <property name="colSpan">5</property>
+                            <property name="rowSpan">1</property>
+                            <property name="verticalAlign">bottom</property>
+                            <label id="1224">
+                                <property name="fontWeight">bold</property>
+                                <property name="borderBottomColor">#000000</property>
+                                <property name="borderBottomStyle">solid</property>
+                                <property name="borderBottomWidth">1px</property>
+                                <property name="textAlign">center</property>
+                                <text-property name="text" key="Budget"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="765">
+                            <property name="colSpan">3</property>
+                            <property name="rowSpan">1</property>
+                            <property name="verticalAlign">bottom</property>
+                            <label id="1225">
+                                <property name="fontWeight">bold</property>
+                                <property name="borderBottomColor">#000000</property>
+                                <property name="borderBottomStyle">solid</property>
+                                <property name="borderBottomWidth">1px</property>
+                                <property name="textAlign">center</property>
+                                <text-property name="text" key="Measured"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="1137">
+                            <label id="1148">
+                                <text-property name="text">hidden</text-property>
+                            </label>
+                        </cell>
+                    </row>
+                </header>
+                <footer>
+                    <row id="1568">
+                        <cell id="1569"/>
+                        <cell id="1570"/>
+                        <cell id="1571"/>
+                        <cell id="1572"/>
+                        <cell id="1573"/>
+                        <cell id="1574"/>
+                        <cell id="1575"/>
+                        <cell id="1576"/>
+                        <cell id="1577"/>
+                        <cell id="1578"/>
+                        <cell id="1579"/>
+                        <cell id="1580"/>
+                        <cell id="1581"/>
+                        <cell id="1582"/>
+                        <cell id="1583"/>
+                        <cell id="1584"/>
+                        <cell id="1585"/>
+                        <cell id="1586"/>
+                        <cell id="1587"/>
+                        <cell id="1588"/>
+                        <cell id="1589"/>
+                        <cell id="1590"/>
+                        <cell id="1591">
+                            <label id="1600">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="A">A</text-property>
+                            </label>
+                        </cell>
+                        <cell id="1592">
+                            <label id="1602">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="B">B</text-property>
+                            </label>
+                        </cell>
+                        <cell id="1593">
+                            <label id="1604">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="C">C</text-property>
+                            </label>
+                        </cell>
+                        <cell id="1594">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <label id="1606">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="kW"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="1596">
+                            <label id="1601">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="A">A</text-property>
+                            </label>
+                        </cell>
+                        <cell id="1597">
+                            <label id="1603">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="B">B</text-property>
+                            </label>
+                        </cell>
+                        <cell id="1598">
+                            <label id="1605">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="C">C</text-property>
+                            </label>
+                        </cell>
+                        <cell id="1599"/>
+                    </row>
+                    <row id="766">
+                        <cell id="767">
+                            <property name="colSpan">1</property>
+                            <property name="rowSpan">1</property>
+                        </cell>
+                        <cell id="1434"/>
+                        <cell id="1435"/>
+                        <cell id="1436"/>
+                        <cell id="1437"/>
+                        <cell id="1438"/>
+                        <cell id="1439">
+                            <property name="colSpan">16</property>
+                            <property name="rowSpan">1</property>
+                            <label id="1223">
+                                <property name="fontWeight">bold</property>
+                                <property name="textAlign">right</property>
+                                <text-property name="text" key="Total"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="775">
+                            <text-data id="1220">
+                                <expression name="valueExpr">formatNumber0(row["CabSumA"] + Math.sqrt(row["CabSumAB"] * row["CabSumAB"] + row["CabSumCA"] * row["CabSumCA"] + row["CabSumAB"] * row["CabSumCA"]))</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                        <cell id="875">
+                            <text-data id="1221">
+                                <expression name="valueExpr">formatNumber0(row["CabSumB"] + Math.sqrt(row["CabSumBC"] * row["CabSumBC"] + row["CabSumAB"] * row["CabSumAB"] + row["CabSumBC"] * row["CabSumAB"]))</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                        <cell id="865">
+                            <text-data id="1222">
+                                <expression name="valueExpr">formatNumber0(row["CabSumC"] + Math.sqrt(row["CabSumCA"] * row["CabSumCA"] + row["CabSumBC"] * row["CabSumBC"] + row["CabSumCA"] * row["CabSumBC"]))</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                        <cell id="776">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <data id="1199">
+                                <structure name="numberFormat">
+                                    <property name="category">Fixed</property>
+                                    <property name="pattern">###0.0</property>
+                                </structure>
+                                <property name="resultSetColumn">Aggregation_2</property>
+                            </data>
+                        </cell>
+                        <cell id="777">
+                            <text-data id="1383">
+                                <expression name="valueExpr">formatNumber0(vars["SumActA"] + Math.sqrt(vars["SumActAB"] * vars["SumActAB"] + vars["SumActCA"] * vars["SumActCA"] + vars["SumActAB"] * vars["SumActCA"]) + vars["SumActpA"])</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                        <cell id="895">
+                            <text-data id="1384">
+                                <expression name="valueExpr">formatNumber0(vars["SumActB"]+ Math.sqrt(vars["SumActBC"] * vars["SumActBC"] + vars["SumActAB"] * vars["SumActAB"] + vars["SumActBC"] * vars["SumActAB"]) + vars["SumActpB"])</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                        <cell id="885">
+                            <text-data id="1385">
+                                <expression name="valueExpr">formatNumber0(vars["SumActC"] + Math.sqrt(vars["SumActCA"] * vars["SumActCA"] + vars["SumActBC"] * vars["SumActBC"] + vars["SumActCA"] * vars["SumActBC"]) + vars["SumActpC"])</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                        <cell id="1146">
+                            <grid id="1200">
+                                <column id="1201"/>
+                                <row id="1202">
+                                    <cell id="1203">
+                                        <data id="1214">
+                                            <property name="resultSetColumn">CabSumA</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="1204">
+                                    <cell id="1205">
+                                        <data id="1215">
+                                            <property name="resultSetColumn">CabSumB</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="1206">
+                                    <cell id="1207">
+                                        <data id="1216">
+                                            <property name="resultSetColumn">CabSumC</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="1208">
+                                    <cell id="1209">
+                                        <data id="1217">
+                                            <property name="resultSetColumn">CabSumAB</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="1210">
+                                    <cell id="1211">
+                                        <data id="1218">
+                                            <property name="resultSetColumn">CabSumBC</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="1212">
+                                    <cell id="1213">
+                                        <data id="1219">
+                                            <property name="resultSetColumn">CabSumCA</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                            </grid>
+                        </cell>
+                    </row>
+                </footer>
+            </group>
+            <group id="805">
+                <property name="groupName">rpdu2</property>
+                <property name="interval">none</property>
+                <property name="sortDirection">asc</property>
+                <expression name="keyExpr" type="javascript">row["rpdu2_item_id"]</expression>
+                <structure name="toc"/>
+                <property name="repeatHeader">true</property>
+                <property name="hideDetail">false</property>
+                <property name="pageBreakAfter">auto</property>
+                <property name="pageBreakBefore">auto</property>
+                <property name="pageBreakInside">auto</property>
+                <list-property name="sort">
+                    <structure>
+                        <expression name="key" type="javascript">row["rpdu2_item_name"]</expression>
+                        <property name="direction">asc</property>
+                    </structure>
+                </list-property>
+                <header>
+                    <row id="806">
+                        <property name="style">groupFont4</property>
+                        <list-property name="visibility">
+                            <structure>
+                                <property name="format">all</property>
+                                <expression name="valueExpr" type="javascript">!isColumnPresent("rpdu2_item_id")</expression>
+                            </structure>
+                        </list-property>
+                        <cell id="807">
+                            <property name="colSpan">22</property>
+                            <property name="rowSpan">1</property>
+                            <text id="1013">
+                                <property name="contentType">html</property>
+                                <text-property name="content"><![CDATA[<VALUE-OF>reportContext.getMessage("Rack PDU", reportContext.getLocale())</VALUE-OF>
+<span style="font-weight: bold;"> <VALUE-OF>row["rpdu2_item_name"]</VALUE-OF></span>]]></text-property>
+                            </text>
+                        </cell>
+                        <cell id="2092">
+                            <property name="colSpan">1</property>
+                            <property name="rowSpan">1</property>
+                            <label id="1041">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="A">A</text-property>
+                            </label>
+                        </cell>
+                        <cell id="2135">
+                            <label id="1042">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="B">B</text-property>
+                            </label>
+                        </cell>
+                        <cell id="2136">
+                            <label id="1043">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="C">C</text-property>
+                            </label>
+                        </cell>
+                        <cell id="2137">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <label id="1047">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="kW"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="2097">
+                            <property name="colSpan">1</property>
+                            <property name="rowSpan">1</property>
+                            <label id="1048">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="A">A</text-property>
+                            </label>
+                        </cell>
+                        <cell id="2139">
+                            <label id="1049">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="B">B</text-property>
+                            </label>
+                        </cell>
+                        <cell id="2140">
+                            <label id="1050">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="C">C</text-property>
+                            </label>
+                        </cell>
+                        <cell id="1138"/>
+                    </row>
+                </header>
+                <footer>
+                    <row id="1536">
+                        <cell id="1537">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1538">
+                            <property name="colSpan">4</property>
+                            <property name="rowSpan">1</property>
+                            <method name="onCreate"><![CDATA[if (!isColumnPresent("rpdu2_item_id")) {
+	this.getStyle().borderTopStyle = "none";
+}]]></method>
+                            <property name="borderTopColor">#000000</property>
+                            <property name="borderTopStyle">solid</property>
+                            <property name="borderTopWidth">1px</property>
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1542">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1543">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1544">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1545">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1546">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1547">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1548">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1549">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1550">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1551">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1552">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1553">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1554">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1555">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1556">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1557">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1558">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1559">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1560">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1561">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1562">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1563">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1564">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1565">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1566">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1567">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                    </row>
+                </footer>
+            </group>
+            <group id="1617">
+                <property name="groupName">rpdu2input</property>
+                <property name="interval">none</property>
+                <property name="sortDirection">asc</property>
+                <expression name="keyExpr" type="javascript">row["rpdu2_input_port_id"]</expression>
+                <structure name="toc"/>
+                <property name="repeatHeader">true</property>
+                <property name="hideDetail">false</property>
+                <property name="pageBreakAfter">auto</property>
+                <property name="pageBreakBefore">auto</property>
+                <property name="pageBreakInside">auto</property>
+                <list-property name="sort">
+                    <structure>
+                        <expression name="key" type="javascript">row["rpdu2_input_port_name"]</expression>
+                        <property name="direction">asc</property>
+                    </structure>
+                </list-property>
+                <header>
+                    <row id="1618">
+                        <method name="onCreate"><![CDATA[cumulateActAmpsVars(	row["rpdu2_input_port_amps_actual_a"],
+						row["rpdu2_input_port_amps_actual_b"],
+						row["rpdu2_input_port_amps_actual_c"],
+						row["rpdu2_input_port_amps_actual"],
+						row["legs_num"]);
+]]></method>
+                        <list-property name="visibility">
+                            <structure>
+                                <property name="format">all</property>
+                                <expression name="valueExpr" type="javascript">!isColumnPresent("rpdu2_item_id")</expression>
+                            </structure>
+                        </list-property>
+                        <cell id="1619"/>
+                        <cell id="1620">
+                            <property name="borderLeftColor">#000000</property>
+                            <property name="borderLeftStyle">solid</property>
+                            <property name="borderLeftWidth">1px</property>
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                            <property name="verticalAlign">middle</property>
+                            <grid id="1847">
+                                <list-property name="visibility">
+                                    <structure>
+                                        <property name="format">all</property>
+                                        <expression name="valueExpr" type="javascript">row["supply_class_code"] != 2200 /* floor outlet*/</expression>
+                                    </structure>
+                                </list-property>
+                                <column id="1848"/>
+                                <row id="1849">
+                                    <cell id="1850">
+                                        <property name="paddingLeft">0pt</property>
+                                        <property name="paddingRight">0pt</property>
+                                    </cell>
+                                </row>
+                                <row id="1851">
+                                    <property name="borderTopColor">#000000</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">1px</property>
+                                    <cell id="1852">
+                                        <property name="paddingLeft">0pt</property>
+                                        <property name="paddingRight">0pt</property>
+                                    </cell>
+                                </row>
+                            </grid>
+                        </cell>
+                        <cell id="1621">
+                            <property name="colSpan">8</property>
+                            <property name="rowSpan">1</property>
+                            <property name="borderBottomColor">#000000</property>
+                            <property name="borderBottomStyle">dashed</property>
+                            <property name="borderBottomWidth">1px</property>
+                            <property name="borderLeftColor">#000000</property>
+                            <property name="borderLeftStyle">dashed</property>
+                            <property name="borderLeftWidth">1px</property>
+                            <property name="borderTopColor">#000000</property>
+                            <property name="borderTopStyle">dashed</property>
+                            <property name="borderTopWidth">1px</property>
+                            <text id="1125">
+                                <property name="fontWeight">bold</property>
+                                <property name="contentType">html</property>
+                                <text-property name="content"><![CDATA[<VALUE-OF>row["rpdu2_input_port_name"]+ "@" + row["rpdu2_item_name"]</VALUE-OF>]]></text-property>
+                            </text>
+                        </cell>
+                        <cell id="1629">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <property name="borderBottomColor">#000000</property>
+                            <property name="borderBottomStyle">dashed</property>
+                            <property name="borderBottomWidth">1px</property>
+                            <property name="borderTopColor">#000000</property>
+                            <property name="borderTopStyle">dashed</property>
+                            <property name="borderTopWidth">1px</property>
+                            <label id="1124">
+                                <property name="fontWeight">bold</property>
+                                <property name="textAlign">right</property>
+                                <text-property name="text" key="Rating"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="1631">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <property name="borderBottomColor">#000000</property>
+                            <property name="borderBottomStyle">dashed</property>
+                            <property name="borderBottomWidth">1px</property>
+                            <property name="borderTopColor">#000000</property>
+                            <property name="borderTopStyle">dashed</property>
+                            <property name="borderTopWidth">1px</property>
+                            <text id="1134">
+                                <property name="contentType">html</property>
+                                <text-property name="content"><![CDATA[<VALUE-OF>row["rpdu2_input_port_amps_nameplate"];</VALUE-OF> A]]></text-property>
+                            </text>
+                        </cell>
+                        <cell id="1633">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <property name="borderBottomColor">#000000</property>
+                            <property name="borderBottomStyle">dashed</property>
+                            <property name="borderBottomWidth">1px</property>
+                            <property name="borderTopColor">#000000</property>
+                            <property name="borderTopStyle">dashed</property>
+                            <property name="borderTopWidth">1px</property>
+                            <label id="1123">
+                                <property name="fontWeight">bold</property>
+                                <property name="textAlign">right</property>
+                                <text-property name="text" key="Max"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="1635">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <property name="borderBottomColor">#000000</property>
+                            <property name="borderBottomStyle">dashed</property>
+                            <property name="borderBottomWidth">1px</property>
+                            <property name="borderTopColor">#000000</property>
+                            <property name="borderTopStyle">dashed</property>
+                            <property name="borderTopWidth">1px</property>
+                            <text id="1135">
+                                <property name="contentType">html</property>
+                                <text-property name="content"><![CDATA[<VALUE-OF>row["rpdu2_input_port_amps_nameplate"] * 1.25 </VALUE-OF> A]]></text-property>
+                            </text>
+                        </cell>
+                        <cell id="1637">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <property name="borderBottomColor">#000000</property>
+                            <property name="borderBottomStyle">dashed</property>
+                            <property name="borderBottomWidth">1px</property>
+                            <property name="borderTopColor">#000000</property>
+                            <property name="borderTopStyle">dashed</property>
+                            <property name="borderTopWidth">1px</property>
+                            <label id="1122">
+                                <property name="fontWeight">bold</property>
+                                <property name="textAlign">right</property>
+                                <text-property name="text" key="Volts"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="1639">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <property name="borderBottomColor">#000000</property>
+                            <property name="borderBottomStyle">dashed</property>
+                            <property name="borderBottomWidth">1px</property>
+                            <property name="borderTopColor">#000000</property>
+                            <property name="borderTopStyle">dashed</property>
+                            <property name="borderTopWidth">1px</property>
+                            <data id="1127">
+                                <property name="resultSetColumn">rpdu2_input_port_volts</property>
+                            </data>
+                        </cell>
+                        <cell id="1641">
+                            <property name="borderBottomColor">#000000</property>
+                            <property name="borderBottomStyle">dashed</property>
+                            <property name="borderBottomWidth">1px</property>
+                            <property name="borderTopColor">#000000</property>
+                            <property name="borderTopStyle">dashed</property>
+                            <property name="borderTopWidth">1px</property>
+                            <text-data id="1192">
+                                <expression name="valueExpr">formatNumber0(row["RPDU2SumA"] + Math.sqrt(row["RPDU2SumAB"] * row["RPDU2SumAB"] + row["RPDU2SumCA"] * row["RPDU2SumCA"] + row["RPDU2SumAB"] * row["RPDU2SumCA"]))</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                        <cell id="1642">
+                            <property name="borderBottomColor">#000000</property>
+                            <property name="borderBottomStyle">dashed</property>
+                            <property name="borderBottomWidth">1px</property>
+                            <property name="borderTopColor">#000000</property>
+                            <property name="borderTopStyle">dashed</property>
+                            <property name="borderTopWidth">1px</property>
+                            <text-data id="1193">
+                                <expression name="valueExpr">formatNumber0(row["RPDU2SumB"] + Math.sqrt(row["RPDU2SumBC"] * row["RPDU2SumBC"] + row["RPDU2SumAB"] * row["RPDU2SumAB"] + row["RPDU2SumBC"] * row["RPDU2SumAB"]))</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                        <cell id="1643">
+                            <property name="borderBottomColor">#000000</property>
+                            <property name="borderBottomStyle">dashed</property>
+                            <property name="borderBottomWidth">1px</property>
+                            <property name="borderTopColor">#000000</property>
+                            <property name="borderTopStyle">dashed</property>
+                            <property name="borderTopWidth">1px</property>
+                            <text-data id="1194">
+                                <expression name="valueExpr">formatNumber0(row["RPDU2SumC"] + Math.sqrt(row["RPDU2SumCA"] * row["RPDU2SumCA"] + row["RPDU2SumBC"] * row["RPDU2SumBC"] + row["RPDU2SumCA"] * row["RPDU2SumBC"]))</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                        <cell id="1644">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <property name="borderBottomColor">#000000</property>
+                            <property name="borderBottomStyle">dashed</property>
+                            <property name="borderBottomWidth">1px</property>
+                            <property name="borderTopColor">#000000</property>
+                            <property name="borderTopStyle">dashed</property>
+                            <property name="borderTopWidth">1px</property>
+                            <data id="1196">
+                                <structure name="numberFormat">
+                                    <property name="category">Fixed</property>
+                                    <property name="pattern">###0.0</property>
+                                </structure>
+                                <property name="resultSetColumn">Aggregation_1</property>
+                            </data>
+                        </cell>
+                        <cell id="1646">
+                            <property name="borderBottomColor">#000000</property>
+                            <property name="borderBottomStyle">dashed</property>
+                            <property name="borderBottomWidth">1px</property>
+                            <property name="borderTopColor">#000000</property>
+                            <property name="borderTopStyle">dashed</property>
+                            <property name="borderTopWidth">1px</property>
+                            <text-data id="1355">
+                                <expression name="valueExpr">getActualAmps("a", row["rpdu2_input_port_power_factor"], row["rpdu2_input_port_amps_actual"], row["rpdu2_input_port_amps_actual_a"])</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                        <cell id="1647">
+                            <property name="borderBottomColor">#000000</property>
+                            <property name="borderBottomStyle">dashed</property>
+                            <property name="borderBottomWidth">1px</property>
+                            <property name="borderTopColor">#000000</property>
+                            <property name="borderTopStyle">dashed</property>
+                            <property name="borderTopWidth">1px</property>
+                            <text-data id="1356">
+                                <expression name="valueExpr">getActualAmps("b", row["rpdu2_input_port_power_factor"], row["rpdu2_input_port_amps_actual"], row["rpdu2_input_port_amps_actual_b"])</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                        <cell id="1648">
+                            <property name="borderBottomColor">#000000</property>
+                            <property name="borderBottomStyle">dashed</property>
+                            <property name="borderBottomWidth">1px</property>
+                            <property name="borderRightColor">#000000</property>
+                            <property name="borderRightStyle">dashed</property>
+                            <property name="borderRightWidth">1px</property>
+                            <property name="borderTopColor">#000000</property>
+                            <property name="borderTopStyle">dashed</property>
+                            <property name="borderTopWidth">1px</property>
+                            <text-data id="1357">
+                                <expression name="valueExpr">getActualAmps("c", row["rpdu2_input_port_power_factor"], row["rpdu2_input_port_amps_actual"], row["rpdu2_input_port_amps_actual_c"])</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                        <cell id="1649">
+                            <grid id="1172">
+                                <column id="1173"/>
+                                <row id="1174">
+                                    <cell id="1175">
+                                        <data id="1186">
+                                            <property name="resultSetColumn">RPDU2SumA</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="1176">
+                                    <cell id="1177">
+                                        <data id="1187">
+                                            <property name="resultSetColumn">RPDU2SumB</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="1178">
+                                    <cell id="1179">
+                                        <data id="1188">
+                                            <property name="resultSetColumn">RPDU2SumC</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="1180">
+                                    <cell id="1181">
+                                        <data id="1189">
+                                            <property name="resultSetColumn">RPDU2SumAB</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="1182">
+                                    <cell id="1183">
+                                        <data id="1190">
+                                            <property name="resultSetColumn">RPDU2SumBC</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="1184">
+                                    <cell id="1185">
+                                        <data id="1191">
+                                            <property name="resultSetColumn">RPDU2SumCA</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                            </grid>
+                        </cell>
+                    </row>
+                </header>
+            </group>
+            <group id="1918">
+                <property name="groupName">Supply</property>
+                <property name="interval">none</property>
+                <property name="sortDirection">asc</property>
+                <expression name="keyExpr" type="javascript">row["supply_item_id"]</expression>
+                <structure name="toc"/>
+                <property name="repeatHeader">true</property>
+                <property name="hideDetail">false</property>
+                <property name="pageBreakAfter">auto</property>
+                <property name="pageBreakBefore">auto</property>
+                <property name="pageBreakInside">auto</property>
+                <list-property name="sort">
+                    <structure>
+                        <expression name="key" type="javascript">row["supply_item_name"]</expression>
+                        <property name="direction">asc</property>
+                    </structure>
+                </list-property>
+                <header>
+                    <row id="1919">
+                        <property name="style">groupFont4</property>
+                        <list-property name="visibility">
+                            <structure>
+                                <property name="format">all</property>
+                                <expression name="valueExpr" type="javascript">isColumnPresent("rpdu2_item_id") || row["supply_class_code"] != 2100 /* rack pdu */</expression>
+                            </structure>
+                        </list-property>
+                        <cell id="1920">
+                            <property name="colSpan">22</property>
+                            <property name="rowSpan">1</property>
+                            <text id="1012">
+                                <property name="contentType">html</property>
+                                <text-property name="content"><![CDATA[<VALUE-OF>reportContext.getMessage(row["supply_class"], reportContext.getLocale())</VALUE-OF>
+<span style="font-weight: bold;"> <VALUE-OF>row["supply_item_name"]</VALUE-OF></span>]]></text-property>
+                            </text>
+                        </cell>
+                        <cell id="2121">
+                            <property name="colSpan">1</property>
+                            <property name="rowSpan">1</property>
+                            <label id="1054">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="A">A</text-property>
+                            </label>
+                        </cell>
+                        <cell id="2129">
+                            <label id="1055">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="B">B</text-property>
+                            </label>
+                        </cell>
+                        <cell id="2130">
+                            <label id="1056">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="C">C</text-property>
+                            </label>
+                        </cell>
+                        <cell id="2131">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <label id="1057">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="kW"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="2126">
+                            <property name="colSpan">1</property>
+                            <property name="rowSpan">1</property>
+                            <label id="1058">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="A">A</text-property>
+                            </label>
+                        </cell>
+                        <cell id="2133">
+                            <label id="1059">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="B">B</text-property>
+                            </label>
+                        </cell>
+                        <cell id="2134">
+                            <label id="1060">
+                                <property name="fontWeight">bold</property>
+                                <text-property name="text" key="C">C</text-property>
+                            </label>
+                        </cell>
+                        <cell id="1950"/>
+                    </row>
+                    <row id="2018">
+                        <list-property name="visibility">
+                            <structure>
+                                <property name="format">all</property>
+                                <expression name="valueExpr" type="javascript">row["supply_class_code"] != 2200 /* floor outlet*/</expression>
+                            </structure>
+                        </list-property>
+                        <cell id="2019">
+                            <property name="colSpan">10</property>
+                            <property name="rowSpan">1</property>
+                            <text id="1323">
+                                <property name="style">groupFont4</property>
+                                <property name="contentType">html</property>
+                                <text-property name="content"><![CDATA[<VALUE-OF>reportContext.getMessage(row["supply_class"], reportContext.getLocale())</VALUE-OF>
+<span style="font-weight: bold;"> <VALUE-OF>row["supply_item_name"]</VALUE-OF></span>]]></text-property>
+                            </text>
+                        </cell>
+                        <cell id="2029">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <label id="1317">
+                                <property name="fontWeight">bold</property>
+                                <property name="textAlign">right</property>
+                                <text-property name="text" key="Rating"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="2031">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <text id="1318">
+                                <property name="contentType">html</property>
+                                <text-property name="content"><![CDATA[<VALUE-OF>row["supply_port_amps_nameplate"];</VALUE-OF> A]]></text-property>
+                            </text>
+                        </cell>
+                        <cell id="2033">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <label id="1319">
+                                <property name="fontWeight">bold</property>
+                                <property name="textAlign">right</property>
+                                <text-property name="text" key="Max"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="2035">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <text id="1320">
+                                <property name="contentType">html</property>
+                                <text-property name="content"><![CDATA[<VALUE-OF>row["supply_port_amps_nameplate"] * 1.25;</VALUE-OF> A]]></text-property>
+                            </text>
+                        </cell>
+                        <cell id="2037">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <label id="1321">
+                                <property name="fontWeight">bold</property>
+                                <property name="textAlign">right</property>
+                                <text-property name="text" key="Volts"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="2039">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <text id="1322">
+                                <property name="contentType">html</property>
+                                <text-property name="content"><![CDATA[<VALUE-OF>row["breaker_volts"];</VALUE-OF>]]></text-property>
+                            </text>
+                        </cell>
+                        <cell id="2041"/>
+                        <cell id="2042"/>
+                        <cell id="2043"/>
+                        <cell id="2044"/>
+                        <cell id="2045"/>
+                        <cell id="2046"/>
+                        <cell id="2047"/>
+                        <cell id="2048"/>
+                        <cell id="2049"/>
+                    </row>
+                </header>
+            </group>
+            <group id="779">
+                <property name="groupName">rpdu1input</property>
+                <property name="interval">none</property>
+                <property name="sortDirection">asc</property>
+                <expression name="keyExpr" type="javascript">row["rpdu1_input_port_id"]</expression>
+                <structure name="toc"/>
+                <property name="repeatHeader">true</property>
+                <property name="hideDetail">false</property>
+                <property name="pageBreakAfter">auto</property>
+                <property name="pageBreakBefore">auto</property>
+                <property name="pageBreakInside">auto</property>
+                <list-property name="sort">
+                    <structure>
+                        <expression name="key" type="javascript">row["rpdu1_input_port_name"]</expression>
+                        <property name="direction">asc</property>
+                    </structure>
+                </list-property>
+                <header>
+                    <row id="843">
+                        <method name="onCreate"><![CDATA[if (row["rpdu2_input_port_id"] == null) {//if we have 2nd pdu we take that one...
+	cumulateActAmpsVars(	row["rpdu1_input_port_amps_actual_a"],
+							row["rpdu1_input_port_amps_actual_b"],
+							row["rpdu1_input_port_amps_actual_c"],
+							row["rpdu1_input_port_amps_actual"],
+							row["legs_num"]);
+}
+
+]]></method>
+                        <list-property name="visibility">
+                            <structure>
+                                <property name="format">all</property>
+                                <expression name="valueExpr" type="javascript">row["supply_class_code"] != 2100 /* rack pdu */</expression>
+                            </structure>
+                        </list-property>
+                        <cell id="844"/>
+                        <cell id="1230">
+                            <method name="onCreate"><![CDATA[if (!isColumnPresent("rpdu2_item_id")) {
+	this.getStyle().borderLeftStyle = "none";
+}]]></method>
+                            <property name="borderLeftColor">#000000</property>
+                            <property name="borderLeftStyle">solid</property>
+                            <property name="borderLeftWidth">1px</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                            <property name="verticalAlign">middle</property>
+                        </cell>
+                        <cell id="1328">
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                            <property name="verticalAlign">middle</property>
+                        </cell>
+                        <cell id="1077">
+                            <property name="borderLeftColor">#000000</property>
+                            <property name="borderLeftStyle">solid</property>
+                            <property name="borderLeftWidth">1px</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                            <property name="verticalAlign">middle</property>
+                            <grid id="1257">
+                                <column id="1258"/>
+                                <row id="1259">
+                                    <cell id="1260">
+                                        <property name="paddingLeft">0pt</property>
+                                        <property name="paddingRight">0pt</property>
+                                    </cell>
+                                </row>
+                                <row id="1261">
+                                    <property name="borderTopColor">#000000</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">1px</property>
+                                    <cell id="1262">
+                                        <property name="paddingLeft">0pt</property>
+                                        <property name="paddingRight">0pt</property>
+                                    </cell>
+                                </row>
+                            </grid>
+                        </cell>
+                        <cell id="1340">
+                            <property name="colSpan">6</property>
+                            <property name="rowSpan">1</property>
+                            <property name="borderBottomColor">#000000</property>
+                            <property name="borderBottomStyle">dashed</property>
+                            <property name="borderBottomWidth">1px</property>
+                            <property name="borderLeftColor">#000000</property>
+                            <property name="borderLeftStyle">dashed</property>
+                            <property name="borderLeftWidth">1px</property>
+                            <property name="borderTopColor">#000000</property>
+                            <property name="borderTopStyle">dashed</property>
+                            <property name="borderTopWidth">1px</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                            <property name="verticalAlign">middle</property>
+                            <text id="1126">
+                                <property name="fontWeight">bold</property>
+                                <property name="contentType">html</property>
+                                <text-property name="content"><![CDATA[<VALUE-OF>row["rpdu1_input_port_name"] + (row["rpdu2_item_id"] ? "@" + row["rpdu1_item_name"] : "")</VALUE-OF>]]></text-property>
+                            </text>
+                        </cell>
+                        <cell id="961">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <property name="borderBottomColor">#000000</property>
+                            <property name="borderBottomStyle">dashed</property>
+                            <property name="borderBottomWidth">1px</property>
+                            <property name="borderTopColor">#000000</property>
+                            <property name="borderTopStyle">dashed</property>
+                            <property name="borderTopWidth">1px</property>
+                            <label id="1038">
+                                <property name="fontWeight">bold</property>
+                                <property name="textAlign">right</property>
+                                <text-property name="text" key="Rating"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="847">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <property name="borderBottomColor">#000000</property>
+                            <property name="borderBottomStyle">dashed</property>
+                            <property name="borderBottomWidth">1px</property>
+                            <property name="borderTopColor">#000000</property>
+                            <property name="borderTopStyle">dashed</property>
+                            <property name="borderTopWidth">1px</property>
+                            <text id="1130">
+                                <property name="contentType">html</property>
+                                <text-property name="content"><![CDATA[<VALUE-OF>row["rpdu1_input_port_amps_nameplate"];</VALUE-OF> A]]></text-property>
+                            </text>
+                        </cell>
+                        <cell id="849">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <property name="borderBottomColor">#000000</property>
+                            <property name="borderBottomStyle">dashed</property>
+                            <property name="borderBottomWidth">1px</property>
+                            <property name="borderTopColor">#000000</property>
+                            <property name="borderTopStyle">dashed</property>
+                            <property name="borderTopWidth">1px</property>
+                            <label id="1039">
+                                <property name="fontWeight">bold</property>
+                                <property name="textAlign">right</property>
+                                <text-property name="text" key="Max"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="911">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <property name="borderBottomColor">#000000</property>
+                            <property name="borderBottomStyle">dashed</property>
+                            <property name="borderBottomWidth">1px</property>
+                            <property name="borderTopColor">#000000</property>
+                            <property name="borderTopStyle">dashed</property>
+                            <property name="borderTopWidth">1px</property>
+                            <text id="1136">
+                                <property name="contentType">html</property>
+                                <text-property name="content"><![CDATA[<VALUE-OF>row["rpdu1_input_port_amps_nameplate"] * 1.25;</VALUE-OF> A]]></text-property>
+                            </text>
+                        </cell>
+                        <cell id="931">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <property name="borderBottomColor">#000000</property>
+                            <property name="borderBottomStyle">dashed</property>
+                            <property name="borderBottomWidth">1px</property>
+                            <property name="borderTopColor">#000000</property>
+                            <property name="borderTopStyle">dashed</property>
+                            <property name="borderTopWidth">1px</property>
+                            <label id="1040">
+                                <property name="fontWeight">bold</property>
+                                <property name="textAlign">right</property>
+                                <text-property name="text" key="Volts"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="851">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <property name="borderBottomColor">#000000</property>
+                            <property name="borderBottomStyle">dashed</property>
+                            <property name="borderBottomWidth">1px</property>
+                            <property name="borderTopColor">#000000</property>
+                            <property name="borderTopStyle">dashed</property>
+                            <property name="borderTopWidth">1px</property>
+                            <text id="1131">
+                                <property name="contentType">html</property>
+                                <text-property name="content"><![CDATA[<VALUE-OF>row["rpdu1_input_port_volts"];</VALUE-OF>]]></text-property>
+                            </text>
+                        </cell>
+                        <cell id="852">
+                            <property name="borderBottomColor">#000000</property>
+                            <property name="borderBottomStyle">dashed</property>
+                            <property name="borderBottomWidth">1px</property>
+                            <property name="borderTopColor">#000000</property>
+                            <property name="borderTopStyle">dashed</property>
+                            <property name="borderTopWidth">1px</property>
+                            <text-data id="1170">
+                                <expression name="valueExpr">formatNumber0(row["SupplySumA"] + Math.sqrt(row["SupplySumAB"] * row["SupplySumAB"] + row["SupplySumCA"] * row["SupplySumCA"] + row["SupplySumAB"] * row["SupplySumCA"]))</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                        <cell id="871">
+                            <property name="borderBottomColor">#000000</property>
+                            <property name="borderBottomStyle">dashed</property>
+                            <property name="borderBottomWidth">1px</property>
+                            <property name="borderTopColor">#000000</property>
+                            <property name="borderTopStyle">dashed</property>
+                            <property name="borderTopWidth">1px</property>
+                            <text-data id="1171">
+                                <expression name="valueExpr">formatNumber0(row["SupplySumB"] + Math.sqrt(row["SupplySumBC"] * row["SupplySumBC"] + row["SupplySumAB"] * row["SupplySumAB"] + row["SupplySumBC"] * row["SupplySumAB"]))</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                        <cell id="861">
+                            <property name="borderBottomColor">#000000</property>
+                            <property name="borderBottomStyle">dashed</property>
+                            <property name="borderBottomWidth">1px</property>
+                            <property name="borderTopColor">#000000</property>
+                            <property name="borderTopStyle">dashed</property>
+                            <property name="borderTopWidth">1px</property>
+                            <text-data id="778">
+                                <expression name="valueExpr">formatNumber0(row["SupplySumC"] + Math.sqrt(row["SupplySumCA"] * row["SupplySumCA"] + row["SupplySumBC"] * row["SupplySumBC"] + row["SupplySumCA"] * row["SupplySumBC"]))</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                        <cell id="853">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <property name="borderBottomColor">#000000</property>
+                            <property name="borderBottomStyle">dashed</property>
+                            <property name="borderBottomWidth">1px</property>
+                            <property name="borderTopColor">#000000</property>
+                            <property name="borderTopStyle">dashed</property>
+                            <property name="borderTopWidth">1px</property>
+                            <data id="1195">
+                                <structure name="numberFormat">
+                                    <property name="category">Fixed</property>
+                                    <property name="pattern">###0.0</property>
+                                </structure>
+                                <property name="resultSetColumn">Aggregation</property>
+                            </data>
+                        </cell>
+                        <cell id="854">
+                            <property name="borderBottomColor">#000000</property>
+                            <property name="borderBottomStyle">dashed</property>
+                            <property name="borderBottomWidth">1px</property>
+                            <property name="borderTopColor">#000000</property>
+                            <property name="borderTopStyle">dashed</property>
+                            <property name="borderTopWidth">1px</property>
+                            <text-data id="1351">
+                                <expression name="valueExpr">getActualAmps("a", row["rpdu1_input_port_power_factor"], row["rpdu1_input_port_amps_actual"], row["rpdu1_input_port_amps_actual_a"])</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                        <cell id="891">
+                            <property name="borderBottomColor">#000000</property>
+                            <property name="borderBottomStyle">dashed</property>
+                            <property name="borderBottomWidth">1px</property>
+                            <property name="borderTopColor">#000000</property>
+                            <property name="borderTopStyle">dashed</property>
+                            <property name="borderTopWidth">1px</property>
+                            <text-data id="1352">
+                                <expression name="valueExpr">getActualAmps("b", row["rpdu1_input_port_power_factor"], row["rpdu1_input_port_amps_actual"], row["rpdu1_input_port_amps_actual_b"])</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                        <cell id="881">
+                            <property name="borderBottomColor">#000000</property>
+                            <property name="borderBottomStyle">dashed</property>
+                            <property name="borderBottomWidth">1px</property>
+                            <property name="borderRightColor">#000000</property>
+                            <property name="borderRightStyle">dashed</property>
+                            <property name="borderRightWidth">1px</property>
+                            <property name="borderTopColor">#000000</property>
+                            <property name="borderTopStyle">dashed</property>
+                            <property name="borderTopWidth">1px</property>
+                            <text-data id="1353">
+                                <expression name="valueExpr">getActualAmps("c", row["rpdu1_input_port_power_factor"], row["rpdu1_input_port_amps_actual"], row["rpdu1_input_port_amps_actual_c"])</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                        <cell id="1141">
+                            <grid id="1149">
+                                <column id="1150"/>
+                                <row id="1151">
+                                    <cell id="1152">
+                                        <data id="1164">
+                                            <property name="resultSetColumn">SupplySumA</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="1153">
+                                    <cell id="1154">
+                                        <data id="1165">
+                                            <property name="resultSetColumn">SupplySumB</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="1155">
+                                    <cell id="1156">
+                                        <data id="1166">
+                                            <property name="resultSetColumn">SupplySumC</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="1157">
+                                    <cell id="1158">
+                                        <data id="1167">
+                                            <property name="resultSetColumn">SupplySumAB</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="1159">
+                                    <cell id="1160">
+                                        <data id="1168">
+                                            <property name="resultSetColumn">SupplySumBC</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="1161">
+                                    <cell id="1162">
+                                        <data id="1169">
+                                            <property name="resultSetColumn">SupplySumCA</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                            </grid>
+                        </cell>
+                    </row>
+                    <row id="977">
+                        <property name="fontWeight">bold</property>
+                        <cell id="978">
+                            <property name="colSpan">1</property>
+                            <property name="rowSpan">1</property>
+                        </cell>
+                        <cell id="1231">
+                            <method name="onCreate"><![CDATA[if (!isColumnPresent("rpdu2_item_id")) {
+	this.getStyle().borderLeftStyle = "none";
+}]]></method>
+                            <property name="borderLeftColor">#000000</property>
+                            <property name="borderLeftStyle">solid</property>
+                            <property name="borderLeftWidth">1px</property>
+                        </cell>
+                        <cell id="1330">
+                            <method name="onCreate"><![CDATA[if (!isColumnPresent("rpdu2_item_id")) {
+	this.getStyle().borderLeftStyle = "none";
+}]]></method>
+                        </cell>
+                        <cell id="1114">
+                            <property name="borderLeftColor">#000000</property>
+                            <property name="borderLeftStyle">solid</property>
+                            <property name="borderLeftWidth">1px</property>
+                        </cell>
+                        <cell id="1342"/>
+                        <cell id="1115">
+                            <method name="onCreate"><![CDATA[if (row["supply_class_code"] == 2200) {//outlet
+	this.getStyle().borderLeftStyle = "none";
+}]]></method>
+                            <property name="borderLeftColor">#000000</property>
+                            <property name="borderLeftStyle">solid</property>
+                            <property name="borderLeftWidth">1px</property>
+                        </cell>
+                        <cell id="1116">
+                            <property name="colSpan">1</property>
+                            <property name="rowSpan">1</property>
+                            <property name="textAlign">center</property>
+                            <label id="1001">
+                                <text-property name="text" key="Port"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="1387">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <property name="textAlign">center</property>
+                            <label id="1003">
+                                <property name="textAlign">center</property>
+                                <text-property name="text" key="Amps"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="981">
+                            <property name="colSpan">3</property>
+                            <property name="rowSpan">1</property>
+                            <property name="textAlign">center</property>
+                            <label id="1004">
+                                <text-property name="text" key="Connector"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="984">
+                            <property name="textAlign">center</property>
+                            <label id="1005">
+                                <property name="textAlign">center</property>
+                                <list-property name="visibility">
+                                    <structure>
+                                        <property name="format">all</property>
+                                        <expression name="valueExpr" type="javascript">row["supply_class_code"] != 2100 /* rack pdu */</expression>
+                                    </structure>
+                                </list-property>
+                                <text-property name="text" key="Legs"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="985">
+                            <property name="textAlign">center</property>
+                        </cell>
+                        <cell id="986">
+                            <property name="colSpan">3</property>
+                            <property name="rowSpan">1</property>
+                            <property name="textAlign">center</property>
+                            <label id="1006">
+                                <text-property name="text" key="ItemName"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="989">
+                            <property name="colSpan">4</property>
+                            <property name="rowSpan">1</property>
+                            <property name="textAlign">center</property>
+                            <label id="1007">
+                                <text-property name="text" key="Model"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="1389">
+                            <property name="textAlign">center</property>
+                            <label id="1002">
+                                <text-property name="text" key="Port"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="994">
+                            <property name="colSpan">3</property>
+                            <property name="rowSpan">1</property>
+                            <property name="textAlign">center</property>
+                            <label id="1008">
+                                <text-property name="text" key="Amps"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="997">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <property name="textAlign">center</property>
+                            <label id="1010">
+                                <text-property name="text" key="Watts"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="998">
+                            <property name="colSpan">3</property>
+                            <property name="rowSpan">1</property>
+                            <property name="textAlign">center</property>
+                            <label id="1009">
+                                <text-property name="text" key="Amps"></text-property>
+                            </label>
+                        </cell>
+                        <cell id="1142">
+                            <property name="textAlign">center</property>
+                        </cell>
+                    </row>
+                </header>
+                <footer>
+                    <row id="1472">
+                        <cell id="1473">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1474">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1475">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1476">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <method name="onCreate"><![CDATA[if (row["supply_class_code"] != 2100 /* rack pdu */ ||
+	row["rpdu2_item_name"]
+	) {
+	this.getStyle().borderTopStyle = "none";
+}
+]]></method>
+                            <property name="borderTopColor">#000000</property>
+                            <property name="borderTopStyle">solid</property>
+                            <property name="borderTopWidth">1px</property>
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1478">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1479">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1480">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1481">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1482">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1483">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1484">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1485">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1486">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1487">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1488">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1489">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1490">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1491">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1492">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1493">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1494">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1495">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1496">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1497">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1498">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1499">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1500">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1501">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1502">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                        <cell id="1503">
+                            <property name="paddingTop">0pt</property>
+                            <property name="paddingLeft">0pt</property>
+                            <property name="paddingBottom">0pt</property>
+                            <property name="paddingRight">0pt</property>
+                        </cell>
+                    </row>
+                </footer>
+            </group>
+            <detail>
+                <row id="699">
+                    <method name="onCreate"><![CDATA[//if we have no rack pdu at all we take the power information of each device...
+if (row["rpdu2_input_port_id"] == null &amp;&amp; row["rpdu1_input_port_id"] == null) {
+	cumulateActAmpsVars(	row["amps_actual_a"],
+							row["amps_actual_b"],
+							row["amps_actual_c"],
+							row["amps_actual"],
+							row["legs_num"]);
+}
+
+]]></method>
+                    <property name="verticalAlign">middle</property>
+                    <list-property name="highlightRules">
+                        <structure>
+                            <property name="operator">eq</property>
+                            <expression name="testExpr" type="javascript">row[0]%2</expression>
+                            <simple-property-list name="value1">
+                                <value>1</value>
+                            </simple-property-list>
+                            <property name="style">alternatingRow</property>
+                        </structure>
+                    </list-property>
+                    <cell id="700">
+                        <property name="colSpan">1</property>
+                        <property name="rowSpan">1</property>
+                    </cell>
+                    <cell id="1232">
+                        <property name="colSpan">2</property>
+                        <property name="rowSpan">1</property>
+                        <method name="onCreate"><![CDATA[if (!isColumnPresent("rpdu2_item_id")) {
+	this.getStyle().borderLeftStyle = "none";
+}]]></method>
+                        <property name="borderLeftColor">#000000</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">1px</property>
+                        <property name="paddingLeft">0pt</property>
+                        <property name="paddingRight">0pt</property>
+                        <property name="verticalAlign">middle</property>
+                    </cell>
+                    <cell id="1118">
+                        <property name="colSpan">2</property>
+                        <property name="rowSpan">1</property>
+                        <property name="borderLeftColor">#000000</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">1px</property>
+                        <property name="paddingLeft">0pt</property>
+                        <property name="paddingRight">0pt</property>
+                        <property name="verticalAlign">middle</property>
+                        <grid id="1275">
+                            <list-property name="visibility">
+                                <structure>
+                                    <property name="format">all</property>
+                                    <expression name="valueExpr" type="javascript">row["supply_class_code"] != 2200 /* floor outlet*/</expression>
+                                </structure>
+                            </list-property>
+                            <column id="1276"/>
+                            <row id="1277">
+                                <cell id="1278">
+                                    <property name="paddingLeft">0pt</property>
+                                    <property name="paddingRight">0pt</property>
+                                </cell>
+                            </row>
+                            <row id="1279">
+                                <property name="borderTopColor">#000000</property>
+                                <property name="borderTopStyle">solid</property>
+                                <property name="borderTopWidth">1px</property>
+                                <cell id="1280">
+                                    <property name="paddingLeft">0pt</property>
+                                    <property name="paddingRight">0pt</property>
+                                </cell>
+                            </row>
+                        </grid>
+                    </cell>
+                    <cell id="1119">
+                        <method name="onCreate"><![CDATA[if (row["supply_class_code"] == 2200) {//outlet
+	this.getStyle().borderLeftStyle = "none";
+}]]></method>
+                        <property name="borderLeftColor">#000000</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">1px</property>
+                        <property name="paddingLeft">0pt</property>
+                        <property name="paddingRight">0pt</property>
+                        <property name="verticalAlign">middle</property>
+                        <grid id="1269">
+                            <column id="1270"/>
+                            <row id="1271">
+                                <cell id="1272">
+                                    <property name="paddingLeft">0pt</property>
+                                    <property name="paddingRight">0pt</property>
+                                </cell>
+                            </row>
+                            <row id="1273">
+                                <property name="borderTopColor">#000000</property>
+                                <property name="borderTopStyle">solid</property>
+                                <property name="borderTopWidth">1px</property>
+                                <cell id="1274">
+                                    <property name="paddingLeft">0pt</property>
+                                    <property name="paddingRight">0pt</property>
+                                </cell>
+                            </row>
+                        </grid>
+                    </cell>
+                    <cell id="1120">
+                        <property name="colSpan">1</property>
+                        <property name="rowSpan">1</property>
+                        <property name="textAlign">center</property>
+                        <data id="735">
+                            <property name="resultSetColumn">supply_port_name</property>
+                        </data>
+                    </cell>
+                    <cell id="1386">
+                        <property name="colSpan">2</property>
+                        <property name="rowSpan">1</property>
+                        <property name="textAlign">center</property>
+                        <data id="2141">
+                            <property name="resultSetColumn">supply_port_amps_nameplate</property>
+                        </data>
+                    </cell>
+                    <cell id="702">
+                        <property name="colSpan">4</property>
+                        <property name="rowSpan">1</property>
+                        <property name="textAlign">center</property>
+                        <grid id="1607">
+                            <column id="1608"/>
+                            <column id="1609"/>
+                            <column id="1610"/>
+                            <column id="1611">
+                                <list-property name="visibility">
+                                    <structure>
+                                        <property name="format">all</property>
+                                        <expression name="valueExpr" type="javascript">row["supply_class_code"] != 2100 /* rack pdu */</expression>
+                                    </structure>
+                                </list-property>
+                            </column>
+                            <row id="1612">
+                                <cell id="1613">
+                                    <property name="colSpan">3</property>
+                                    <property name="rowSpan">1</property>
+                                    <property name="paddingTop">0pt</property>
+                                    <property name="paddingLeft">0pt</property>
+                                    <property name="paddingBottom">0pt</property>
+                                    <data id="739">
+                                        <property name="resultSetColumn">supply_connector</property>
+                                    </data>
+                                </cell>
+                                <cell id="1616">
+                                    <property name="paddingTop">0pt</property>
+                                    <property name="paddingBottom">0pt</property>
+                                    <property name="paddingRight">0pt</property>
+                                    <data id="741">
+                                        <property name="textAlign">center</property>
+                                        <property name="resultSetColumn">legs_alpha</property>
+                                    </data>
+                                </cell>
+                            </row>
+                        </grid>
+                    </cell>
+                    <cell id="704">
+                        <property name="textAlign">center</property>
+                        <property name="verticalAlign">middle</property>
+                        <image id="742">
+                            <property name="height">8px</property>
+                            <property name="source">embed</property>
+                            <property name="imageName">doublearrow.png</property>
+                        </image>
+                    </cell>
+                    <cell id="705">
+                        <property name="colSpan">3</property>
+                        <property name="rowSpan">1</property>
+                        <property name="textAlign">center</property>
+                        <data id="744">
+                            <property name="resultSetColumn">item_name</property>
+                        </data>
+                    </cell>
+                    <cell id="706">
+                        <property name="colSpan">4</property>
+                        <property name="rowSpan">1</property>
+                        <property name="textAlign">center</property>
+                        <data id="746">
+                            <property name="resultSetColumn">model_name</property>
+                        </data>
+                    </cell>
+                    <cell id="1388">
+                        <property name="textAlign">center</property>
+                        <data id="748">
+                            <property name="resultSetColumn">item_port_name</property>
+                        </data>
+                    </cell>
+                    <cell id="708">
+                        <property name="colSpan">3</property>
+                        <property name="rowSpan">1</property>
+                        <property name="textAlign">center</property>
+                        <data id="1197">
+                            <property name="resultSetColumn">amps_budget</property>
+                        </data>
+                    </cell>
+                    <cell id="709">
+                        <property name="colSpan">2</property>
+                        <property name="rowSpan">1</property>
+                        <property name="textAlign">center</property>
+                        <data id="1198">
+                            <property name="resultSetColumn">watts_budget</property>
+                        </data>
+                    </cell>
+                    <cell id="710">
+                        <property name="colSpan">3</property>
+                        <property name="rowSpan">1</property>
+                        <property name="textAlign">center</property>
+                        <text-data id="1349">
+                            <expression name="valueExpr">row["amps_actual"] ? row["amps_actual"] : reportContext.getMessage("n/a", reportContext.getLocale())</expression>
+                            <property name="contentType">html</property>
+                        </text-data>
+                    </cell>
+                    <cell id="1143"/>
+                </row>
+            </detail>
+        </table>
+    </body>
+    <property name="pageVariables">
+        <variable-element name="SumActpA">
+            <expression name="value" type="javascript">0</expression>
+            <property name="type">report</property>
+        </variable-element>
+        <variable-element name="SumActpB">
+            <expression name="value" type="javascript">0</expression>
+            <property name="type">report</property>
+        </variable-element>
+        <variable-element name="SumActpC">
+            <expression name="value" type="javascript">0</expression>
+            <property name="type">report</property>
+        </variable-element>
+        <variable-element name="SumActA">
+            <expression name="value" type="javascript">0</expression>
+            <property name="type">report</property>
+        </variable-element>
+        <variable-element name="SumActB">
+            <expression name="value" type="javascript">0</expression>
+            <property name="type">report</property>
+        </variable-element>
+        <variable-element name="SumActC">
+            <expression name="value" type="javascript">0</expression>
+            <property name="type">report</property>
+        </variable-element>
+        <variable-element name="SumActAB">
+            <expression name="value" type="javascript">0</expression>
+            <property name="type">report</property>
+        </variable-element>
+        <variable-element name="SumActBC">
+            <expression name="value" type="javascript">0</expression>
+            <property name="type">report</property>
+        </variable-element>
+        <variable-element name="SumActCA">
+            <expression name="value" type="javascript">0</expression>
+            <property name="type">report</property>
+        </variable-element>
+    </property>
+    <list-property name="images">
+        <structure>
+            <property name="name">doublearrow.png</property>
+            <property name="type">image/png</property>
+            <property name="libReference">three_dot_0.doublearrow.png</property>
+        </structure>
+    </list-property>
+</report>

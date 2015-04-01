@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<int:channel id="importPowerConnChannel"/>
+	<int:channel id="importPowerConnAddChannel"/>
+	<int:channel id="importPowerConnUpdateChannel"/>
+	<int:channel id="importPowerConnDeleteChannel"/>
+	
+	<bean id="powerConnImportProcessor" class="com.raritan.tdz.dctimport.processors.ImportProcessorImpl">
+		<constructor-arg name="messageChannelMap">
+			<map>
+				<entry key="#{T(com.raritan.tdz.dctimport.processors.ImportProcessorImpl).ADD_OPERATION}" value-ref="importPowerConnAddChannel"/>
+				<entry key="#{T(com.raritan.tdz.dctimport.processors.ImportProcessorImpl).EDIT_OPERATION}" value-ref="importPowerConnUpdateChannel"/>
+				<entry key="#{T(com.raritan.tdz.dctimport.processors.ImportProcessorImpl).DELETE_OPERATION}" value-ref="importPowerConnDeleteChannel"/>
+			</map>
+		</constructor-arg>
+	</bean>
+ 	
+	<bean id="powerConnBeanTransformer" class="com.raritan.tdz.dctimport.integration.transformers.PowerConnBeanTransformer">
+		<constructor-arg name="uuid" value="${UserUUIDProperty}"/>
+	</bean>
+	
+	<bean id="powerConnBeanAddTransformer" class="com.raritan.tdz.dctimport.integration.transformers.PowerConnBeanAddTransformer">
+		<constructor-arg name="uuid" value="${UserUUIDProperty}"/>
+	</bean>
+	
+	<bean id="powerConnBeanEditTransformer" class="com.raritan.tdz.dctimport.integration.transformers.PowerConnBeanEditTransformer">
+		<constructor-arg name="uuid" value="${UserUUIDProperty}"/>
+	</bean>
+	
+	<bean id="powerConnBeanDeleteTransformer" class="com.raritan.tdz.dctimport.integration.transformers.PowerConnBeanDeleteTransformer">
+		<constructor-arg name="uuid" value="${UserUUIDProperty}"/>
+	</bean>
+	
+	<bean id="powerConnBeanAddTranslator" class="com.raritan.tdz.dctimport.integration.transformers.ImportBeanTransformer">
+		<constructor-arg name="beanConverter" ref="powerConnBeanAddTransformer"/>
+		<property name="importErrorHandler" ref="importErrorHandlerGateway"/>
+	</bean>
+
+	<bean id="powerConnBeanUpdateTranslator" class="com.raritan.tdz.dctimport.integration.transformers.ImportBeanTransformer">
+		<constructor-arg name="beanConverter" ref="powerConnBeanEditTransformer"/>
+		<property name="importErrorHandler" ref="importErrorHandlerGateway"/>
+	</bean>
+	
+	<bean id="powerConnBeanDeleteTranslator" class="com.raritan.tdz.dctimport.integration.transformers.ImportBeanTransformer">
+		<constructor-arg name="beanConverter" ref="powerConnBeanDeleteTransformer"/>
+		<property name="importErrorHandler" ref="importErrorHandlerGateway"/>
+	</bean>
+	
+	<int:chain input-channel="importPowerConnAddChannel">
+		<int:transformer id="powerConnBeanToDtoAddTransformer" ref="powerConnBeanAddTranslator" method="transform"/>
+		<int:service-activator id="powerConnHomeActivator" expression="@importCircuitService.saveCircuit(payload.get(0))"
+			requires-reply="false"/>
+	</int:chain>
+	
+	<int:chain input-channel="importPowerConnUpdateChannel">
+		<int:transformer id="powerConnBeanToDtoUpdateTransformer" ref="powerConnBeanUpdateTranslator" method="transform"/>
+		<int:service-activator id="powerConnHomeActivator" expression="@importCircuitService.saveCircuit(payload.get(0))"
+			requires-reply="false"/>
+	</int:chain>
+	
+	<int:chain input-channel="importPowerConnDeleteChannel">
+		<int:transformer id="powerConnBeanToDtoDeleteTransformer" ref="powerConnBeanDeleteTranslator" method="transform"/>
+		<int:service-activator id="powerConnHomeActivator" expression="@importCircuitService.deleteCircuitByIds(payload.get(0))"
+			requires-reply="false"/>
+	</int:chain>
+		
+	<int:service-activator id="powerConnProcessor" input-channel="importPowerConnChannel" ref="powerConnImportProcessor" method="process"/>
+	
+</beans>

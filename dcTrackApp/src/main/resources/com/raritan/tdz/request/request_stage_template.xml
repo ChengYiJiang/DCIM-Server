@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+	<!-- ==================================== -->
+	<!-- Item Move Request Issued -->
+	<!-- ==================================== -->
+	
+	<!-- Item Move Request Issued Validator -->
+	
+	<!-- Item Move Request Issued Validator -->
+	
+	<!-- Channel for move issued request validator -->
+    <!-- <int:channel id="${requestType}${requestStage}validateChannel"/> -->
+    
+    <!-- <int:channel id="705501validateChannel"/> -->
+    
+    <bean name="${requestType}${requestStage}validateChannel" class="org.springframework.integration.channel.DirectChannel"/>
+    
+    
+	<!-- item move request issued validator bean -->
+    <bean name="${requestType}${requestStage}Validator" class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    	<property name="requestValidators" ref="${requestStageValidators}"/>
+    </bean>
+    
+	<!-- TODO output-channel to the request manager -->
+    <!-- Subscriber - service activator for move request approved validator -->
+    
+    <int:service-activator requires-reply="false" 
+    		input-channel="${requestType}${requestStage}validateChannel" 
+    		ref="${requestType}${requestStage}Validator" method="validate"/>
+    
+    <!-- <int:service-activator id="${requestType}${requestStage}ValidateActivator" requires-reply="false" 
+    		input-channel="${requestType}${requestStage}validateChannel" 
+    		ref="${requestType}${requestStage}Validator" method="validate"/> -->
+    		
+    <!-- <int:service-activator id="${requestType}${requestStage}ValidateActivator" requires-reply="false" input-channel="${requestType}${requestStage}validateChannel" method="validate">
+    	<bean class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    		<property name="requestValidators" ref="${requestStageValidators}"/>
+    	</bean>
+    </int:service-activator> -->
+    
+    <!-- <int:service-activator requires-reply="false" input-channel="${requestType}${requestStage}validateChannel" method="validate">
+    	<bean class="com.raritan.tdz.request.validator.RequestValidatorImpl">
+    		<property name="requestValidators" ref="${requestStageValidators}"/>
+    	</bean>
+    </int:service-activator> -->
+	
+	<!-- Item Move Request Issued Executor -->
+	
+	<!-- Channel for move issue request executor -->
+    <!-- <int:channel id="#{ T(com.raritan.tdz.lookup.SystemLookup$RequestTypeLkp).ITEM_MOVE }#{ T(com.raritan.tdz.lookup.SystemLookup$RequestStage).REQUEST_ISSUED }executeChannel"/> -->
+	<!-- <int:channel id="${requestType}${requestStage}executeChannel"/> -->
+	
+	<!-- <int:channel id="705501executeChannel"/> -->
+	
+	<!-- <bean name="${requestType}${requestStage}executeChannel" class="org.springframework.integration.channel.DirectChannel"/> -->
+
+    <!-- Subscriber - service activator for move request issued executor -->
+    <!-- <int:service-activator id="${requestType}${requestStage}ExecuteActivator" 
+    		input-channel="${requestType}${requestStage}executeChannel" 
+    		ref="${requestType}${requestStage}Executor" method="process" output-channel="${replyChannel}"/> -->
+    		
+    <!-- <int:service-activator id="${requestType}${requestStage}ExecuteActivator" input-channel="${requestType}${requestStage}executeChannel" method="process" output-channel="${replyChannel}">
+    	<bean class="com.raritan.tdz.request.home.RequestStageImpl">
+    		<constructor-arg name="requestStage" value="${requestStage}"/>
+    		<property name="requestStageHelpers" ref="${requestStageUpdater}"/>
+    	</bean>
+    </int:service-activator> -->
+    
+    <!-- <int:service-activator input-channel="${requestType}${requestStage}executeChannel" method="process" output-channel="${replyChannel}">
+    	<bean class="com.raritan.tdz.request.home.RequestStageImpl">
+    		<constructor-arg name="requestStage" value="${requestStage}"/>
+    		<property name="requestStageHelpers" ref="${requestStageUpdater}"/>
+    	</bean>
+    </int:service-activator> -->
+
+	<!-- item move request issued executor bean -->
+	<!-- <bean id="${requestType}${requestStage}Executor" class="com.raritan.tdz.request.home.RequestStageImpl">
+		<constructor-arg name="requestStage" value="${requestStage}"/>
+		<property name="requestStageHelpers" ref="${requestStageUpdater}"/>
+	</bean> -->
+
+</beans>

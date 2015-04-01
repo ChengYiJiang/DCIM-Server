@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration
+		http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/context
+    	http://www.springframework.org/schema/context/spring-context.xsd
+    	http://www.springframework.org/schema/tx 
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+		">
+
+	<!-- This is the context file for the report generation -->
+	<!-- You dont have to change this file in order to plugin  -->
+	<!-- a new generator such as BIRT. -->
+	<!-- For example BIRT reporting specific implementation is taken care in birt.xml -->
+	
+	<context:annotation-config/>
+	<context:property-placeholder ignore-unresolvable="true"/>
+	
+	<bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+      <property name="scopes">
+          <map>
+              <entry key="thread">
+                  <bean class="org.springframework.context.support.SimpleThreadScope"/>
+              </entry>
+              <entry key="session">
+                  <bean class="org.springframework.context.support.SimpleThreadScope"/>
+              </entry>
+          </map>
+      </property>
+  	</bean>
+  	
+  	<bean id="reportContextAware" class="com.raritan.tdz.reports.generate.ReportsContextAware">
+  		<constructor-arg name="appCtxKey" ref="reportContextAwareKey"/>
+  	</bean>
+	
+	<!-- Create the gateway for report setup and report renderer -->
+	
+	<int:gateway id="reportSetupGateway"
+			default-request-channel="reportTransformerChannel"
+			service-interface="com.raritan.tdz.reports.generate.ReportTask"/>
+	
+
+	<int:gateway id="reportRendererGateway"
+		default-request-channel="reportRendererChannel"
+		service-interface="com.raritan.tdz.reports.generate.ReportRenderer"/>
+	
+	<int:gateway id="reportProgressManagerGateway"
+		service-interface="com.raritan.tdz.reports.generate.ReportTaskProgressManager">
+		<int:method request-channel="reportProgressManagerGetPercent" name="getPercentComplete"/>
+		<int:method request-channel="reportProgressManagerGetURL" name="getURL"/>
+		<int:method request-channel="reportProgressManagerCancel" name="cancel"/>
+		<int:method request-channel="reportProgressManagerGetErrors" name="getErrors"/>
+		<int:method request-channel="reportProgressManagerIsReportRunning" name="isTaskRunning"/>
+	</int:gateway>
+	
+	<!-- Create the birtReport generator -->
+	<bean id="reportGenerator" class="com.raritan.tdz.reports.generate.ReportGeneratorImpl">
+		<constructor-arg name="reportProgressManager" ref="reportProgressManagerGateway"/>
+		<constructor-arg name="reportTaskSetup" ref="reportSetupGateway"/>
+		<constructor-arg name="reportRenderer" ref="reportRendererGateway"/>
+	</bean>
+	
+	<!--  ============== Intialize the channels  ============= -->
+	
+	<int:channel id="reportGeneratorUserChannel"/>
+	
+	<int:header-value-router input-channel="reportGeneratorUserChannel" header-name="command">
+		<int:mapping value="generateReport" channel="generateReportChannel"/>
+		<int:mapping value="getStatus" channel="getReportStatusChannel"/>
+		<int:mapping value="cancel" channel="cancelReportGenerationChannel"/>
+	</int:header-value-router>	
+	
+	<int:channel id="generateReportChannel"/>
+	
+	<int:service-activator id="reportGeneratorActivator"
+	 	input-channel="generateReportChannel"
+	 	ref="reportGenerator"
+	 	method="generateReport"/>
+	 	
+	<int:channel id="getReportStatusChannel"/>
+	
+	<int:service-activator id="reportStatusActivator"
+	 	input-channel="getReportStatusChannel"
+	 	ref="reportGenerator"
+	 	method="getReportStatus"/>
+	 	
+	<int:channel id="cancelReportGenerationChannel"/>
+	
+	<int:service-activator id="reportCancelActivator"
+	 	input-channel="cancelReportGenerationChannel"
+	 	ref="reportGenerator"
+	 	method="cancelReportGeneration"/>
+	 	
+	 		
+	<int:channel id="reportTransformerChannel"/>
+	<int:channel id="reportSetupChannel"/>
+	
+	<int:channel id="reportRendererChannel">
+		<int:queue/>
+	</int:channel>
+	 	
+	 <!-- Param Transformers -->
+	<bean id="reportParamNullTranslator" class="com.raritan.tdz.reports.generate.ReportParamNullTransformer"/>
+	<bean id="reportParamObjectArrayTranslator" class="com.raritan.tdz.reports.generate.ReportParamObjectArrayTransformer"/>
+	
+	
+<!-- 	<int:transformer id="reportParamNullTransformer" ref="reportParamNullTranslator"
+		method="translate" input-channel="reportTransformerChannel" output-channel="reportSetupChannel"/> -->
+	
+	<int:transformer id="reportParamObjectArrayTransformer" ref="reportParamObjectArrayTranslator"
+		method="translate" input-channel="reportTransformerChannel" output-channel="reportSetupChannel"/>	
+	<!-- Transaction Managers -->	
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+		<!--<property name="entityInterceptor">
+			<ref bean="hibernateInterceptor" />
+		</property>-->
+	</bean>
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+</beans>
